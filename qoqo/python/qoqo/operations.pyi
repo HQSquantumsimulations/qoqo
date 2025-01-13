@@ -41,80 +41,76 @@ Args:
 
 """
 
-    def __init__(self, qubit: int, alpha_r: Union[float, str], alpha_i: Union[float, str], beta_r: Union[float, str], beta_i: Union[float, str], global_phase: Union[float, str]):
-       return
-
+    def __init__(
+        self,
+        qubit: int,
+        alpha_r: Union[float, str],
+        alpha_i: Union[float, str],
+        beta_r: Union[float, str],
+        beta_i: Union[float, str],
+        global_phase: Union[float, str],
+    ):
+        return
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def qubit(self):
         """
-Return the qubit the operation acts on
+        Return the qubit the operation acts on
 
-Returns:
-    int
-"""
-
+        Returns:
+            int"""
     def global_phase(self):
         """
 Return the global phase :math:`g` of a unitary gate acting on one qubit
@@ -130,7 +126,6 @@ Here global_phase is defined by
 Returns:
     CalculatorFloat
 """
-
     def alpha_r(self):
         """
 Return the property alpha_r :math:`\alpha_r` of a unitary gate acting on one qubit
@@ -146,7 +141,6 @@ Here alpha_r is defined by
 Returns:
     CalculatorFloat
 """
-
     def alpha_i(self):
         """
 Return the property alpha_i :math:`\alpha_i` of a unitary gate acting on one qubit
@@ -160,7 +154,6 @@ Return the property alpha_i :math:`\alpha_i` of a unitary gate acting on one qub
 Returns:
     CalculatorFloat
 """
-
     def beta_r(self):
         """
 Return the property beta_r :math:`\beta_r` of a unitary gate acting on one qubit
@@ -176,7 +169,6 @@ Here beta_r is defined by
 Returns:
     CalculatorFloat
 """
-
     def beta_i(self):
         """
 Returns the property beta_i :math:`\beta_i` of a unitary gate acting on one qubit
@@ -193,66 +185,56 @@ Here beta_i is defined by
 Returns:
     CalculatorFloat
 """
-
     def mul(self) -> Operation:
         """
-Multiplies two compatible operations implementing OperateSingleQubitGate.
+        Multiplies two compatible operations implementing OperateSingleQubitGate.
 
-Does not consume the two operations being multiplied.
-Only Operations
+        Does not consume the two operations being multiplied.
+        Only Operations
 
-Args:
-    `other` - An Operation implementing [OperateSingleQubitGate].
+        Args:
+            `other` - An Operation implementing [OperateSingleQubitGate].
 
-Returns:
-    Operation: Result of the multiplication, i.e. the multiplied single qubit gate.
+        Returns:
+            Operation: Result of the multiplication, i.e. the multiplied single qubit gate.
 
-Example:
-```
-from qoqo.operations import RotateZ, RotateX
+        Example:
+        ```
+        from qoqo.operations import RotateZ, RotateX
 
-gate1 =  RotateZ(qubit=0, theta=1)
-gate2 = RotateX(qubit=0, theta=1)
-multiplied = gate1.mul(gate2)
-print("Multiplied gate: ", multiplied)
-```
-
-"""
-
+        gate1 =  RotateZ(qubit=0, theta=1)
+        gate2 = RotateX(qubit=0, theta=1)
+        multiplied = gate1.mul(gate2)
+        print("Multiplied gate: ", multiplied)
+        ```
+        """
     def unitary_matrix(self) -> numpy.ndarray:
         """
-Return unitary matrix of gate.
+        Return unitary matrix of gate.
 
-Returns:
-    np.ndarray: matrix of gate.
+        Returns:
+            np.ndarray: matrix of gate.
 
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix"""
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class RotateZ(Operation):
     """
@@ -275,84 +257,70 @@ Args:
 """
 
     def __init__(self, qubit: int, theta: Union[float, str]):
-       return
-
+        return
     def theta(self):
         """
-Returns value of attribute theta
-"""
-
+        Returns value of attribute theta"""
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def qubit(self):
         """
-Return the qubit the operation acts on
+        Return the qubit the operation acts on
 
-Returns:
-    int
-"""
-
+        Returns:
+            int"""
     def global_phase(self):
         """
 Return the global phase :math:`g` of a unitary gate acting on one qubit
@@ -368,7 +336,6 @@ Here global_phase is defined by
 Returns:
     CalculatorFloat
 """
-
     def alpha_r(self):
         """
 Return the property alpha_r :math:`\alpha_r` of a unitary gate acting on one qubit
@@ -384,7 +351,6 @@ Here alpha_r is defined by
 Returns:
     CalculatorFloat
 """
-
     def alpha_i(self):
         """
 Return the property alpha_i :math:`\alpha_i` of a unitary gate acting on one qubit
@@ -398,7 +364,6 @@ Return the property alpha_i :math:`\alpha_i` of a unitary gate acting on one qub
 Returns:
     CalculatorFloat
 """
-
     def beta_r(self):
         """
 Return the property beta_r :math:`\beta_r` of a unitary gate acting on one qubit
@@ -414,7 +379,6 @@ Here beta_r is defined by
 Returns:
     CalculatorFloat
 """
-
     def beta_i(self):
         """
 Returns the property beta_i :math:`\beta_i` of a unitary gate acting on one qubit
@@ -431,78 +395,66 @@ Here beta_i is defined by
 Returns:
     CalculatorFloat
 """
-
     def mul(self) -> Operation:
         """
-Multiplies two compatible operations implementing OperateSingleQubitGate.
+        Multiplies two compatible operations implementing OperateSingleQubitGate.
 
-Does not consume the two operations being multiplied.
-Only Operations
+        Does not consume the two operations being multiplied.
+        Only Operations
 
-Args:
-    `other` - An Operation implementing [OperateSingleQubitGate].
+        Args:
+            `other` - An Operation implementing [OperateSingleQubitGate].
 
-Returns:
-    Operation: Result of the multiplication, i.e. the multiplied single qubit gate.
+        Returns:
+            Operation: Result of the multiplication, i.e. the multiplied single qubit gate.
 
-Example:
-```
-from qoqo.operations import RotateZ, RotateX
+        Example:
+        ```
+        from qoqo.operations import RotateZ, RotateX
 
-gate1 =  RotateZ(qubit=0, theta=1)
-gate2 = RotateX(qubit=0, theta=1)
-multiplied = gate1.mul(gate2)
-print("Multiplied gate: ", multiplied)
-```
-
-"""
-
+        gate1 =  RotateZ(qubit=0, theta=1)
+        gate2 = RotateX(qubit=0, theta=1)
+        multiplied = gate1.mul(gate2)
+        print("Multiplied gate: ", multiplied)
+        ```
+        """
     def unitary_matrix(self) -> numpy.ndarray:
         """
-Return unitary matrix of gate.
+        Return unitary matrix of gate.
 
-Returns:
-    np.ndarray: matrix of gate.
+        Returns:
+            np.ndarray: matrix of gate.
 
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix"""
     def powercf(self) -> RotateZ:
         """
-Returns Rotated gate raised to power
+        Returns Rotated gate raised to power
 
-Args:
-    `power`(CalculatorFloat): exponent of the power operation.
+        Args:
+            `power`(CalculatorFloat): exponent of the power operation.
 
-Returns:
-    Self: gate raised to the power of `power`
-
-"""
-
+        Returns:
+            Self: gate raised to the power of `power`
+        """
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class RotateY(Operation):
     """
@@ -525,84 +477,70 @@ Args:
 """
 
     def __init__(self, qubit: int, theta: Union[float, str]):
-       return
-
+        return
     def theta(self):
         """
-Returns value of attribute theta
-"""
-
+        Returns value of attribute theta"""
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def qubit(self):
         """
-Return the qubit the operation acts on
+        Return the qubit the operation acts on
 
-Returns:
-    int
-"""
-
+        Returns:
+            int"""
     def global_phase(self):
         """
 Return the global phase :math:`g` of a unitary gate acting on one qubit
@@ -618,7 +556,6 @@ Here global_phase is defined by
 Returns:
     CalculatorFloat
 """
-
     def alpha_r(self):
         """
 Return the property alpha_r :math:`\alpha_r` of a unitary gate acting on one qubit
@@ -634,7 +571,6 @@ Here alpha_r is defined by
 Returns:
     CalculatorFloat
 """
-
     def alpha_i(self):
         """
 Return the property alpha_i :math:`\alpha_i` of a unitary gate acting on one qubit
@@ -648,7 +584,6 @@ Return the property alpha_i :math:`\alpha_i` of a unitary gate acting on one qub
 Returns:
     CalculatorFloat
 """
-
     def beta_r(self):
         """
 Return the property beta_r :math:`\beta_r` of a unitary gate acting on one qubit
@@ -664,7 +599,6 @@ Here beta_r is defined by
 Returns:
     CalculatorFloat
 """
-
     def beta_i(self):
         """
 Returns the property beta_i :math:`\beta_i` of a unitary gate acting on one qubit
@@ -681,78 +615,66 @@ Here beta_i is defined by
 Returns:
     CalculatorFloat
 """
-
     def mul(self) -> Operation:
         """
-Multiplies two compatible operations implementing OperateSingleQubitGate.
+        Multiplies two compatible operations implementing OperateSingleQubitGate.
 
-Does not consume the two operations being multiplied.
-Only Operations
+        Does not consume the two operations being multiplied.
+        Only Operations
 
-Args:
-    `other` - An Operation implementing [OperateSingleQubitGate].
+        Args:
+            `other` - An Operation implementing [OperateSingleQubitGate].
 
-Returns:
-    Operation: Result of the multiplication, i.e. the multiplied single qubit gate.
+        Returns:
+            Operation: Result of the multiplication, i.e. the multiplied single qubit gate.
 
-Example:
-```
-from qoqo.operations import RotateZ, RotateX
+        Example:
+        ```
+        from qoqo.operations import RotateZ, RotateX
 
-gate1 =  RotateZ(qubit=0, theta=1)
-gate2 = RotateX(qubit=0, theta=1)
-multiplied = gate1.mul(gate2)
-print("Multiplied gate: ", multiplied)
-```
-
-"""
-
+        gate1 =  RotateZ(qubit=0, theta=1)
+        gate2 = RotateX(qubit=0, theta=1)
+        multiplied = gate1.mul(gate2)
+        print("Multiplied gate: ", multiplied)
+        ```
+        """
     def unitary_matrix(self) -> numpy.ndarray:
         """
-Return unitary matrix of gate.
+        Return unitary matrix of gate.
 
-Returns:
-    np.ndarray: matrix of gate.
+        Returns:
+            np.ndarray: matrix of gate.
 
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix"""
     def powercf(self) -> RotateY:
         """
-Returns Rotated gate raised to power
+        Returns Rotated gate raised to power
 
-Args:
-    `power`(CalculatorFloat): exponent of the power operation.
+        Args:
+            `power`(CalculatorFloat): exponent of the power operation.
 
-Returns:
-    Self: gate raised to the power of `power`
-
-"""
-
+        Returns:
+            Self: gate raised to the power of `power`
+        """
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class RotateX(Operation):
     """
@@ -775,84 +697,70 @@ Args:
 """
 
     def __init__(self, qubit: int, theta: Union[float, str]):
-       return
-
+        return
     def theta(self):
         """
-Returns value of attribute theta
-"""
-
+        Returns value of attribute theta"""
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def qubit(self):
         """
-Return the qubit the operation acts on
+        Return the qubit the operation acts on
 
-Returns:
-    int
-"""
-
+        Returns:
+            int"""
     def global_phase(self):
         """
 Return the global phase :math:`g` of a unitary gate acting on one qubit
@@ -868,7 +776,6 @@ Here global_phase is defined by
 Returns:
     CalculatorFloat
 """
-
     def alpha_r(self):
         """
 Return the property alpha_r :math:`\alpha_r` of a unitary gate acting on one qubit
@@ -884,7 +791,6 @@ Here alpha_r is defined by
 Returns:
     CalculatorFloat
 """
-
     def alpha_i(self):
         """
 Return the property alpha_i :math:`\alpha_i` of a unitary gate acting on one qubit
@@ -898,7 +804,6 @@ Return the property alpha_i :math:`\alpha_i` of a unitary gate acting on one qub
 Returns:
     CalculatorFloat
 """
-
     def beta_r(self):
         """
 Return the property beta_r :math:`\beta_r` of a unitary gate acting on one qubit
@@ -914,7 +819,6 @@ Here beta_r is defined by
 Returns:
     CalculatorFloat
 """
-
     def beta_i(self):
         """
 Returns the property beta_i :math:`\beta_i` of a unitary gate acting on one qubit
@@ -931,78 +835,66 @@ Here beta_i is defined by
 Returns:
     CalculatorFloat
 """
-
     def mul(self) -> Operation:
         """
-Multiplies two compatible operations implementing OperateSingleQubitGate.
+        Multiplies two compatible operations implementing OperateSingleQubitGate.
 
-Does not consume the two operations being multiplied.
-Only Operations
+        Does not consume the two operations being multiplied.
+        Only Operations
 
-Args:
-    `other` - An Operation implementing [OperateSingleQubitGate].
+        Args:
+            `other` - An Operation implementing [OperateSingleQubitGate].
 
-Returns:
-    Operation: Result of the multiplication, i.e. the multiplied single qubit gate.
+        Returns:
+            Operation: Result of the multiplication, i.e. the multiplied single qubit gate.
 
-Example:
-```
-from qoqo.operations import RotateZ, RotateX
+        Example:
+        ```
+        from qoqo.operations import RotateZ, RotateX
 
-gate1 =  RotateZ(qubit=0, theta=1)
-gate2 = RotateX(qubit=0, theta=1)
-multiplied = gate1.mul(gate2)
-print("Multiplied gate: ", multiplied)
-```
-
-"""
-
+        gate1 =  RotateZ(qubit=0, theta=1)
+        gate2 = RotateX(qubit=0, theta=1)
+        multiplied = gate1.mul(gate2)
+        print("Multiplied gate: ", multiplied)
+        ```
+        """
     def unitary_matrix(self) -> numpy.ndarray:
         """
-Return unitary matrix of gate.
+        Return unitary matrix of gate.
 
-Returns:
-    np.ndarray: matrix of gate.
+        Returns:
+            np.ndarray: matrix of gate.
 
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix"""
     def powercf(self) -> RotateX:
         """
-Returns Rotated gate raised to power
+        Returns Rotated gate raised to power
 
-Args:
-    `power`(CalculatorFloat): exponent of the power operation.
+        Args:
+            `power`(CalculatorFloat): exponent of the power operation.
 
-Returns:
-    Self: gate raised to the power of `power`
-
-"""
-
+        Returns:
+            Self: gate raised to the power of `power`
+        """
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class RotateXY(Operation):
     """
@@ -1022,89 +914,73 @@ Args:
 """
 
     def __init__(self, qubit: int, theta: Union[float, str], phi: Union[float, str]):
-       return
-
+        return
     def theta(self):
         """
-Returns value of attribute theta
-"""
-
+        Returns value of attribute theta"""
     def phi(self):
         """
-Returns value of attribute phi
-"""
-
+        Returns value of attribute phi"""
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def qubit(self):
         """
-Return the qubit the operation acts on
+        Return the qubit the operation acts on
 
-Returns:
-    int
-"""
-
+        Returns:
+            int"""
     def global_phase(self):
         """
 Return the global phase :math:`g` of a unitary gate acting on one qubit
@@ -1120,7 +996,6 @@ Here global_phase is defined by
 Returns:
     CalculatorFloat
 """
-
     def alpha_r(self):
         """
 Return the property alpha_r :math:`\alpha_r` of a unitary gate acting on one qubit
@@ -1136,7 +1011,6 @@ Here alpha_r is defined by
 Returns:
     CalculatorFloat
 """
-
     def alpha_i(self):
         """
 Return the property alpha_i :math:`\alpha_i` of a unitary gate acting on one qubit
@@ -1150,7 +1024,6 @@ Return the property alpha_i :math:`\alpha_i` of a unitary gate acting on one qub
 Returns:
     CalculatorFloat
 """
-
     def beta_r(self):
         """
 Return the property beta_r :math:`\beta_r` of a unitary gate acting on one qubit
@@ -1166,7 +1039,6 @@ Here beta_r is defined by
 Returns:
     CalculatorFloat
 """
-
     def beta_i(self):
         """
 Returns the property beta_i :math:`\beta_i` of a unitary gate acting on one qubit
@@ -1183,78 +1055,66 @@ Here beta_i is defined by
 Returns:
     CalculatorFloat
 """
-
     def mul(self) -> Operation:
         """
-Multiplies two compatible operations implementing OperateSingleQubitGate.
+        Multiplies two compatible operations implementing OperateSingleQubitGate.
 
-Does not consume the two operations being multiplied.
-Only Operations
+        Does not consume the two operations being multiplied.
+        Only Operations
 
-Args:
-    `other` - An Operation implementing [OperateSingleQubitGate].
+        Args:
+            `other` - An Operation implementing [OperateSingleQubitGate].
 
-Returns:
-    Operation: Result of the multiplication, i.e. the multiplied single qubit gate.
+        Returns:
+            Operation: Result of the multiplication, i.e. the multiplied single qubit gate.
 
-Example:
-```
-from qoqo.operations import RotateZ, RotateX
+        Example:
+        ```
+        from qoqo.operations import RotateZ, RotateX
 
-gate1 =  RotateZ(qubit=0, theta=1)
-gate2 = RotateX(qubit=0, theta=1)
-multiplied = gate1.mul(gate2)
-print("Multiplied gate: ", multiplied)
-```
-
-"""
-
+        gate1 =  RotateZ(qubit=0, theta=1)
+        gate2 = RotateX(qubit=0, theta=1)
+        multiplied = gate1.mul(gate2)
+        print("Multiplied gate: ", multiplied)
+        ```
+        """
     def unitary_matrix(self) -> numpy.ndarray:
         """
-Return unitary matrix of gate.
+        Return unitary matrix of gate.
 
-Returns:
-    np.ndarray: matrix of gate.
+        Returns:
+            np.ndarray: matrix of gate.
 
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix"""
     def powercf(self) -> RotateXY:
         """
-Returns Rotated gate raised to power
+        Returns Rotated gate raised to power
 
-Args:
-    `power`(CalculatorFloat): exponent of the power operation.
+        Args:
+            `power`(CalculatorFloat): exponent of the power operation.
 
-Returns:
-    Self: gate raised to the power of `power`
-
-"""
-
+        Returns:
+            Self: gate raised to the power of `power`
+        """
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class RotateAroundSphericalAxis(Operation):
     """
@@ -1285,95 +1145,83 @@ Args:
 
 """
 
-    def __init__(self, qubit: int, theta: Union[float, str], spherical_theta: Union[float, str], spherical_phi: Union[float, str]):
-       return
-
+    def __init__(
+        self,
+        qubit: int,
+        theta: Union[float, str],
+        spherical_theta: Union[float, str],
+        spherical_phi: Union[float, str],
+    ):
+        return
     def theta(self):
         """
-Returns value of attribute theta
-"""
-
+        Returns value of attribute theta"""
     def spherical_theta(self):
         """
-Returns value of attribute spherical_theta
-"""
-
+        Returns value of attribute spherical_theta"""
     def spherical_phi(self):
         """
-Returns value of attribute spherical_phi
-"""
-
+        Returns value of attribute spherical_phi"""
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def qubit(self):
         """
-Return the qubit the operation acts on
+        Return the qubit the operation acts on
 
-Returns:
-    int
-"""
-
+        Returns:
+            int"""
     def global_phase(self):
         """
 Return the global phase :math:`g` of a unitary gate acting on one qubit
@@ -1389,7 +1237,6 @@ Here global_phase is defined by
 Returns:
     CalculatorFloat
 """
-
     def alpha_r(self):
         """
 Return the property alpha_r :math:`\alpha_r` of a unitary gate acting on one qubit
@@ -1405,7 +1252,6 @@ Here alpha_r is defined by
 Returns:
     CalculatorFloat
 """
-
     def alpha_i(self):
         """
 Return the property alpha_i :math:`\alpha_i` of a unitary gate acting on one qubit
@@ -1419,7 +1265,6 @@ Return the property alpha_i :math:`\alpha_i` of a unitary gate acting on one qub
 Returns:
     CalculatorFloat
 """
-
     def beta_r(self):
         """
 Return the property beta_r :math:`\beta_r` of a unitary gate acting on one qubit
@@ -1435,7 +1280,6 @@ Here beta_r is defined by
 Returns:
     CalculatorFloat
 """
-
     def beta_i(self):
         """
 Returns the property beta_i :math:`\beta_i` of a unitary gate acting on one qubit
@@ -1452,78 +1296,66 @@ Here beta_i is defined by
 Returns:
     CalculatorFloat
 """
-
     def mul(self) -> Operation:
         """
-Multiplies two compatible operations implementing OperateSingleQubitGate.
+        Multiplies two compatible operations implementing OperateSingleQubitGate.
 
-Does not consume the two operations being multiplied.
-Only Operations
+        Does not consume the two operations being multiplied.
+        Only Operations
 
-Args:
-    `other` - An Operation implementing [OperateSingleQubitGate].
+        Args:
+            `other` - An Operation implementing [OperateSingleQubitGate].
 
-Returns:
-    Operation: Result of the multiplication, i.e. the multiplied single qubit gate.
+        Returns:
+            Operation: Result of the multiplication, i.e. the multiplied single qubit gate.
 
-Example:
-```
-from qoqo.operations import RotateZ, RotateX
+        Example:
+        ```
+        from qoqo.operations import RotateZ, RotateX
 
-gate1 =  RotateZ(qubit=0, theta=1)
-gate2 = RotateX(qubit=0, theta=1)
-multiplied = gate1.mul(gate2)
-print("Multiplied gate: ", multiplied)
-```
-
-"""
-
+        gate1 =  RotateZ(qubit=0, theta=1)
+        gate2 = RotateX(qubit=0, theta=1)
+        multiplied = gate1.mul(gate2)
+        print("Multiplied gate: ", multiplied)
+        ```
+        """
     def unitary_matrix(self) -> numpy.ndarray:
         """
-Return unitary matrix of gate.
+        Return unitary matrix of gate.
 
-Returns:
-    np.ndarray: matrix of gate.
+        Returns:
+            np.ndarray: matrix of gate.
 
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix"""
     def powercf(self) -> RotateAroundSphericalAxis:
         """
-Returns Rotated gate raised to power
+        Returns Rotated gate raised to power
 
-Args:
-    `power`(CalculatorFloat): exponent of the power operation.
+        Args:
+            `power`(CalculatorFloat): exponent of the power operation.
 
-Returns:
-    Self: gate raised to the power of `power`
-
-"""
-
+        Returns:
+            Self: gate raised to the power of `power`
+        """
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class PauliZ(Operation):
     """
@@ -1541,79 +1373,67 @@ Args:
 """
 
     def __init__(self, qubit: int):
-       return
-
+        return
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def qubit(self):
         """
-Return the qubit the operation acts on
+        Return the qubit the operation acts on
 
-Returns:
-    int
-"""
-
+        Returns:
+            int"""
     def global_phase(self):
         """
 Return the global phase :math:`g` of a unitary gate acting on one qubit
@@ -1629,7 +1449,6 @@ Here global_phase is defined by
 Returns:
     CalculatorFloat
 """
-
     def alpha_r(self):
         """
 Return the property alpha_r :math:`\alpha_r` of a unitary gate acting on one qubit
@@ -1645,7 +1464,6 @@ Here alpha_r is defined by
 Returns:
     CalculatorFloat
 """
-
     def alpha_i(self):
         """
 Return the property alpha_i :math:`\alpha_i` of a unitary gate acting on one qubit
@@ -1659,7 +1477,6 @@ Return the property alpha_i :math:`\alpha_i` of a unitary gate acting on one qub
 Returns:
     CalculatorFloat
 """
-
     def beta_r(self):
         """
 Return the property beta_r :math:`\beta_r` of a unitary gate acting on one qubit
@@ -1675,7 +1492,6 @@ Here beta_r is defined by
 Returns:
     CalculatorFloat
 """
-
     def beta_i(self):
         """
 Returns the property beta_i :math:`\beta_i` of a unitary gate acting on one qubit
@@ -1692,66 +1508,56 @@ Here beta_i is defined by
 Returns:
     CalculatorFloat
 """
-
     def mul(self) -> Operation:
         """
-Multiplies two compatible operations implementing OperateSingleQubitGate.
+        Multiplies two compatible operations implementing OperateSingleQubitGate.
 
-Does not consume the two operations being multiplied.
-Only Operations
+        Does not consume the two operations being multiplied.
+        Only Operations
 
-Args:
-    `other` - An Operation implementing [OperateSingleQubitGate].
+        Args:
+            `other` - An Operation implementing [OperateSingleQubitGate].
 
-Returns:
-    Operation: Result of the multiplication, i.e. the multiplied single qubit gate.
+        Returns:
+            Operation: Result of the multiplication, i.e. the multiplied single qubit gate.
 
-Example:
-```
-from qoqo.operations import RotateZ, RotateX
+        Example:
+        ```
+        from qoqo.operations import RotateZ, RotateX
 
-gate1 =  RotateZ(qubit=0, theta=1)
-gate2 = RotateX(qubit=0, theta=1)
-multiplied = gate1.mul(gate2)
-print("Multiplied gate: ", multiplied)
-```
-
-"""
-
+        gate1 =  RotateZ(qubit=0, theta=1)
+        gate2 = RotateX(qubit=0, theta=1)
+        multiplied = gate1.mul(gate2)
+        print("Multiplied gate: ", multiplied)
+        ```
+        """
     def unitary_matrix(self) -> numpy.ndarray:
         """
-Return unitary matrix of gate.
+        Return unitary matrix of gate.
 
-Returns:
-    np.ndarray: matrix of gate.
+        Returns:
+            np.ndarray: matrix of gate.
 
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix"""
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class PauliY(Operation):
     """
@@ -1769,79 +1575,67 @@ Args:
 """
 
     def __init__(self, qubit: int):
-       return
-
+        return
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def qubit(self):
         """
-Return the qubit the operation acts on
+        Return the qubit the operation acts on
 
-Returns:
-    int
-"""
-
+        Returns:
+            int"""
     def global_phase(self):
         """
 Return the global phase :math:`g` of a unitary gate acting on one qubit
@@ -1857,7 +1651,6 @@ Here global_phase is defined by
 Returns:
     CalculatorFloat
 """
-
     def alpha_r(self):
         """
 Return the property alpha_r :math:`\alpha_r` of a unitary gate acting on one qubit
@@ -1873,7 +1666,6 @@ Here alpha_r is defined by
 Returns:
     CalculatorFloat
 """
-
     def alpha_i(self):
         """
 Return the property alpha_i :math:`\alpha_i` of a unitary gate acting on one qubit
@@ -1887,7 +1679,6 @@ Return the property alpha_i :math:`\alpha_i` of a unitary gate acting on one qub
 Returns:
     CalculatorFloat
 """
-
     def beta_r(self):
         """
 Return the property beta_r :math:`\beta_r` of a unitary gate acting on one qubit
@@ -1903,7 +1694,6 @@ Here beta_r is defined by
 Returns:
     CalculatorFloat
 """
-
     def beta_i(self):
         """
 Returns the property beta_i :math:`\beta_i` of a unitary gate acting on one qubit
@@ -1920,66 +1710,56 @@ Here beta_i is defined by
 Returns:
     CalculatorFloat
 """
-
     def mul(self) -> Operation:
         """
-Multiplies two compatible operations implementing OperateSingleQubitGate.
+        Multiplies two compatible operations implementing OperateSingleQubitGate.
 
-Does not consume the two operations being multiplied.
-Only Operations
+        Does not consume the two operations being multiplied.
+        Only Operations
 
-Args:
-    `other` - An Operation implementing [OperateSingleQubitGate].
+        Args:
+            `other` - An Operation implementing [OperateSingleQubitGate].
 
-Returns:
-    Operation: Result of the multiplication, i.e. the multiplied single qubit gate.
+        Returns:
+            Operation: Result of the multiplication, i.e. the multiplied single qubit gate.
 
-Example:
-```
-from qoqo.operations import RotateZ, RotateX
+        Example:
+        ```
+        from qoqo.operations import RotateZ, RotateX
 
-gate1 =  RotateZ(qubit=0, theta=1)
-gate2 = RotateX(qubit=0, theta=1)
-multiplied = gate1.mul(gate2)
-print("Multiplied gate: ", multiplied)
-```
-
-"""
-
+        gate1 =  RotateZ(qubit=0, theta=1)
+        gate2 = RotateX(qubit=0, theta=1)
+        multiplied = gate1.mul(gate2)
+        print("Multiplied gate: ", multiplied)
+        ```
+        """
     def unitary_matrix(self) -> numpy.ndarray:
         """
-Return unitary matrix of gate.
+        Return unitary matrix of gate.
 
-Returns:
-    np.ndarray: matrix of gate.
+        Returns:
+            np.ndarray: matrix of gate.
 
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix"""
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class PauliX(Operation):
     """
@@ -1997,79 +1777,67 @@ Args:
 """
 
     def __init__(self, qubit: int):
-       return
-
+        return
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def qubit(self):
         """
-Return the qubit the operation acts on
+        Return the qubit the operation acts on
 
-Returns:
-    int
-"""
-
+        Returns:
+            int"""
     def global_phase(self):
         """
 Return the global phase :math:`g` of a unitary gate acting on one qubit
@@ -2085,7 +1853,6 @@ Here global_phase is defined by
 Returns:
     CalculatorFloat
 """
-
     def alpha_r(self):
         """
 Return the property alpha_r :math:`\alpha_r` of a unitary gate acting on one qubit
@@ -2101,7 +1868,6 @@ Here alpha_r is defined by
 Returns:
     CalculatorFloat
 """
-
     def alpha_i(self):
         """
 Return the property alpha_i :math:`\alpha_i` of a unitary gate acting on one qubit
@@ -2115,7 +1881,6 @@ Return the property alpha_i :math:`\alpha_i` of a unitary gate acting on one qub
 Returns:
     CalculatorFloat
 """
-
     def beta_r(self):
         """
 Return the property beta_r :math:`\beta_r` of a unitary gate acting on one qubit
@@ -2131,7 +1896,6 @@ Here beta_r is defined by
 Returns:
     CalculatorFloat
 """
-
     def beta_i(self):
         """
 Returns the property beta_i :math:`\beta_i` of a unitary gate acting on one qubit
@@ -2148,66 +1912,56 @@ Here beta_i is defined by
 Returns:
     CalculatorFloat
 """
-
     def mul(self) -> Operation:
         """
-Multiplies two compatible operations implementing OperateSingleQubitGate.
+        Multiplies two compatible operations implementing OperateSingleQubitGate.
 
-Does not consume the two operations being multiplied.
-Only Operations
+        Does not consume the two operations being multiplied.
+        Only Operations
 
-Args:
-    `other` - An Operation implementing [OperateSingleQubitGate].
+        Args:
+            `other` - An Operation implementing [OperateSingleQubitGate].
 
-Returns:
-    Operation: Result of the multiplication, i.e. the multiplied single qubit gate.
+        Returns:
+            Operation: Result of the multiplication, i.e. the multiplied single qubit gate.
 
-Example:
-```
-from qoqo.operations import RotateZ, RotateX
+        Example:
+        ```
+        from qoqo.operations import RotateZ, RotateX
 
-gate1 =  RotateZ(qubit=0, theta=1)
-gate2 = RotateX(qubit=0, theta=1)
-multiplied = gate1.mul(gate2)
-print("Multiplied gate: ", multiplied)
-```
-
-"""
-
+        gate1 =  RotateZ(qubit=0, theta=1)
+        gate2 = RotateX(qubit=0, theta=1)
+        multiplied = gate1.mul(gate2)
+        print("Multiplied gate: ", multiplied)
+        ```
+        """
     def unitary_matrix(self) -> numpy.ndarray:
         """
-Return unitary matrix of gate.
+        Return unitary matrix of gate.
 
-Returns:
-    np.ndarray: matrix of gate.
+        Returns:
+            np.ndarray: matrix of gate.
 
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix"""
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class SqrtPauliX(Operation):
     """
@@ -2225,79 +1979,67 @@ Args:
 """
 
     def __init__(self, qubit: int):
-       return
-
+        return
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def qubit(self):
         """
-Return the qubit the operation acts on
+        Return the qubit the operation acts on
 
-Returns:
-    int
-"""
-
+        Returns:
+            int"""
     def global_phase(self):
         """
 Return the global phase :math:`g` of a unitary gate acting on one qubit
@@ -2313,7 +2055,6 @@ Here global_phase is defined by
 Returns:
     CalculatorFloat
 """
-
     def alpha_r(self):
         """
 Return the property alpha_r :math:`\alpha_r` of a unitary gate acting on one qubit
@@ -2329,7 +2070,6 @@ Here alpha_r is defined by
 Returns:
     CalculatorFloat
 """
-
     def alpha_i(self):
         """
 Return the property alpha_i :math:`\alpha_i` of a unitary gate acting on one qubit
@@ -2343,7 +2083,6 @@ Return the property alpha_i :math:`\alpha_i` of a unitary gate acting on one qub
 Returns:
     CalculatorFloat
 """
-
     def beta_r(self):
         """
 Return the property beta_r :math:`\beta_r` of a unitary gate acting on one qubit
@@ -2359,7 +2098,6 @@ Here beta_r is defined by
 Returns:
     CalculatorFloat
 """
-
     def beta_i(self):
         """
 Returns the property beta_i :math:`\beta_i` of a unitary gate acting on one qubit
@@ -2376,66 +2114,56 @@ Here beta_i is defined by
 Returns:
     CalculatorFloat
 """
-
     def mul(self) -> Operation:
         """
-Multiplies two compatible operations implementing OperateSingleQubitGate.
+        Multiplies two compatible operations implementing OperateSingleQubitGate.
 
-Does not consume the two operations being multiplied.
-Only Operations
+        Does not consume the two operations being multiplied.
+        Only Operations
 
-Args:
-    `other` - An Operation implementing [OperateSingleQubitGate].
+        Args:
+            `other` - An Operation implementing [OperateSingleQubitGate].
 
-Returns:
-    Operation: Result of the multiplication, i.e. the multiplied single qubit gate.
+        Returns:
+            Operation: Result of the multiplication, i.e. the multiplied single qubit gate.
 
-Example:
-```
-from qoqo.operations import RotateZ, RotateX
+        Example:
+        ```
+        from qoqo.operations import RotateZ, RotateX
 
-gate1 =  RotateZ(qubit=0, theta=1)
-gate2 = RotateX(qubit=0, theta=1)
-multiplied = gate1.mul(gate2)
-print("Multiplied gate: ", multiplied)
-```
-
-"""
-
+        gate1 =  RotateZ(qubit=0, theta=1)
+        gate2 = RotateX(qubit=0, theta=1)
+        multiplied = gate1.mul(gate2)
+        print("Multiplied gate: ", multiplied)
+        ```
+        """
     def unitary_matrix(self) -> numpy.ndarray:
         """
-Return unitary matrix of gate.
+        Return unitary matrix of gate.
 
-Returns:
-    np.ndarray: matrix of gate.
+        Returns:
+            np.ndarray: matrix of gate.
 
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix"""
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class InvSqrtPauliX(Operation):
     """
@@ -2453,79 +2181,67 @@ Args:
 """
 
     def __init__(self, qubit: int):
-       return
-
+        return
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def qubit(self):
         """
-Return the qubit the operation acts on
+        Return the qubit the operation acts on
 
-Returns:
-    int
-"""
-
+        Returns:
+            int"""
     def global_phase(self):
         """
 Return the global phase :math:`g` of a unitary gate acting on one qubit
@@ -2541,7 +2257,6 @@ Here global_phase is defined by
 Returns:
     CalculatorFloat
 """
-
     def alpha_r(self):
         """
 Return the property alpha_r :math:`\alpha_r` of a unitary gate acting on one qubit
@@ -2557,7 +2272,6 @@ Here alpha_r is defined by
 Returns:
     CalculatorFloat
 """
-
     def alpha_i(self):
         """
 Return the property alpha_i :math:`\alpha_i` of a unitary gate acting on one qubit
@@ -2571,7 +2285,6 @@ Return the property alpha_i :math:`\alpha_i` of a unitary gate acting on one qub
 Returns:
     CalculatorFloat
 """
-
     def beta_r(self):
         """
 Return the property beta_r :math:`\beta_r` of a unitary gate acting on one qubit
@@ -2587,7 +2300,6 @@ Here beta_r is defined by
 Returns:
     CalculatorFloat
 """
-
     def beta_i(self):
         """
 Returns the property beta_i :math:`\beta_i` of a unitary gate acting on one qubit
@@ -2604,66 +2316,56 @@ Here beta_i is defined by
 Returns:
     CalculatorFloat
 """
-
     def mul(self) -> Operation:
         """
-Multiplies two compatible operations implementing OperateSingleQubitGate.
+        Multiplies two compatible operations implementing OperateSingleQubitGate.
 
-Does not consume the two operations being multiplied.
-Only Operations
+        Does not consume the two operations being multiplied.
+        Only Operations
 
-Args:
-    `other` - An Operation implementing [OperateSingleQubitGate].
+        Args:
+            `other` - An Operation implementing [OperateSingleQubitGate].
 
-Returns:
-    Operation: Result of the multiplication, i.e. the multiplied single qubit gate.
+        Returns:
+            Operation: Result of the multiplication, i.e. the multiplied single qubit gate.
 
-Example:
-```
-from qoqo.operations import RotateZ, RotateX
+        Example:
+        ```
+        from qoqo.operations import RotateZ, RotateX
 
-gate1 =  RotateZ(qubit=0, theta=1)
-gate2 = RotateX(qubit=0, theta=1)
-multiplied = gate1.mul(gate2)
-print("Multiplied gate: ", multiplied)
-```
-
-"""
-
+        gate1 =  RotateZ(qubit=0, theta=1)
+        gate2 = RotateX(qubit=0, theta=1)
+        multiplied = gate1.mul(gate2)
+        print("Multiplied gate: ", multiplied)
+        ```
+        """
     def unitary_matrix(self) -> numpy.ndarray:
         """
-Return unitary matrix of gate.
+        Return unitary matrix of gate.
 
-Returns:
-    np.ndarray: matrix of gate.
+        Returns:
+            np.ndarray: matrix of gate.
 
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix"""
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class Hadamard(Operation):
     """
@@ -2681,79 +2383,67 @@ Args:
 """
 
     def __init__(self, qubit: int):
-       return
-
+        return
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def qubit(self):
         """
-Return the qubit the operation acts on
+        Return the qubit the operation acts on
 
-Returns:
-    int
-"""
-
+        Returns:
+            int"""
     def global_phase(self):
         """
 Return the global phase :math:`g` of a unitary gate acting on one qubit
@@ -2769,7 +2459,6 @@ Here global_phase is defined by
 Returns:
     CalculatorFloat
 """
-
     def alpha_r(self):
         """
 Return the property alpha_r :math:`\alpha_r` of a unitary gate acting on one qubit
@@ -2785,7 +2474,6 @@ Here alpha_r is defined by
 Returns:
     CalculatorFloat
 """
-
     def alpha_i(self):
         """
 Return the property alpha_i :math:`\alpha_i` of a unitary gate acting on one qubit
@@ -2799,7 +2487,6 @@ Return the property alpha_i :math:`\alpha_i` of a unitary gate acting on one qub
 Returns:
     CalculatorFloat
 """
-
     def beta_r(self):
         """
 Return the property beta_r :math:`\beta_r` of a unitary gate acting on one qubit
@@ -2815,7 +2502,6 @@ Here beta_r is defined by
 Returns:
     CalculatorFloat
 """
-
     def beta_i(self):
         """
 Returns the property beta_i :math:`\beta_i` of a unitary gate acting on one qubit
@@ -2832,66 +2518,56 @@ Here beta_i is defined by
 Returns:
     CalculatorFloat
 """
-
     def mul(self) -> Operation:
         """
-Multiplies two compatible operations implementing OperateSingleQubitGate.
+        Multiplies two compatible operations implementing OperateSingleQubitGate.
 
-Does not consume the two operations being multiplied.
-Only Operations
+        Does not consume the two operations being multiplied.
+        Only Operations
 
-Args:
-    `other` - An Operation implementing [OperateSingleQubitGate].
+        Args:
+            `other` - An Operation implementing [OperateSingleQubitGate].
 
-Returns:
-    Operation: Result of the multiplication, i.e. the multiplied single qubit gate.
+        Returns:
+            Operation: Result of the multiplication, i.e. the multiplied single qubit gate.
 
-Example:
-```
-from qoqo.operations import RotateZ, RotateX
+        Example:
+        ```
+        from qoqo.operations import RotateZ, RotateX
 
-gate1 =  RotateZ(qubit=0, theta=1)
-gate2 = RotateX(qubit=0, theta=1)
-multiplied = gate1.mul(gate2)
-print("Multiplied gate: ", multiplied)
-```
-
-"""
-
+        gate1 =  RotateZ(qubit=0, theta=1)
+        gate2 = RotateX(qubit=0, theta=1)
+        multiplied = gate1.mul(gate2)
+        print("Multiplied gate: ", multiplied)
+        ```
+        """
     def unitary_matrix(self) -> numpy.ndarray:
         """
-Return unitary matrix of gate.
+        Return unitary matrix of gate.
 
-Returns:
-    np.ndarray: matrix of gate.
+        Returns:
+            np.ndarray: matrix of gate.
 
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix"""
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class TGate(Operation):
     """
@@ -2909,79 +2585,67 @@ Args:
 """
 
     def __init__(self, qubit: int):
-       return
-
+        return
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def qubit(self):
         """
-Return the qubit the operation acts on
+        Return the qubit the operation acts on
 
-Returns:
-    int
-"""
-
+        Returns:
+            int"""
     def global_phase(self):
         """
 Return the global phase :math:`g` of a unitary gate acting on one qubit
@@ -2997,7 +2661,6 @@ Here global_phase is defined by
 Returns:
     CalculatorFloat
 """
-
     def alpha_r(self):
         """
 Return the property alpha_r :math:`\alpha_r` of a unitary gate acting on one qubit
@@ -3013,7 +2676,6 @@ Here alpha_r is defined by
 Returns:
     CalculatorFloat
 """
-
     def alpha_i(self):
         """
 Return the property alpha_i :math:`\alpha_i` of a unitary gate acting on one qubit
@@ -3027,7 +2689,6 @@ Return the property alpha_i :math:`\alpha_i` of a unitary gate acting on one qub
 Returns:
     CalculatorFloat
 """
-
     def beta_r(self):
         """
 Return the property beta_r :math:`\beta_r` of a unitary gate acting on one qubit
@@ -3043,7 +2704,6 @@ Here beta_r is defined by
 Returns:
     CalculatorFloat
 """
-
     def beta_i(self):
         """
 Returns the property beta_i :math:`\beta_i` of a unitary gate acting on one qubit
@@ -3060,66 +2720,56 @@ Here beta_i is defined by
 Returns:
     CalculatorFloat
 """
-
     def mul(self) -> Operation:
         """
-Multiplies two compatible operations implementing OperateSingleQubitGate.
+        Multiplies two compatible operations implementing OperateSingleQubitGate.
 
-Does not consume the two operations being multiplied.
-Only Operations
+        Does not consume the two operations being multiplied.
+        Only Operations
 
-Args:
-    `other` - An Operation implementing [OperateSingleQubitGate].
+        Args:
+            `other` - An Operation implementing [OperateSingleQubitGate].
 
-Returns:
-    Operation: Result of the multiplication, i.e. the multiplied single qubit gate.
+        Returns:
+            Operation: Result of the multiplication, i.e. the multiplied single qubit gate.
 
-Example:
-```
-from qoqo.operations import RotateZ, RotateX
+        Example:
+        ```
+        from qoqo.operations import RotateZ, RotateX
 
-gate1 =  RotateZ(qubit=0, theta=1)
-gate2 = RotateX(qubit=0, theta=1)
-multiplied = gate1.mul(gate2)
-print("Multiplied gate: ", multiplied)
-```
-
-"""
-
+        gate1 =  RotateZ(qubit=0, theta=1)
+        gate2 = RotateX(qubit=0, theta=1)
+        multiplied = gate1.mul(gate2)
+        print("Multiplied gate: ", multiplied)
+        ```
+        """
     def unitary_matrix(self) -> numpy.ndarray:
         """
-Return unitary matrix of gate.
+        Return unitary matrix of gate.
 
-Returns:
-    np.ndarray: matrix of gate.
+        Returns:
+            np.ndarray: matrix of gate.
 
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix"""
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class SGate(Operation):
     """
@@ -3137,79 +2787,67 @@ Args:
 """
 
     def __init__(self, qubit: int):
-       return
-
+        return
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def qubit(self):
         """
-Return the qubit the operation acts on
+        Return the qubit the operation acts on
 
-Returns:
-    int
-"""
-
+        Returns:
+            int"""
     def global_phase(self):
         """
 Return the global phase :math:`g` of a unitary gate acting on one qubit
@@ -3225,7 +2863,6 @@ Here global_phase is defined by
 Returns:
     CalculatorFloat
 """
-
     def alpha_r(self):
         """
 Return the property alpha_r :math:`\alpha_r` of a unitary gate acting on one qubit
@@ -3241,7 +2878,6 @@ Here alpha_r is defined by
 Returns:
     CalculatorFloat
 """
-
     def alpha_i(self):
         """
 Return the property alpha_i :math:`\alpha_i` of a unitary gate acting on one qubit
@@ -3255,7 +2891,6 @@ Return the property alpha_i :math:`\alpha_i` of a unitary gate acting on one qub
 Returns:
     CalculatorFloat
 """
-
     def beta_r(self):
         """
 Return the property beta_r :math:`\beta_r` of a unitary gate acting on one qubit
@@ -3271,7 +2906,6 @@ Here beta_r is defined by
 Returns:
     CalculatorFloat
 """
-
     def beta_i(self):
         """
 Returns the property beta_i :math:`\beta_i` of a unitary gate acting on one qubit
@@ -3288,3654 +2922,3019 @@ Here beta_i is defined by
 Returns:
     CalculatorFloat
 """
-
     def mul(self) -> Operation:
         """
-Multiplies two compatible operations implementing OperateSingleQubitGate.
+        Multiplies two compatible operations implementing OperateSingleQubitGate.
 
-Does not consume the two operations being multiplied.
-Only Operations
+        Does not consume the two operations being multiplied.
+        Only Operations
 
-Args:
-    `other` - An Operation implementing [OperateSingleQubitGate].
+        Args:
+            `other` - An Operation implementing [OperateSingleQubitGate].
 
-Returns:
-    Operation: Result of the multiplication, i.e. the multiplied single qubit gate.
+        Returns:
+            Operation: Result of the multiplication, i.e. the multiplied single qubit gate.
 
-Example:
-```
-from qoqo.operations import RotateZ, RotateX
+        Example:
+        ```
+        from qoqo.operations import RotateZ, RotateX
 
-gate1 =  RotateZ(qubit=0, theta=1)
-gate2 = RotateX(qubit=0, theta=1)
-multiplied = gate1.mul(gate2)
-print("Multiplied gate: ", multiplied)
-```
-
-"""
-
+        gate1 =  RotateZ(qubit=0, theta=1)
+        gate2 = RotateX(qubit=0, theta=1)
+        multiplied = gate1.mul(gate2)
+        print("Multiplied gate: ", multiplied)
+        ```
+        """
     def unitary_matrix(self) -> numpy.ndarray:
         """
-Return unitary matrix of gate.
+        Return unitary matrix of gate.
 
-Returns:
-    np.ndarray: matrix of gate.
+        Returns:
+            np.ndarray: matrix of gate.
 
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix"""
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class DefinitionUsize(Operation):
     """
-DefinitionUsize is the Definition for an Integer type register.
+    DefinitionUsize is the Definition for an Integer type register.
 
-Args:
-    name (string): The name of the register that is defined.
-    length (int): The length of the register that is defined, usually the number of qubits to be measured.
-    is_output (bool): True/False if the variable is an output to the program.
-"""
+    Args:
+        name (string): The name of the register that is defined.
+        length (int): The length of the register that is defined, usually the number of qubits to be measured.
+        is_output (bool): True/False if the variable is an output to the program."""
 
     def __init__(self, name: str, length: int, is_output: bool):
-       return
-
+        return
     def length(self):
         """
-Get value of struct field length
-"""
-
+        Get value of struct field length"""
     def is_output(self):
         """
-Get value of struct field is_output
-"""
-
+        Get value of struct field is_output"""
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def name(self):
         """
-Return name of definition operation.
+        Return name of definition operation.
 
-Returns:
-    str
-"""
-
+        Returns:
+            str"""
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class DefinitionBit(Operation):
     """
-DefinitionBit is the Definition for a Bit type register.
+    DefinitionBit is the Definition for a Bit type register.
 
-Args:
-    name (string): The name of the register that is defined.
-    length (int): The length of the register that is defined, usually the number of qubits to be measured.
-    is_output (bool): True/False if the variable is an output to the program.
-"""
+    Args:
+        name (string): The name of the register that is defined.
+        length (int): The length of the register that is defined, usually the number of qubits to be measured.
+        is_output (bool): True/False if the variable is an output to the program."""
 
     def __init__(self, name: str, length: int, is_output: bool):
-       return
-
+        return
     def length(self):
         """
-Get value of struct field length
-"""
-
+        Get value of struct field length"""
     def is_output(self):
         """
-Get value of struct field is_output
-"""
-
+        Get value of struct field is_output"""
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def name(self):
         """
-Return name of definition operation.
+        Return name of definition operation.
 
-Returns:
-    str
-"""
-
+        Returns:
+            str"""
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class DefinitionFloat(Operation):
     """
-DefinitionFloat is the Definition for a Float type register.
+    DefinitionFloat is the Definition for a Float type register.
 
-Args:
-    name (string): The name of the register that is defined.
-    length (int): The length of the register that is defined, usually the number of qubits to be measured.
-    is_output (bool): True/False if the variable is an output to the program.
-"""
+    Args:
+        name (string): The name of the register that is defined.
+        length (int): The length of the register that is defined, usually the number of qubits to be measured.
+        is_output (bool): True/False if the variable is an output to the program."""
 
     def __init__(self, name: str, length: int, is_output: bool):
-       return
-
+        return
     def length(self):
         """
-Get value of struct field length
-"""
-
+        Get value of struct field length"""
     def is_output(self):
         """
-Get value of struct field is_output
-"""
-
+        Get value of struct field is_output"""
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def name(self):
         """
-Return name of definition operation.
+        Return name of definition operation.
 
-Returns:
-    str
-"""
-
+        Returns:
+            str"""
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class DefinitionComplex(Operation):
     """
-DefinitionComplex is the Definition for a Complex type register.
+    DefinitionComplex is the Definition for a Complex type register.
 
-Args:
-    name (string): The name of the register that is defined.
-    length (int): The length of the register that is defined, usually the number of qubits to be measured.
-    is_output (bool): True/False if the variable is an output to the program.
-"""
+    Args:
+        name (string): The name of the register that is defined.
+        length (int): The length of the register that is defined, usually the number of qubits to be measured.
+        is_output (bool): True/False if the variable is an output to the program."""
 
     def __init__(self, name: str, length: int, is_output: bool):
-       return
-
+        return
     def length(self):
         """
-Get value of struct field length
-"""
-
+        Get value of struct field length"""
     def is_output(self):
         """
-Get value of struct field is_output
-"""
-
+        Get value of struct field is_output"""
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def name(self):
         """
-Return name of definition operation.
+        Return name of definition operation.
 
-Returns:
-    str
-"""
-
+        Returns:
+            str"""
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class InputSymbolic(Operation):
     """
-InputSymbolic is the Definition for a Float which will replace a certain symbolic parameter.
+    InputSymbolic is the Definition for a Float which will replace a certain symbolic parameter.
 
-Args:
-    name (string): The name of the register that is defined.
-    input (float): The float by which to replace the quantities marked as "name".
-"""
+    Args:
+        name (string): The name of the register that is defined.
+        input (float): The float by which to replace the quantities marked as "name"."""
 
     def __init__(self, name: str, input: float):
-       return
-
+        return
     def input(self):
         """
-Get value of struct field input
-"""
-
+        Get value of struct field input"""
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def name(self):
         """
-Return name of definition operation.
+        Return name of definition operation.
 
-Returns:
-    str
-"""
-
+        Returns:
+            str"""
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class MeasureQubit(Operation):
     """
-Measurement gate operation.
+    Measurement gate operation.
 
-This Operation acts on one qubit writing the result of the measurement into a readout.
-The classical register for the readout needs to be defined in advance by using a Definition operation.
+    This Operation acts on one qubit writing the result of the measurement into a readout.
+    The classical register for the readout needs to be defined in advance by using a Definition operation.
 
-Args:
-    qubit (int): The measured qubit.
-    readout (string): The classical register for the readout.
-    readout_index (int): The index in the readout the result is saved to.
-
-"""
+    Args:
+        qubit (int): The measured qubit.
+        readout (string): The classical register for the readout.
+        readout_index (int): The index in the readout the result is saved to.
+    """
 
     def __init__(self, qubit: int, readout: str, readout_index: int):
-       return
-
+        return
     def readout(self):
         """
-Get value of struct field readout
-"""
-
+        Get value of struct field readout"""
     def readout_index(self):
         """
-Get value of struct field readout_index
-"""
-
+        Get value of struct field readout_index"""
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def qubit(self):
         """
-Return the qubit the operation acts on
+        Return the qubit the operation acts on
 
-Returns:
-    int
-"""
-
+        Returns:
+            int"""
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class PragmaGetStateVector(Operation):
     """
-This PRAGMA measurement operation returns the statevector of a quantum register.
+    This PRAGMA measurement operation returns the statevector of a quantum register.
 
-Args:
-    readout (string): The name of the classical readout register.
-    circuit (Optional[Circuit]): The measurement preparation Circuit, applied on a copy of the register before measurement.
-
-"""
+    Args:
+        readout (string): The name of the classical readout register.
+        circuit (Optional[Circuit]): The measurement preparation Circuit, applied on a copy of the register before measurement.
+    """
 
     def __init__(self, readout: str, circuit: Optional[Circuit]):
-       return
-
+        return
     def readout(self):
         """
-Get value of struct field readout
-"""
-
+        Get value of struct field readout"""
     def circuit(self):
         """
-Get value of struct field circuit
-"""
-
+        Get value of struct field circuit"""
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class PragmaGetDensityMatrix(Operation):
     """
-This PRAGMA measurement operation returns the density matrix of a quantum register.
+    This PRAGMA measurement operation returns the density matrix of a quantum register.
 
-Args:
-    readout (string): The name of the classical readout register.
-    circuit (Optional[Circuit]): The measurement preparation Circuit, applied on a copy of the register before measurement.
-
-"""
+    Args:
+        readout (string): The name of the classical readout register.
+        circuit (Optional[Circuit]): The measurement preparation Circuit, applied on a copy of the register before measurement.
+    """
 
     def __init__(self, readout: str, circuit: Optional[Circuit]):
-       return
-
+        return
     def readout(self):
         """
-Get value of struct field readout
-"""
-
+        Get value of struct field readout"""
     def circuit(self):
         """
-Get value of struct field circuit
-"""
-
+        Get value of struct field circuit"""
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class PragmaGetOccupationProbability(Operation):
     """
-This PRAGMA measurement operation returns the vector of the occupation probabilities.
+    This PRAGMA measurement operation returns the vector of the occupation probabilities.
 
-Occupation probabilities in the context of this PRAGMA operation are probabilities of finding the quantum
-register in each :math:`\sigma_z` basis state. The quantum register remains unchanged by this PRAGMA measurement operation.
+    Occupation probabilities in the context of this PRAGMA operation are probabilities of finding the quantum
+    register in each :math:`\sigma_z` basis state. The quantum register remains unchanged by this PRAGMA measurement operation.
 
-Args:
-    readout (string): The name of the classical readout register.
-    circuit (Optional[Circuit]): The Circuit used to rotate the qureg.
-
-"""
+    Args:
+        readout (string): The name of the classical readout register.
+        circuit (Optional[Circuit]): The Circuit used to rotate the qureg.
+    """
 
     def __init__(self, readout: str, circuit: Optional[Circuit]):
-       return
-
+        return
     def readout(self):
         """
-Get value of struct field readout
-"""
-
+        Get value of struct field readout"""
     def circuit(self):
         """
-Get value of struct field circuit
-"""
-
+        Get value of struct field circuit"""
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class PragmaGetPauliProduct(Operation):
     """
-This PRAGMA measurement operation returns a Pauli product expectation value.
+    This PRAGMA measurement operation returns a Pauli product expectation value.
 
-This PRAGMA operation returns a Pauli product expectation value after applying
-a Rotate to another basis. It performs all of the operation on a clone of the quantum register,
-sothat the actual quantum register remains unchanged.
+    This PRAGMA operation returns a Pauli product expectation value after applying
+    a Rotate to another basis. It performs all of the operation on a clone of the quantum register,
+    sothat the actual quantum register remains unchanged.
 
-Args:
-    qubit_paulis (Dict[int, int]): The dictionary of the pauli matrix to apply to each qubit in the form
-                                   {qubit: pauli}. Allowed values to be provided for 'pauli' are: 0 = identity, 1 = PauliX, 2 = PauliY, 3 = PauliZ.
-    readout (string): The name of the classical readout register.
-    circuit (Circuit): The measurement preparation Circuit, applied on a copy of the register before measurement.
-
-"""
+    Args:
+        qubit_paulis (Dict[int, int]): The dictionary of the pauli matrix to apply to each qubit in the form
+                                       {qubit: pauli}. Allowed values to be provided for 'pauli' are: 0 = identity, 1 = PauliX, 2 = PauliY, 3 = PauliZ.
+        readout (string): The name of the classical readout register.
+        circuit (Circuit): The measurement preparation Circuit, applied on a copy of the register before measurement.
+    """
 
     def __init__(self, qubit_paulis: Dict[int, int], readout: str, circuit: Circuit):
-       return
-
+        return
     def qubit_paulis(self):
         """
-Get value of struct field qubit_paulis
-"""
-
+        Get value of struct field qubit_paulis"""
     def readout(self):
         """
-Get value of struct field readout
-"""
-
+        Get value of struct field readout"""
     def circuit(self):
         """
-Get value of struct field circuit
-"""
-
+        Get value of struct field circuit"""
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class PragmaRepeatedMeasurement(Operation):
     """
-This PRAGMA measurement operation returns a measurement record for N repeated measurements.
+    This PRAGMA measurement operation returns a measurement record for N repeated measurements.
 
-Args:
-    readout (string): The name of the classical readout register.
-    qubit_mapping (Dict[int, int]): The mapping of qubits to indices in readout register.
-    number_measurements (int): The number of times to repeat the measurement.
+    Args:
+        readout (string): The name of the classical readout register.
+        qubit_mapping (Dict[int, int]): The mapping of qubits to indices in readout register.
+        number_measurements (int): The number of times to repeat the measurement.
+    """
 
-"""
-
-    def __init__(self, readout: str, qubit_mapping: Dict[int, int], number_measurements: int):
-       return
-
+    def __init__(
+        self, readout: str, qubit_mapping: Dict[int, int], number_measurements: int
+    ):
+        return
     def readout(self):
         """
-Get value of struct field readout
-"""
-
+        Get value of struct field readout"""
     def number_measurements(self):
         """
-Get value of struct field number_measurements
-"""
-
+        Get value of struct field number_measurements"""
     def qubit_mapping(self):
         """
-Get value of struct field qubit_mapping
-"""
-
+        Get value of struct field qubit_mapping"""
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class PragmaSetNumberOfMeasurements(Operation):
     """
-Wrap function automatically generates functions in these traits.
-This PRAGMA operation sets the number of measurements of the circuit.
+    Wrap function automatically generates functions in these traits.
+    This PRAGMA operation sets the number of measurements of the circuit.
 
-This is used for backends that allow setting the number of tries. However, setting the number of
-measurements does not allow access to the underlying wavefunction or density matrix.
+    This is used for backends that allow setting the number of tries. However, setting the number of
+    measurements does not allow access to the underlying wavefunction or density matrix.
 
-Args:
-    number_measurements (uint): The number of measurements.
-    readout (string): The register for the readout.
-"""
+    Args:
+        number_measurements (uint): The number of measurements.
+        readout (string): The register for the readout."""
 
     def __init__(self, number_measurements: int, readout: str):
-       return
-
+        return
     def number_measurements(self):
         """
-Get value of struct field number_measurements
-"""
-
+        Get value of struct field number_measurements"""
     def readout(self):
         """
-Get value of struct field readout
-"""
-
+        Get value of struct field readout"""
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class PragmaSetStateVector(Operation):
     """
-This PRAGMA operation sets the statevector of a quantum register.
+    This PRAGMA operation sets the statevector of a quantum register.
 
-The Circuit() module automatically initializes the qubits in the |0> state, so this PRAGMA
-operation allows you to set the state of the qubits to a state of your choosing.
-For instance, to initialize the psi-minus Bell state, we pass the following vector to
-the PRAGMA:
-    vector = np.array([0, 1 / np.sqrt(2), -1 / np.sqrt(2), 0])
+    The Circuit() module automatically initializes the qubits in the |0> state, so this PRAGMA
+    operation allows you to set the state of the qubits to a state of your choosing.
+    For instance, to initialize the psi-minus Bell state, we pass the following vector to
+    the PRAGMA:
+        vector = np.array([0, 1 / np.sqrt(2), -1 / np.sqrt(2), 0])
 
-Args:
-    internal (PragmaSetStateVector): The statevector that is initialized.
-"""
+    Args:
+        internal (PragmaSetStateVector): The statevector that is initialized."""
 
     def __init__(self, internal: Operation):
-       return
-
+        return
     def statevector(self) -> numpy.ndarray:
         """
-Return the statevector.
+        Return the statevector.
 
-Returns:
-    np.ndarray: The statevector representing the qubit register.
-"""
-
+        Returns:
+            np.ndarray: The statevector representing the qubit register."""
     def involved_qubits(self) -> Set[int]:
         """
-List all involved qubits (here, all).
+        List all involved qubits (here, all).
 
-Returns:
-    Set[int]: The involved qubits of the PRAGMA operation.
-"""
-
+        Returns:
+            Set[int]: The involved qubits of the PRAGMA operation."""
     def tags(self) -> List[str]:
         """
-Return tags classifying the type of the operation.
+        Return tags classifying the type of the operation.
 
-Used for the type based dispatch in ffi interfaces.
+        Used for the type based dispatch in ffi interfaces.
 
-Returns:
-    List[str]: The tags of the operation.
-"""
-
+        Returns:
+            List[str]: The tags of the operation."""
     def hqslang(self) -> str:
         """
-Return hqslang name of the operation.
+        Return hqslang name of the operation.
 
-Returns:
-    str: The hqslang name of the operation.
-"""
-
+        Returns:
+            str: The hqslang name of the operation."""
     def is_parametrized(self) -> bool:
         """
-Return true when the operation has symbolic parameters.
+        Return true when the operation has symbolic parameters.
 
-Returns:
-    bool: True if the operation contains symbolic parameters, False if it does not.
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> PragmaSetStateVector:
+        Returns:
+            bool: True if the operation contains symbolic parameters, False if it does not.
         """
-Substitute the symbolic parameters in a clone of the PRAGMA operation according to the substitution_parameters input.
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> PragmaSetStateVector:
+        """
+        Substitute the symbolic parameters in a clone of the PRAGMA operation according to the substitution_parameters input.
 
-Args:
-    substitution_parameters (Dict[str, float]): The dictionary containing the substitutions to use in the PRAGMA operation.
+        Args:
+            substitution_parameters (Dict[str, float]): The dictionary containing the substitutions to use in the PRAGMA operation.
 
-Returns:
-    self: The PRAGMA operation operation with the parameters substituted.
+        Returns:
+            self: The PRAGMA operation operation with the parameters substituted.
 
-Raises:
-    RuntimeError: The parameter substitution failed.
-"""
-
+        Raises:
+            RuntimeError: The parameter substitution failed."""
     def remap_qubits(self, mapping: Dict[int, int]) -> PragmaSetStateVector:
         """
-Remap qubits in a clone of the PRAGMA operation.
+        Remap qubits in a clone of the PRAGMA operation.
 
-Args:
-    mapping (Dict[int, int]): The dictionary containing the {qubit: qubit} mapping to use in the PRAGMA operation.
+        Args:
+            mapping (Dict[int, int]): The dictionary containing the {qubit: qubit} mapping to use in the PRAGMA operation.
 
-Returns:
-    self: The PRAGMA operation with the qubits remapped.
+        Returns:
+            self: The PRAGMA operation with the qubits remapped.
 
-Raises:
-    RuntimeError: The qubit remapping failed.
-"""
-
+        Raises:
+            RuntimeError: The qubit remapping failed."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
-
+        Returns:
+            str: The json schema serialized to json"""
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
 
 class PragmaSetDensityMatrix(Operation):
     """
-This PRAGMA operation sets the density matrix of a quantum register.
+    This PRAGMA operation sets the density matrix of a quantum register.
 
-The Circuit() module automatically initializes the qubits in the |0> state, so this PRAGMA
-operation allows you to set the state of the qubits by setting a density matrix of your choosing.
+    The Circuit() module automatically initializes the qubits in the |0> state, so this PRAGMA
+    operation allows you to set the state of the qubits by setting a density matrix of your choosing.
 
-Args:
-    density_matrix (a 2d array of complex numbers): The density matrix that is initialized.
-
-"""
+    Args:
+        density_matrix (a 2d array of complex numbers): The density matrix that is initialized.
+    """
 
     def __init__(self, density_matrix):
-       return
-
+        return
     def density_matrix(self) -> numpy.ndarray:
         """
-Return the set density matrix.
+        Return the set density matrix.
 
-Returns:
-    np.ndarray: The density matrix (2d array) representing the qubit register.
-"""
-
+        Returns:
+            np.ndarray: The density matrix (2d array) representing the qubit register.
+        """
     def involved_qubits(self) -> Set[int]:
         """
-List all involved qubits (here, all).
+        List all involved qubits (here, all).
 
-Returns:
-    Set[int]: The involved qubits of the PRAGMA operation.
-"""
-
+        Returns:
+            Set[int]: The involved qubits of the PRAGMA operation."""
     def tags(self) -> List[str]:
         """
-Return tags classifying the type of the operation.
+        Return tags classifying the type of the operation.
 
-Used for type based dispatch in ffi interfaces.
+        Used for type based dispatch in ffi interfaces.
 
-Returns:
-    List[str]: The tags of the Operation.
-"""
-
+        Returns:
+            List[str]: The tags of the Operation."""
     def hqslang(self) -> str:
         """
-Return hqslang name of the operation.
+        Return hqslang name of the operation.
 
-Returns:
-    str: The hqslang name of the operation.
-"""
-
+        Returns:
+            str: The hqslang name of the operation."""
     def is_parametrized(self) -> bool:
         """
-Return true when the operation has symbolic parameters.
+        Return true when the operation has symbolic parameters.
 
-Returns:
-    bool: True if the operation contains symbolic parameters, False if it does not.
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> PragmaSetDensityMatrix:
+        Returns:
+            bool: True if the operation contains symbolic parameters, False if it does not.
         """
-Substitute the symbolic parameters in a clone of the PRAGMA operation according to the input.
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> PragmaSetDensityMatrix:
+        """
+        Substitute the symbolic parameters in a clone of the PRAGMA operation according to the input.
 
-Args:
-    substitution_parameters (Dict[str, float]): The dictionary containing the substitutions to use in the PRAGMA operation.
+        Args:
+            substitution_parameters (Dict[str, float]): The dictionary containing the substitutions to use in the PRAGMA operation.
 
-Returns:
-    self: The PRAGMA operation with the parameters substituted.
+        Returns:
+            self: The PRAGMA operation with the parameters substituted.
 
-Raises:
-    RuntimeError: The parameter substitution failed.
-"""
-
+        Raises:
+            RuntimeError: The parameter substitution failed."""
     def remap_qubits(self, mapping: Dict[int, int]) -> PragmaSetDensityMatrix:
         """
-Remap qubits in a clone of the PRAGMA operation.
+        Remap qubits in a clone of the PRAGMA operation.
 
-Args:
-    mapping (Dict[int, int]): The dictionary containing the {qubit: qubit} mapping to use in the PRAGMA operation.
+        Args:
+            mapping (Dict[int, int]): The dictionary containing the {qubit: qubit} mapping to use in the PRAGMA operation.
 
-Returns:
-    self: The PRAGMA operation with the qubits remapped.
+        Returns:
+            self: The PRAGMA operation with the qubits remapped.
 
-Raises:
-    RuntimeError: The qubit remapping failed.
-"""
-
+        Raises:
+            RuntimeError: The qubit remapping failed."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
-
+        Returns:
+            str: The json schema serialized to json"""
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
 
 class PragmaRepeatGate(Operation):
     """
-The repeated gate PRAGMA operation.
+    The repeated gate PRAGMA operation.
 
-This PRAGMA operation repeats the next gate in the circuit the given number of times
-to increase the rate for error mitigation.
+    This PRAGMA operation repeats the next gate in the circuit the given number of times
+    to increase the rate for error mitigation.
 
-Args:
-    repetition_coefficient (int): The number of times the following gate is repeated.
-"""
+    Args:
+        repetition_coefficient (int): The number of times the following gate is repeated.
+    """
 
     def __init__(self, repetition_coefficient: int):
-       return
-
+        return
     def repetition_coefficient(self):
         """
-Get value of struct field repetition_coefficient
-"""
-
+        Get value of struct field repetition_coefficient"""
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class PragmaOverrotation(Operation):
     """
-The statistical overrotation PRAGMA operation.
+    The statistical overrotation PRAGMA operation.
 
-This PRAGMA applies a statistical overrotation to the next rotation gate in the circuit, which
-matches the hqslang name in the `gate` parameter of PragmaOverrotation and the involved qubits in `qubits`.
+    This PRAGMA applies a statistical overrotation to the next rotation gate in the circuit, which
+    matches the hqslang name in the `gate` parameter of PragmaOverrotation and the involved qubits in `qubits`.
 
-The applied overrotation corresponds to adding a random number to the rotation angle.
-The random number is drawn from a normal distribution with mean `0`
-and standard deviation `variance` and is multiplied by the `amplitude`.
+    The applied overrotation corresponds to adding a random number to the rotation angle.
+    The random number is drawn from a normal distribution with mean `0`
+    and standard deviation `variance` and is multiplied by the `amplitude`.
 
-Args:
-    gate (str): The unique hqslang name of the gate to overrotate.
-    qubits (List[int]): The qubits of the gate to overrotate.
-    amplitude (float): The amplitude the random number is multiplied by.
-    variance (float): The standard deviation of the normal distribution the random number is drawn from.
-
-"""
+    Args:
+        gate (str): The unique hqslang name of the gate to overrotate.
+        qubits (List[int]): The qubits of the gate to overrotate.
+        amplitude (float): The amplitude the random number is multiplied by.
+        variance (float): The standard deviation of the normal distribution the random number is drawn from.
+    """
 
     def __init__(self, gate: str, qubits: List[int], amplitude: float, variance: float):
-       return
-
+        return
     def gate_hqslang(self):
         """
-Get value of struct field gate_hqslang
-"""
-
+        Get value of struct field gate_hqslang"""
     def amplitude(self):
         """
-Get value of struct field amplitude
-"""
-
+        Get value of struct field amplitude"""
     def variance(self):
         """
-Get value of struct field variance
-"""
-
+        Get value of struct field variance"""
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def qubits(self):
         """
-Return list of qubits of the multi qubit operation in order of descending significance
+        Return list of qubits of the multi qubit operation in order of descending significance
 
-Returns:
-    List[int]
-"""
-
+        Returns:
+            List[int]"""
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class PragmaBoostNoise(Operation):
     """
-This PRAGMA operation boosts noise and overrotations in the circuit.
+    This PRAGMA operation boosts noise and overrotations in the circuit.
 
-Args:
-    noise_coefficient (CalculatorFloat): The coefficient by which the noise is boosted.
-"""
+    Args:
+        noise_coefficient (CalculatorFloat): The coefficient by which the noise is boosted.
+    """
 
     def __init__(self, noise_coefficient: Union[float, str]):
-       return
-
+        return
     def noise_coefficient(self):
         """
-Returns value of attribute noise_coefficient
-"""
-
+        Returns value of attribute noise_coefficient"""
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class PragmaStopParallelBlock(Operation):
     """
-This PRAGMA operation signals the STOP of a parallel execution block.
+    This PRAGMA operation signals the STOP of a parallel execution block.
 
-Args:
-    qubits (List[int]): The qubits involved in parallel execution block.
-    execution_time (CalculatorFloat): The time for the execution of the block in seconds.
-"""
+    Args:
+        qubits (List[int]): The qubits involved in parallel execution block.
+        execution_time (CalculatorFloat): The time for the execution of the block in seconds.
+    """
 
     def __init__(self, qubits: List[int], execution_time: Union[float, str]):
-       return
-
+        return
     def execution_time(self):
         """
-Returns value of attribute execution_time
-"""
-
+        Returns value of attribute execution_time"""
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def qubits(self):
         """
-Return list of qubits of the multi qubit operation in order of descending significance
+        Return list of qubits of the multi qubit operation in order of descending significance
 
-Returns:
-    List[int]
-"""
-
+        Returns:
+            List[int]"""
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class PragmaGlobalPhase(Operation):
     """
-The global phase PRAGMA operation.
+    The global phase PRAGMA operation.
 
-This PRAGMA operation signals that the quantum register picks up a global phase,
-i.e. it provides information that there is a global phase to be considered.
+    This PRAGMA operation signals that the quantum register picks up a global phase,
+    i.e. it provides information that there is a global phase to be considered.
 
-Args:
-    phase (CalculatorFloat): The picked up global phase.
-"""
+    Args:
+        phase (CalculatorFloat): The picked up global phase."""
 
     def __init__(self, phase: Union[float, str]):
-       return
-
+        return
     def phase(self):
         """
-Returns value of attribute phase
-"""
-
+        Returns value of attribute phase"""
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class PragmaSleep(Operation):
     """
-This PRAGMA operation makes the quantum hardware wait a given amount of time.
+    This PRAGMA operation makes the quantum hardware wait a given amount of time.
 
-This PRAGMA operation is used for error mitigation reasons, for instance.
-It can be used to boost the noise on the qubits since it gets worse with time.
+    This PRAGMA operation is used for error mitigation reasons, for instance.
+    It can be used to boost the noise on the qubits since it gets worse with time.
 
-Args:
-    qubits (List[int]): The qubits involved in the sleep block.
-    sleep_time (CalculatorFloat): The time for the execution of the block in seconds.
-"""
+    Args:
+        qubits (List[int]): The qubits involved in the sleep block.
+        sleep_time (CalculatorFloat): The time for the execution of the block in seconds.
+    """
 
     def __init__(self, qubits: List[int], sleep_time: Union[float, str]):
-       return
-
+        return
     def sleep_time(self):
         """
-Returns value of attribute sleep_time
-"""
-
+        Returns value of attribute sleep_time"""
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def qubits(self):
         """
-Return list of qubits of the multi qubit operation in order of descending significance
+        Return list of qubits of the multi qubit operation in order of descending significance
 
-Returns:
-    List[int]
-"""
-
+        Returns:
+            List[int]"""
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class PragmaActiveReset(Operation):
     """
-This PRAGMA operation resets the chosen qubit to the zero state.
+    This PRAGMA operation resets the chosen qubit to the zero state.
 
-Args:
-    qubit (int): The qubit to be reset.
-"""
+    Args:
+        qubit (int): The qubit to be reset."""
 
     def __init__(self, qubit: int):
-       return
-
+        return
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def qubit(self):
         """
-Return the qubit the operation acts on
+        Return the qubit the operation acts on
 
-Returns:
-    int
-"""
-
+        Returns:
+            int"""
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class PragmaStartDecompositionBlock(Operation):
     """
-This PRAGMA operation signals the START of a decomposition block.
+    This PRAGMA operation signals the START of a decomposition block.
 
-Args:
-    qubits (List[int]): The qubits involved in the decomposition block.
-    reordering_dictionary (Dict[int, int]): The reordering dictionary of the block.
-"""
+    Args:
+        qubits (List[int]): The qubits involved in the decomposition block.
+        reordering_dictionary (Dict[int, int]): The reordering dictionary of the block.
+    """
 
     def __init__(self, qubits: List[int], reordering_dictionary: Dict[int, int]):
-       return
-
+        return
     def reordering_dictionary(self):
         """
-Get value of struct field reordering_dictionary
-"""
-
+        Get value of struct field reordering_dictionary"""
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def qubits(self):
         """
-Return list of qubits of the multi qubit operation in order of descending significance
+        Return list of qubits of the multi qubit operation in order of descending significance
 
-Returns:
-    List[int]
-"""
-
+        Returns:
+            List[int]"""
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class PragmaStopDecompositionBlock(Operation):
     """
-This PRAGMA operation signals the STOP of a decomposition block.
+    This PRAGMA operation signals the STOP of a decomposition block.
 
-Args:
-    qubits (List[int]): The qubits involved in the decomposition block.
-"""
+    Args:
+        qubits (List[int]): The qubits involved in the decomposition block."""
 
     def __init__(self, qubits: List[int]):
-       return
-
+        return
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def qubits(self):
         """
-Return list of qubits of the multi qubit operation in order of descending significance
+        Return list of qubits of the multi qubit operation in order of descending significance
 
-Returns:
-    List[int]
-"""
-
+        Returns:
+            List[int]"""
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class PragmaDamping(Operation):
     """
-The damping PRAGMA noise operation.
+    The damping PRAGMA noise operation.
 
-This PRAGMA operation applies a pure damping error corresponding to zero temperature environments.
+    This PRAGMA operation applies a pure damping error corresponding to zero temperature environments.
 
-Note
+    Note
 
-Damping means going from state `|1>` to `|0>` and corresponds to zero-temperature in a physical
-device where `|0>` is the ground state.
-With respect to the definition of the Pauli operator `Z`, `|0>` is the excited state and damping leads to
-an increase in energy.
+    Damping means going from state `|1>` to `|0>` and corresponds to zero-temperature in a physical
+    device where `|0>` is the ground state.
+    With respect to the definition of the Pauli operator `Z`, `|0>` is the excited state and damping leads to
+    an increase in energy.
 
-Args:
-    qubit (int): The qubit on which to apply the damping.
-    gate_time (CalculatorFloat): The time (in seconds) the gate takes to be applied to the qubit on the (simulated) hardware
-    rate (CalculatorFloat): The error rate of the damping (in 1/second).
-"""
+    Args:
+        qubit (int): The qubit on which to apply the damping.
+        gate_time (CalculatorFloat): The time (in seconds) the gate takes to be applied to the qubit on the (simulated) hardware
+        rate (CalculatorFloat): The error rate of the damping (in 1/second)."""
 
-    def __init__(self, qubit: int, gate_time: Union[float, str], rate: Union[float, str]):
-       return
-
+    def __init__(
+        self, qubit: int, gate_time: Union[float, str], rate: Union[float, str]
+    ):
+        return
     def gate_time(self):
         """
-Returns value of attribute gate_time
-"""
-
+        Returns value of attribute gate_time"""
     def rate(self):
         """
-Returns value of attribute rate
-"""
-
+        Returns value of attribute rate"""
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def qubit(self):
         """
-Return the qubit the operation acts on
+        Return the qubit the operation acts on
 
-Returns:
-    int
-"""
-
+        Returns:
+            int"""
     def superoperator(self) -> numpy.ndarray:
         """
-Return the superoperator defining the evolution of the density matrix under the noise gate
+        Return the superoperator defining the evolution of the density matrix under the noise gate
 
-Returns:
-    np.ndarray: superoperator of gate.
-
-"""
-
+        Returns:
+            np.ndarray: superoperator of gate.
+        """
     def powercf(self):
         """
-Return the power of the noise gate
+        Return the power of the noise gate
 
-Args:
-    `power` (CalculatorFloat): exponent in the power operation of the noise gate
+        Args:
+            `power` (CalculatorFloat): exponent in the power operation of the noise gate
 
-Returns:
-    Self
-
-"""
-
+        Returns:
+            Self
+        """
     def probability(self):
         """
-Returns the probability associated with the noise operation
+        Returns the probability associated with the noise operation
 
-Returns:
-    CalculatorFloat
-"""
-
+        Returns:
+            CalculatorFloat"""
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class PragmaDepolarising(Operation):
     """
-The depolarising PRAGMA noise operation.
+    The depolarising PRAGMA noise operation.
 
-This PRAGMA operation applies a depolarising error corresponding to infinite temperature environments.
+    This PRAGMA operation applies a depolarising error corresponding to infinite temperature environments.
 
-Args:
-    qubit (int): The qubit on which to apply the depolarising.
-    gate_time (CalculatorFloat): The time (in seconds) the gate takes to be applied to the qubit on the (simulated) hardware
-    rate (CalculatorFloat): The error rate of the depolarisation (in 1/second).
-"""
+    Args:
+        qubit (int): The qubit on which to apply the depolarising.
+        gate_time (CalculatorFloat): The time (in seconds) the gate takes to be applied to the qubit on the (simulated) hardware
+        rate (CalculatorFloat): The error rate of the depolarisation (in 1/second)."""
 
-    def __init__(self, qubit: int, gate_time: Union[float, str], rate: Union[float, str]):
-       return
-
+    def __init__(
+        self, qubit: int, gate_time: Union[float, str], rate: Union[float, str]
+    ):
+        return
     def gate_time(self):
         """
-Returns value of attribute gate_time
-"""
-
+        Returns value of attribute gate_time"""
     def rate(self):
         """
-Returns value of attribute rate
-"""
-
+        Returns value of attribute rate"""
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def qubit(self):
         """
-Return the qubit the operation acts on
+        Return the qubit the operation acts on
 
-Returns:
-    int
-"""
-
+        Returns:
+            int"""
     def superoperator(self) -> numpy.ndarray:
         """
-Return the superoperator defining the evolution of the density matrix under the noise gate
+        Return the superoperator defining the evolution of the density matrix under the noise gate
 
-Returns:
-    np.ndarray: superoperator of gate.
-
-"""
-
+        Returns:
+            np.ndarray: superoperator of gate.
+        """
     def powercf(self):
         """
-Return the power of the noise gate
+        Return the power of the noise gate
 
-Args:
-    `power` (CalculatorFloat): exponent in the power operation of the noise gate
+        Args:
+            `power` (CalculatorFloat): exponent in the power operation of the noise gate
 
-Returns:
-    Self
-
-"""
-
+        Returns:
+            Self
+        """
     def probability(self):
         """
-Returns the probability associated with the noise operation
+        Returns the probability associated with the noise operation
 
-Returns:
-    CalculatorFloat
-"""
-
+        Returns:
+            CalculatorFloat"""
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class PragmaDephasing(Operation):
     """
-The dephasing PRAGMA noise operation.
+    The dephasing PRAGMA noise operation.
 
-This PRAGMA operation applies a pure dephasing error.
+    This PRAGMA operation applies a pure dephasing error.
 
-Args:
-    qubit (int): The qubit on which to apply the dephasing.
-    gate_time (CalculatorFloat): The time (in seconds) the gate takes to be applied to the qubit on the (simulated) hardware
-    rate (CalculatorFloat): The error rate of the dephasing (in 1/second).
-"""
+    Args:
+        qubit (int): The qubit on which to apply the dephasing.
+        gate_time (CalculatorFloat): The time (in seconds) the gate takes to be applied to the qubit on the (simulated) hardware
+        rate (CalculatorFloat): The error rate of the dephasing (in 1/second)."""
 
-    def __init__(self, qubit: int, gate_time: Union[float, str], rate: Union[float, str]):
-       return
-
+    def __init__(
+        self, qubit: int, gate_time: Union[float, str], rate: Union[float, str]
+    ):
+        return
     def gate_time(self):
         """
-Returns value of attribute gate_time
-"""
-
+        Returns value of attribute gate_time"""
     def rate(self):
         """
-Returns value of attribute rate
-"""
-
+        Returns value of attribute rate"""
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def qubit(self):
         """
-Return the qubit the operation acts on
+        Return the qubit the operation acts on
 
-Returns:
-    int
-"""
-
+        Returns:
+            int"""
     def superoperator(self) -> numpy.ndarray:
         """
-Return the superoperator defining the evolution of the density matrix under the noise gate
+        Return the superoperator defining the evolution of the density matrix under the noise gate
 
-Returns:
-    np.ndarray: superoperator of gate.
-
-"""
-
+        Returns:
+            np.ndarray: superoperator of gate.
+        """
     def powercf(self):
         """
-Return the power of the noise gate
+        Return the power of the noise gate
 
-Args:
-    `power` (CalculatorFloat): exponent in the power operation of the noise gate
+        Args:
+            `power` (CalculatorFloat): exponent in the power operation of the noise gate
 
-Returns:
-    Self
-
-"""
-
+        Returns:
+            Self
+        """
     def probability(self):
         """
-Returns the probability associated with the noise operation
+        Returns the probability associated with the noise operation
 
-Returns:
-    CalculatorFloat
-"""
-
+        Returns:
+            CalculatorFloat"""
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class PragmaRandomNoise(Operation):
     """
-The random noise PRAGMA operation.
+    The random noise PRAGMA operation.
 
-This PRAGMA operation applies a pure damping error corresponding to zero temperature environments.
+    This PRAGMA operation applies a pure damping error corresponding to zero temperature environments.
 
-Args:
-    qubit (int): The qubit on which to apply the damping.
-    gate_time (CalculatorFloat): The time (in seconds) the gate takes to be applied to the qubit on the (simulated) hardware
-    depolarising_rate (CalculatorFloat): The error rate of the depolarisation (in 1/second).
-    dephasing_rate (CalculatorFloat): The error rate of the dephasing (in 1/second).
-"""
+    Args:
+        qubit (int): The qubit on which to apply the damping.
+        gate_time (CalculatorFloat): The time (in seconds) the gate takes to be applied to the qubit on the (simulated) hardware
+        depolarising_rate (CalculatorFloat): The error rate of the depolarisation (in 1/second).
+        dephasing_rate (CalculatorFloat): The error rate of the dephasing (in 1/second).
+    """
 
-    def __init__(self, qubit: int, gate_time: Union[float, str], depolarising_rate: Union[float, str], dephasing_rate: Union[float, str]):
-       return
-
+    def __init__(
+        self,
+        qubit: int,
+        gate_time: Union[float, str],
+        depolarising_rate: Union[float, str],
+        dephasing_rate: Union[float, str],
+    ):
+        return
     def gate_time(self):
         """
-Returns value of attribute gate_time
-"""
-
+        Returns value of attribute gate_time"""
     def depolarising_rate(self):
         """
-Returns value of attribute depolarising_rate
-"""
-
+        Returns value of attribute depolarising_rate"""
     def dephasing_rate(self):
         """
-Returns value of attribute dephasing_rate
-"""
-
+        Returns value of attribute dephasing_rate"""
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def qubit(self):
         """
-Return the qubit the operation acts on
+        Return the qubit the operation acts on
 
-Returns:
-    int
-"""
-
+        Returns:
+            int"""
     def superoperator(self) -> numpy.ndarray:
         """
-Return the superoperator defining the evolution of the density matrix under the noise gate
+        Return the superoperator defining the evolution of the density matrix under the noise gate
 
-Returns:
-    np.ndarray: superoperator of gate.
-
-"""
-
+        Returns:
+            np.ndarray: superoperator of gate.
+        """
     def powercf(self):
         """
-Return the power of the noise gate
+        Return the power of the noise gate
 
-Args:
-    `power` (CalculatorFloat): exponent in the power operation of the noise gate
+        Args:
+            `power` (CalculatorFloat): exponent in the power operation of the noise gate
 
-Returns:
-    Self
-
-"""
-
+        Returns:
+            Self
+        """
     def probability(self):
         """
-Returns the probability associated with the noise operation
+        Returns the probability associated with the noise operation
 
-Returns:
-    CalculatorFloat
-"""
-
+        Returns:
+            CalculatorFloat"""
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class PragmaGeneralNoise(Operation):
     """
-The general noise PRAGMA operation.
+    The general noise PRAGMA operation.
 
-This PRAGMA operation applies a noise term according to the given operators.
+    This PRAGMA operation applies a noise term according to the given operators.
 
-Args:
-    qubit (int): The qubit the PRAGMA operation is applied to.
-    gate_time (CalculatorFloat): The time (in seconds) the gate takes to be applied to the qubit on the (simulated) hardware
-    Rates: The rates representing the general noise matrix M (a 3x3 matrix as 2d array).
-
-"""
+    Args:
+        qubit (int): The qubit the PRAGMA operation is applied to.
+        gate_time (CalculatorFloat): The time (in seconds) the gate takes to be applied to the qubit on the (simulated) hardware
+        Rates: The rates representing the general noise matrix M (a 3x3 matrix as 2d array).
+    """
 
     def __init__(self, qubit: int, gate_time: Union[float, str], Rates):
-       return
-
+        return
     def qubit(self) -> int:
         """
-Return the qubit on which the PRAGMA operation is applied.
+        Return the qubit on which the PRAGMA operation is applied.
 
-Returns:
-    int: The qubit of the PRAGMA operation.
-"""
-
+        Returns:
+            int: The qubit of the PRAGMA operation."""
     def gate_time(self) -> Union[float, str]:
         """
-Return the `gate_time` of the PRAGMA operation.
+        Return the `gate_time` of the PRAGMA operation.
 
-Returns:
-    CalculatorFloat: The gate time of the PRAGMA operation.
-"""
-
+        Returns:
+            CalculatorFloat: The gate time of the PRAGMA operation."""
     def rates(self) -> numpy.ndarray:
         """
-Return the rates of the PRAGMA operation.
+        Return the rates of the PRAGMA operation.
 
-Returns:
-    np.ndarray: The rates of the PRAGMA operation.
-"""
-
+        Returns:
+            np.ndarray: The rates of the PRAGMA operation."""
     def superoperator(self) -> numpy.ndarray:
         """
-Return the superoperator of the PRAGMA operation.
+        Return the superoperator of the PRAGMA operation.
 
-Returns:
-    np.ndarray: The matrix form of the superoperator of the PRAGMA operation.
-"""
-
+        Returns:
+            np.ndarray: The matrix form of the superoperator of the PRAGMA operation."""
     def involved_qubits(self) -> Set[int]:
         """
-List all involved qubits.
+        List all involved qubits.
 
-Returns:
-    Set[int]: The involved qubits of the PRAGMA operation.
-"""
-
+        Returns:
+            Set[int]: The involved qubits of the PRAGMA operation."""
     def tags(self) -> List[str]:
         """
-Return tags classifying the type of the operation.
+        Return tags classifying the type of the operation.
 
-Used for the type based dispatch in ffi interfaces.
+        Used for the type based dispatch in ffi interfaces.
 
-Returns:
-    List[str]: The tags of the Operation.
-"""
-
+        Returns:
+            List[str]: The tags of the Operation."""
     def hqslang(self) -> str:
         """
-Return hqslang name of the operation.
+        Return hqslang name of the operation.
 
-Returns:
-    str: The hqslang name of the operation.
-"""
-
+        Returns:
+            str: The hqslang name of the operation."""
     def is_parametrized(self) -> bool:
         """
-Return true when the operation has symbolic parameters.
+        Return true when the operation has symbolic parameters.
 
-Returns:
-    bool: True if the operation contains symbolic parameters, False if it does not.
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> PragmaGeneralNoise:
+        Returns:
+            bool: True if the operation contains symbolic parameters, False if it does not.
         """
-Substitute the symbolic parameters in a clone of the PRAGMA operation according to the input.
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> PragmaGeneralNoise:
+        """
+        Substitute the symbolic parameters in a clone of the PRAGMA operation according to the input.
 
-Args:
-    substitution_parameters (Dict[str, float]): The dictionary containing the substitutions to use in the PRAGMA operation.
+        Args:
+            substitution_parameters (Dict[str, float]): The dictionary containing the substitutions to use in the PRAGMA operation.
 
-Returns:
-    self: The PRAGMA operation with the parameters substituted.
+        Returns:
+            self: The PRAGMA operation with the parameters substituted.
 
-Raises:
-    RuntimeError: The parameter substitution failed.
-"""
-
+        Raises:
+            RuntimeError: The parameter substitution failed."""
     def remap_qubits(self, mapping: Dict[int, int]) -> PragmaGeneralNoise:
         """
-Remap qubits in a clone of the PRAGMA operation.
+        Remap qubits in a clone of the PRAGMA operation.
 
-Args:
-    mapping (Dict[int, int]): The dictionary containing the {qubit: qubit} mapping to use in the PRAGMA operation.
+        Args:
+            mapping (Dict[int, int]): The dictionary containing the {qubit: qubit} mapping to use in the PRAGMA operation.
 
-Returns:
-    self: The PRAGMA operation with the qubits remapped.
+        Returns:
+            self: The PRAGMA operation with the qubits remapped.
 
-Raises:
-    RuntimeError: The qubit remapping failed.
-"""
-
+        Raises:
+            RuntimeError: The qubit remapping failed."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
-
+        Returns:
+            str: The json schema serialized to json"""
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
 
 class PragmaConditional(Operation):
     """
-The conditional PRAGMA operation.
+    The conditional PRAGMA operation.
 
-This PRAGMA executes a circuit when the condition bit/bool stored in a classical bit register is true.
+    This PRAGMA executes a circuit when the condition bit/bool stored in a classical bit register is true.
 
-Args:
-    condition_register (str): The name of the bit register containting the condition bool value.
-    condition_index (int): - The index in the bit register containting the condition bool value.
-    circuit (Circuit): - The circuit executed if the condition is met.
-"""
+    Args:
+        condition_register (str): The name of the bit register containting the condition bool value.
+        condition_index (int): - The index in the bit register containting the condition bool value.
+        circuit (Circuit): - The circuit executed if the condition is met."""
 
     def __init__(self, condition_register: str, condition_index: int, circuit: Circuit):
-       return
-
+        return
     def condition_register(self):
         """
-Get value of struct field condition_register
-"""
-
+        Get value of struct field condition_register"""
     def condition_index(self):
         """
-Get value of struct field condition_index
-"""
-
+        Get value of struct field condition_index"""
     def circuit(self):
         """
-Get value of struct field circuit
-"""
-
+        Get value of struct field circuit"""
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class PragmaChangeDevice(Operation):
     """
-A wrapper around backend specific PRAGMA operations capable of changing a device.
+    A wrapper around backend specific PRAGMA operations capable of changing a device.
 
-This PRAGMA is a thin wrapper around device specific operations that can change
-device properties.
-"""
+    This PRAGMA is a thin wrapper around device specific operations that can change
+    device properties."""
 
     def __init__(self):
-       return
-
+        return
     def wrapped_tags(self) -> List[str]:
         """
-Return the tags of the wrapped operations.
+        Return the tags of the wrapped operations.
 
-Returns:
-    List[str]: The list of tags.
-"""
-
+        Returns:
+            List[str]: The list of tags."""
     def wrapped_hqslang(self) -> str:
         """
-Return the hqslang name of the wrapped operations.
+        Return the hqslang name of the wrapped operations.
 
-Returns:
-    str: The name of the wrapped operation.
-"""
-
+        Returns:
+            str: The name of the wrapped operation."""
     def wrapped_operation(self) -> bytearray:
         """
-Return the binary representation of the wrapped operations.
+        Return the binary representation of the wrapped operations.
 
-Returns:
-    ByteArray: The the binary representation of the wrapped operation.
-"""
-
+        Returns:
+            ByteArray: The the binary representation of the wrapped operation."""
     def involved_qubits(self) -> Set[int]:
         """
-List all involved qubits.
+        List all involved qubits.
 
-Returns:
-    Set[int]: The involved qubits of the PRAGMA operation.
-"""
-
+        Returns:
+            Set[int]: The involved qubits of the PRAGMA operation."""
     def tags(self) -> List[str]:
         """
-Return tags classifying the type of the operation.
+        Return tags classifying the type of the operation.
 
-Used for the type based dispatch in ffi interfaces.
+        Used for the type based dispatch in ffi interfaces.
 
-Returns:
-    List[str]: The tags of the Operation.
-"""
-
+        Returns:
+            List[str]: The tags of the Operation."""
     def hqslang(self) -> str:
         """
-Return hqslang name of the operation.
+        Return hqslang name of the operation.
 
-Returns:
-    str: The hqslang name of the operation.
-"""
-
+        Returns:
+            str: The hqslang name of the operation."""
     def is_parametrized(self) -> bool:
         """
-Return true when the operation has symbolic parameters.
+        Return true when the operation has symbolic parameters.
 
-Returns:
-    bool: True if the operation contains symbolic parameters, False if it does not.
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> PragmaChangeDevice:
+        Returns:
+            bool: True if the operation contains symbolic parameters, False if it does not.
         """
-Substitute the symbolic parameters in a clone of the PRAGMA operation according to the input.
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> PragmaChangeDevice:
+        """
+        Substitute the symbolic parameters in a clone of the PRAGMA operation according to the input.
 
-Args:
-    substitution_parameters (Dict[str, float]): The dictionary containing the substitutions to use in the PRAGMA operation.
+        Args:
+            substitution_parameters (Dict[str, float]): The dictionary containing the substitutions to use in the PRAGMA operation.
 
-Returns:
-    self: The PRAGMA operation with the parameters substituted.
+        Returns:
+            self: The PRAGMA operation with the parameters substituted.
 
-Raises:
-    RuntimeError: The parameter substitution failed.
-"""
-
+        Raises:
+            RuntimeError: The parameter substitution failed."""
     def remap_qubits(self, mapping: Dict[int, int]) -> PragmaChangeDevice:
         """
-Remap qubits in a clone of the PRAGMA operation.
+        Remap qubits in a clone of the PRAGMA operation.
 
-Args:
-    mapping (Dict[int, int]): The dictionary containing the {qubit: qubit} mapping to use in the PRAGMA operation.
+        Args:
+            mapping (Dict[int, int]): The dictionary containing the {qubit: qubit} mapping to use in the PRAGMA operation.
 
-Returns:
-    self: The PRAGMA operation with the qubits remapped.
+        Returns:
+            self: The PRAGMA operation with the qubits remapped.
 
-Raises:
-    RuntimeError: The qubit remapping failed.
-"""
-
+        Raises:
+            RuntimeError: The qubit remapping failed."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
-
+        Returns:
+            str: The json schema serialized to json"""
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
 
 class CNOT(Operation):
     """
@@ -6956,115 +5955,94 @@ Args:
 """
 
     def __init__(self, control: int, target: int):
-       return
-
+        return
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def control(self):
         """
-Returns control qubit of the two-qubit operation
-"""
-
+        Returns control qubit of the two-qubit operation"""
     def target(self):
         """
-Returns target qubit of the two-qubit operation
-"""
-
+        Returns target qubit of the two-qubit operation"""
     def unitary_matrix(self) -> numpy.ndarray:
         """
-Return unitary matrix of gate.
+        Return unitary matrix of gate.
 
-Returns:
-    np.ndarray: matrix of gate.
+        Returns:
+            np.ndarray: matrix of gate.
 
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix"""
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class SWAP(Operation):
     """
@@ -7085,115 +6063,94 @@ Args:
 """
 
     def __init__(self, control: int, target: int):
-       return
-
+        return
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def control(self):
         """
-Returns control qubit of the two-qubit operation
-"""
-
+        Returns control qubit of the two-qubit operation"""
     def target(self):
         """
-Returns target qubit of the two-qubit operation
-"""
-
+        Returns target qubit of the two-qubit operation"""
     def unitary_matrix(self) -> numpy.ndarray:
         """
-Return unitary matrix of gate.
+        Return unitary matrix of gate.
 
-Returns:
-    np.ndarray: matrix of gate.
+        Returns:
+            np.ndarray: matrix of gate.
 
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix"""
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class FSwap(Operation):
     """
@@ -7214,115 +6171,94 @@ Args:
 """
 
     def __init__(self, control: int, target: int):
-       return
-
+        return
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def control(self):
         """
-Returns control qubit of the two-qubit operation
-"""
-
+        Returns control qubit of the two-qubit operation"""
     def target(self):
         """
-Returns target qubit of the two-qubit operation
-"""
-
+        Returns target qubit of the two-qubit operation"""
     def unitary_matrix(self) -> numpy.ndarray:
         """
-Return unitary matrix of gate.
+        Return unitary matrix of gate.
 
-Returns:
-    np.ndarray: matrix of gate.
+        Returns:
+            np.ndarray: matrix of gate.
 
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix"""
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class ISwap(Operation):
     """
@@ -7343,115 +6279,94 @@ Args:
 """
 
     def __init__(self, control: int, target: int):
-       return
-
+        return
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def control(self):
         """
-Returns control qubit of the two-qubit operation
-"""
-
+        Returns control qubit of the two-qubit operation"""
     def target(self):
         """
-Returns target qubit of the two-qubit operation
-"""
-
+        Returns target qubit of the two-qubit operation"""
     def unitary_matrix(self) -> numpy.ndarray:
         """
-Return unitary matrix of gate.
+        Return unitary matrix of gate.
 
-Returns:
-    np.ndarray: matrix of gate.
+        Returns:
+            np.ndarray: matrix of gate.
 
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix"""
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class SqrtISwap(Operation):
     """
@@ -7472,115 +6387,94 @@ Args:
 """
 
     def __init__(self, control: int, target: int):
-       return
-
+        return
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def control(self):
         """
-Returns control qubit of the two-qubit operation
-"""
-
+        Returns control qubit of the two-qubit operation"""
     def target(self):
         """
-Returns target qubit of the two-qubit operation
-"""
-
+        Returns target qubit of the two-qubit operation"""
     def unitary_matrix(self) -> numpy.ndarray:
         """
-Return unitary matrix of gate.
+        Return unitary matrix of gate.
 
-Returns:
-    np.ndarray: matrix of gate.
+        Returns:
+            np.ndarray: matrix of gate.
 
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix"""
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class InvSqrtISwap(Operation):
     """
@@ -7601,115 +6495,94 @@ Args:
 """
 
     def __init__(self, control: int, target: int):
-       return
-
+        return
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def control(self):
         """
-Returns control qubit of the two-qubit operation
-"""
-
+        Returns control qubit of the two-qubit operation"""
     def target(self):
         """
-Returns target qubit of the two-qubit operation
-"""
-
+        Returns target qubit of the two-qubit operation"""
     def unitary_matrix(self) -> numpy.ndarray:
         """
-Return unitary matrix of gate.
+        Return unitary matrix of gate.
 
-Returns:
-    np.ndarray: matrix of gate.
+        Returns:
+            np.ndarray: matrix of gate.
 
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix"""
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class XY(Operation):
     """
@@ -7731,132 +6604,107 @@ Args:
 """
 
     def __init__(self, control: int, target: int, theta: Union[float, str]):
-       return
-
+        return
     def theta(self):
         """
-Returns value of attribute theta
-"""
-
+        Returns value of attribute theta"""
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def control(self):
         """
-Returns control qubit of the two-qubit operation
-"""
-
+        Returns control qubit of the two-qubit operation"""
     def target(self):
         """
-Returns target qubit of the two-qubit operation
-"""
-
+        Returns target qubit of the two-qubit operation"""
     def unitary_matrix(self) -> numpy.ndarray:
         """
-Return unitary matrix of gate.
+        Return unitary matrix of gate.
 
-Returns:
-    np.ndarray: matrix of gate.
+        Returns:
+            np.ndarray: matrix of gate.
 
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix"""
     def powercf(self) -> XY:
         """
-Returns Rotated gate raised to power
+        Returns Rotated gate raised to power
 
-Args:
-    `power`(CalculatorFloat): exponent of the power operation.
+        Args:
+            `power`(CalculatorFloat): exponent of the power operation.
 
-Returns:
-    Self: gate raised to the power of `power`
-
-"""
-
+        Returns:
+            Self: gate raised to the power of `power`
+        """
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class ControlledPhaseShift(Operation):
     """
@@ -7878,132 +6726,107 @@ Args:
 """
 
     def __init__(self, control: int, target: int, theta: Union[float, str]):
-       return
-
+        return
     def theta(self):
         """
-Returns value of attribute theta
-"""
-
+        Returns value of attribute theta"""
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def control(self):
         """
-Returns control qubit of the two-qubit operation
-"""
-
+        Returns control qubit of the two-qubit operation"""
     def target(self):
         """
-Returns target qubit of the two-qubit operation
-"""
-
+        Returns target qubit of the two-qubit operation"""
     def unitary_matrix(self) -> numpy.ndarray:
         """
-Return unitary matrix of gate.
+        Return unitary matrix of gate.
 
-Returns:
-    np.ndarray: matrix of gate.
+        Returns:
+            np.ndarray: matrix of gate.
 
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix"""
     def powercf(self) -> ControlledPhaseShift:
         """
-Returns Rotated gate raised to power
+        Returns Rotated gate raised to power
 
-Args:
-    `power`(CalculatorFloat): exponent of the power operation.
+        Args:
+            `power`(CalculatorFloat): exponent of the power operation.
 
-Returns:
-    Self: gate raised to the power of `power`
-
-"""
-
+        Returns:
+            Self: gate raised to the power of `power`
+        """
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class ControlledPauliY(Operation):
     """
@@ -8024,115 +6847,94 @@ Args:
 """
 
     def __init__(self, control: int, target: int):
-       return
-
+        return
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def control(self):
         """
-Returns control qubit of the two-qubit operation
-"""
-
+        Returns control qubit of the two-qubit operation"""
     def target(self):
         """
-Returns target qubit of the two-qubit operation
-"""
-
+        Returns target qubit of the two-qubit operation"""
     def unitary_matrix(self) -> numpy.ndarray:
         """
-Return unitary matrix of gate.
+        Return unitary matrix of gate.
 
-Returns:
-    np.ndarray: matrix of gate.
+        Returns:
+            np.ndarray: matrix of gate.
 
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix"""
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class ControlledPauliZ(Operation):
     """
@@ -8153,115 +6955,94 @@ Args:
 """
 
     def __init__(self, control: int, target: int):
-       return
-
+        return
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def control(self):
         """
-Returns control qubit of the two-qubit operation
-"""
-
+        Returns control qubit of the two-qubit operation"""
     def target(self):
         """
-Returns target qubit of the two-qubit operation
-"""
-
+        Returns target qubit of the two-qubit operation"""
     def unitary_matrix(self) -> numpy.ndarray:
         """
-Return unitary matrix of gate.
+        Return unitary matrix of gate.
 
-Returns:
-    np.ndarray: matrix of gate.
+        Returns:
+            np.ndarray: matrix of gate.
 
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix"""
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class MolmerSorensenXX(Operation):
     """
@@ -8282,115 +7063,94 @@ Args:
 """
 
     def __init__(self, control: int, target: int):
-       return
-
+        return
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def control(self):
         """
-Returns control qubit of the two-qubit operation
-"""
-
+        Returns control qubit of the two-qubit operation"""
     def target(self):
         """
-Returns target qubit of the two-qubit operation
-"""
-
+        Returns target qubit of the two-qubit operation"""
     def unitary_matrix(self) -> numpy.ndarray:
         """
-Return unitary matrix of gate.
+        Return unitary matrix of gate.
 
-Returns:
-    np.ndarray: matrix of gate.
+        Returns:
+            np.ndarray: matrix of gate.
 
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix"""
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class VariableMSXX(Operation):
     """
@@ -8412,132 +7172,107 @@ Args:
 """
 
     def __init__(self, control: int, target: int, theta: Union[float, str]):
-       return
-
+        return
     def theta(self):
         """
-Returns value of attribute theta
-"""
-
+        Returns value of attribute theta"""
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def control(self):
         """
-Returns control qubit of the two-qubit operation
-"""
-
+        Returns control qubit of the two-qubit operation"""
     def target(self):
         """
-Returns target qubit of the two-qubit operation
-"""
-
+        Returns target qubit of the two-qubit operation"""
     def unitary_matrix(self) -> numpy.ndarray:
         """
-Return unitary matrix of gate.
+        Return unitary matrix of gate.
 
-Returns:
-    np.ndarray: matrix of gate.
+        Returns:
+            np.ndarray: matrix of gate.
 
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix"""
     def powercf(self) -> VariableMSXX:
         """
-Returns Rotated gate raised to power
+        Returns Rotated gate raised to power
 
-Args:
-    `power`(CalculatorFloat): exponent of the power operation.
+        Args:
+            `power`(CalculatorFloat): exponent of the power operation.
 
-Returns:
-    Self: gate raised to the power of `power`
-
-"""
-
+        Returns:
+            Self: gate raised to the power of `power`
+        """
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class GivensRotation(Operation):
     """
@@ -8562,138 +7297,117 @@ Args:
 
 """
 
-    def __init__(self, control: int, target: int, theta: Union[float, str], phase: Union[float, str]):
-       return
-
+    def __init__(
+        self,
+        control: int,
+        target: int,
+        theta: Union[float, str],
+        phase: Union[float, str],
+    ):
+        return
     def theta(self):
         """
-Returns value of attribute theta
-"""
-
+        Returns value of attribute theta"""
     def phi(self):
         """
-Returns value of attribute phi
-"""
-
+        Returns value of attribute phi"""
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def control(self):
         """
-Returns control qubit of the two-qubit operation
-"""
-
+        Returns control qubit of the two-qubit operation"""
     def target(self):
         """
-Returns target qubit of the two-qubit operation
-"""
-
+        Returns target qubit of the two-qubit operation"""
     def unitary_matrix(self) -> numpy.ndarray:
         """
-Return unitary matrix of gate.
+        Return unitary matrix of gate.
 
-Returns:
-    np.ndarray: matrix of gate.
+        Returns:
+            np.ndarray: matrix of gate.
 
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix"""
     def powercf(self) -> GivensRotation:
         """
-Returns Rotated gate raised to power
+        Returns Rotated gate raised to power
 
-Args:
-    `power`(CalculatorFloat): exponent of the power operation.
+        Args:
+            `power`(CalculatorFloat): exponent of the power operation.
 
-Returns:
-    Self: gate raised to the power of `power`
-
-"""
-
+        Returns:
+            Self: gate raised to the power of `power`
+        """
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class GivensRotationLittleEndian(Operation):
     """
@@ -8718,138 +7432,117 @@ Args:
 
 """
 
-    def __init__(self, control: int, target: int, theta: Union[float, str], phase: Union[float, str]):
-       return
-
+    def __init__(
+        self,
+        control: int,
+        target: int,
+        theta: Union[float, str],
+        phase: Union[float, str],
+    ):
+        return
     def theta(self):
         """
-Returns value of attribute theta
-"""
-
+        Returns value of attribute theta"""
     def phi(self):
         """
-Returns value of attribute phi
-"""
-
+        Returns value of attribute phi"""
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def control(self):
         """
-Returns control qubit of the two-qubit operation
-"""
-
+        Returns control qubit of the two-qubit operation"""
     def target(self):
         """
-Returns target qubit of the two-qubit operation
-"""
-
+        Returns target qubit of the two-qubit operation"""
     def unitary_matrix(self) -> numpy.ndarray:
         """
-Return unitary matrix of gate.
+        Return unitary matrix of gate.
 
-Returns:
-    np.ndarray: matrix of gate.
+        Returns:
+            np.ndarray: matrix of gate.
 
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix"""
     def powercf(self) -> GivensRotationLittleEndian:
         """
-Returns Rotated gate raised to power
+        Returns Rotated gate raised to power
 
-Args:
-    `power`(CalculatorFloat): exponent of the power operation.
+        Args:
+            `power`(CalculatorFloat): exponent of the power operation.
 
-Returns:
-    Self: gate raised to the power of `power`
-
-"""
-
+        Returns:
+            Self: gate raised to the power of `power`
+        """
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class Qsim(Operation):
     """
@@ -8872,131 +7565,111 @@ Args:
 
 """
 
-    def __init__(self, control: int, target: int, x: Union[float, str], y: Union[float, str], z: Union[float, str]):
-       return
-
+    def __init__(
+        self,
+        control: int,
+        target: int,
+        x: Union[float, str],
+        y: Union[float, str],
+        z: Union[float, str],
+    ):
+        return
     def x(self):
         """
-Returns value of attribute x
-"""
-
+        Returns value of attribute x"""
     def y(self):
         """
-Returns value of attribute y
-"""
-
+        Returns value of attribute y"""
     def z(self):
         """
-Returns value of attribute z
-"""
-
+        Returns value of attribute z"""
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def control(self):
         """
-Returns control qubit of the two-qubit operation
-"""
-
+        Returns control qubit of the two-qubit operation"""
     def target(self):
         """
-Returns target qubit of the two-qubit operation
-"""
-
+        Returns target qubit of the two-qubit operation"""
     def unitary_matrix(self) -> numpy.ndarray:
         """
-Return unitary matrix of gate.
+        Return unitary matrix of gate.
 
-Returns:
-    np.ndarray: matrix of gate.
+        Returns:
+            np.ndarray: matrix of gate.
 
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix"""
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class Fsim(Operation):
     """
@@ -9023,275 +7696,234 @@ in which the gate is valid as a two-qubit gate (due to the Jordan-Wigner transfo
 
 """
 
-    def __init__(self, control: int, target: int, t: Union[float, str], u: Union[float, str], delta: Union[float, str]):
-       return
-
+    def __init__(
+        self,
+        control: int,
+        target: int,
+        t: Union[float, str],
+        u: Union[float, str],
+        delta: Union[float, str],
+    ):
+        return
     def t(self):
         """
-Returns value of attribute t
-"""
-
+        Returns value of attribute t"""
     def u(self):
         """
-Returns value of attribute u
-"""
-
+        Returns value of attribute u"""
     def delta(self):
         """
-Returns value of attribute delta
-"""
-
+        Returns value of attribute delta"""
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def control(self):
         """
-Returns control qubit of the two-qubit operation
-"""
-
+        Returns control qubit of the two-qubit operation"""
     def target(self):
         """
-Returns target qubit of the two-qubit operation
-"""
-
+        Returns target qubit of the two-qubit operation"""
     def unitary_matrix(self) -> numpy.ndarray:
         """
-Return unitary matrix of gate.
+        Return unitary matrix of gate.
 
-Returns:
-    np.ndarray: matrix of gate.
+        Returns:
+            np.ndarray: matrix of gate.
 
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix"""
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class SpinInteraction(Operation):
     """
-The generalized, anisotropic XYZ Heisenberg interaction between spins.
+    The generalized, anisotropic XYZ Heisenberg interaction between spins.
 
-:math:`e^{-\mathrm{i} (x \cdot X_c X_t + y \cdot Y_c Y_t + z \cdot Z_c Z_t)}`
+    :math:`e^{-\mathrm{i} (x \cdot X_c X_t + y \cdot Y_c Y_t + z \cdot Z_c Z_t)}`
 
-Where x, y, z are prefactors of the :math:`X_c X_t`, :math:`Y_c Y_t`, :math:`Z_c Z_t` Pauliproducts acting on control and target qubit,
-with :math:`XX \equiv \sigma_x \sigma_x`, :math:`YY \equiv \sigma_y \sigma_y` and :math:`ZZ \equiv \sigma_z \sigma_z`.
+    Where x, y, z are prefactors of the :math:`X_c X_t`, :math:`Y_c Y_t`, :math:`Z_c Z_t` Pauliproducts acting on control and target qubit,
+    with :math:`XX \equiv \sigma_x \sigma_x`, :math:`YY \equiv \sigma_y \sigma_y` and :math:`ZZ \equiv \sigma_z \sigma_z`.
 
-Args:
-    control (int): The index of the most significant qubit in the unitary representation.
-    target (int):: The index of the least significant qubit in the unitary representation.
-    x (CalculatorFloat): The prefactor of the XX interaction.
-    y (CalculatorFloat): The prefactor of the YY interaction.
-    z (CalculatorFloat): The prefactor of the ZZ interaction.
+    Args:
+        control (int): The index of the most significant qubit in the unitary representation.
+        target (int):: The index of the least significant qubit in the unitary representation.
+        x (CalculatorFloat): The prefactor of the XX interaction.
+        y (CalculatorFloat): The prefactor of the YY interaction.
+        z (CalculatorFloat): The prefactor of the ZZ interaction.
+    """
 
-"""
-
-    def __init__(self, control: int, target: int, x: Union[float, str], y: Union[float, str], z: Union[float, str]):
-       return
-
+    def __init__(
+        self,
+        control: int,
+        target: int,
+        x: Union[float, str],
+        y: Union[float, str],
+        z: Union[float, str],
+    ):
+        return
     def x(self):
         """
-Returns value of attribute x
-"""
-
+        Returns value of attribute x"""
     def y(self):
         """
-Returns value of attribute y
-"""
-
+        Returns value of attribute y"""
     def z(self):
         """
-Returns value of attribute z
-"""
-
+        Returns value of attribute z"""
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def control(self):
         """
-Returns control qubit of the two-qubit operation
-"""
-
+        Returns control qubit of the two-qubit operation"""
     def target(self):
         """
-Returns target qubit of the two-qubit operation
-"""
-
+        Returns target qubit of the two-qubit operation"""
     def unitary_matrix(self) -> numpy.ndarray:
         """
-Return unitary matrix of gate.
+        Return unitary matrix of gate.
 
-Returns:
-    np.ndarray: matrix of gate.
+        Returns:
+            np.ndarray: matrix of gate.
 
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix"""
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class Bogoliubov(Operation):
     """
@@ -9320,396 +7952,333 @@ Args:
 
 """
 
-    def __init__(self, control: int, target: int, delta_real: Union[float, str], delta_imag: Union[float, str]):
-       return
-
+    def __init__(
+        self,
+        control: int,
+        target: int,
+        delta_real: Union[float, str],
+        delta_imag: Union[float, str],
+    ):
+        return
     def delta_real(self):
         """
-Returns value of attribute delta_real
-"""
-
+        Returns value of attribute delta_real"""
     def delta_imag(self):
         """
-Returns value of attribute delta_imag
-"""
-
+        Returns value of attribute delta_imag"""
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def control(self):
         """
-Returns control qubit of the two-qubit operation
-"""
-
+        Returns control qubit of the two-qubit operation"""
     def target(self):
         """
-Returns target qubit of the two-qubit operation
-"""
-
+        Returns target qubit of the two-qubit operation"""
     def unitary_matrix(self) -> numpy.ndarray:
         """
-Return unitary matrix of gate.
+        Return unitary matrix of gate.
 
-Returns:
-    np.ndarray: matrix of gate.
+        Returns:
+            np.ndarray: matrix of gate.
 
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix"""
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class PMInteraction(Operation):
     """
-The transversal interaction gate.
+    The transversal interaction gate.
 
-:math:`e^{-\mathrm{i} \theta (X_c X_t + Y_c Y_t)} = e^{-\mathrm{i} \theta (\sigma^+_c \sigma^-_t + \sigma^-_c \sigma^+_t)}`
+    :math:`e^{-\mathrm{i} \theta (X_c X_t + Y_c Y_t)} = e^{-\mathrm{i} \theta (\sigma^+_c \sigma^-_t + \sigma^-_c \sigma^+_t)}`
 
-Where :math:`X_c` is the Pauli matrix :math:`\sigma^x` acting on the control qubit
-and :math:`Y_t` is the Pauli matrix :math:`\sigma^y` acting on the target qubit.
+    Where :math:`X_c` is the Pauli matrix :math:`\sigma^x` acting on the control qubit
+    and :math:`Y_t` is the Pauli matrix :math:`\sigma^y` acting on the target qubit.
 
-Args:
-    control (int): The index of the most significant qubit in the unitary representation.
-    target (int):: The index of the least significant qubit in the unitary representation.
-    t (CalculatorFloat): The strength of the rotation :math:`\theta`.
-
-"""
+    Args:
+        control (int): The index of the most significant qubit in the unitary representation.
+        target (int):: The index of the least significant qubit in the unitary representation.
+        t (CalculatorFloat): The strength of the rotation :math:`\theta`.
+    """
 
     def __init__(self, control: int, target: int, t: Union[float, str]):
-       return
-
+        return
     def t(self):
         """
-Returns value of attribute t
-"""
-
+        Returns value of attribute t"""
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def control(self):
         """
-Returns control qubit of the two-qubit operation
-"""
-
+        Returns control qubit of the two-qubit operation"""
     def target(self):
         """
-Returns target qubit of the two-qubit operation
-"""
-
+        Returns target qubit of the two-qubit operation"""
     def unitary_matrix(self) -> numpy.ndarray:
         """
-Return unitary matrix of gate.
+        Return unitary matrix of gate.
 
-Returns:
-    np.ndarray: matrix of gate.
+        Returns:
+            np.ndarray: matrix of gate.
 
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix"""
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class ComplexPMInteraction(Operation):
     """
-The complex hopping gate.
+    The complex hopping gate.
 
-:math:`e^{-\mathrm{i} \left[ Re(\theta) \cdot (X_c X_t + Y_c Y_t) - Im(\theta) \cdot (X_c Y_t - Y_c X_t) \right] }`
+    :math:`e^{-\mathrm{i} \left[ Re(\theta) \cdot (X_c X_t + Y_c Y_t) - Im(\theta) \cdot (X_c Y_t - Y_c X_t) \right] }`
 
-Where :math:`X_c` is the Pauli matrix :math:`\sigma^x` acting on the control qubit
-and :math:`Y_t` is the Pauli matrix :math:`\sigma^y` acting on the target qubit.
+    Where :math:`X_c` is the Pauli matrix :math:`\sigma^x` acting on the control qubit
+    and :math:`Y_t` is the Pauli matrix :math:`\sigma^y` acting on the target qubit.
 
-Args:
-    control (int): The index of the most significant qubit in the unitary representation.
-    target (int):: The index of the least significant qubit in the unitary representation.
-    t_real (CalculatorFloat): The real part of the strength of the rotation :math:`Re(\theta)`.
-    t_imag (CalculatorFloat): The imaginary part of the strength of the rotation :math:`Im(\theta)`.
+    Args:
+        control (int): The index of the most significant qubit in the unitary representation.
+        target (int):: The index of the least significant qubit in the unitary representation.
+        t_real (CalculatorFloat): The real part of the strength of the rotation :math:`Re(\theta)`.
+        t_imag (CalculatorFloat): The imaginary part of the strength of the rotation :math:`Im(\theta)`.
+    """
 
-"""
-
-    def __init__(self, control: int, target: int, t_real: Union[float, str], t_imag: Union[float, str]):
-       return
-
+    def __init__(
+        self,
+        control: int,
+        target: int,
+        t_real: Union[float, str],
+        t_imag: Union[float, str],
+    ):
+        return
     def t_real(self):
         """
-Returns value of attribute t_real
-"""
-
+        Returns value of attribute t_real"""
     def t_imag(self):
         """
-Returns value of attribute t_imag
-"""
-
+        Returns value of attribute t_imag"""
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def control(self):
         """
-Returns control qubit of the two-qubit operation
-"""
-
+        Returns control qubit of the two-qubit operation"""
     def target(self):
         """
-Returns target qubit of the two-qubit operation
-"""
-
+        Returns target qubit of the two-qubit operation"""
     def unitary_matrix(self) -> numpy.ndarray:
         """
-Return unitary matrix of gate.
+        Return unitary matrix of gate.
 
-Returns:
-    np.ndarray: matrix of gate.
+        Returns:
+            np.ndarray: matrix of gate.
 
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix"""
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class PhaseShiftedControlledZ(Operation):
     """
@@ -9735,120 +8304,97 @@ Args:
 """
 
     def __init__(self, control: int, target: int, phi: Union[float, str]):
-       return
-
+        return
     def phi(self):
         """
-Returns value of attribute phi
-"""
-
+        Returns value of attribute phi"""
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def control(self):
         """
-Returns control qubit of the two-qubit operation
-"""
-
+        Returns control qubit of the two-qubit operation"""
     def target(self):
         """
-Returns target qubit of the two-qubit operation
-"""
-
+        Returns target qubit of the two-qubit operation"""
     def unitary_matrix(self) -> numpy.ndarray:
         """
-Return unitary matrix of gate.
+        Return unitary matrix of gate.
 
-Returns:
-    np.ndarray: matrix of gate.
+        Returns:
+            np.ndarray: matrix of gate.
 
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix"""
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class PhaseShiftState0(Operation):
     """
@@ -9869,84 +8415,70 @@ Args:
 """
 
     def __init__(self, qubit: int, theta: Union[float, str]):
-       return
-
+        return
     def theta(self):
         """
-Returns value of attribute theta
-"""
-
+        Returns value of attribute theta"""
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def qubit(self):
         """
-Return the qubit the operation acts on
+        Return the qubit the operation acts on
 
-Returns:
-    int
-"""
-
+        Returns:
+            int"""
     def global_phase(self):
         """
 Return the global phase :math:`g` of a unitary gate acting on one qubit
@@ -9962,7 +8494,6 @@ Here global_phase is defined by
 Returns:
     CalculatorFloat
 """
-
     def alpha_r(self):
         """
 Return the property alpha_r :math:`\alpha_r` of a unitary gate acting on one qubit
@@ -9978,7 +8509,6 @@ Here alpha_r is defined by
 Returns:
     CalculatorFloat
 """
-
     def alpha_i(self):
         """
 Return the property alpha_i :math:`\alpha_i` of a unitary gate acting on one qubit
@@ -9992,7 +8522,6 @@ Return the property alpha_i :math:`\alpha_i` of a unitary gate acting on one qub
 Returns:
     CalculatorFloat
 """
-
     def beta_r(self):
         """
 Return the property beta_r :math:`\beta_r` of a unitary gate acting on one qubit
@@ -10008,7 +8537,6 @@ Here beta_r is defined by
 Returns:
     CalculatorFloat
 """
-
     def beta_i(self):
         """
 Returns the property beta_i :math:`\beta_i` of a unitary gate acting on one qubit
@@ -10025,78 +8553,66 @@ Here beta_i is defined by
 Returns:
     CalculatorFloat
 """
-
     def mul(self) -> Operation:
         """
-Multiplies two compatible operations implementing OperateSingleQubitGate.
+        Multiplies two compatible operations implementing OperateSingleQubitGate.
 
-Does not consume the two operations being multiplied.
-Only Operations
+        Does not consume the two operations being multiplied.
+        Only Operations
 
-Args:
-    `other` - An Operation implementing [OperateSingleQubitGate].
+        Args:
+            `other` - An Operation implementing [OperateSingleQubitGate].
 
-Returns:
-    Operation: Result of the multiplication, i.e. the multiplied single qubit gate.
+        Returns:
+            Operation: Result of the multiplication, i.e. the multiplied single qubit gate.
 
-Example:
-```
-from qoqo.operations import RotateZ, RotateX
+        Example:
+        ```
+        from qoqo.operations import RotateZ, RotateX
 
-gate1 =  RotateZ(qubit=0, theta=1)
-gate2 = RotateX(qubit=0, theta=1)
-multiplied = gate1.mul(gate2)
-print("Multiplied gate: ", multiplied)
-```
-
-"""
-
+        gate1 =  RotateZ(qubit=0, theta=1)
+        gate2 = RotateX(qubit=0, theta=1)
+        multiplied = gate1.mul(gate2)
+        print("Multiplied gate: ", multiplied)
+        ```
+        """
     def unitary_matrix(self) -> numpy.ndarray:
         """
-Return unitary matrix of gate.
+        Return unitary matrix of gate.
 
-Returns:
-    np.ndarray: matrix of gate.
+        Returns:
+            np.ndarray: matrix of gate.
 
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix"""
     def powercf(self) -> PhaseShiftState0:
         """
-Returns Rotated gate raised to power
+        Returns Rotated gate raised to power
 
-Args:
-    `power`(CalculatorFloat): exponent of the power operation.
+        Args:
+            `power`(CalculatorFloat): exponent of the power operation.
 
-Returns:
-    Self: gate raised to the power of `power`
-
-"""
-
+        Returns:
+            Self: gate raised to the power of `power`
+        """
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class PhaseShiftState1(Operation):
     """
@@ -10117,84 +8633,70 @@ Args:
 """
 
     def __init__(self, qubit: int, theta: Union[float, str]):
-       return
-
+        return
     def theta(self):
         """
-Returns value of attribute theta
-"""
-
+        Returns value of attribute theta"""
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def qubit(self):
         """
-Return the qubit the operation acts on
+        Return the qubit the operation acts on
 
-Returns:
-    int
-"""
-
+        Returns:
+            int"""
     def global_phase(self):
         """
 Return the global phase :math:`g` of a unitary gate acting on one qubit
@@ -10210,7 +8712,6 @@ Here global_phase is defined by
 Returns:
     CalculatorFloat
 """
-
     def alpha_r(self):
         """
 Return the property alpha_r :math:`\alpha_r` of a unitary gate acting on one qubit
@@ -10226,7 +8727,6 @@ Here alpha_r is defined by
 Returns:
     CalculatorFloat
 """
-
     def alpha_i(self):
         """
 Return the property alpha_i :math:`\alpha_i` of a unitary gate acting on one qubit
@@ -10240,7 +8740,6 @@ Return the property alpha_i :math:`\alpha_i` of a unitary gate acting on one qub
 Returns:
     CalculatorFloat
 """
-
     def beta_r(self):
         """
 Return the property beta_r :math:`\beta_r` of a unitary gate acting on one qubit
@@ -10256,7 +8755,6 @@ Here beta_r is defined by
 Returns:
     CalculatorFloat
 """
-
     def beta_i(self):
         """
 Returns the property beta_i :math:`\beta_i` of a unitary gate acting on one qubit
@@ -10273,590 +8771,486 @@ Here beta_i is defined by
 Returns:
     CalculatorFloat
 """
-
     def mul(self) -> Operation:
         """
-Multiplies two compatible operations implementing OperateSingleQubitGate.
+        Multiplies two compatible operations implementing OperateSingleQubitGate.
 
-Does not consume the two operations being multiplied.
-Only Operations
+        Does not consume the two operations being multiplied.
+        Only Operations
 
-Args:
-    `other` - An Operation implementing [OperateSingleQubitGate].
+        Args:
+            `other` - An Operation implementing [OperateSingleQubitGate].
 
-Returns:
-    Operation: Result of the multiplication, i.e. the multiplied single qubit gate.
+        Returns:
+            Operation: Result of the multiplication, i.e. the multiplied single qubit gate.
 
-Example:
-```
-from qoqo.operations import RotateZ, RotateX
+        Example:
+        ```
+        from qoqo.operations import RotateZ, RotateX
 
-gate1 =  RotateZ(qubit=0, theta=1)
-gate2 = RotateX(qubit=0, theta=1)
-multiplied = gate1.mul(gate2)
-print("Multiplied gate: ", multiplied)
-```
-
-"""
-
+        gate1 =  RotateZ(qubit=0, theta=1)
+        gate2 = RotateX(qubit=0, theta=1)
+        multiplied = gate1.mul(gate2)
+        print("Multiplied gate: ", multiplied)
+        ```
+        """
     def unitary_matrix(self) -> numpy.ndarray:
         """
-Return unitary matrix of gate.
+        Return unitary matrix of gate.
 
-Returns:
-    np.ndarray: matrix of gate.
+        Returns:
+            np.ndarray: matrix of gate.
 
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix"""
     def powercf(self) -> PhaseShiftState1:
         """
-Returns Rotated gate raised to power
+        Returns Rotated gate raised to power
 
-Args:
-    `power`(CalculatorFloat): exponent of the power operation.
+        Args:
+            `power`(CalculatorFloat): exponent of the power operation.
 
-Returns:
-    Self: gate raised to the power of `power`
-
-"""
-
+        Returns:
+            Self: gate raised to the power of `power`
+        """
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class MultiQubitMS(Operation):
     """
-The Molmer-Sorensen gate between multiple qubits.
+    The Molmer-Sorensen gate between multiple qubits.
 
-The gate applies the rotation under the product of Pauli X operators on multiple qubits.
-In mathematical terms the gate applies exp(-i * theta/2 * X_i0 * X_i1 * ... * X_in).
-"""
+    The gate applies the rotation under the product of Pauli X operators on multiple qubits.
+    In mathematical terms the gate applies exp(-i * theta/2 * X_i0 * X_i1 * ... * X_in).
+    """
 
     def __init__(self):
-       return
-
+        return
     def theta(self):
         """
-Returns value of attribute theta
-"""
-
+        Returns value of attribute theta"""
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def qubits(self):
         """
-Return list of qubits of the multi qubit operation in order of descending significance
+        Return list of qubits of the multi qubit operation in order of descending significance
 
-Returns:
-    List[int]
-"""
-
+        Returns:
+            List[int]"""
     def circuit(self):
         """
-Return circuit implementing MultiQubitGateOperation
+        Return circuit implementing MultiQubitGateOperation
 
-Returns:
-    Circuit
-"""
-
+        Returns:
+            Circuit"""
     def unitary_matrix(self) -> numpy.ndarray:
         """
-Return unitary matrix of gate.
+        Return unitary matrix of gate.
 
-Returns:
-    np.ndarray: matrix of gate.
+        Returns:
+            np.ndarray: matrix of gate.
 
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix"""
     def powercf(self) -> MultiQubitMS:
         """
-Returns Rotated gate raised to power
+        Returns Rotated gate raised to power
 
-Args:
-    `power`(CalculatorFloat): exponent of the power operation.
+        Args:
+            `power`(CalculatorFloat): exponent of the power operation.
 
-Returns:
-    Self: gate raised to the power of `power`
-
-"""
-
+        Returns:
+            Self: gate raised to the power of `power`
+        """
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class MultiQubitZZ(Operation):
     """
-The multi qubit Pauli-Z-Product gate.
+    The multi qubit Pauli-Z-Product gate.
 
-The gate applies the rotation under the product of Pauli Z operators on multiple qubits.
-In mathematical terms the gate applies exp(-i * theta/2 * Z_i0 * Z_i1 * ... * Z_in).
-"""
+    The gate applies the rotation under the product of Pauli Z operators on multiple qubits.
+    In mathematical terms the gate applies exp(-i * theta/2 * Z_i0 * Z_i1 * ... * Z_in).
+    """
 
     def __init__(self):
-       return
-
+        return
     def theta(self):
         """
-Returns value of attribute theta
-"""
-
+        Returns value of attribute theta"""
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def qubits(self):
         """
-Return list of qubits of the multi qubit operation in order of descending significance
+        Return list of qubits of the multi qubit operation in order of descending significance
 
-Returns:
-    List[int]
-"""
-
+        Returns:
+            List[int]"""
     def circuit(self):
         """
-Return circuit implementing MultiQubitGateOperation
+        Return circuit implementing MultiQubitGateOperation
 
-Returns:
-    Circuit
-"""
-
+        Returns:
+            Circuit"""
     def unitary_matrix(self) -> numpy.ndarray:
         """
-Return unitary matrix of gate.
+        Return unitary matrix of gate.
 
-Returns:
-    np.ndarray: matrix of gate.
+        Returns:
+            np.ndarray: matrix of gate.
 
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix"""
     def powercf(self) -> MultiQubitZZ:
         """
-Returns Rotated gate raised to power
+        Returns Rotated gate raised to power
 
-Args:
-    `power`(CalculatorFloat): exponent of the power operation.
+        Args:
+            `power`(CalculatorFloat): exponent of the power operation.
 
-Returns:
-    Self: gate raised to the power of `power`
-
-"""
-
+        Returns:
+            Self: gate raised to the power of `power`
+        """
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class InputBit(Operation):
     """
-InputBit sets a certain bit in an existing BitRegister of the circuit.
+    InputBit sets a certain bit in an existing BitRegister of the circuit.
 
-Args:
-    name (string): The name of the register that is defined.
-    index (int): The index in the register that is set.
-    value (int): The value the bit is set to.
-"""
+    Args:
+        name (string): The name of the register that is defined.
+        index (int): The index in the register that is set.
+        value (int): The value the bit is set to."""
 
     def __init__(self, name: str, index: int, value: int):
-       return
-
+        return
     def index(self):
         """
-Get value of struct field index
-"""
-
+        Get value of struct field index"""
     def value(self):
         """
-Get value of struct field value
-"""
-
+        Get value of struct field value"""
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def name(self):
         """
-Return name of definition operation.
+        Return name of definition operation.
 
-Returns:
-    str
-"""
-
+        Returns:
+            str"""
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class PragmaLoop(Operation):
     """
-This PRAGMA measurement operation returns the statevector of a quantum register.
+    This PRAGMA measurement operation returns the statevector of a quantum register.
 
-Args:
-    repetitions (CalculatorFloat): The number of repetitions as a symbolic float. At evaluation the floor of any float value is taken
-    circuit (Circuit): The Circuit that is looped.
-
-"""
+    Args:
+        repetitions (CalculatorFloat): The number of repetitions as a symbolic float. At evaluation the floor of any float value is taken
+        circuit (Circuit): The Circuit that is looped.
+    """
 
     def __init__(self, repetitions: Union[float, str], circuit: Circuit):
-       return
-
+        return
     def repetitions(self):
         """
-Returns value of attribute repetitions
-"""
-
+        Returns value of attribute repetitions"""
     def circuit(self):
         """
-Get value of struct field circuit
-"""
-
+        Get value of struct field circuit"""
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class PhaseShiftedControlledPhase(Operation):
     """
@@ -10880,138 +9274,117 @@ Args:
 
 """
 
-    def __init__(self, control: int, target: int, theta: Union[float, str], phi: Union[float, str]):
-       return
-
+    def __init__(
+        self,
+        control: int,
+        target: int,
+        theta: Union[float, str],
+        phi: Union[float, str],
+    ):
+        return
     def theta(self):
         """
-Returns value of attribute theta
-"""
-
+        Returns value of attribute theta"""
     def phi(self):
         """
-Returns value of attribute phi
-"""
-
+        Returns value of attribute phi"""
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def control(self):
         """
-Returns control qubit of the two-qubit operation
-"""
-
+        Returns control qubit of the two-qubit operation"""
     def target(self):
         """
-Returns target qubit of the two-qubit operation
-"""
-
+        Returns target qubit of the two-qubit operation"""
     def unitary_matrix(self) -> numpy.ndarray:
         """
-Return unitary matrix of gate.
+        Return unitary matrix of gate.
 
-Returns:
-    np.ndarray: matrix of gate.
+        Returns:
+            np.ndarray: matrix of gate.
 
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix"""
     def powercf(self) -> PhaseShiftedControlledPhase:
         """
-Returns Rotated gate raised to power
+        Returns Rotated gate raised to power
 
-Args:
-    `power`(CalculatorFloat): exponent of the power operation.
+        Args:
+            `power`(CalculatorFloat): exponent of the power operation.
 
-Returns:
-    Self: gate raised to the power of `power`
-
-"""
-
+        Returns:
+            Self: gate raised to the power of `power`
+        """
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class ControlledRotateX(Operation):
     """
@@ -11034,132 +9407,107 @@ Args:
 """
 
     def __init__(self, control: int, target: int, theta: Union[float, str]):
-       return
-
+        return
     def theta(self):
         """
-Returns value of attribute theta
-"""
-
+        Returns value of attribute theta"""
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def control(self):
         """
-Returns control qubit of the two-qubit operation
-"""
-
+        Returns control qubit of the two-qubit operation"""
     def target(self):
         """
-Returns target qubit of the two-qubit operation
-"""
-
+        Returns target qubit of the two-qubit operation"""
     def unitary_matrix(self) -> numpy.ndarray:
         """
-Return unitary matrix of gate.
+        Return unitary matrix of gate.
 
-Returns:
-    np.ndarray: matrix of gate.
+        Returns:
+            np.ndarray: matrix of gate.
 
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix"""
     def powercf(self) -> ControlledRotateX:
         """
-Returns Rotated gate raised to power
+        Returns Rotated gate raised to power
 
-Args:
-    `power`(CalculatorFloat): exponent of the power operation.
+        Args:
+            `power`(CalculatorFloat): exponent of the power operation.
 
-Returns:
-    Self: gate raised to the power of `power`
-
-"""
-
+        Returns:
+            Self: gate raised to the power of `power`
+        """
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class ControlledRotateXY(Operation):
     """
@@ -11182,138 +9530,117 @@ Args:
     phi (CalculatorFloat): The rotation axis, in spherical coordinates :math:`\phi_{sph}`  gives the angle in the x-y plane.
 """
 
-    def __init__(self, control: int, target: int, theta: Union[float, str], phi: Union[float, str]):
-       return
-
+    def __init__(
+        self,
+        control: int,
+        target: int,
+        theta: Union[float, str],
+        phi: Union[float, str],
+    ):
+        return
     def theta(self):
         """
-Returns value of attribute theta
-"""
-
+        Returns value of attribute theta"""
     def phi(self):
         """
-Returns value of attribute phi
-"""
-
+        Returns value of attribute phi"""
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def control(self):
         """
-Returns control qubit of the two-qubit operation
-"""
-
+        Returns control qubit of the two-qubit operation"""
     def target(self):
         """
-Returns target qubit of the two-qubit operation
-"""
-
+        Returns target qubit of the two-qubit operation"""
     def unitary_matrix(self) -> numpy.ndarray:
         """
-Return unitary matrix of gate.
+        Return unitary matrix of gate.
 
-Returns:
-    np.ndarray: matrix of gate.
+        Returns:
+            np.ndarray: matrix of gate.
 
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix"""
     def powercf(self) -> ControlledRotateXY:
         """
-Returns Rotated gate raised to power
+        Returns Rotated gate raised to power
 
-Args:
-    `power`(CalculatorFloat): exponent of the power operation.
+        Args:
+            `power`(CalculatorFloat): exponent of the power operation.
 
-Returns:
-    Self: gate raised to the power of `power`
-
-"""
-
+        Returns:
+            Self: gate raised to the power of `power`
+        """
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class ControlledControlledPauliZ(Operation):
     """
@@ -11338,128 +9665,103 @@ Args:
 """
 
     def __init__(self, control_0: int, control_1: int, target: int):
-       return
-
+        return
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def control_0(self):
         """
-Returns control_0 qubit of the three-qubit operation
-"""
-
+        Returns control_0 qubit of the three-qubit operation"""
     def control_1(self):
         """
-Returns control_1 qubit of the three-qubit operation
-"""
-
+        Returns control_1 qubit of the three-qubit operation"""
     def target(self):
         """
-Returns target qubit of the three-qubit operation
-"""
-
+        Returns target qubit of the three-qubit operation"""
     def circuit(self):
         """
-Returns circuit implementing the ThreeQubitGateOperation
+        Returns circuit implementing the ThreeQubitGateOperation
 
-Returns:
-    Circuit
-"""
-
+        Returns:
+            Circuit"""
     def unitary_matrix(self) -> numpy.ndarray:
         """
-Return unitary matrix of gate.
+        Return unitary matrix of gate.
 
-Returns:
-    np.ndarray: matrix of gate.
+        Returns:
+            np.ndarray: matrix of gate.
 
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix"""
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class ControlledControlledPhaseShift(Operation):
     """
@@ -11485,145 +9787,116 @@ Args:
 """
 
     def __init__(self, control_0: int, control_1: int, target: int, theta: float):
-       return
-
+        return
     def theta(self):
         """
-Returns value of attribute theta
-"""
-
+        Returns value of attribute theta"""
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def control_0(self):
         """
-Returns control_0 qubit of the three-qubit operation
-"""
-
+        Returns control_0 qubit of the three-qubit operation"""
     def control_1(self):
         """
-Returns control_1 qubit of the three-qubit operation
-"""
-
+        Returns control_1 qubit of the three-qubit operation"""
     def target(self):
         """
-Returns target qubit of the three-qubit operation
-"""
-
+        Returns target qubit of the three-qubit operation"""
     def circuit(self):
         """
-Returns circuit implementing the ThreeQubitGateOperation
+        Returns circuit implementing the ThreeQubitGateOperation
 
-Returns:
-    Circuit
-"""
-
+        Returns:
+            Circuit"""
     def unitary_matrix(self) -> numpy.ndarray:
         """
-Return unitary matrix of gate.
+        Return unitary matrix of gate.
 
-Returns:
-    np.ndarray: matrix of gate.
+        Returns:
+            np.ndarray: matrix of gate.
 
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix"""
     def powercf(self) -> ControlledControlledPhaseShift:
         """
-Returns Rotated gate raised to power
+        Returns Rotated gate raised to power
 
-Args:
-    `power`(CalculatorFloat): exponent of the power operation.
+        Args:
+            `power`(CalculatorFloat): exponent of the power operation.
 
-Returns:
-    Self: gate raised to the power of `power`
-
-"""
-
+        Returns:
+            Self: gate raised to the power of `power`
+        """
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class Toffoli(Operation):
     """
@@ -11648,128 +9921,103 @@ Args:
 """
 
     def __init__(self, control_0: int, control_1: int, target: int):
-       return
-
+        return
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def control_0(self):
         """
-Returns control_0 qubit of the three-qubit operation
-"""
-
+        Returns control_0 qubit of the three-qubit operation"""
     def control_1(self):
         """
-Returns control_1 qubit of the three-qubit operation
-"""
-
+        Returns control_1 qubit of the three-qubit operation"""
     def target(self):
         """
-Returns target qubit of the three-qubit operation
-"""
-
+        Returns target qubit of the three-qubit operation"""
     def circuit(self):
         """
-Returns circuit implementing the ThreeQubitGateOperation
+        Returns circuit implementing the ThreeQubitGateOperation
 
-Returns:
-    Circuit
-"""
-
+        Returns:
+            Circuit"""
     def unitary_matrix(self) -> numpy.ndarray:
         """
-Return unitary matrix of gate.
+        Return unitary matrix of gate.
 
-Returns:
-    np.ndarray: matrix of gate.
+        Returns:
+            np.ndarray: matrix of gate.
 
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix"""
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class GPi(Operation):
     """
@@ -11788,84 +10036,70 @@ Args:
 """
 
     def __init__(self, qubit: int, theta: Union[float, str]):
-       return
-
+        return
     def theta(self):
         """
-Returns value of attribute theta
-"""
-
+        Returns value of attribute theta"""
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def qubit(self):
         """
-Return the qubit the operation acts on
+        Return the qubit the operation acts on
 
-Returns:
-    int
-"""
-
+        Returns:
+            int"""
     def global_phase(self):
         """
 Return the global phase :math:`g` of a unitary gate acting on one qubit
@@ -11881,7 +10115,6 @@ Here global_phase is defined by
 Returns:
     CalculatorFloat
 """
-
     def alpha_r(self):
         """
 Return the property alpha_r :math:`\alpha_r` of a unitary gate acting on one qubit
@@ -11897,7 +10130,6 @@ Here alpha_r is defined by
 Returns:
     CalculatorFloat
 """
-
     def alpha_i(self):
         """
 Return the property alpha_i :math:`\alpha_i` of a unitary gate acting on one qubit
@@ -11911,7 +10143,6 @@ Return the property alpha_i :math:`\alpha_i` of a unitary gate acting on one qub
 Returns:
     CalculatorFloat
 """
-
     def beta_r(self):
         """
 Return the property beta_r :math:`\beta_r` of a unitary gate acting on one qubit
@@ -11927,7 +10158,6 @@ Here beta_r is defined by
 Returns:
     CalculatorFloat
 """
-
     def beta_i(self):
         """
 Returns the property beta_i :math:`\beta_i` of a unitary gate acting on one qubit
@@ -11944,78 +10174,66 @@ Here beta_i is defined by
 Returns:
     CalculatorFloat
 """
-
     def mul(self) -> Operation:
         """
-Multiplies two compatible operations implementing OperateSingleQubitGate.
+        Multiplies two compatible operations implementing OperateSingleQubitGate.
 
-Does not consume the two operations being multiplied.
-Only Operations
+        Does not consume the two operations being multiplied.
+        Only Operations
 
-Args:
-    `other` - An Operation implementing [OperateSingleQubitGate].
+        Args:
+            `other` - An Operation implementing [OperateSingleQubitGate].
 
-Returns:
-    Operation: Result of the multiplication, i.e. the multiplied single qubit gate.
+        Returns:
+            Operation: Result of the multiplication, i.e. the multiplied single qubit gate.
 
-Example:
-```
-from qoqo.operations import RotateZ, RotateX
+        Example:
+        ```
+        from qoqo.operations import RotateZ, RotateX
 
-gate1 =  RotateZ(qubit=0, theta=1)
-gate2 = RotateX(qubit=0, theta=1)
-multiplied = gate1.mul(gate2)
-print("Multiplied gate: ", multiplied)
-```
-
-"""
-
+        gate1 =  RotateZ(qubit=0, theta=1)
+        gate2 = RotateX(qubit=0, theta=1)
+        multiplied = gate1.mul(gate2)
+        print("Multiplied gate: ", multiplied)
+        ```
+        """
     def unitary_matrix(self) -> numpy.ndarray:
         """
-Return unitary matrix of gate.
+        Return unitary matrix of gate.
 
-Returns:
-    np.ndarray: matrix of gate.
+        Returns:
+            np.ndarray: matrix of gate.
 
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix"""
     def powercf(self) -> GPi:
         """
-Returns Rotated gate raised to power
+        Returns Rotated gate raised to power
 
-Args:
-    `power`(CalculatorFloat): exponent of the power operation.
+        Args:
+            `power`(CalculatorFloat): exponent of the power operation.
 
-Returns:
-    Self: gate raised to the power of `power`
-
-"""
-
+        Returns:
+            Self: gate raised to the power of `power`
+        """
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class GPi2(Operation):
     """
@@ -12034,84 +10252,70 @@ Args:
 """
 
     def __init__(self, qubit: int, theta: Union[float, str]):
-       return
-
+        return
     def theta(self):
         """
-Returns value of attribute theta
-"""
-
+        Returns value of attribute theta"""
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def qubit(self):
         """
-Return the qubit the operation acts on
+        Return the qubit the operation acts on
 
-Returns:
-    int
-"""
-
+        Returns:
+            int"""
     def global_phase(self):
         """
 Return the global phase :math:`g` of a unitary gate acting on one qubit
@@ -12127,7 +10331,6 @@ Here global_phase is defined by
 Returns:
     CalculatorFloat
 """
-
     def alpha_r(self):
         """
 Return the property alpha_r :math:`\alpha_r` of a unitary gate acting on one qubit
@@ -12143,7 +10346,6 @@ Here alpha_r is defined by
 Returns:
     CalculatorFloat
 """
-
     def alpha_i(self):
         """
 Return the property alpha_i :math:`\alpha_i` of a unitary gate acting on one qubit
@@ -12157,7 +10359,6 @@ Return the property alpha_i :math:`\alpha_i` of a unitary gate acting on one qub
 Returns:
     CalculatorFloat
 """
-
     def beta_r(self):
         """
 Return the property beta_r :math:`\beta_r` of a unitary gate acting on one qubit
@@ -12173,7 +10374,6 @@ Here beta_r is defined by
 Returns:
     CalculatorFloat
 """
-
     def beta_i(self):
         """
 Returns the property beta_i :math:`\beta_i` of a unitary gate acting on one qubit
@@ -12190,764 +10390,637 @@ Here beta_i is defined by
 Returns:
     CalculatorFloat
 """
-
     def mul(self) -> Operation:
         """
-Multiplies two compatible operations implementing OperateSingleQubitGate.
+        Multiplies two compatible operations implementing OperateSingleQubitGate.
 
-Does not consume the two operations being multiplied.
-Only Operations
+        Does not consume the two operations being multiplied.
+        Only Operations
 
-Args:
-    `other` - An Operation implementing [OperateSingleQubitGate].
+        Args:
+            `other` - An Operation implementing [OperateSingleQubitGate].
 
-Returns:
-    Operation: Result of the multiplication, i.e. the multiplied single qubit gate.
+        Returns:
+            Operation: Result of the multiplication, i.e. the multiplied single qubit gate.
 
-Example:
-```
-from qoqo.operations import RotateZ, RotateX
+        Example:
+        ```
+        from qoqo.operations import RotateZ, RotateX
 
-gate1 =  RotateZ(qubit=0, theta=1)
-gate2 = RotateX(qubit=0, theta=1)
-multiplied = gate1.mul(gate2)
-print("Multiplied gate: ", multiplied)
-```
-
-"""
-
+        gate1 =  RotateZ(qubit=0, theta=1)
+        gate2 = RotateX(qubit=0, theta=1)
+        multiplied = gate1.mul(gate2)
+        print("Multiplied gate: ", multiplied)
+        ```
+        """
     def unitary_matrix(self) -> numpy.ndarray:
         """
-Return unitary matrix of gate.
+        Return unitary matrix of gate.
 
-Returns:
-    np.ndarray: matrix of gate.
+        Returns:
+            np.ndarray: matrix of gate.
 
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix"""
     def powercf(self) -> GPi2:
         """
-Returns Rotated gate raised to power
+        Returns Rotated gate raised to power
 
-Args:
-    `power`(CalculatorFloat): exponent of the power operation.
+        Args:
+            `power`(CalculatorFloat): exponent of the power operation.
 
-Returns:
-    Self: gate raised to the power of `power`
-
-"""
-
+        Returns:
+            Self: gate raised to the power of `power`
+        """
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class PragmaControlledCircuit(Operation):
     """
-A circuit controlled by a qubit.
+    A circuit controlled by a qubit.
 
-The circuit is applied when the qubit is in state 1.
-Note that this is a unitary operation (for example a CNOT(0,1)
-is equvalent to a PragmaControlledCircuit(0, [PauliX(1)]) but it cannot be represented
-by a unitary operation in qoqo for arbitraty circuits.
+    The circuit is applied when the qubit is in state 1.
+    Note that this is a unitary operation (for example a CNOT(0,1)
+    is equvalent to a PragmaControlledCircuit(0, [PauliX(1)]) but it cannot be represented
+    by a unitary operation in qoqo for arbitraty circuits.
 
-Args:
-    controlling_qubit (int): - The qubit controlling circuit application.
-    circuit (Circuit): - The circuit executed if the condition is met.
-"""
+    Args:
+        controlling_qubit (int): - The qubit controlling circuit application.
+        circuit (Circuit): - The circuit executed if the condition is met."""
 
     def __init__(self, controlling_qubit: int, circuit: Circuit):
-       return
-
+        return
     def controlling_qubit(self):
         """
-Get value of struct field controlling_qubit
-"""
-
+        Get value of struct field controlling_qubit"""
     def circuit(self):
         """
-Get value of struct field circuit
-"""
-
+        Get value of struct field circuit"""
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class Squeezing(Operation):
     """
-The single-mode squeezing gate with tunable squeezing.
+    The single-mode squeezing gate with tunable squeezing.
 
-The squeezing gate is a quantum operation that allows for precise manipulation of quantum states,
-by reducing the uncertainty in one variable and therefore increasing the uncertainty of another.
-https://arxiv.org/pdf/quant-ph/0106157.pdf
+    The squeezing gate is a quantum operation that allows for precise manipulation of quantum states,
+    by reducing the uncertainty in one variable and therefore increasing the uncertainty of another.
+    https://arxiv.org/pdf/quant-ph/0106157.pdf
 
-Args:
-    mode (int): The mode the squeezing gate is applied to.
-    squeezing (CalculatorFloat): The coefficient of the squeezing operation.
-    phase (CalculatorFloat): The squeezing phase angle of the squeezing operation.
-"""
+    Args:
+        mode (int): The mode the squeezing gate is applied to.
+        squeezing (CalculatorFloat): The coefficient of the squeezing operation.
+        phase (CalculatorFloat): The squeezing phase angle of the squeezing operation.
+    """
 
-    def __init__(self, mode: int, squeezing: Union[float, str], phase: Union[float, str]):
-       return
-
+    def __init__(
+        self, mode: int, squeezing: Union[float, str], phase: Union[float, str]
+    ):
+        return
     def squeezing(self):
         """
-Returns value of attribute squeezing
-"""
-
+        Returns value of attribute squeezing"""
     def phase(self):
         """
-Returns value of attribute phase
-"""
-
+        Returns value of attribute phase"""
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def involved_modes(self) -> Union[Set[int], str]:
         """
-List of modes the operation acts on.
+        List of modes the operation acts on.
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def remap_modes(self, mapping: Dict[int, int]):
         """
-Remap the bosonic modes in copy of the operation.
+        Remap the bosonic modes in copy of the operation.
 
-Args:
-    mapping (Dict[int, int]): Mapping for bosonic modes in operation.
+        Args:
+            mapping (Dict[int, int]): Mapping for bosonic modes in operation.
 
-Returns:
-    self
+        Returns:
+            self
 
-Raises:
-    PyValueError: Remapping could not be performed
-"""
-
+        Raises:
+            PyValueError: Remapping could not be performed"""
     def mode(self):
         """
-Return `mode` the bosonic Operation acts on.
+        Return `mode` the bosonic Operation acts on.
 
-Returns:
-    int
-"""
-
+        Returns:
+            int"""
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class PhaseShift(Operation):
     """
-The single-mode phase-shift gate with variable phase, given by R(θ) = eexp(i * θ * 𝑁̂).
+    The single-mode phase-shift gate with variable phase, given by R(θ) = eexp(i * θ * 𝑁̂).
 
-https://arxiv.org/pdf/2104.03241.pdf
+    https://arxiv.org/pdf/2104.03241.pdf
 
-Args:
-    mode (int): The mode the phase-shift gate is applied to.
-    phase (CalculatorFloat): The phase by which to shift the mode.
-"""
+    Args:
+        mode (int): The mode the phase-shift gate is applied to.
+        phase (CalculatorFloat): The phase by which to shift the mode."""
 
     def __init__(self, mode: int, phase: Union[float, str]):
-       return
-
+        return
     def phase(self):
         """
-Returns value of attribute phase
-"""
-
+        Returns value of attribute phase"""
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def involved_modes(self) -> Union[Set[int], str]:
         """
-List of modes the operation acts on.
+        List of modes the operation acts on.
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def remap_modes(self, mapping: Dict[int, int]):
         """
-Remap the bosonic modes in copy of the operation.
+        Remap the bosonic modes in copy of the operation.
 
-Args:
-    mapping (Dict[int, int]): Mapping for bosonic modes in operation.
+        Args:
+            mapping (Dict[int, int]): Mapping for bosonic modes in operation.
 
-Returns:
-    self
+        Returns:
+            self
 
-Raises:
-    PyValueError: Remapping could not be performed
-"""
-
+        Raises:
+            PyValueError: Remapping could not be performed"""
     def mode(self):
         """
-Return `mode` the bosonic Operation acts on.
+        Return `mode` the bosonic Operation acts on.
 
-Returns:
-    int
-"""
-
+        Returns:
+            int"""
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class BeamSplitter(Operation):
     """
-The 2-mode beam splitter which splits a beam with a transmission amplitude cos(θ) and a reflection amplitude exp(i * φ) * sin(θ).
+    The 2-mode beam splitter which splits a beam with a transmission amplitude cos(θ) and a reflection amplitude exp(i * φ) * sin(θ).
 
-Args:
-    mode_0 (int): The first mode the beam-splitter is applied to.
-    mode_1 (int): The second mode the beam-splitter is applied to.
-    theta (CalculatorFloat): The transmittivity angle of the beam-splitter.
-    phi (CalculatorFloat): The phase angle of the beam-splitter.
-"""
+    Args:
+        mode_0 (int): The first mode the beam-splitter is applied to.
+        mode_1 (int): The second mode the beam-splitter is applied to.
+        theta (CalculatorFloat): The transmittivity angle of the beam-splitter.
+        phi (CalculatorFloat): The phase angle of the beam-splitter."""
 
-    def __init__(self, mode_0: int, mode_1: int, theta: Union[float, str], phi: Union[float, str]):
-       return
-
+    def __init__(
+        self, mode_0: int, mode_1: int, theta: Union[float, str], phi: Union[float, str]
+    ):
+        return
     def theta(self):
         """
-Returns value of attribute theta
-"""
-
+        Returns value of attribute theta"""
     def phi(self):
         """
-Returns value of attribute phi
-"""
-
+        Returns value of attribute phi"""
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def involved_modes(self) -> Union[Set[int], str]:
         """
-List of modes the operation acts on.
+        List of modes the operation acts on.
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def remap_modes(self, mapping: Dict[int, int]):
         """
-Remap the bosonic modes in copy of the operation.
+        Remap the bosonic modes in copy of the operation.
 
-Args:
-    mapping (Dict[int, int]): Mapping for bosonic modes in operation.
+        Args:
+            mapping (Dict[int, int]): Mapping for bosonic modes in operation.
 
-Returns:
-    self
+        Returns:
+            self
 
-Raises:
-    PyValueError: Remapping could not be performed
-"""
-
+        Raises:
+            PyValueError: Remapping could not be performed"""
     def mode_0(self):
         """
-Return `mode_0` bosonic mode of two bosonic mode Operation.
+        Return `mode_0` bosonic mode of two bosonic mode Operation.
 
-Returns:
-    int
-"""
-
+        Returns:
+            int"""
     def mode_1(self):
         """
-Return `mode_1` bosonic mode of two bosonic mode Operation.
+        Return `mode_1` bosonic mode of two bosonic mode Operation.
 
-Returns:
-    int
-"""
-
+        Returns:
+            int"""
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class PhotonDetection(Operation):
     """
-The photon number-resolving detector measurement for bosons.
+    The photon number-resolving detector measurement for bosons.
 
-This can be used as a single-shot measurement of the photon number.
-https://arxiv.org/pdf/0902.4824.pdf
+    This can be used as a single-shot measurement of the photon number.
+    https://arxiv.org/pdf/0902.4824.pdf
 
-Args:
-    mode (int): The mode the detector (measurement) is applied to.
-    readout (str): The register for the readout.
-    readout_index (int): The index in the readout the result is saved to.
-"""
+    Args:
+        mode (int): The mode the detector (measurement) is applied to.
+        readout (str): The register for the readout.
+        readout_index (int): The index in the readout the result is saved to."""
 
     def __init__(self, mode: int, readout: str, readout_index: int):
-       return
-
+        return
     def readout(self):
         """
-Get value of struct field readout
-"""
-
+        Get value of struct field readout"""
     def readout_index(self):
         """
-Get value of struct field readout_index
-"""
-
+        Get value of struct field readout_index"""
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def involved_modes(self) -> Union[Set[int], str]:
         """
-List of modes the operation acts on.
+        List of modes the operation acts on.
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def remap_modes(self, mapping: Dict[int, int]):
         """
-Remap the bosonic modes in copy of the operation.
+        Remap the bosonic modes in copy of the operation.
 
-Args:
-    mapping (Dict[int, int]): Mapping for bosonic modes in operation.
+        Args:
+            mapping (Dict[int, int]): Mapping for bosonic modes in operation.
 
-Returns:
-    self
+        Returns:
+            self
 
-Raises:
-    PyValueError: Remapping could not be performed
-"""
-
+        Raises:
+            PyValueError: Remapping could not be performed"""
     def mode(self):
         """
-Return `mode` the bosonic Operation acts on.
+        Return `mode` the bosonic Operation acts on.
 
-Returns:
-    int
-"""
-
+        Returns:
+            int"""
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class Identity(Operation):
     """
@@ -12964,79 +11037,67 @@ Args:
 """
 
     def __init__(self, qubit: int):
-       return
-
+        return
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def qubit(self):
         """
-Return the qubit the operation acts on
+        Return the qubit the operation acts on
 
-Returns:
-    int
-"""
-
+        Returns:
+            int"""
     def global_phase(self):
         """
 Return the global phase :math:`g` of a unitary gate acting on one qubit
@@ -13052,7 +11113,6 @@ Here global_phase is defined by
 Returns:
     CalculatorFloat
 """
-
     def alpha_r(self):
         """
 Return the property alpha_r :math:`\alpha_r` of a unitary gate acting on one qubit
@@ -13068,7 +11128,6 @@ Here alpha_r is defined by
 Returns:
     CalculatorFloat
 """
-
     def alpha_i(self):
         """
 Return the property alpha_i :math:`\alpha_i` of a unitary gate acting on one qubit
@@ -13082,7 +11141,6 @@ Return the property alpha_i :math:`\alpha_i` of a unitary gate acting on one qub
 Returns:
     CalculatorFloat
 """
-
     def beta_r(self):
         """
 Return the property beta_r :math:`\beta_r` of a unitary gate acting on one qubit
@@ -13098,7 +11156,6 @@ Here beta_r is defined by
 Returns:
     CalculatorFloat
 """
-
     def beta_i(self):
         """
 Returns the property beta_i :math:`\beta_i` of a unitary gate acting on one qubit
@@ -13115,206 +11172,173 @@ Here beta_i is defined by
 Returns:
     CalculatorFloat
 """
-
     def mul(self) -> Operation:
         """
-Multiplies two compatible operations implementing OperateSingleQubitGate.
+        Multiplies two compatible operations implementing OperateSingleQubitGate.
 
-Does not consume the two operations being multiplied.
-Only Operations
+        Does not consume the two operations being multiplied.
+        Only Operations
 
-Args:
-    `other` - An Operation implementing [OperateSingleQubitGate].
+        Args:
+            `other` - An Operation implementing [OperateSingleQubitGate].
 
-Returns:
-    Operation: Result of the multiplication, i.e. the multiplied single qubit gate.
+        Returns:
+            Operation: Result of the multiplication, i.e. the multiplied single qubit gate.
 
-Example:
-```
-from qoqo.operations import RotateZ, RotateX
+        Example:
+        ```
+        from qoqo.operations import RotateZ, RotateX
 
-gate1 =  RotateZ(qubit=0, theta=1)
-gate2 = RotateX(qubit=0, theta=1)
-multiplied = gate1.mul(gate2)
-print("Multiplied gate: ", multiplied)
-```
-
-"""
-
+        gate1 =  RotateZ(qubit=0, theta=1)
+        gate2 = RotateX(qubit=0, theta=1)
+        multiplied = gate1.mul(gate2)
+        print("Multiplied gate: ", multiplied)
+        ```
+        """
     def unitary_matrix(self) -> numpy.ndarray:
         """
-Return unitary matrix of gate.
+        Return unitary matrix of gate.
 
-Returns:
-    np.ndarray: matrix of gate.
+        Returns:
+            np.ndarray: matrix of gate.
 
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix"""
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class PhaseDisplacement(Operation):
     """
-The single-mode phase-displacement gate with variable magnitude and phase.
+    The single-mode phase-displacement gate with variable magnitude and phase.
 
-Args:
-    mode (int): The mode the phase-shift gate is applied to.
-    displacement (CalculatorFloat): The magnitude by which to displace the mode.
-    phase (CalculatorFloat): The angle by which to displace the mode.
-"""
+    Args:
+        mode (int): The mode the phase-shift gate is applied to.
+        displacement (CalculatorFloat): The magnitude by which to displace the mode.
+        phase (CalculatorFloat): The angle by which to displace the mode."""
 
-    def __init__(self, mode: int, displacement: Union[float, str], phase: Union[float, str]):
-       return
-
+    def __init__(
+        self, mode: int, displacement: Union[float, str], phase: Union[float, str]
+    ):
+        return
     def displacement(self):
         """
-Returns value of attribute displacement
-"""
-
+        Returns value of attribute displacement"""
     def phase(self):
         """
-Returns value of attribute phase
-"""
-
+        Returns value of attribute phase"""
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def involved_modes(self) -> Union[Set[int], str]:
         """
-List of modes the operation acts on.
+        List of modes the operation acts on.
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def remap_modes(self, mapping: Dict[int, int]):
         """
-Remap the bosonic modes in copy of the operation.
+        Remap the bosonic modes in copy of the operation.
 
-Args:
-    mapping (Dict[int, int]): Mapping for bosonic modes in operation.
+        Args:
+            mapping (Dict[int, int]): Mapping for bosonic modes in operation.
 
-Returns:
-    self
+        Returns:
+            self
 
-Raises:
-    PyValueError: Remapping could not be performed
-"""
-
+        Raises:
+            PyValueError: Remapping could not be performed"""
     def mode(self):
         """
-Return `mode` the bosonic Operation acts on.
+        Return `mode` the bosonic Operation acts on.
 
-Returns:
-    int
-"""
-
+        Returns:
+            int"""
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class EchoCrossResonance(Operation):
     """
@@ -13337,1078 +11361,899 @@ Args:
     phi (CalculatorFloat): The rotation axis, in spherical coordinates :math:`\phi_{sph}`  gives the angle in the x-y plane.
 """
 
-    def __init__(self, control: int, target: int, theta: Union[float, str], phi: Union[float, str]):
-       return
-
+    def __init__(
+        self,
+        control: int,
+        target: int,
+        theta: Union[float, str],
+        phi: Union[float, str],
+    ):
+        return
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def control(self):
         """
-Returns control qubit of the two-qubit operation
-"""
-
+        Returns control qubit of the two-qubit operation"""
     def target(self):
         """
-Returns target qubit of the two-qubit operation
-"""
-
+        Returns target qubit of the two-qubit operation"""
     def unitary_matrix(self) -> numpy.ndarray:
         """
-Return unitary matrix of gate.
+        Return unitary matrix of gate.
 
-Returns:
-    np.ndarray: matrix of gate.
+        Returns:
+            np.ndarray: matrix of gate.
 
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix"""
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class PragmaAnnotatedOp(Operation):
     """
-An annotated Operation.
+    An annotated Operation.
 
-Args:
-    operation (Operation): - The Operation to be annotated.
-    annotation (str): - The annotation.
-"""
+    Args:
+        operation (Operation): - The Operation to be annotated.
+        annotation (str): - The annotation."""
 
     def __init__(self, operation: Operation, annotation: str):
-       return
-
+        return
     def operation(self) -> Operation:
         """
-Return the internal Operation.
+        Return the internal Operation.
 
-Returns:
-    Operation: The annotated Operation.
-"""
-
+        Returns:
+            Operation: The annotated Operation."""
     def annotation(self) -> str:
         """
-Return the annotation.
+        Return the annotation.
 
-Returns:
-    str: The annotation.
-"""
-
+        Returns:
+            str: The annotation."""
     def involved_qubits(self) -> Set[int]:
         """
-List all involved qubits.
+        List all involved qubits.
 
-Returns:
-    Set[int]: The involved qubits of the PRAGMA operation.
-"""
-
+        Returns:
+            Set[int]: The involved qubits of the PRAGMA operation."""
     def tags(self) -> List[str]:
         """
-Return tags classifying the type of the operation.
+        Return tags classifying the type of the operation.
 
-Used for the type based dispatch in ffi interfaces.
+        Used for the type based dispatch in ffi interfaces.
 
-Returns:
-    List[str]: The tags of the Operation.
-"""
-
+        Returns:
+            List[str]: The tags of the Operation."""
     def hqslang(self) -> str:
         """
-Return hqslang name of the operation.
+        Return hqslang name of the operation.
 
-Returns:
-    str: The hqslang name of the operation.
-"""
-
+        Returns:
+            str: The hqslang name of the operation."""
     def is_parametrized(self) -> bool:
         """
-Return true when the operation has symbolic parameters.
+        Return true when the operation has symbolic parameters.
 
-Returns:
-    bool: True if the operation contains symbolic parameters, False if it does not.
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> PragmaAnnotatedOp:
+        Returns:
+            bool: True if the operation contains symbolic parameters, False if it does not.
         """
-Substitute the symbolic parameters in a clone of the PRAGMA operation according to the input.
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> PragmaAnnotatedOp:
+        """
+        Substitute the symbolic parameters in a clone of the PRAGMA operation according to the input.
 
-Args:
-    substitution_parameters (Dict[str, float]): The dictionary containing the substitutions to use in the PRAGMA operation.
+        Args:
+            substitution_parameters (Dict[str, float]): The dictionary containing the substitutions to use in the PRAGMA operation.
 
-Returns:
-    self: The PRAGMA operation with the parameters substituted.
+        Returns:
+            self: The PRAGMA operation with the parameters substituted.
 
-Raises:
-    RuntimeError: The parameter substitution failed.
-"""
-
+        Raises:
+            RuntimeError: The parameter substitution failed."""
     def remap_qubits(self, mapping: Dict[int, int]) -> PragmaAnnotatedOp:
         """
-Remap qubits in a clone of the PRAGMA operation.
+        Remap qubits in a clone of the PRAGMA operation.
 
-Args:
-    mapping (Dict[int, int]): The dictionary containing the {qubit: qubit} mapping to use in the PRAGMA operation.
+        Args:
+            mapping (Dict[int, int]): The dictionary containing the {qubit: qubit} mapping to use in the PRAGMA operation.
 
-Returns:
-    self: The PRAGMA operation with the qubits remapped.
+        Returns:
+            self: The PRAGMA operation with the qubits remapped.
 
-Raises:
-    RuntimeError: The qubit remapping failed.
-"""
-
+        Raises:
+            RuntimeError: The qubit remapping failed."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
-
+        Returns:
+            str: The json schema serialized to json"""
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
 
 class QuantumRabi(Operation):
     """
-The quantum Rabi interaction exp(-i * θ * X * (b^† + b))
+    The quantum Rabi interaction exp(-i * θ * X * (b^† + b))
 
-Args:
-    qubit (int): The qubit the gate is applied to.
-    mode (int): The mode the gate is applied to.
-    theta (CalculatorFloat): The strength of the interaction.
-"""
+    Args:
+        qubit (int): The qubit the gate is applied to.
+        mode (int): The mode the gate is applied to.
+        theta (CalculatorFloat): The strength of the interaction."""
 
     def __init__(self, qubit: int, mode: int, theta: Union[float, str]):
-       return
-
+        return
     def theta(self):
         """
-Returns value of attribute theta
-"""
-
+        Returns value of attribute theta"""
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def qubit(self):
         """
-Return the qubit the operation acts on
+        Return the qubit the operation acts on
 
-Returns:
-    int
-"""
-
+        Returns:
+            int"""
     def involved_modes(self) -> Union[Set[int], str]:
         """
-List of modes the operation acts on.
+        List of modes the operation acts on.
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def remap_modes(self, mapping: Dict[int, int]):
         """
-Remap the bosonic modes in copy of the operation.
+        Remap the bosonic modes in copy of the operation.
 
-Args:
-    mapping (Dict[int, int]): Mapping for bosonic modes in operation.
+        Args:
+            mapping (Dict[int, int]): Mapping for bosonic modes in operation.
 
-Returns:
-    self
+        Returns:
+            self
 
-Raises:
-    PyValueError: Remapping could not be performed
-"""
-
+        Raises:
+            PyValueError: Remapping could not be performed"""
     def mode(self):
         """
-Return `mode` the bosonic Operation acts on.
+        Return `mode` the bosonic Operation acts on.
 
-Returns:
-    int
-"""
-
+        Returns:
+            int"""
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class LongitudinalCoupling(Operation):
     """
-Longitudinal coupling gate exp(-i * θ * Z * (b^† + b))
+    Longitudinal coupling gate exp(-i * θ * Z * (b^† + b))
 
-Args:
-    qubit (int): The qubit the gate is applied to.
-    mode (int): The mode the gate is applied to.
-    theta (CalculatorFloat): The strength of the interaction.
-"""
+    Args:
+        qubit (int): The qubit the gate is applied to.
+        mode (int): The mode the gate is applied to.
+        theta (CalculatorFloat): The strength of the interaction."""
 
     def __init__(self, qubit: int, mode: int, theta: Union[float, str]):
-       return
-
+        return
     def theta(self):
         """
-Returns value of attribute theta
-"""
-
+        Returns value of attribute theta"""
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def qubit(self):
         """
-Return the qubit the operation acts on
+        Return the qubit the operation acts on
 
-Returns:
-    int
-"""
-
+        Returns:
+            int"""
     def involved_modes(self) -> Union[Set[int], str]:
         """
-List of modes the operation acts on.
+        List of modes the operation acts on.
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def remap_modes(self, mapping: Dict[int, int]):
         """
-Remap the bosonic modes in copy of the operation.
+        Remap the bosonic modes in copy of the operation.
 
-Args:
-    mapping (Dict[int, int]): Mapping for bosonic modes in operation.
+        Args:
+            mapping (Dict[int, int]): Mapping for bosonic modes in operation.
 
-Returns:
-    self
+        Returns:
+            self
 
-Raises:
-    PyValueError: Remapping could not be performed
-"""
-
+        Raises:
+            PyValueError: Remapping could not be performed"""
     def mode(self):
         """
-Return `mode` the bosonic Operation acts on.
+        Return `mode` the bosonic Operation acts on.
 
-Returns:
-    int
-"""
-
+        Returns:
+            int"""
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class JaynesCummings(Operation):
     """
-The Jaynes-Cummings gate exp(-i * θ * (σ^- * b^† + σ^+ * b))
+    The Jaynes-Cummings gate exp(-i * θ * (σ^- * b^† + σ^+ * b))
 
-Args:
-    qubit (int): The qubit the gate is applied to.
-    mode (int): The mode the gate is applied to.
-    theta (CalculatorFloat): The strength of the interaction.
-"""
+    Args:
+        qubit (int): The qubit the gate is applied to.
+        mode (int): The mode the gate is applied to.
+        theta (CalculatorFloat): The strength of the interaction."""
 
     def __init__(self, qubit: int, mode: int, theta: Union[float, str]):
-       return
-
+        return
     def theta(self):
         """
-Returns value of attribute theta
-"""
-
+        Returns value of attribute theta"""
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def qubit(self):
         """
-Return the qubit the operation acts on
+        Return the qubit the operation acts on
 
-Returns:
-    int
-"""
-
+        Returns:
+            int"""
     def involved_modes(self) -> Union[Set[int], str]:
         """
-List of modes the operation acts on.
+        List of modes the operation acts on.
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def remap_modes(self, mapping: Dict[int, int]):
         """
-Remap the bosonic modes in copy of the operation.
+        Remap the bosonic modes in copy of the operation.
 
-Args:
-    mapping (Dict[int, int]): Mapping for bosonic modes in operation.
+        Args:
+            mapping (Dict[int, int]): Mapping for bosonic modes in operation.
 
-Returns:
-    self
+        Returns:
+            self
 
-Raises:
-    PyValueError: Remapping could not be performed
-"""
-
+        Raises:
+            PyValueError: Remapping could not be performed"""
     def mode(self):
         """
-Return `mode` the bosonic Operation acts on.
+        Return `mode` the bosonic Operation acts on.
 
-Returns:
-    int
-"""
-
+        Returns:
+            int"""
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class SingleExcitationStore(Operation):
     """
-Stores a single excitation from the involved qubit into the involved bosonic mode as follows
-|0⟩_B ⨂ (a |0⟩_Q + b |1⟩_Q) -> (a|0⟩_B + b |1⟩_B ) ⨂ |0⟩_Q
+    Stores a single excitation from the involved qubit into the involved bosonic mode as follows
+    |0⟩_B ⨂ (a |0⟩_Q + b |1⟩_Q) -> (a|0⟩_B + b |1⟩_B ) ⨂ |0⟩_Q
 
-Note: not defined if the bosonic mode is in a state |n⟩ with n != 0
+    Note: not defined if the bosonic mode is in a state |n⟩ with n != 0
 
-Args:
-    qubit (int): The qubit the gate is applied to.
-    mode (int): The mode the gate is applied to.
-"""
+    Args:
+        qubit (int): The qubit the gate is applied to.
+        mode (int): The mode the gate is applied to."""
 
     def __init__(self, qubit: int, mode: int):
-       return
-
+        return
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def qubit(self):
         """
-Return the qubit the operation acts on
+        Return the qubit the operation acts on
 
-Returns:
-    int
-"""
-
+        Returns:
+            int"""
     def involved_modes(self) -> Union[Set[int], str]:
         """
-List of modes the operation acts on.
+        List of modes the operation acts on.
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def remap_modes(self, mapping: Dict[int, int]):
         """
-Remap the bosonic modes in copy of the operation.
+        Remap the bosonic modes in copy of the operation.
 
-Args:
-    mapping (Dict[int, int]): Mapping for bosonic modes in operation.
+        Args:
+            mapping (Dict[int, int]): Mapping for bosonic modes in operation.
 
-Returns:
-    self
+        Returns:
+            self
 
-Raises:
-    PyValueError: Remapping could not be performed
-"""
-
+        Raises:
+            PyValueError: Remapping could not be performed"""
     def mode(self):
         """
-Return `mode` the bosonic Operation acts on.
+        Return `mode` the bosonic Operation acts on.
 
-Returns:
-    int
-"""
-
+        Returns:
+            int"""
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class SingleExcitationLoad(Operation):
     """
-Loads a single excitation from a bosonic mode into a qubit as follows
-(c1 |0⟩_B + c2 |1⟩_B) ⨂ |0⟩_Q -> |0⟩_B ⨂ (c1 |0⟩_Q + c2 |1⟩_Q)
+    Loads a single excitation from a bosonic mode into a qubit as follows
+    (c1 |0⟩_B + c2 |1⟩_B) ⨂ |0⟩_Q -> |0⟩_B ⨂ (c1 |0⟩_Q + c2 |1⟩_Q)
 
-Note: if the initial qubit state is |1⟩_Q the operation is only defined if c2 = 0
+    Note: if the initial qubit state is |1⟩_Q the operation is only defined if c2 = 0
 
-Args:
-    qubit (int): The qubit the gate is applied to.
-    mode (int): The mode the gate is applied to.
-"""
+    Args:
+        qubit (int): The qubit the gate is applied to.
+        mode (int): The mode the gate is applied to."""
 
     def __init__(self, qubit: int, mode: int):
-       return
-
+        return
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def qubit(self):
         """
-Return the qubit the operation acts on
+        Return the qubit the operation acts on
 
-Returns:
-    int
-"""
-
+        Returns:
+            int"""
     def involved_modes(self) -> Union[Set[int], str]:
         """
-List of modes the operation acts on.
+        List of modes the operation acts on.
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def remap_modes(self, mapping: Dict[int, int]):
         """
-Remap the bosonic modes in copy of the operation.
+        Remap the bosonic modes in copy of the operation.
 
-Args:
-    mapping (Dict[int, int]): Mapping for bosonic modes in operation.
+        Args:
+            mapping (Dict[int, int]): Mapping for bosonic modes in operation.
 
-Returns:
-    self
+        Returns:
+            self
 
-Raises:
-    PyValueError: Remapping could not be performed
-"""
-
+        Raises:
+            PyValueError: Remapping could not be performed"""
     def mode(self):
         """
-Return `mode` the bosonic Operation acts on.
+        Return `mode` the bosonic Operation acts on.
 
-Returns:
-    int
-"""
-
+        Returns:
+            int"""
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class CZQubitResonator(Operation):
     """
-Controlled-Z operation between a qubit and a bosonic mode, where the two-dimensional subspace of
-the bosonic mode spanned by the occupation number states |0⟩_B and |1⟩_B is considered
-as the second qubit involved in the CZ operation.
+    Controlled-Z operation between a qubit and a bosonic mode, where the two-dimensional subspace of
+    the bosonic mode spanned by the occupation number states |0⟩_B and |1⟩_B is considered
+    as the second qubit involved in the CZ operation.
 
-Args:
-    qubit (int): The qubit the gate is applied to.
-    mode (int): The mode the gate is applied to.
-"""
+    Args:
+        qubit (int): The qubit the gate is applied to.
+        mode (int): The mode the gate is applied to."""
 
     def __init__(self, qubit: int, mode: int):
-       return
-
+        return
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def qubit(self):
         """
-Return the qubit the operation acts on
+        Return the qubit the operation acts on
 
-Returns:
-    int
-"""
-
+        Returns:
+            int"""
     def involved_modes(self) -> Union[Set[int], str]:
         """
-List of modes the operation acts on.
+        List of modes the operation acts on.
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def remap_modes(self, mapping: Dict[int, int]):
         """
-Remap the bosonic modes in copy of the operation.
+        Remap the bosonic modes in copy of the operation.
 
-Args:
-    mapping (Dict[int, int]): Mapping for bosonic modes in operation.
+        Args:
+            mapping (Dict[int, int]): Mapping for bosonic modes in operation.
 
-Returns:
-    self
+        Returns:
+            self
 
-Raises:
-    PyValueError: Remapping could not be performed
-"""
-
+        Raises:
+            PyValueError: Remapping could not be performed"""
     def mode(self):
         """
-Return `mode` the bosonic Operation acts on.
+        Return `mode` the bosonic Operation acts on.
 
-Returns:
-    int
-"""
-
+        Returns:
+            int"""
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class SqrtPauliY(Operation):
     """
@@ -14426,79 +12271,67 @@ Args:
 """
 
     def __init__(self, qubit: int):
-       return
-
+        return
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def qubit(self):
         """
-Return the qubit the operation acts on
+        Return the qubit the operation acts on
 
-Returns:
-    int
-"""
-
+        Returns:
+            int"""
     def global_phase(self):
         """
 Return the global phase :math:`g` of a unitary gate acting on one qubit
@@ -14514,7 +12347,6 @@ Here global_phase is defined by
 Returns:
     CalculatorFloat
 """
-
     def alpha_r(self):
         """
 Return the property alpha_r :math:`\alpha_r` of a unitary gate acting on one qubit
@@ -14530,7 +12362,6 @@ Here alpha_r is defined by
 Returns:
     CalculatorFloat
 """
-
     def alpha_i(self):
         """
 Return the property alpha_i :math:`\alpha_i` of a unitary gate acting on one qubit
@@ -14544,7 +12375,6 @@ Return the property alpha_i :math:`\alpha_i` of a unitary gate acting on one qub
 Returns:
     CalculatorFloat
 """
-
     def beta_r(self):
         """
 Return the property beta_r :math:`\beta_r` of a unitary gate acting on one qubit
@@ -14560,7 +12390,6 @@ Here beta_r is defined by
 Returns:
     CalculatorFloat
 """
-
     def beta_i(self):
         """
 Returns the property beta_i :math:`\beta_i` of a unitary gate acting on one qubit
@@ -14577,66 +12406,56 @@ Here beta_i is defined by
 Returns:
     CalculatorFloat
 """
-
     def mul(self) -> Operation:
         """
-Multiplies two compatible operations implementing OperateSingleQubitGate.
+        Multiplies two compatible operations implementing OperateSingleQubitGate.
 
-Does not consume the two operations being multiplied.
-Only Operations
+        Does not consume the two operations being multiplied.
+        Only Operations
 
-Args:
-    `other` - An Operation implementing [OperateSingleQubitGate].
+        Args:
+            `other` - An Operation implementing [OperateSingleQubitGate].
 
-Returns:
-    Operation: Result of the multiplication, i.e. the multiplied single qubit gate.
+        Returns:
+            Operation: Result of the multiplication, i.e. the multiplied single qubit gate.
 
-Example:
-```
-from qoqo.operations import RotateZ, RotateX
+        Example:
+        ```
+        from qoqo.operations import RotateZ, RotateX
 
-gate1 =  RotateZ(qubit=0, theta=1)
-gate2 = RotateX(qubit=0, theta=1)
-multiplied = gate1.mul(gate2)
-print("Multiplied gate: ", multiplied)
-```
-
-"""
-
+        gate1 =  RotateZ(qubit=0, theta=1)
+        gate2 = RotateX(qubit=0, theta=1)
+        multiplied = gate1.mul(gate2)
+        print("Multiplied gate: ", multiplied)
+        ```
+        """
     def unitary_matrix(self) -> numpy.ndarray:
         """
-Return unitary matrix of gate.
+        Return unitary matrix of gate.
 
-Returns:
-    np.ndarray: matrix of gate.
+        Returns:
+            np.ndarray: matrix of gate.
 
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix"""
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class InvSqrtPauliY(Operation):
     """
@@ -14654,79 +12473,67 @@ Args:
 """
 
     def __init__(self, qubit: int):
-       return
-
+        return
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def qubit(self):
         """
-Return the qubit the operation acts on
+        Return the qubit the operation acts on
 
-Returns:
-    int
-"""
-
+        Returns:
+            int"""
     def global_phase(self):
         """
 Return the global phase :math:`g` of a unitary gate acting on one qubit
@@ -14742,7 +12549,6 @@ Here global_phase is defined by
 Returns:
     CalculatorFloat
 """
-
     def alpha_r(self):
         """
 Return the property alpha_r :math:`\alpha_r` of a unitary gate acting on one qubit
@@ -14758,7 +12564,6 @@ Here alpha_r is defined by
 Returns:
     CalculatorFloat
 """
-
     def alpha_i(self):
         """
 Return the property alpha_i :math:`\alpha_i` of a unitary gate acting on one qubit
@@ -14772,7 +12577,6 @@ Return the property alpha_i :math:`\alpha_i` of a unitary gate acting on one qub
 Returns:
     CalculatorFloat
 """
-
     def beta_r(self):
         """
 Return the property beta_r :math:`\beta_r` of a unitary gate acting on one qubit
@@ -14788,7 +12592,6 @@ Here beta_r is defined by
 Returns:
     CalculatorFloat
 """
-
     def beta_i(self):
         """
 Returns the property beta_i :math:`\beta_i` of a unitary gate acting on one qubit
@@ -14805,66 +12608,56 @@ Here beta_i is defined by
 Returns:
     CalculatorFloat
 """
-
     def mul(self) -> Operation:
         """
-Multiplies two compatible operations implementing OperateSingleQubitGate.
+        Multiplies two compatible operations implementing OperateSingleQubitGate.
 
-Does not consume the two operations being multiplied.
-Only Operations
+        Does not consume the two operations being multiplied.
+        Only Operations
 
-Args:
-    `other` - An Operation implementing [OperateSingleQubitGate].
+        Args:
+            `other` - An Operation implementing [OperateSingleQubitGate].
 
-Returns:
-    Operation: Result of the multiplication, i.e. the multiplied single qubit gate.
+        Returns:
+            Operation: Result of the multiplication, i.e. the multiplied single qubit gate.
 
-Example:
-```
-from qoqo.operations import RotateZ, RotateX
+        Example:
+        ```
+        from qoqo.operations import RotateZ, RotateX
 
-gate1 =  RotateZ(qubit=0, theta=1)
-gate2 = RotateX(qubit=0, theta=1)
-multiplied = gate1.mul(gate2)
-print("Multiplied gate: ", multiplied)
-```
-
-"""
-
+        gate1 =  RotateZ(qubit=0, theta=1)
+        gate2 = RotateX(qubit=0, theta=1)
+        multiplied = gate1.mul(gate2)
+        print("Multiplied gate: ", multiplied)
+        ```
+        """
     def unitary_matrix(self) -> numpy.ndarray:
         """
-Return unitary matrix of gate.
+        Return unitary matrix of gate.
 
-Returns:
-    np.ndarray: matrix of gate.
+        Returns:
+            np.ndarray: matrix of gate.
 
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix"""
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class InvSGate(Operation):
     """
@@ -14882,79 +12675,67 @@ Args:
 """
 
     def __init__(self, qubit: int):
-       return
-
+        return
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def qubit(self):
         """
-Return the qubit the operation acts on
+        Return the qubit the operation acts on
 
-Returns:
-    int
-"""
-
+        Returns:
+            int"""
     def global_phase(self):
         """
 Return the global phase :math:`g` of a unitary gate acting on one qubit
@@ -14970,7 +12751,6 @@ Here global_phase is defined by
 Returns:
     CalculatorFloat
 """
-
     def alpha_r(self):
         """
 Return the property alpha_r :math:`\alpha_r` of a unitary gate acting on one qubit
@@ -14986,7 +12766,6 @@ Here alpha_r is defined by
 Returns:
     CalculatorFloat
 """
-
     def alpha_i(self):
         """
 Return the property alpha_i :math:`\alpha_i` of a unitary gate acting on one qubit
@@ -15000,7 +12779,6 @@ Return the property alpha_i :math:`\alpha_i` of a unitary gate acting on one qub
 Returns:
     CalculatorFloat
 """
-
     def beta_r(self):
         """
 Return the property beta_r :math:`\beta_r` of a unitary gate acting on one qubit
@@ -15016,7 +12794,6 @@ Here beta_r is defined by
 Returns:
     CalculatorFloat
 """
-
     def beta_i(self):
         """
 Returns the property beta_i :math:`\beta_i` of a unitary gate acting on one qubit
@@ -15033,66 +12810,56 @@ Here beta_i is defined by
 Returns:
     CalculatorFloat
 """
-
     def mul(self) -> Operation:
         """
-Multiplies two compatible operations implementing OperateSingleQubitGate.
+        Multiplies two compatible operations implementing OperateSingleQubitGate.
 
-Does not consume the two operations being multiplied.
-Only Operations
+        Does not consume the two operations being multiplied.
+        Only Operations
 
-Args:
-    `other` - An Operation implementing [OperateSingleQubitGate].
+        Args:
+            `other` - An Operation implementing [OperateSingleQubitGate].
 
-Returns:
-    Operation: Result of the multiplication, i.e. the multiplied single qubit gate.
+        Returns:
+            Operation: Result of the multiplication, i.e. the multiplied single qubit gate.
 
-Example:
-```
-from qoqo.operations import RotateZ, RotateX
+        Example:
+        ```
+        from qoqo.operations import RotateZ, RotateX
 
-gate1 =  RotateZ(qubit=0, theta=1)
-gate2 = RotateX(qubit=0, theta=1)
-multiplied = gate1.mul(gate2)
-print("Multiplied gate: ", multiplied)
-```
-
-"""
-
+        gate1 =  RotateZ(qubit=0, theta=1)
+        gate2 = RotateX(qubit=0, theta=1)
+        multiplied = gate1.mul(gate2)
+        print("Multiplied gate: ", multiplied)
+        ```
+        """
     def unitary_matrix(self) -> numpy.ndarray:
         """
-Return unitary matrix of gate.
+        Return unitary matrix of gate.
 
-Returns:
-    np.ndarray: matrix of gate.
+        Returns:
+            np.ndarray: matrix of gate.
 
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix"""
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class InvTGate(Operation):
     """
@@ -15110,79 +12877,67 @@ Args:
 """
 
     def __init__(self, qubit: int):
-       return
-
+        return
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def qubit(self):
         """
-Return the qubit the operation acts on
+        Return the qubit the operation acts on
 
-Returns:
-    int
-"""
-
+        Returns:
+            int"""
     def global_phase(self):
         """
 Return the global phase :math:`g` of a unitary gate acting on one qubit
@@ -15198,7 +12953,6 @@ Here global_phase is defined by
 Returns:
     CalculatorFloat
 """
-
     def alpha_r(self):
         """
 Return the property alpha_r :math:`\alpha_r` of a unitary gate acting on one qubit
@@ -15214,7 +12968,6 @@ Here alpha_r is defined by
 Returns:
     CalculatorFloat
 """
-
     def alpha_i(self):
         """
 Return the property alpha_i :math:`\alpha_i` of a unitary gate acting on one qubit
@@ -15228,7 +12981,6 @@ Return the property alpha_i :math:`\alpha_i` of a unitary gate acting on one qub
 Returns:
     CalculatorFloat
 """
-
     def beta_r(self):
         """
 Return the property beta_r :math:`\beta_r` of a unitary gate acting on one qubit
@@ -15244,7 +12996,6 @@ Here beta_r is defined by
 Returns:
     CalculatorFloat
 """
-
     def beta_i(self):
         """
 Returns the property beta_i :math:`\beta_i` of a unitary gate acting on one qubit
@@ -15261,66 +13012,56 @@ Here beta_i is defined by
 Returns:
     CalculatorFloat
 """
-
     def mul(self) -> Operation:
         """
-Multiplies two compatible operations implementing OperateSingleQubitGate.
+        Multiplies two compatible operations implementing OperateSingleQubitGate.
 
-Does not consume the two operations being multiplied.
-Only Operations
+        Does not consume the two operations being multiplied.
+        Only Operations
 
-Args:
-    `other` - An Operation implementing [OperateSingleQubitGate].
+        Args:
+            `other` - An Operation implementing [OperateSingleQubitGate].
 
-Returns:
-    Operation: Result of the multiplication, i.e. the multiplied single qubit gate.
+        Returns:
+            Operation: Result of the multiplication, i.e. the multiplied single qubit gate.
 
-Example:
-```
-from qoqo.operations import RotateZ, RotateX
+        Example:
+        ```
+        from qoqo.operations import RotateZ, RotateX
 
-gate1 =  RotateZ(qubit=0, theta=1)
-gate2 = RotateX(qubit=0, theta=1)
-multiplied = gate1.mul(gate2)
-print("Multiplied gate: ", multiplied)
-```
-
-"""
-
+        gate1 =  RotateZ(qubit=0, theta=1)
+        gate2 = RotateX(qubit=0, theta=1)
+        multiplied = gate1.mul(gate2)
+        print("Multiplied gate: ", multiplied)
+        ```
+        """
     def unitary_matrix(self) -> numpy.ndarray:
         """
-Return unitary matrix of gate.
+        Return unitary matrix of gate.
 
-Returns:
-    np.ndarray: matrix of gate.
+        Returns:
+            np.ndarray: matrix of gate.
 
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix"""
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class SXGate(Operation):
     """
@@ -15338,79 +13079,67 @@ Args:
 """
 
     def __init__(self, qubit: int):
-       return
-
+        return
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def qubit(self):
         """
-Return the qubit the operation acts on
+        Return the qubit the operation acts on
 
-Returns:
-    int
-"""
-
+        Returns:
+            int"""
     def global_phase(self):
         """
 Return the global phase :math:`g` of a unitary gate acting on one qubit
@@ -15426,7 +13155,6 @@ Here global_phase is defined by
 Returns:
     CalculatorFloat
 """
-
     def alpha_r(self):
         """
 Return the property alpha_r :math:`\alpha_r` of a unitary gate acting on one qubit
@@ -15442,7 +13170,6 @@ Here alpha_r is defined by
 Returns:
     CalculatorFloat
 """
-
     def alpha_i(self):
         """
 Return the property alpha_i :math:`\alpha_i` of a unitary gate acting on one qubit
@@ -15456,7 +13183,6 @@ Return the property alpha_i :math:`\alpha_i` of a unitary gate acting on one qub
 Returns:
     CalculatorFloat
 """
-
     def beta_r(self):
         """
 Return the property beta_r :math:`\beta_r` of a unitary gate acting on one qubit
@@ -15472,7 +13198,6 @@ Here beta_r is defined by
 Returns:
     CalculatorFloat
 """
-
     def beta_i(self):
         """
 Returns the property beta_i :math:`\beta_i` of a unitary gate acting on one qubit
@@ -15489,66 +13214,56 @@ Here beta_i is defined by
 Returns:
     CalculatorFloat
 """
-
     def mul(self) -> Operation:
         """
-Multiplies two compatible operations implementing OperateSingleQubitGate.
+        Multiplies two compatible operations implementing OperateSingleQubitGate.
 
-Does not consume the two operations being multiplied.
-Only Operations
+        Does not consume the two operations being multiplied.
+        Only Operations
 
-Args:
-    `other` - An Operation implementing [OperateSingleQubitGate].
+        Args:
+            `other` - An Operation implementing [OperateSingleQubitGate].
 
-Returns:
-    Operation: Result of the multiplication, i.e. the multiplied single qubit gate.
+        Returns:
+            Operation: Result of the multiplication, i.e. the multiplied single qubit gate.
 
-Example:
-```
-from qoqo.operations import RotateZ, RotateX
+        Example:
+        ```
+        from qoqo.operations import RotateZ, RotateX
 
-gate1 =  RotateZ(qubit=0, theta=1)
-gate2 = RotateX(qubit=0, theta=1)
-multiplied = gate1.mul(gate2)
-print("Multiplied gate: ", multiplied)
-```
-
-"""
-
+        gate1 =  RotateZ(qubit=0, theta=1)
+        gate2 = RotateX(qubit=0, theta=1)
+        multiplied = gate1.mul(gate2)
+        print("Multiplied gate: ", multiplied)
+        ```
+        """
     def unitary_matrix(self) -> numpy.ndarray:
         """
-Return unitary matrix of gate.
+        Return unitary matrix of gate.
 
-Returns:
-    np.ndarray: matrix of gate.
+        Returns:
+            np.ndarray: matrix of gate.
 
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix"""
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class InvSXGate(Operation):
     """
@@ -15566,79 +13281,67 @@ Args:
 """
 
     def __init__(self, qubit: int):
-       return
-
+        return
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def qubit(self):
         """
-Return the qubit the operation acts on
+        Return the qubit the operation acts on
 
-Returns:
-    int
-"""
-
+        Returns:
+            int"""
     def global_phase(self):
         """
 Return the global phase :math:`g` of a unitary gate acting on one qubit
@@ -15654,7 +13357,6 @@ Here global_phase is defined by
 Returns:
     CalculatorFloat
 """
-
     def alpha_r(self):
         """
 Return the property alpha_r :math:`\alpha_r` of a unitary gate acting on one qubit
@@ -15670,7 +13372,6 @@ Here alpha_r is defined by
 Returns:
     CalculatorFloat
 """
-
     def alpha_i(self):
         """
 Return the property alpha_i :math:`\alpha_i` of a unitary gate acting on one qubit
@@ -15684,7 +13385,6 @@ Return the property alpha_i :math:`\alpha_i` of a unitary gate acting on one qub
 Returns:
     CalculatorFloat
 """
-
     def beta_r(self):
         """
 Return the property beta_r :math:`\beta_r` of a unitary gate acting on one qubit
@@ -15700,7 +13400,6 @@ Here beta_r is defined by
 Returns:
     CalculatorFloat
 """
-
     def beta_i(self):
         """
 Returns the property beta_i :math:`\beta_i` of a unitary gate acting on one qubit
@@ -15717,476 +13416,380 @@ Here beta_i is defined by
 Returns:
     CalculatorFloat
 """
-
     def mul(self) -> Operation:
         """
-Multiplies two compatible operations implementing OperateSingleQubitGate.
+        Multiplies two compatible operations implementing OperateSingleQubitGate.
 
-Does not consume the two operations being multiplied.
-Only Operations
+        Does not consume the two operations being multiplied.
+        Only Operations
 
-Args:
-    `other` - An Operation implementing [OperateSingleQubitGate].
+        Args:
+            `other` - An Operation implementing [OperateSingleQubitGate].
 
-Returns:
-    Operation: Result of the multiplication, i.e. the multiplied single qubit gate.
+        Returns:
+            Operation: Result of the multiplication, i.e. the multiplied single qubit gate.
 
-Example:
-```
-from qoqo.operations import RotateZ, RotateX
+        Example:
+        ```
+        from qoqo.operations import RotateZ, RotateX
 
-gate1 =  RotateZ(qubit=0, theta=1)
-gate2 = RotateX(qubit=0, theta=1)
-multiplied = gate1.mul(gate2)
-print("Multiplied gate: ", multiplied)
-```
-
-"""
-
+        gate1 =  RotateZ(qubit=0, theta=1)
+        gate2 = RotateX(qubit=0, theta=1)
+        multiplied = gate1.mul(gate2)
+        print("Multiplied gate: ", multiplied)
+        ```
+        """
     def unitary_matrix(self) -> numpy.ndarray:
         """
-Return unitary matrix of gate.
+        Return unitary matrix of gate.
 
-Returns:
-    np.ndarray: matrix of gate.
+        Returns:
+            np.ndarray: matrix of gate.
 
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix"""
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class TripleControlledPauliX(Operation):
     """
-The triple-controlled PauliX gate.
-
-"""
+    The triple-controlled PauliX gate.
+    """
 
     def __init__(self):
-       return
-
+        return
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def control_0(self):
         """
-Returns control_0 qubit of the four-qubit operation
-"""
-
+        Returns control_0 qubit of the four-qubit operation"""
     def control_1(self):
         """
-Returns control_1 qubit of the four-qubit operation
-"""
-
+        Returns control_1 qubit of the four-qubit operation"""
     def control_2(self):
         """
-Returns control_2 qubit of the four-qubit operation
-"""
-
+        Returns control_2 qubit of the four-qubit operation"""
     def target(self):
         """
-Returns target qubit of the four-qubit operation
-"""
-
+        Returns target qubit of the four-qubit operation"""
     def circuit(self):
         """
-Returns circuit implementing the FourQubitGateOperation
+        Returns circuit implementing the FourQubitGateOperation
 
-Returns:
-    Circuit
-"""
-
+        Returns:
+            Circuit"""
     def unitary_matrix(self) -> numpy.ndarray:
         """
-Return unitary matrix of gate.
+        Return unitary matrix of gate.
 
-Returns:
-    np.ndarray: matrix of gate.
+        Returns:
+            np.ndarray: matrix of gate.
 
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix"""
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class TripleControlledPauliZ(Operation):
     """
-The triple-controlled PauliZ gate.
-
-"""
+    The triple-controlled PauliZ gate.
+    """
 
     def __init__(self):
-       return
-
+        return
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def control_0(self):
         """
-Returns control_0 qubit of the four-qubit operation
-"""
-
+        Returns control_0 qubit of the four-qubit operation"""
     def control_1(self):
         """
-Returns control_1 qubit of the four-qubit operation
-"""
-
+        Returns control_1 qubit of the four-qubit operation"""
     def control_2(self):
         """
-Returns control_2 qubit of the four-qubit operation
-"""
-
+        Returns control_2 qubit of the four-qubit operation"""
     def target(self):
         """
-Returns target qubit of the four-qubit operation
-"""
-
+        Returns target qubit of the four-qubit operation"""
     def circuit(self):
         """
-Returns circuit implementing the FourQubitGateOperation
+        Returns circuit implementing the FourQubitGateOperation
 
-Returns:
-    Circuit
-"""
-
+        Returns:
+            Circuit"""
     def unitary_matrix(self) -> numpy.ndarray:
         """
-Return unitary matrix of gate.
+        Return unitary matrix of gate.
 
-Returns:
-    np.ndarray: matrix of gate.
+        Returns:
+            np.ndarray: matrix of gate.
 
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix"""
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class TripleControlledPhaseShift(Operation):
     """
-The triple-controlled PhaseShift gate.
-
-"""
+    The triple-controlled PhaseShift gate.
+    """
 
     def __init__(self):
-       return
-
+        return
     def theta(self):
         """
-Returns value of attribute theta
-"""
-
+        Returns value of attribute theta"""
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def control_0(self):
         """
-Returns control_0 qubit of the four-qubit operation
-"""
-
+        Returns control_0 qubit of the four-qubit operation"""
     def control_1(self):
         """
-Returns control_1 qubit of the four-qubit operation
-"""
-
+        Returns control_1 qubit of the four-qubit operation"""
     def control_2(self):
         """
-Returns control_2 qubit of the four-qubit operation
-"""
-
+        Returns control_2 qubit of the four-qubit operation"""
     def target(self):
         """
-Returns target qubit of the four-qubit operation
-"""
-
+        Returns target qubit of the four-qubit operation"""
     def circuit(self):
         """
-Returns circuit implementing the FourQubitGateOperation
+        Returns circuit implementing the FourQubitGateOperation
 
-Returns:
-    Circuit
-"""
-
+        Returns:
+            Circuit"""
     def unitary_matrix(self) -> numpy.ndarray:
         """
-Return unitary matrix of gate.
+        Return unitary matrix of gate.
 
-Returns:
-    np.ndarray: matrix of gate.
+        Returns:
+            np.ndarray: matrix of gate.
 
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix"""
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class ControlledSWAP(Operation):
     """
@@ -16211,128 +13814,103 @@ Args:
 """
 
     def __init__(self, control: int, target_0: int, target_1: int):
-       return
-
+        return
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits in the ControlledSWAP operation
+        Remap qubits in the ControlledSWAP operation
 
-Args:
-    mapping (Dict[int, int]): The mapping to be used in the remapping.
+        Args:
+            mapping (Dict[int, int]): The mapping to be used in the remapping.
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved qubits in the ControlledSWAP operation.
+        List all involved qubits in the ControlledSWAP operation.
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def control(self):
         """
-Returns control qubit of the three-qubit operation
-"""
-
+        Returns control qubit of the three-qubit operation"""
     def target_0(self):
         """
-Returns target_0 qubit of the three-qubit operation
-"""
-
+        Returns target_0 qubit of the three-qubit operation"""
     def target_1(self):
         """
-Returns target_1 qubit of the three-qubit operation
-"""
-
+        Returns target_1 qubit of the three-qubit operation"""
     def circuit(self):
         """
-Returns circuit implementing the ThreeQubitGateOperation
+        Returns circuit implementing the ThreeQubitGateOperation
 
-Returns:
-    Circuit
-"""
-
+        Returns:
+            Circuit"""
     def unitary_matrix(self) -> numpy.ndarray:
         """
-Return unitary matrix of gate.
+        Return unitary matrix of gate.
 
-Returns:
-    np.ndarray: matrix of gate.
+        Returns:
+            np.ndarray: matrix of gate.
 
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix"""
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class PhaseShiftedControlledControlledZ(Operation):
     """
@@ -16360,134 +13938,109 @@ Args:
 
 """
 
-    def __init__(self, control_0: int, control_1: int, target: int, phi: Union[float, str]):
-       return
-
+    def __init__(
+        self, control_0: int, control_1: int, target: int, phi: Union[float, str]
+    ):
+        return
     def phi(self):
         """
-Returns value of attribute phi
-"""
-
+        Returns value of attribute phi"""
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def control_0(self):
         """
-Returns control_0 qubit of the three-qubit operation
-"""
-
+        Returns control_0 qubit of the three-qubit operation"""
     def control_1(self):
         """
-Returns control_1 qubit of the three-qubit operation
-"""
-
+        Returns control_1 qubit of the three-qubit operation"""
     def target(self):
         """
-Returns target qubit of the three-qubit operation
-"""
-
+        Returns target qubit of the three-qubit operation"""
     def circuit(self):
         """
-Returns circuit implementing the ThreeQubitGateOperation
+        Returns circuit implementing the ThreeQubitGateOperation
 
-Returns:
-    Circuit
-"""
-
+        Returns:
+            Circuit"""
     def unitary_matrix(self) -> numpy.ndarray:
         """
-Return unitary matrix of gate.
+        Return unitary matrix of gate.
 
-Returns:
-    np.ndarray: matrix of gate.
+        Returns:
+            np.ndarray: matrix of gate.
 
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix"""
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
+        Returns:
+            str: The json schema serialized to json"""
 
 class PhaseShiftedControlledControlledPhase(Operation):
     """
@@ -16516,149 +14069,124 @@ Args:
 
 """
 
-    def __init__(self, control_0: int, control_1: int, target: int, phi: Union[float, str], theta: Union[float, str]):
-       return
-
+    def __init__(
+        self,
+        control_0: int,
+        control_1: int,
+        target: int,
+        phi: Union[float, str],
+        theta: Union[float, str],
+    ):
+        return
     def theta(self):
         """
-Returns value of attribute theta
-"""
-
+        Returns value of attribute theta"""
     def phi(self):
         """
-Returns value of attribute phi
-"""
-
+        Returns value of attribute phi"""
     def is_parametrized(self) -> bool:
         """
-Returns true if operation contains symbolic parameters
+        Returns true if operation contains symbolic parameters
 
-Returns:
-    bool: Whether or not the operation contains symbolic parameters.
-"""
-
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters."""
     def tags(self) -> List[str]:
         """
-Returns tags identifying the Operation
+        Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
+        Returns:
+            List[str]: The tags identifying the operation"""
     def hqslang(self) -> str:
         """
-Returns hqslang name of Operation
+        Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:
+        Returns:
+            str: The name"""
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
-Substitutes internal symbolic parameters with float values
+        Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
 
-Returns:
-    Operation: The operation with the parameters substituted
+        Returns:
+            Operation: The operation with the parameters substituted
 
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
+        Raises:
+            RuntimeError: Parameter Substitution failed"""
     def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
+        Raises:
+            RuntimeError: Qubit remapping failed"""
     def involved_qubits(self) -> Union[Set[int], str]:
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
     def control_0(self):
         """
-Returns control_0 qubit of the three-qubit operation
-"""
-
+        Returns control_0 qubit of the three-qubit operation"""
     def control_1(self):
         """
-Returns control_1 qubit of the three-qubit operation
-"""
-
+        Returns control_1 qubit of the three-qubit operation"""
     def target(self):
         """
-Returns target qubit of the three-qubit operation
-"""
-
+        Returns target qubit of the three-qubit operation"""
     def circuit(self):
         """
-Returns circuit implementing the ThreeQubitGateOperation
+        Returns circuit implementing the ThreeQubitGateOperation
 
-Returns:
-    Circuit
-"""
-
+        Returns:
+            Circuit"""
     def unitary_matrix(self) -> numpy.ndarray:
         """
-Return unitary matrix of gate.
+        Return unitary matrix of gate.
 
-Returns:
-    np.ndarray: matrix of gate.
+        Returns:
+            np.ndarray: matrix of gate.
 
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix"""
     def powercf(self) -> PhaseShiftedControlledControlledPhase:
         """
-Returns Rotated gate raised to power
+        Returns Rotated gate raised to power
 
-Args:
-    `power`(CalculatorFloat): exponent of the power operation.
+        Args:
+            `power`(CalculatorFloat): exponent of the power operation.
 
-Returns:
-    Self: gate raised to the power of `power`
-
-"""
-
+        Returns:
+            Self: gate raised to the power of `power`
+        """
     def current_version(self) -> str:
         """
-Returns the current version of the qoqo library .
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The current version of the library.
-"""
-
+        Returns:
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object."""
     def json_schema(self) -> str:
         """
-Return the JsonSchema for the json serialisation of the class.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The json schema serialized to json
-"""
-
+        Returns:
+            str: The json schema serialized to json"""
