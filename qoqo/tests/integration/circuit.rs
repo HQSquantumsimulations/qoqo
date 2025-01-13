@@ -962,7 +962,7 @@ fn test_convert_into_circuit() {
 
 /// Test function overrotate() for Circuit
 #[test]
-// #[cfg(feature = "overrotate")]
+#[cfg(feature = "overrotate")]
 fn test_circuit_overrotate() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
