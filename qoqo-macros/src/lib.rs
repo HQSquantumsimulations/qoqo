@@ -134,7 +134,6 @@ pub fn wrap(
             /// Returns clone of the gate with one parameter statistically overrotated.
             fn overrotate(&self, amplitude: &f64, variance: &f64) -> Self {
                 Self{internal: self.internal.overrotate(amplitude, variance)}
-
             }
         }
     } else {

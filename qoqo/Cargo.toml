@@ -73,6 +73,7 @@ no-default-features = true
 extension-module = ["pyo3/extension-module", "circuitdag"]
 default = ["extension-module", "json_schema"]
 circuitdag = ["roqoqo/circuitdag"]
+overrotate = ["roqoqo/overrotate"]
 json_schema = ["roqoqo/json_schema"]
 doc_generator = []
 unstable_chain_with_environment = [
