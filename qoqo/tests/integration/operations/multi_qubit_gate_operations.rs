@@ -356,8 +356,8 @@ fn test_pyo3_call_defined_gate_inputs() {
         // Test free_parameters()
         let mut free_parameters: Vec<CalculatorFloat> = vec![];
         let py_params = operation.call_method0(py, "free_parameters").unwrap();
-        let params: &pyo3::types::PyList = py_params.bind(py).extract().unwrap();
-        for param in params.iter() {
+        let params: Bound<pyo3::types::PyList> = py_params.bind(py).extract().unwrap();
+        for param in pyo3::types::PyListMethods::iter(&params) {
             free_parameters.push(
                 qoqo_calculator_pyo3::convert_into_calculator_float(&param.as_borrowed()).unwrap(),
             );
