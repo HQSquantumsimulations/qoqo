@@ -28,5 +28,5 @@ jobs:
       # Run tests also on macos runners
       macos: false
       py_interface_folder: "qoqo"
-      python_3_13: true
+      python_3_13: false
       has_python_tests: false
