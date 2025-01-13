@@ -226,8 +226,8 @@ fn test_to_from_json() {
             .downcast::<ContinuousDecoherenceModelWrapper>()
             .unwrap();
         assert_eq!(
-            format!("{:?}", br.as_gil_ref()),
-            format!("{:?}", deserialised.as_gil_ref())
+            format!("{:?}", br.borrow()),
+            format!("{:?}", deserialised.borrow())
         );
 
         let deserialised_error =
@@ -260,8 +260,8 @@ fn test_to_from_bincode() {
             .downcast::<ContinuousDecoherenceModelWrapper>()
             .unwrap();
         assert_eq!(
-            format!("{:?}", br.as_gil_ref()),
-            format!("{:?}", deserialised.as_gil_ref())
+            format!("{:?}", br.borrow()),
+            format!("{:?}", deserialised.borrow())
         );
 
         let deserialised_error =

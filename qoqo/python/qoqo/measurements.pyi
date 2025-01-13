@@ -42,7 +42,6 @@ class PauliZProductInput:
 
     def __init__(self, number_qubits: int, use_flipped_measurement: bool):
         return
-
     def add_pauliz_product(self, readout: str, pauli_product_mask: List[int]) -> int:
         """
         Add measured Pauli product to PauliZProductInput and returns index of Pauli product.
@@ -58,9 +57,7 @@ class PauliZProductInput:
             int: The index of the added Pauli product in the list of all Pauli products.
 
         Raises:
-            RuntimeError: Failed to add pauli product.
-        """
-
+            RuntimeError: Failed to add pauli product."""
     def add_linear_exp_val(self, name: str, linear: Dict[int, float]):
         """
         Add linear definition of expectation value to measurement input.
@@ -73,9 +70,7 @@ class PauliZProductInput:
             linear (Dict[int, float]): The linear combination of expectation values as a map between Pauli product index and coefficient.
 
         Raises:
-            RuntimeError: Failed to add linear expectation value.
-        """
-
+            RuntimeError: Failed to add linear expectation value."""
     def add_symbolic_exp_val(self, name: str, symbolic: str):
         """
         Add symbolic definition of expectation value to measurement input.
@@ -91,9 +86,7 @@ class PauliZProductInput:
             RuntimeError: Failed to add symbolic expectation value.
 
         The i-th PauliProducts are hardcoded as variables pauli_product_i
-        in the string expression of CalculatorFloat.
-        """
-
+        in the string expression of CalculatorFloat."""
     def to_json(self) -> str:
         """
         Serialize the PauliZProductInput to json form.
@@ -102,9 +95,7 @@ class PauliZProductInput:
             str: The serialized PauliZProductInput.
 
         Raises:
-            PyRuntimeError: Unexpected error serializing PauliZProductInput.
-        """
-
+            PyRuntimeError: Unexpected error serializing PauliZProductInput."""
     def from_json(self) -> PauliZProductInput:
         """
         Deserialize the PauliZProductInput from json form.
@@ -113,9 +104,7 @@ class PauliZProductInput:
             PauliZProductInput: The deserialized PauliZProductInput.
 
         Raises:
-            PyRuntimeError: Cannot deserialize string to PauliZProductInput.
-        """
-
+            PyRuntimeError: Cannot deserialize string to PauliZProductInput."""
     def to_bincode(self) -> bytearray:
         """
         Return the bincode representation of the PauliZProductInput using the [bincode] crate.
@@ -124,9 +113,7 @@ class PauliZProductInput:
             ByteArray: The serialized PauliZProductInput (in [bincode] form).
 
         Raises:
-            ValueError: Cannot serialize PauliZProductInput to bytes.
-        """
-
+            ValueError: Cannot serialize PauliZProductInput to bytes."""
     def from_bincode(self, input: bytearray) -> PauliZProductInput:
         """
         Convert the bincode representation of the PauliZProductInput to a PauliZProductInput using the [bincode] crate.
@@ -139,32 +126,25 @@ class PauliZProductInput:
 
         Raises:
             TypeError: Input cannot be converted to byte array.
-            ValueError: Input cannot be deserialized to PauliZProductInput.
-        """
-
+            ValueError: Input cannot be deserialized to PauliZProductInput."""
     def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
         Returns:
-            str: The json schema serialized to json
-        """
-
+            str: The json schema serialized to json"""
     def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
         Returns:
-            str: The current version of the library.
-        """
-
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
         Returns:
-            str: The minimum version of the qoqo library to deserialize this object.
-        """
+            str: The minimum version of the qoqo library to deserialize this object."""
 
 class CheatedPauliZProductInput:
     """
@@ -177,12 +157,10 @@ class CheatedPauliZProductInput:
 
     Returns:
         self: The new instance of CheatedPauliZProductInput with measured_exp_vals = an empty
-               HashMap and pauli_product_keys = an empty HashMap.
-    """
+               HashMap and pauli_product_keys = an empty HashMap."""
 
     def __init__(self):
         return
-
     def add_pauliz_product(self, readout: str) -> int:
         """
         Add measured Pauli product to CheatedPauliZProductInput and returns index of Pauli product.
@@ -196,7 +174,6 @@ class CheatedPauliZProductInput:
         Returns:
             int: The index of the added Pauli product in the list of all Pauli products.
         """
-
     def add_linear_exp_val(self, name: str, linear: Dict[int, float]):
         """
         Add linear definition of expectation value to measurement input.
@@ -209,9 +186,7 @@ class CheatedPauliZProductInput:
             linear (Dict[int, float]): The linear combination of expectation values as a map between Pauli product index and coefficient.
 
         Raises:
-            RuntimeError: Failed to add linear expectation value.
-        """
-
+            RuntimeError: Failed to add linear expectation value."""
     def add_symbolic_exp_val(self, name: str, symbolic: str):
         """
         Add symbolic definition of expectation value to measurement input.
@@ -228,9 +203,7 @@ class CheatedPauliZProductInput:
 
         The i-th PauliProducts are hardcoded as variables pauli_product_i
         in the string expression of CalculatorFloat.
-
         """
-
     def to_json(self) -> str:
         """
         Serialize the CheatedPauliZProductInput to json form.
@@ -239,9 +212,7 @@ class CheatedPauliZProductInput:
             str: The serialized CheatedPauliZProductInput.
 
         Raises:
-            PyRuntimeError: Unexpected error serializing CheatedPauliZProductInput.
-        """
-
+            PyRuntimeError: Unexpected error serializing CheatedPauliZProductInput."""
     def from_json(self) -> CheatedPauliZProductInput:
         """
         Deserialize the CheatedPauliZProductInput from json form.
@@ -250,9 +221,7 @@ class CheatedPauliZProductInput:
             CheatedPauliZProductInput: The deserialized CheatedPauliZProductInput.
 
         Raises:
-            PyRuntimeError: Cannot deserialize string to CheatedPauliZProductInput.
-        """
-
+            PyRuntimeError: Cannot deserialize string to CheatedPauliZProductInput."""
     def to_bincode(self) -> bytearray:
         """
         Return the bincode representation of the CheatedPauliZProductInput using the [bincode] crate.
@@ -261,9 +230,7 @@ class CheatedPauliZProductInput:
             ByteArray: The serialized CheatedPauliZProductInput (in [bincode] form).
 
         Raises:
-            ValueError: Cannot serialize CheatedPauliZProductInput to bytes.
-        """
-
+            ValueError: Cannot serialize CheatedPauliZProductInput to bytes."""
     def from_bincode(self, input: bytearray) -> CheatedPauliZProductInput:
         """
         Convert the bincode representation of the CheatedPauliZProductInput to a CheatedPauliZProductInput using the [bincode] crate.
@@ -276,32 +243,25 @@ class CheatedPauliZProductInput:
 
         Raises:
             TypeError: Input cannot be converted to byte array.
-            ValueError: Input cannot be deserialized to CheatedPauliZProductInput.
-        """
-
+            ValueError: Input cannot be deserialized to CheatedPauliZProductInput."""
     def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
         Returns:
-            str: The json schema serialized to json
-        """
-
+            str: The json schema serialized to json"""
     def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
         Returns:
-            str: The current version of the library.
-        """
-
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
         Returns:
-            str: The minimum version of the qoqo library to deserialize this object.
-        """
+            str: The minimum version of the qoqo library to deserialize this object."""
 
 class CheatedInput:
     """
@@ -317,12 +277,10 @@ class CheatedInput:
 
     Returns:
         CheatedInput: The new instance of CheatedInput with the specified number of qubits in input,
-                      and an empty dictionay of expectation values.
-    """
+                      and an empty dictionay of expectation values."""
 
     def __init__(self, number_qubits: int):
         return
-
     def add_operator_exp_val(
         self, name: str, operator: int, int, complex, readout: str
     ):
@@ -338,9 +296,7 @@ class CheatedInput:
             readout (str): The mame of the readout register that contains the density matrix or satevector.
 
         Raises:
-            RuntimeError: Failed to add operator based expectation value.
-        """
-
+            RuntimeError: Failed to add operator based expectation value."""
     def to_json(self) -> str:
         """
         Serialize the CheatedInput to json form.
@@ -349,9 +305,7 @@ class CheatedInput:
             str: The serialized CheatedInput.
 
         Raises:
-            PyRuntimeError: Unexpected error serializing CheatedInput.
-        """
-
+            PyRuntimeError: Unexpected error serializing CheatedInput."""
     def from_json(self) -> CheatedInput:
         """
         Deserialize the CheatedInput from json form.
@@ -360,9 +314,7 @@ class CheatedInput:
             CheatedInput: The deserialized CheatedInput.
 
         Raises:
-            PyRuntimeError: Cannot deserialize string to CheatedInput.
-        """
-
+            PyRuntimeError: Cannot deserialize string to CheatedInput."""
     def to_bincode(self) -> bytearray:
         """
         Return the bincode representation of the CheatedInput using the [bincode] crate.
@@ -371,9 +323,7 @@ class CheatedInput:
             ByteArray: The serialized CheatedInput (in [bincode] form).
 
         Raises:
-            ValueError: Cannot serialize CheatedInput to bytes.
-        """
-
+            ValueError: Cannot serialize CheatedInput to bytes."""
     def from_bincode(self, input: bytearray) -> CheatedInput:
         """
         Convert the bincode representation of the CheatedInput to a CheatedInput using the [bincode] crate.
@@ -386,32 +336,25 @@ class CheatedInput:
 
         Raises:
             TypeError: Input cannot be converted to byte array.
-            ValueError: Input cannot be deserialized to CheatedInput.
-        """
-
+            ValueError: Input cannot be deserialized to CheatedInput."""
     def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
         Returns:
-            str: The json schema serialized to json
-        """
-
+            str: The json schema serialized to json"""
     def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
         Returns:
-            str: The current version of the library.
-        """
-
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
         Returns:
-            str: The minimum version of the qoqo library to deserialize this object.
-        """
+            str: The minimum version of the qoqo library to deserialize this object."""
 
 class PauliZProduct:
     """
@@ -433,7 +376,6 @@ class PauliZProduct:
         input: PauliZProductInput,
     ):
         return
-
     def evaluate(
         self,
         input_bit_registers: Dict[str, Union[List[List[int]], List[List[bool]]]],
@@ -453,41 +395,31 @@ class PauliZProduct:
 
         Raises:
             RuntimeError: Unexpected repetition of key in bit_register.
-            RuntimeError: Error evaluating PauliZ product measurement.
-        """
-
+            RuntimeError: Error evaluating PauliZ product measurement."""
     def circuits(self) -> List[Circuit]:
         """
         Return the collection of quantum circuits for the separate basis rotations.
 
         Returns:
-            List[Circuit]: The quantum circuits.
-        """
-
+            List[Circuit]: The quantum circuits."""
     def constant_circuit(self) -> Optional[Circuit]:
         """
         Return constant circuit that is executed before any Circuit in circuits.
 
         Returns:
-            Optional[Circuit]: The constant Circuit (None if not defined).
-        """
-
+            Optional[Circuit]: The constant Circuit (None if not defined)."""
     def input(self) -> PauliZProductInput:
         """
         Returns the measurement input data defining how to construct expectation values from measurements.
 
         Returns:
-            PauliZProductInput: The measurment input of PauliZProduct.
-        """
-
+            PauliZProductInput: The measurment input of PauliZProduct."""
     def measurement_type(self) -> str:
         """
         Returns the type of the measurement in string form.
 
         Returns:
-           str: The type of the measurement.
-        """
-
+           str: The type of the measurement."""
     def substitute_parameters(self, substituted_parameters: Dict[str, float]):
         """
         Return clone of Measurement with symbolic parameters replaced.
@@ -495,7 +427,6 @@ class PauliZProduct:
         Args:
             substituted_parameters (Dict[str, float]): The dictionary containing the substitutions to use in the Circuit.
         """
-
     def _internal_to_bincode(self):
         """
         Return the name of the measurement and the bincode representation of the Measurement using the [bincode] crate.
@@ -504,9 +435,7 @@ class PauliZProduct:
             (str, ByteArray): Name and serialized measurement (in [bincode] form).
 
         Raises:
-            ValueError: Cannot serialize Measurement to bytes.
-        """
-
+            ValueError: Cannot serialize Measurement to bytes."""
     def to_bincode(self) -> bytearray:
         """
         Return the bincode representation of the PauliZProduct using the [bincode] crate.
@@ -515,9 +444,7 @@ class PauliZProduct:
             ByteArray: The serialized PauliZProduct (in [bincode] form).
 
         Raises:
-            ValueError: Cannot serialize PauliZProduct to bytes.
-        """
-
+            ValueError: Cannot serialize PauliZProduct to bytes."""
     def from_bincode(self, input: bytearray) -> PauliZProduct:
         """
         Convert the bincode representation of the PauliZProduct to a PauliZProduct using the [bincode] crate.
@@ -530,9 +457,7 @@ class PauliZProduct:
 
         Raises:
             TypeError: Input cannot be converted to byte array.
-            ValueError: Input cannot be deserialized to PauliZProduct.
-        """
-
+            ValueError: Input cannot be deserialized to PauliZProduct."""
     def to_json(self) -> str:
         """
         Serialize the PauliZProduct to json form using the [serde_json] crate.
@@ -541,9 +466,7 @@ class PauliZProduct:
             str: The serialized PauliZProduct.
 
         Raises:
-            RuntimeError: Unexpected error serializing PauliZProduct.
-        """
-
+            RuntimeError: Unexpected error serializing PauliZProduct."""
     def from_json(self) -> PauliZProduct:
         """
         Deserialize the PauliZProduct from json form using the [serde_json] crate.
@@ -552,32 +475,25 @@ class PauliZProduct:
             PauliZProduct: The deserialized PauliZProduct.
 
         Raises:
-            RuntimeError: Cannot deserialize string to PauliZProduct.
-        """
-
+            RuntimeError: Cannot deserialize string to PauliZProduct."""
     def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
         Returns:
-            str: The json schema serialized to json
-        """
-
+            str: The json schema serialized to json"""
     def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
         Returns:
-            str: The current version of the library.
-        """
-
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
         Returns:
-            str: The minimum version of the qoqo library to deserialize this object.
-        """
+            str: The minimum version of the qoqo library to deserialize this object."""
 
 class CheatedPauliZProduct:
     """
@@ -599,7 +515,6 @@ class CheatedPauliZProduct:
         input: CheatedPauliZProductInput,
     ):
         return
-
     def evaluate(
         self,
         input_bit_registers: Dict[str, Union[List[List[int]], List[List[bool]]]],
@@ -619,41 +534,31 @@ class CheatedPauliZProduct:
 
         Raises:
             RuntimeError: Unexpected repetition of key in bit_register.
-            RuntimeError: Error evaluating cheated PauliZ product measurement.
-        """
-
+            RuntimeError: Error evaluating cheated PauliZ product measurement."""
     def circuits(self) -> List[Circuit]:
         """
         Returns the collection of quantum circuits for the separate basis rotations.
 
         Returns:
-            List[Circuit]: The quantum circuits.
-        """
-
+            List[Circuit]: The quantum circuits."""
     def constant_circuit(self) -> Optional[Circuit]:
         """
         Returns constant circuit that is executed before any Circuit in circuits.
 
         Returns:
-            Optional[Circuit]: The constant Circuit (None if not defined).
-        """
-
+            Optional[Circuit]: The constant Circuit (None if not defined)."""
     def input(self) -> CheatedPauliZProductInput:
         """
         Returns the measurement input data defining how to construct expectation values from measurements.
 
         Returns:
-            CheatedPauliZProductInput: The measurment input of CheatedPauliZProduct.
-        """
-
+            CheatedPauliZProductInput: The measurment input of CheatedPauliZProduct."""
     def measurement_type(self) -> str:
         """
         Returns the type of the measurement in string form.
 
         Returns:
-           str: The type of the measurement.
-        """
-
+           str: The type of the measurement."""
     def substitute_parameters(self, substituted_parameters: Dict[str, float]):
         """
         Returns clone of Measurement with symbolic parameters replaced
@@ -661,7 +566,6 @@ class CheatedPauliZProduct:
         Args:
             substituted_parameters (Dict[str, float]): The dictionary containing the substitutions to use in the Circuit.
         """
-
     def _internal_to_bincode(self):
         """
         Return the name of the measurement and the bincode representation of the Measurement using the [bincode] crate.
@@ -670,9 +574,7 @@ class CheatedPauliZProduct:
             (str, ByteArray): Name and serialized measurement (in [bincode] form).
 
         Raises:
-            ValueError: Cannot serialize Measurement to bytes.
-        """
-
+            ValueError: Cannot serialize Measurement to bytes."""
     def to_bincode(self) -> bytearray:
         """
         Return the bincode representation of the CheatedPauliZProduct using the [bincode] crate.
@@ -681,9 +583,7 @@ class CheatedPauliZProduct:
             ByteArray: The serialized CheatedPauliZProduct (in [bincode] form).
 
         Raises:
-            ValueError: Cannot serialize CheatedPauliZProduct to bytes.
-        """
-
+            ValueError: Cannot serialize CheatedPauliZProduct to bytes."""
     def from_bincode(self, input: bytearray) -> CheatedPauliZProduct:
         """
         Convert the bincode representation of the CheatedPauliZProduct to a CheatedPauliZProduct using the [bincode] crate.
@@ -696,9 +596,7 @@ class CheatedPauliZProduct:
 
         Raises:
             TypeError: Input cannot be converted to byte array.
-            ValueError: Input cannot be deserialized to CheatedPauliZProduct.
-        """
-
+            ValueError: Input cannot be deserialized to CheatedPauliZProduct."""
     def to_json(self) -> str:
         """
         Serializes the CheatedPauliZProduct to json form using the [serde_json] crate.
@@ -707,9 +605,7 @@ class CheatedPauliZProduct:
             str: The serialized CheatedPauliZProduct.
 
         Raises:
-            RuntimeError: Unexpected error serializing CheatedPauliZProduct.
-        """
-
+            RuntimeError: Unexpected error serializing CheatedPauliZProduct."""
     def from_json(self) -> CheatedPauliZProduct:
         """
         Deserialize the CheatedPauliZProduct from json form using the [serde_json] crate.
@@ -718,32 +614,25 @@ class CheatedPauliZProduct:
             CheatedPauliZProduct: the deserialized CheatedPauliZProduct.
 
         Raises:
-            RuntimeError: Cannot deserialize string to CheatedPauliZProduct.
-        """
-
+            RuntimeError: Cannot deserialize string to CheatedPauliZProduct."""
     def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
         Returns:
-            str: The json schema serialized to json
-        """
-
+            str: The json schema serialized to json"""
     def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
         Returns:
-            str: The current version of the library.
-        """
-
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
         Returns:
-            str: The minimum version of the qoqo library to deserialize this object.
-        """
+            str: The minimum version of the qoqo library to deserialize this object."""
 
 class Cheated:
     """
@@ -755,8 +644,7 @@ class Cheated:
         input (CheatedInput): The additional input information required for measurement.
 
     Returns:
-        Cheated: The new measurement.
-    """
+        Cheated: The new measurement."""
 
     def __init__(
         self,
@@ -765,7 +653,6 @@ class Cheated:
         input: CheatedInput,
     ):
         return
-
     def evaluate(
         self,
         input_bit_registers: Dict[str, Union[List[List[int]], List[List[bool]]]],
@@ -785,41 +672,31 @@ class Cheated:
 
         Raises:
             RuntimeError: Unexpected repetition of key in bit_register.
-            RuntimeError: Error evaluating cheated measurement.
-        """
-
+            RuntimeError: Error evaluating cheated measurement."""
     def circuits(self) -> List[Circuit]:
         """
         Return the collection of quantum circuits for the separate cheated measurements.
 
         Returns:
-            List[Circuit]: The quantum circuits.
-        """
-
+            List[Circuit]: The quantum circuits."""
     def constant_circuit(self) -> Optional[Circuit]:
         """
         Returns constant circuit that is executed before any Circuit in circuits.
 
         Returns:
-            Optional[Circuit]: The constant Circuit (None if not defined).
-        """
-
+            Optional[Circuit]: The constant Circuit (None if not defined)."""
     def input(self) -> CheatedInput:
         """
         Returns the measurement input data defining how to construct expectation values from measurements.
 
         Returns:
-            CheatedInput: The input of Cheated measurement
-        """
-
+            CheatedInput: The input of Cheated measurement"""
     def measurement_type(self) -> str:
         """
         Returns the type of the measurement in string form.
 
         Returns:
-           str: The type of the measurement.
-        """
-
+           str: The type of the measurement."""
     def substitute_parameters(self):
         """
         Return copy of Measurement with symbolic parameters replaced.
@@ -828,9 +705,7 @@ class Cheated:
             substituted_parameters (Dict[str, float]): The dictionary containing the substitutions to use in the Circuit.
 
         Raises:
-            RuntimeError: Error substituting symbolic parameters.
-        """
-
+            RuntimeError: Error substituting symbolic parameters."""
     def _internal_to_bincode(self):
         """
         Return the name of the measurement and the bincode representation of the Measurement using the [bincode] crate.
@@ -839,9 +714,7 @@ class Cheated:
             (str, ByteArray): Name and serialized measurement (in [bincode] form).
 
         Raises:
-            ValueError: Cannot serialize Measurement to bytes.
-        """
-
+            ValueError: Cannot serialize Measurement to bytes."""
     def to_bincode(self) -> bytearray:
         """
         Return the bincode representation of the Cheated using the [bincode] crate.
@@ -850,9 +723,7 @@ class Cheated:
             ByteArray: The serialized Cheated (in [bincode] form).
 
         Raises:
-            ValueError: Cannot serialize Cheated to bytes.
-        """
-
+            ValueError: Cannot serialize Cheated to bytes."""
     def from_bincode(self, input: bytearray) -> Cheated:
         """
         Convert the bincode representation of the Cheated to a Cheated using the [bincode] crate.
@@ -865,9 +736,7 @@ class Cheated:
 
         Raises:
             TypeError: Input cannot be converted to byte array.
-            ValueError: Input cannot be deserialized to Cheated.
-        """
-
+            ValueError: Input cannot be deserialized to Cheated."""
     def to_json(self) -> str:
         """
         Serialize the Cheated measurement to json form.
@@ -876,9 +745,7 @@ class Cheated:
             str: The serialized Cheated measurement.
 
         Raises:
-            RuntimeError: Unexpected error serializing Cheated.
-        """
-
+            RuntimeError: Unexpected error serializing Cheated."""
     def from_json(self) -> Cheated:
         """
         Deserialize the Cheated measurement from json form.
@@ -887,32 +754,25 @@ class Cheated:
             Cheated: The deserialized Cheated Measurement.
 
         Raises:
-            RuntimeError: Cannot deserialize string to Cheated.
-        """
-
+            RuntimeError: Cannot deserialize string to Cheated."""
     def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
         Returns:
-            str: The json schema serialized to json
-        """
-
+            str: The json schema serialized to json"""
     def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
         Returns:
-            str: The current version of the library.
-        """
-
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
         Returns:
-            str: The minimum version of the qoqo library to deserialize this object.
-        """
+            str: The minimum version of the qoqo library to deserialize this object."""
 
 class ClassicalRegister:
     """
@@ -923,36 +783,28 @@ class ClassicalRegister:
         circuits (List[Circuit]): The collection of quantum circuits executed for the measurement.
 
     Returns:
-        ClassicalRegister: The new register.
-    """
+        ClassicalRegister: The new register."""
 
     def __init__(self, constant_circuit: Optional[Circuit], circuits: List[Circuit]):
         return
-
     def circuits(self) -> List[Circuit]:
         """
         Return the collection of quantum circuits that make up the total measurement.
 
         Returns:
-            List[Circuit]: The quantum circuits.
-        """
-
+            List[Circuit]: The quantum circuits."""
     def constant_circuit(self) -> Optional[Circuit]:
         """
         Returns constant circuit that is executed before any Circuit in circuits.
 
         Returns:
-            Optional[Circuit]: The constant Circuit (None if not defined).
-        """
-
+            Optional[Circuit]: The constant Circuit (None if not defined)."""
     def measurement_type(self) -> str:
         """
         Returns the type of the measurement in string form.
 
         Returns:
-           str: The type of the measurement.
-        """
-
+           str: The type of the measurement."""
     def substitute_parameters(self, substituted_parameters: Dict[str, float]):
         """
         Return copy of Measurement with symbolic parameters replaced.
@@ -961,9 +813,7 @@ class ClassicalRegister:
             substituted_parameters (Dict[str, float]): The dictionary containing the substitutions to use in the Circuit.
 
         Raises:
-            RuntimeError: Error substituting symbolic parameters.
-        """
-
+            RuntimeError: Error substituting symbolic parameters."""
     def _internal_to_bincode(self):
         """
         Return the name of the measurement and the bincode representation of the Measurement using the [bincode] crate.
@@ -972,9 +822,7 @@ class ClassicalRegister:
             (str, ByteArray): Name and serialized measurement (in [bincode] form).
 
         Raises:
-            ValueError: Cannot serialize Measurement to bytes.
-        """
-
+            ValueError: Cannot serialize Measurement to bytes."""
     def to_bincode(self) -> bytearray:
         """
         Return the bincode representation of the ClassicalRegister using the [bincode] crate.
@@ -983,9 +831,7 @@ class ClassicalRegister:
             ByteArray: The serialized ClassicalRegister (in [bincode] form).
 
         Raises:
-            ValueError: Cannot serialize ClassicalRegister to bytes.
-        """
-
+            ValueError: Cannot serialize ClassicalRegister to bytes."""
     def from_bincode(self, input: bytearray) -> ClassicalRegister:
         """
         Convert the bincode representation of the ClassicalRegister to a ClassicalRegister using the [bincode] crate.
@@ -998,9 +844,7 @@ class ClassicalRegister:
 
         Raises:
             TypeError: Input cannot be converted to byte array.
-            ValueError: Input cannot be deserialized to ClassicalRegister.
-        """
-
+            ValueError: Input cannot be deserialized to ClassicalRegister."""
     def to_json(self) -> str:
         """
         Serialize the ClassicalRegister measurement to json form.
@@ -1009,9 +853,7 @@ class ClassicalRegister:
             str: The serialized ClassicalRegister measurement.
 
         Raises:
-            PyRuntimeError: Unexpected error serializing ClassicalRegister.
-        """
-
+            PyRuntimeError: Unexpected error serializing ClassicalRegister."""
     def from_json(self) -> ClassicalRegister:
         """
         Deserialize the ClassicalRegister measurement from json form.
@@ -1020,29 +862,22 @@ class ClassicalRegister:
             ClassicalRegister: The deserialized ClassicalRegister Measurement.
 
         Raises:
-            PyRuntimeError: Cannot deserialize string to ClassicalRegister.
-        """
-
+            PyRuntimeError: Cannot deserialize string to ClassicalRegister."""
     def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
         Returns:
-            str: The json schema serialized to json
-        """
-
+            str: The json schema serialized to json"""
     def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
         Returns:
-            str: The current version of the library.
-        """
-
+            str: The current version of the library."""
     def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
         Returns:
-            str: The minimum version of the qoqo library to deserialize this object.
-        """
+            str: The minimum version of the qoqo library to deserialize this object."""

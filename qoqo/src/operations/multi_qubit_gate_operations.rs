@@ -95,9 +95,9 @@ insert_pyany_to_operation!(
 
         let params = op.call_method0("free_parameters")
                         .map_err(|_| QoqoError::ConversionError)?;
-        let param_vec: &pyo3::types::PyList = params.extract().map_err(|_| QoqoError::ConversionError)?;
+        let param_vec: Bound<pyo3::types::PyList> = params.extract().map_err(|_| QoqoError::ConversionError)?;
         let mut free_parameters: Vec<CalculatorFloat> = vec![];
-            for param in param_vec.iter() {
+            for param in pyo3::types::PyListMethods::iter(&param_vec) {
                 free_parameters.push(convert_into_calculator_float(&param.as_borrowed()).map_err(|_| QoqoError::ConversionError)?);
             }
         Ok(CallDefinedGate::new(gate_name, qubits, free_parameters).into())

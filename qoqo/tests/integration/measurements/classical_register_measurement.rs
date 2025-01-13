@@ -102,8 +102,8 @@ fn test_pyo3_debug() {
         #[allow(clippy::redundant_clone)]
         let br_clone = br_wrapper.clone();
         assert_eq!(format!("{:?}", br_wrapper), format!("{:?}", br_clone));
-        let debug_string = "RefCell { value: ClassicalRegisterWrapper { internal: ClassicalRegister { constant_circuit: Some(Circuit { definitions: [], operations: [], _roqoqo_version: RoqoqoVersion }), circuits: [Circuit { definitions: [], operations: [], _roqoqo_version: RoqoqoVersion }] } } }";
-        assert_eq!(format!("{:?}", br.as_gil_ref()), debug_string);
+        let debug_string = "ClassicalRegisterWrapper { internal: ClassicalRegister { constant_circuit: Some(Circuit { definitions: [], operations: [], _roqoqo_version: RoqoqoVersion }), circuits: [Circuit { definitions: [], operations: [], _roqoqo_version: RoqoqoVersion }] } }";
+        assert_eq!(format!("{:?}", br.borrow()), debug_string);
     })
 }
 
@@ -151,8 +151,8 @@ fn test_to_from_json() {
         let binding = new_br.call_method1("from_json", (&serialised,)).unwrap();
         let deserialised = binding.downcast::<ClassicalRegisterWrapper>().unwrap();
         assert_eq!(
-            format!("{:?}", br.as_gil_ref()),
-            format!("{:?}", deserialised.as_gil_ref())
+            format!("{:?}", br.as_ref()),
+            format!("{:?}", deserialised.as_ref())
         );
 
         let deserialised_error =
@@ -184,8 +184,8 @@ fn test_to_from_bincode() {
         let binding = new_br.call_method1("from_bincode", (&serialised,)).unwrap();
         let deserialised = binding.downcast::<ClassicalRegisterWrapper>().unwrap();
         assert_eq!(
-            format!("{:?}", br.as_gil_ref()),
-            format!("{:?}", deserialised.as_gil_ref())
+            format!("{:?}", br.as_ref()),
+            format!("{:?}", deserialised.as_ref())
         );
 
         let deserialised_error =

@@ -258,7 +258,7 @@ impl CheatedPauliZProductWrapper {
     #[staticmethod]
     pub fn from_bincode(input: &Bound<PyAny>) -> PyResult<Self> {
         let bytes = input
-            .as_gil_ref()
+            .as_ref()
             .extract::<Vec<u8>>()
             .map_err(|_| PyTypeError::new_err("Input cannot be converted to byte array"))?;
 

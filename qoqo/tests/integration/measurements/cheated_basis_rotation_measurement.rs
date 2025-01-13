@@ -296,12 +296,12 @@ fn test_pyo3_debug() {
         let br_clone = br_wrapper.clone();
         assert_eq!(format!("{:?}", br_wrapper), format!("{:?}", br_clone));
 
-        let debug_string = "RefCell { value: CheatedPauliZProductWrapper { internal: CheatedPauliZProduct { constant_circuit: Some(Circuit { definitions: [], operations: [], _roqoqo_version: RoqoqoVersion }), circuits: [Circuit { definitions: [], operations: [], _roqoqo_version: RoqoqoVersion }], input: CheatedPauliZProductInput { measured_exp_vals: {}, pauli_product_keys: {\"ro\": 0} } } } }";
-        assert_eq!(format!("{:?}", br.as_gil_ref()), debug_string);
+        let debug_string = "CheatedPauliZProductWrapper { internal: CheatedPauliZProduct { constant_circuit: Some(Circuit { definitions: [], operations: [], _roqoqo_version: RoqoqoVersion }), circuits: [Circuit { definitions: [], operations: [], _roqoqo_version: RoqoqoVersion }], input: CheatedPauliZProductInput { measured_exp_vals: {}, pauli_product_keys: {\"ro\": 0} } } }";
+        assert_eq!(format!("{:?}", br.borrow()), debug_string);
 
         let debug_input = input;
-        let debug_input_string = "RefCell { value: CheatedPauliZProductInputWrapper { internal: CheatedPauliZProductInput { measured_exp_vals: {}, pauli_product_keys: {\"ro\": 0} } } }";
-        assert_eq!(format!("{:?}", input.as_gil_ref()), debug_input_string);
+        let debug_input_string = "CheatedPauliZProductInputWrapper { internal: CheatedPauliZProductInput { measured_exp_vals: {}, pauli_product_keys: {\"ro\": 0} } }";
+        assert_eq!(format!("{:?}", input.borrow()), debug_input_string);
         assert_eq!(
             CheatedPauliZProductInputWrapper::default().internal,
             CheatedPauliZProductInputWrapper::new().internal
@@ -399,8 +399,8 @@ fn test_to_from_bincode() {
         let binding = new_br.call_method1("from_bincode", (&serialised,)).unwrap();
         let deserialised = binding.downcast::<CheatedPauliZProductWrapper>().unwrap();
         assert_eq!(
-            format!("{:?}", br.as_gil_ref()),
-            format!("{:?}", deserialised.as_gil_ref())
+            format!("{:?}", br.as_ref()),
+            format!("{:?}", deserialised.as_ref())
         );
 
         let deserialised_error =
@@ -449,8 +449,8 @@ fn test_to_from_json() {
         let binding = new_br.call_method1("from_json", (&serialised,)).unwrap();
         let deserialised = binding.downcast::<CheatedPauliZProductWrapper>().unwrap();
         assert_eq!(
-            format!("{:?}", br.as_gil_ref()),
-            format!("{:?}", deserialised.as_gil_ref())
+            format!("{:?}", br.as_ref()),
+            format!("{:?}", deserialised.as_ref())
         );
 
         let deserialised_error =

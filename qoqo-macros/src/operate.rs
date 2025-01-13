@@ -41,6 +41,13 @@ fn operate_struct(ds: DataStruct, ident: Ident) -> TokenStream {
             },
             _ => quote! {#id: #ty},
         });
+    let formatted_input_arguments =
+        fields_with_type
+            .clone()
+            .map(|(id, type_string, _ty)| match type_string {
+                Some(s) if s.contains("Option") && !s.contains("Circuit") => quote! {#id=None},
+                _ => quote! {#id},
+            });
     let arguments = fields_with_type
         .clone()
         .map(|(id, type_string, _)| match type_string {
@@ -81,7 +88,7 @@ fn operate_struct(ds: DataStruct, ident: Ident) -> TokenStream {
                 let id_extracted = format_ident!("{}_extracted", id);
                 quote! {
                     let #id_extracted: #ty = convert_into_calculator_float(#id).map_err(|x| {
-                        pyo3::exceptions::PyTypeError::new_err(format!("Argument cannot be converted to CalculatorFloat {:?}",x))
+                        pyo3::exceptions::PyTypeError::new_err(format!("Argument cannot be converted to CalculatorFloat: {:?}",x))
                     })?;
                 }
             },
@@ -89,27 +96,33 @@ fn operate_struct(ds: DataStruct, ident: Ident) -> TokenStream {
                 let id_extracted = format_ident!("{}_extracted", id);
                 quote! {
                     let #id_extracted: #ty = convert_into_circuit(#id).map_err(|x| {
-                        pyo3::exceptions::PyTypeError::new_err(format!("Argument cannot be converted to Circuit {:?}",x))
+                        pyo3::exceptions::PyTypeError::new_err(format!("Argument cannot be converted to Circuit: {:?}",x))
                     })?;
                 }
             },
             "Option<Circuit>" => {
                 let id_extracted = format_ident!("{}_extracted", id);
                 quote! {
-                    let tmp: Option<&PyAny> = #id.extract().map_err(|x| {
-                        pyo3::exceptions::PyTypeError::new_err(format!("Argument cannot be converted to Circuit {:?}",x))
+                    let tmp: Option<&Bound<PyAny>> = #id.try_into().map_err(|x| {
+                        pyo3::exceptions::PyTypeError::new_err(format!("Argument cannot be converted to PyAny: {:?}",x))
                     })?;
-                    let #id_extracted: Option<Circuit> = match tmp{
-                        Some(cw) => Some(convert_into_circuit(&cw.as_borrowed()).map_err(|x| {
-                            pyo3::exceptions::PyTypeError::new_err(format!("Argument cannot be converted to Circuit {:?}",x))
-                    })?),
+                    let #id_extracted: Option<Circuit> = match tmp {
+                        Some(cw) => {
+                            if cw.is_none() {
+                                None
+                            } else {
+                                Some(convert_into_circuit(cw).map_err(|x| {
+                                    pyo3::exceptions::PyTypeError::new_err(format!("Argument cannot be converted to Some(Circuit): {:?}",x))
+                                })?)
+                            }
+                        },
                         _ => None };
             }},
             "SpinHamiltonian" => {
                 let id_extracted = format_ident!("{}_extracted", id);
                 quote! {
                     let temp_op: struqture::spins::SpinHamiltonianSystem = SpinHamiltonianSystemWrapper::from_pyany(#id).map_err(|x| {
-                        pyo3::exceptions::PyTypeError::new_err(format!("Argument cannot be converted to SpinHamiltonianSystem {:?}",x))
+                        pyo3::exceptions::PyTypeError::new_err(format!("Argument cannot be converted to SpinHamiltonianSystem: {:?}",x))
                     })?;
                     let #id_extracted: #ty = temp_op.hamiltonian().clone();
                 }
@@ -194,6 +207,7 @@ fn operate_struct(ds: DataStruct, ident: Ident) -> TokenStream {
 
         #[new]
         #[doc = #new_msg]
+        #[pyo3(signature = (#(#formatted_input_arguments),*))]
         fn new(#(#input_arguments),*) -> PyResult<Self>{
             #(#conversion_quotes)*
             Ok(Self{internal: #ident::new(#(#arguments),*)})

@@ -303,7 +303,7 @@ fn test_pyo3_copy_deepcopy(input_operation: Operation) {
         let comparison_copy = bool::extract_bound(
             &copy_op
                 .bind(py)
-                .call_method1("__eq__", (copy_deepcopy_param.clone(),))
+                .call_method1("__eq__", (copy_deepcopy_param.clone_ref(py),))
                 .unwrap(),
         )
         .unwrap();
@@ -504,7 +504,7 @@ fn test_pyo3_remapqubits() {
         let comparison = bool::extract_bound(
             &result
                 .bind(py)
-                .call_method1("__eq__", (operation_2.clone(),))
+                .call_method1("__eq__", (operation_2.clone_ref(py),))
                 .unwrap(),
         )
         .unwrap();
@@ -532,7 +532,7 @@ fn test_pyo3_remapqubits() {
         let comparison = bool::extract_bound(
             &result
                 .bind(py)
-                .call_method1("__eq__", (operation_2.clone(),))
+                .call_method1("__eq__", (operation_2.clone_ref(py),))
                 .unwrap(),
         )
         .unwrap();
@@ -555,7 +555,7 @@ fn test_pyo3_richcmp(definition_1: Operation, definition_2: Operation) {
         let comparison = bool::extract_bound(
             &operation_one
                 .bind(py)
-                .call_method1("__eq__", (operation_two.clone(),))
+                .call_method1("__eq__", (operation_two.clone_ref(py),))
                 .unwrap(),
         )
         .unwrap();
@@ -564,7 +564,7 @@ fn test_pyo3_richcmp(definition_1: Operation, definition_2: Operation) {
         let comparison = bool::extract_bound(
             &operation_one
                 .bind(py)
-                .call_method1("__ne__", (operation_two.clone(),))
+                .call_method1("__ne__", (operation_two.clone_ref(py),))
                 .unwrap(),
         )
         .unwrap();
