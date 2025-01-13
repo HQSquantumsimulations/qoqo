@@ -99,6 +99,7 @@ pub(crate) fn new_circuit(py: Python) -> Bound<CircuitWrapper> {
         .to_owned()
 }
 
+#[cfg(feature = "unstable_simulation_repetitions")]
 /// Test inputs of PragmaSimulationRepetitions
 #[test]
 fn test_pyo3_inputs_simulation_repetitions() {

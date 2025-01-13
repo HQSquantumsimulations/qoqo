@@ -17,6 +17,7 @@ jobs:
       # Run tests also on macos runners
       macos: true
       rust_package_name: "roqoqo"
+      python_3_13: false
       features: "json_schema overrotate circuitdag unstable_chain_with_environment unstable_analog_operations unstable_operation_definition"
 
   build_tests:
@@ -27,4 +28,5 @@ jobs:
       # Run tests also on macos runners
       macos: false
       py_interface_folder: "qoqo"
+      python_3_13: false
       has_python_tests: false
