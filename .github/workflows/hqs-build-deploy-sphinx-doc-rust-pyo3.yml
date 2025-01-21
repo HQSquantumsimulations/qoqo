@@ -13,7 +13,7 @@ jobs:
       - uses: actions/setup-python@v4
         with:
           python-version: "3.11"
-      - uses: peaceiris/actions-mdbook@v1
+      - uses: peaceiris/actions-mdbook@v2
         with:
           mdbook-version: latest
       - uses: actions-rs/toolchain@v1
