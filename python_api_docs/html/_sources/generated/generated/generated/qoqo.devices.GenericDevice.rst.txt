@@ -1,0 +1,49 @@
+qoqo.devices.GenericDevice
+==========================
+
+.. currentmodule:: qoqo.devices
+
+.. autoclass:: GenericDevice
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~GenericDevice.__init__
+      ~GenericDevice.add_damping
+      ~GenericDevice.add_dephasing
+      ~GenericDevice.add_depolarising
+      ~GenericDevice.current_version
+      ~GenericDevice.from_bincode
+      ~GenericDevice.from_json
+      ~GenericDevice.generic_device
+      ~GenericDevice.json_schema
+      ~GenericDevice.min_supported_version
+      ~GenericDevice.multi_qubit_gate_names
+      ~GenericDevice.multi_qubit_gate_time
+      ~GenericDevice.number_qubits
+      ~GenericDevice.qubit_decoherence_rates
+      ~GenericDevice.set_multi_qubit_gate_time
+      ~GenericDevice.set_qubit_decoherence_rates
+      ~GenericDevice.set_single_qubit_gate_time
+      ~GenericDevice.set_three_qubit_gate_time
+      ~GenericDevice.set_two_qubit_gate_time
+      ~GenericDevice.single_qubit_gate_names
+      ~GenericDevice.single_qubit_gate_time
+      ~GenericDevice.three_qubit_gate_time
+      ~GenericDevice.to_bincode
+      ~GenericDevice.to_generic_device
+      ~GenericDevice.to_json
+      ~GenericDevice.two_qubit_edges
+      ~GenericDevice.two_qubit_gate_names
+      ~GenericDevice.two_qubit_gate_time
+   
+   
+
+   
+   
+   

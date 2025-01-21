@@ -1,0 +1,32 @@
+qoqo.measurements.PauliZProductInput
+====================================
+
+.. currentmodule:: qoqo.measurements
+
+.. autoclass:: PauliZProductInput
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~PauliZProductInput.__init__
+      ~PauliZProductInput.add_linear_exp_val
+      ~PauliZProductInput.add_pauliz_product
+      ~PauliZProductInput.add_symbolic_exp_val
+      ~PauliZProductInput.current_version
+      ~PauliZProductInput.from_bincode
+      ~PauliZProductInput.from_json
+      ~PauliZProductInput.json_schema
+      ~PauliZProductInput.min_supported_version
+      ~PauliZProductInput.to_bincode
+      ~PauliZProductInput.to_json
+   
+   
+
+   
+   
+   

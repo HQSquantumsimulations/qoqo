@@ -1,0 +1,55 @@
+qoqo.devices.AllToAllDevice
+===========================
+
+.. currentmodule:: qoqo.devices
+
+.. autoclass:: AllToAllDevice
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~AllToAllDevice.__init__
+      ~AllToAllDevice.add_damping
+      ~AllToAllDevice.add_damping_all
+      ~AllToAllDevice.add_dephasing
+      ~AllToAllDevice.add_dephasing_all
+      ~AllToAllDevice.add_depolarising
+      ~AllToAllDevice.add_depolarising_all
+      ~AllToAllDevice.current_version
+      ~AllToAllDevice.from_bincode
+      ~AllToAllDevice.from_json
+      ~AllToAllDevice.generic_device
+      ~AllToAllDevice.json_schema
+      ~AllToAllDevice.min_supported_version
+      ~AllToAllDevice.multi_qubit_gate_names
+      ~AllToAllDevice.multi_qubit_gate_time
+      ~AllToAllDevice.number_qubits
+      ~AllToAllDevice.qubit_decoherence_rates
+      ~AllToAllDevice.set_all_qubit_decoherence_rates
+      ~AllToAllDevice.set_all_single_qubit_gate_times
+      ~AllToAllDevice.set_all_two_qubit_gate_times
+      ~AllToAllDevice.set_multi_qubit_gate_time
+      ~AllToAllDevice.set_qubit_decoherence_rates
+      ~AllToAllDevice.set_single_qubit_gate_time
+      ~AllToAllDevice.set_three_qubit_gate_time
+      ~AllToAllDevice.set_two_qubit_gate_time
+      ~AllToAllDevice.single_qubit_gate_names
+      ~AllToAllDevice.single_qubit_gate_time
+      ~AllToAllDevice.three_qubit_gate_time
+      ~AllToAllDevice.to_bincode
+      ~AllToAllDevice.to_generic_device
+      ~AllToAllDevice.to_json
+      ~AllToAllDevice.two_qubit_edges
+      ~AllToAllDevice.two_qubit_gate_names
+      ~AllToAllDevice.two_qubit_gate_time
+   
+   
+
+   
+   
+   

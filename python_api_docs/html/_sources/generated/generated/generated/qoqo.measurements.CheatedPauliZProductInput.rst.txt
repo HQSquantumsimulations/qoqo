@@ -1,0 +1,32 @@
+qoqo.measurements.CheatedPauliZProductInput
+===========================================
+
+.. currentmodule:: qoqo.measurements
+
+.. autoclass:: CheatedPauliZProductInput
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~CheatedPauliZProductInput.__init__
+      ~CheatedPauliZProductInput.add_linear_exp_val
+      ~CheatedPauliZProductInput.add_pauliz_product
+      ~CheatedPauliZProductInput.add_symbolic_exp_val
+      ~CheatedPauliZProductInput.current_version
+      ~CheatedPauliZProductInput.from_bincode
+      ~CheatedPauliZProductInput.from_json
+      ~CheatedPauliZProductInput.json_schema
+      ~CheatedPauliZProductInput.min_supported_version
+      ~CheatedPauliZProductInput.to_bincode
+      ~CheatedPauliZProductInput.to_json
+   
+   
+
+   
+   
+   

@@ -1,0 +1,471 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Two-Qubit Gates - HQS qoqo User Documentation</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">HQS qoqo User Documentation</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="two-qubit-gates"><a class="header" href="#two-qubit-gates">Two-qubit gates</a></h1>
+<p>Two-qubit gates in qoqo/roqoqo represent atomic instructions of any quantum computer that act on a pair of qubits. In two-qubit gates the two qubits are referred to as <code>control</code> and <code>target</code>. When initializing two-qubit gates, the <code>control</code> is always the first argument and <code>target</code> the second argument. For two-qubit gates, the created matrix always corresponds to <code>control=1</code>, <code>target=0</code>, and is a 4x4-dimensional matrix. This convention corresponds to the little-endian encoding as described in chapter <a href="../conventions.html">conventions</a>. The full matrix form of the two-qubit gates implemented in qoqo/roqoqo is documented in this chapter.</p>
+<p>The given form of the unitary matrix is consistent with the following ordering of qubit states in a two-qubit state space:</p>
+<p>\[
+\left|00 \right&gt;  =  \textrm{state} 0 \\
+\left|01 \right&gt;  =  \textrm{state} 1 \\
+\left|10 \right&gt;  =  \textrm{state} 2 \\
+\left|11 \right&gt;  =  \textrm{state} 3 \\
+\].</p>
+<h2 id="bogoliubov"><a class="header" href="#bogoliubov">Bogoliubov</a></h2>
+<p>The Bogoliubov DeGennes gate representing interactions of the form:
+\[
+e^{-\mathrm{i} \mathrm{Re}(\Delta)\cdot(X_c X_t - Y_c Y_t)/2 + \mathrm{Im}(\Delta)\cdot(X_c Y_t+Y_c X_t)/2},
+\],</p>
+<p>where \(X_c\) is the Pauli matrix \(\sigma_x\) acting on the control qubit, and \(Y_t\) is the Pauli matrix \(\sigma_y\) acting on the target qubit, and \( \Delta \) is the complex Bogoliubov interaction strength.</p>
+<p>The full matrix form is given by:</p>
+<p>\[
+U = \begin{pmatrix}
+\cos(|\Delta|) &amp; 0 &amp; 0 &amp; \mathrm{i} \sin(|\Delta|) e^{\mathrm{i} \cdot \varphi(\Delta)} \\
+0 &amp; 1 &amp; 0 &amp; 0 \\
+0 &amp; 0 &amp; 1 &amp; 0 \\
+\mathrm{i} \sin(|\Delta|) e^{-\mathrm{i} \cdot \varphi(\Delta)} &amp; 0 &amp; 0 &amp; \cos(|\Delta|)
+\end{pmatrix}
+\],</p>
+<p>with the value \(|\Delta|\) of the complex Bogoliubov interaction strength \( \Delta \), and its phase angle \(\varphi(\Delta)\).</p>
+<h2 id="cnot"><a class="header" href="#cnot">CNOT</a></h2>
+<p>The controlled not gate can be used to entangle two qubits. The unitary matrix for the CNOT gate is defined as:</p>
+<p>\[
+U  = \begin{pmatrix}
+1 &amp; 0 &amp; 0 &amp; 0 \\
+0 &amp; 1 &amp; 0 &amp; 0 \\
+0 &amp; 0 &amp; 0 &amp; 1 \\
+0 &amp; 0 &amp; 1 &amp; 0
+\end{pmatrix}
+\].</p>
+<h2 id="complexpminteraction"><a class="header" href="#complexpminteraction">ComplexPMInteraction</a></h2>
+<p>This gate implements the complex hopping operation of the form:</p>
+<p>\[
+e^{-\mathrm{i} \left[ \mathrm{Re}(\theta) \cdot (X_c X_t + Y_c Y_t) - \mathrm{Im}(\theta) \cdot (X_c Y_t - Y_c X_t) \right] } ,
+\],</p>
+<p>where \(X_c\) is the Pauli matrix \(\sigma_x\) acting on the control qubit, and \(Y_t\) is the Pauli matrix \(\sigma_y\) acting on the target qubit. The complex parameter \( \theta \) gives the strength of the rotation.</p>
+<h2 id="controlledpauliy"><a class="header" href="#controlledpauliy">ControlledPauliY</a></h2>
+<p>The controlled PauliY gate applies the PauliY gate on the <code>target</code> qubit based on the value of the <code>control</code> qubit. The corresponding unitary matrix reads:</p>
+<p>\[
+U = \begin{pmatrix}
+1 &amp; 0 &amp; 0 &amp; 0 \\
+0 &amp; 1 &amp; 0 &amp; 0 \\
+0 &amp; 0 &amp; 0 &amp; -\mathrm{i} \\
+0 &amp; 0 &amp; \mathrm{i}  &amp; 0
+\end{pmatrix}
+\].</p>
+<h2 id="controlledpauliz"><a class="header" href="#controlledpauliz">ControlledPauliZ</a></h2>
+<p>The controlled PauliZ gate applies the PauliZ gate on the <code>target</code> qubit controlled by the <code>control</code> qubit. The definition for the unitary matrix is as follows:</p>
+<p>\[
+U = \begin{pmatrix}
+1 &amp; 0 &amp; 0 &amp; 0 \\
+0 &amp; 1 &amp; 0 &amp; 0 \\
+0 &amp; 0 &amp; 1 &amp; 0 \\
+0 &amp; 0 &amp; 0 &amp; -1
+\end{pmatrix}
+\].</p>
+<h2 id="controlledphaseshift"><a class="header" href="#controlledphaseshift">ControlledPhaseShift</a></h2>
+<p>The controlled phase shift gate implements a phase shift applied on <code>target</code> qubit based on the value of the <code>control</code> qubit. The unitary matrix is given by:</p>
+<p>\[
+U = \begin{pmatrix}
+1 &amp; 0 &amp; 0 &amp; 0 \\
+0 &amp; 1 &amp; 0 &amp; 0 \\
+0 &amp; 0 &amp; 1 &amp; 0 \\
+0 &amp; 0 &amp; 0 &amp; e^{\mathrm{i} \theta}
+\end{pmatrix}
+\].</p>
+<h2 id="controlledrotatex"><a class="header" href="#controlledrotatex">ControlledRotateX</a></h2>
+<p>The controlled RotateX implements a RotateX gate applied on <code>target</code> qubit based on the value of the <code>control</code> qubit. The unitary matrix is given by:</p>
+<p>\[
+U = \begin{pmatrix}
+1 &amp; 0 &amp; 0 &amp; 0 \\
+0 &amp; 1 &amp; 0 &amp; 0 \\
+0 &amp; 0 &amp; \cos(\frac{\theta}{2}) &amp; -i \sin(\frac{\theta}{2}) \\
+0 &amp; 0 &amp; -i \sin(\frac{\theta}{2}) &amp; \cos(\frac{\theta}{2})
+\end{pmatrix}
+\].</p>
+<h2 id="controlledrotatexy"><a class="header" href="#controlledrotatexy">ControlledRotateXY</a></h2>
+<p>The controlled RotateXY implements a RotateXY gate applied on <code>target</code> qubit based on the value of the <code>control</code> qubit. The unitary matrix is given by:</p>
+<p>\[
+U = \begin{pmatrix}
+1 &amp; 0 &amp; 0 &amp; 0 \\
+0 &amp; 1 &amp; 0 &amp; 0 \\
+0 &amp; 0 &amp; \cos(\frac{\theta}{2}) &amp; -i e^{-i \phi} \sin(\frac{\theta}{2}) \\
+0 &amp; 0 &amp; -i e^{-i \phi} \sin(\frac{\theta}{2}) &amp; \cos(\frac{\theta}{2})
+\end{pmatrix}
+\].</p>
+<h2 id="fsim"><a class="header" href="#fsim">Fsim</a></h2>
+<p>The fermionic qubit simulation gate that can be represented as the following unitary matrix:</p>
+<p>\[
+U = \begin{pmatrix}
+\cos(\Delta) &amp; 0 &amp; 0 &amp; \mathrm{i} \sin(\Delta) \\
+0 &amp; -\mathrm{i} \sin(t) &amp; \cos(t) &amp; 0 \\
+0 &amp; \cos(t) &amp; -\mathrm{i} \sin(t) &amp; 0 \\
+-\sin(\Delta) \cdot e^{-\mathrm{i} U} &amp; 0 &amp; 0 &amp; -\cos(\Delta) \cdot e^{-\mathrm{i} U}
+\end{pmatrix}
+\],</p>
+<p>where <code>t</code> is the hopping strength, <code>U</code> is the interaction strength and \( \Delta \) is the Bogoliubov interaction strength.</p>
+<p><em>Note</em>: The qubits have to be adjacent, <em>i.e.</em>, \( |i-j|=1 \) has to hold. This is the only case in which the gate is valid as a two-qubit gate (due to the Jordan-Wigner transformation).</p>
+<h2 id="fswap"><a class="header" href="#fswap">FSwap</a></h2>
+<p>The fermionic SWAP gate can be represented as the following unitary matrix:</p>
+<p>\[
+U = \begin{pmatrix}
+1 &amp; 0 &amp; 0 &amp; 0 \\
+0 &amp; 0 &amp; 1 &amp; 0 \\
+0 &amp; 1 &amp; 0 &amp; 0 \\
+0 &amp; 0 &amp; 0 &amp; -1
+\end{pmatrix}
+\].</p>
+<h2 id="givensrotation"><a class="header" href="#givensrotation">GivensRotation</a></h2>
+<p>The Givens rotation interaction gate in big endian notation:
+\[
+e^{-\mathrm{i} \theta (X_c Y_t - Y_c X_t)}\cdot e^{-\mathrm{i} \phi Z_t/2},
+\],</p>
+<p>where \(X_c\) is the Pauli matrix \(\sigma_x\) acting on the control qubit, \(Y_t\) is the Pauli matrix \(\sigma_y\) acting on the target qubit, and \(Z_t\) is the Pauli matrix \(\sigma_z\) acting on the target qubit.</p>
+<p>The unitary matrix representation is:</p>
+<p>\[
+U = \begin{pmatrix}
+1 &amp; 0 &amp; 0 &amp; 0 \\
+0 &amp; \cos(\theta) \cdot e^{\mathrm{i} \phi} &amp; \sin(\theta)  &amp; 0 \\
+0 &amp; -\sin(\theta) \cdot e^{\mathrm{i} \phi} &amp; \cos(\theta)  &amp; 0 \\
+0 &amp; 0 &amp; 0 &amp; e^{\mathrm{i} \phi}
+\end{pmatrix}
+\].</p>
+<p>Further information on the endianness in context of qoqo can be found in the section <a href="../conventions.html">conventions</a>.</p>
+<h2 id="givensrotationlittleendian"><a class="header" href="#givensrotationlittleendian">GivensRotationLittleEndian</a></h2>
+<p>The Givens rotation interaction gate in little-endian notation:
+\[
+e^{-\mathrm{i} \theta (X_c Y_t - Y_c X_t)}\cdot e^{-\mathrm{i} \phi Z_c/2},
+\],
+with Pauli matrices \( X := \sigma_x\), \( Y := \sigma_y\), \( Z := \sigma_z\) and indices <code>c</code> for control qubit and <code>t</code> for target qubit.</p>
+<p>The unitary matrix form is given by:</p>
+<p>\[
+U = \begin{pmatrix}
+1 &amp; 0 &amp; 0 &amp; 0 \\
+0 &amp; \cos(\theta) &amp; \sin(\theta)  &amp; 0 \\
+0 &amp; -\sin(\theta) \cdot e^{\mathrm{i} \phi} &amp; \cos(\theta) \cdot e^{\mathrm{i} \phi}  &amp; 0 \\
+0 &amp; 0 &amp; 0 &amp; e^{\mathrm{i} \phi}
+\end{pmatrix}
+\].</p>
+<h2 id="invsqrtiswap"><a class="header" href="#invsqrtiswap">InvSqrtISwap</a></h2>
+<p>The inverse square root of the ISwap gate has the full matrix form:</p>
+<p>\[
+U = \begin{pmatrix}
+1 &amp; 0 &amp; 0 &amp; 0 \\
+0 &amp; \frac{1}{\sqrt{2}} &amp; \frac{-\mathrm{i}}{\sqrt{2}} &amp; 0 \\
+0 &amp; \frac{-\mathrm{i}}{\sqrt{2}} &amp; \frac{1}{\sqrt{2}} &amp; 0 \\
+0 &amp; 0 &amp; 0 &amp; 1
+\end{pmatrix}
+\].</p>
+<h2 id="iswap"><a class="header" href="#iswap">ISwap</a></h2>
+<p>The unitary matrix of the complex ISwap gate reads:</p>
+<p>\[
+U = \begin{pmatrix}
+1 &amp; 0 &amp; 0 &amp; 0 \\
+0 &amp; 0 &amp; \mathrm{i} &amp; 0 \\
+0 &amp; \mathrm{i} &amp; 0 &amp; 0 \\
+0 &amp; 0 &amp; 0 &amp; 1
+\end{pmatrix}
+\].</p>
+<h2 id="molmersorensenxx"><a class="header" href="#molmersorensenxx">MolmerSorensenXX</a></h2>
+<p>This gate implements the fixed-phase MolmerSorensen XX operation as introduced in this <a href="http://arxiv.org/abs/1705.02771">reference</a>. The MolmerSorensenXX gate can be used to represent global laser-driver entangling operations, for example in the context of quantum computing hardware based on trapped ions. The unitary matrix is given by:</p>
+<p>\[
+U = \frac{1}{\sqrt{2}} \begin{pmatrix}
+1 &amp; 0 &amp; 0 &amp; -\mathrm{i} \\
+0 &amp;1 &amp; -\mathrm{i} &amp; 0 \\
+0 &amp; -\mathrm{i} &amp; 1 &amp; 0 \\
+-\mathrm{i} &amp; 0 &amp; 0 &amp; 1
+\end{pmatrix}
+\].</p>
+<h2 id="phaseshiftedcontrolledphase"><a class="header" href="#phaseshiftedcontrolledphase">PhaseShiftedControlledPhase</a></h2>
+<p>The phase-shifted controlled PhaseShift gate of the form:</p>
+<p>\[
+U = \begin{pmatrix}
+1 &amp; 0 &amp; 0 &amp; 0 \\
+0 &amp; e^{\mathrm{i} \phi} &amp; 0 &amp; 0 \\
+0 &amp; 0 &amp; e^{\mathrm{i} \phi} &amp; 0 \\
+0 &amp; 0 &amp; 0 &amp; e^{\mathrm{i} (2\cdot\phi - \pi)}
+\end{pmatrix}
+\],</p>
+<p>with the single-qubit phase \( \phi \).</p>
+<h2 id="phaseshiftedcontrolledz"><a class="header" href="#phaseshiftedcontrolledz">PhaseShiftedControlledZ</a></h2>
+<p>The phase-shifted controlled-Z gate, modified, <em>i.e.</em> phase-shifted ControlledPauliZ two-qubit gate, which corresponds to the equation (1) in the original <a href="https://arxiv.org/pdf/1908.06101.pdf">reference</a>. The full matrix form is defined as:</p>
+<p>\[
+U = \begin{pmatrix}
+1 &amp; 0 &amp; 0 &amp; 0 \\
+0 &amp; e^{\mathrm{i} \phi} &amp; 0 &amp; 0 \\
+0 &amp; 0 &amp; e^{\mathrm{i} \phi} &amp; 0 \\
+0 &amp; 0 &amp; 0 &amp; e^{\mathrm{i} (2\cdot\phi - \pi)}
+\end{pmatrix}
+\],</p>
+<p>with the single-qubit phase \( \phi \).</p>
+<h2 id="pminteraction"><a class="header" href="#pminteraction">PMInteraction</a></h2>
+<p>The transversal interaction gate of the form:</p>
+<p>\[
+e^{-\mathrm{i} \theta (X_c X_t + Y_c Y_t)} = e^{-\mathrm{i} \theta (\sigma^+_c \sigma^-_t + \sigma^-_c \sigma^+_t)} ,
+\],</p>
+<p>where \(X_c\) is the Pauli matrix \(\sigma_x\) acting on the control qubit, and \(Y_t\) is the Pauli matrix \(\sigma_y\) acting on the target qubit. The parameter \( \theta \) gives the strength of the rotation.</p>
+<h2 id="qsim"><a class="header" href="#qsim">Qsim</a></h2>
+<p>The Qsim gate implements a <code>SWAP</code> between two spins and a <code>SpinInteraction</code> simultaneously. In this context, spins are meant to be localized and therefore have distinguishable degrees of freedom. The definition of the Qsim gate in matrix form is given by:</p>
+<p>\[
+U = \begin{pmatrix}
+\cos(x-y) \cdot e^{-\mathrm{i} z} &amp; 0 &amp; 0 &amp; -\mathrm{i}\sin(x-y)\cdot e^{-\mathrm{i} z}\\
+0 &amp; -\mathrm{i} \sin(x+y)\cdot e^{\mathrm{i} z} &amp; \cos(x+y)\cdot e^{\mathrm{i} z} &amp; 0 \\
+0 &amp; \cos(x+y)\cdot e^{\mathrm{i} z}&amp; -\mathrm{i} \sin(x+y)\cdot e^{\mathrm{i} z} &amp; 0 \\
+-\sin(x-y)\cdot e^{-\mathrm{i} z} &amp; 0 &amp; 0 &amp; \cos(x-y)\cdot e^{-\mathrm{i} z}
+\end{pmatrix}
+\],</p>
+<p>where x, y, z are the prefactors of the products of Pauli matrices \(X_c X_t\), \(Y_c Y_t\), \(Z_c Z_t\) acting on the control (<code>c</code>) and target (<code>t</code>) qubits that are part of the spin interaction.</p>
+<h2 id="spininteraction"><a class="header" href="#spininteraction">SpinInteraction</a></h2>
+<p>The gate represents the generalized, anisotropic XYZ Heisenberg interaction between spins of the form:</p>
+<p>\[
+e^{-\mathrm{i} (x \cdot X_c X_t + y \cdot Y_c Y_t + z \cdot Z_c Z_t)} ,
+\],</p>
+<p>where x, y, z are the prefactors of the products of Pauli matrices \(X_c X_t\), \(Y_c Y_t\), \(Z_c Z_t\) acting on control (<code>c</code>) and target (<code>t</code>) qubit,
+with the underlying definition \(XX \equiv \sigma_x \sigma_x\), \(YY \equiv \sigma_y \sigma_y\) and \(ZZ \equiv \sigma_z \sigma_z\).</p>
+<p>In this context, spins are meant to be localized and therefore have distinguishable degrees of freedom.</p>
+<h2 id="sqrtiswap"><a class="header" href="#sqrtiswap">SqrtISwap</a></h2>
+<p>The square root of the ISwap gate is represented by the matrix:</p>
+<p>\[
+U = \begin{pmatrix}
+1 &amp; 0 &amp; 0 &amp; 0 \\
+0 &amp; \frac{1}{\sqrt{2}} &amp; \frac{\mathrm{i}}{\sqrt{2}} &amp; 0 \\
+0 &amp; \frac{\mathrm{i}}{\sqrt{2}} &amp; \frac{1}{\sqrt{2}} &amp; 0 \\
+0 &amp; 0 &amp; 0 &amp; 1
+\end{pmatrix}
+\].</p>
+<h2 id="swap"><a class="header" href="#swap">SWAP</a></h2>
+<p>The SWAP gate is used to change the positions between two qubits. For example, the SWAP gate is used by many compilation routines if the given connectivity on the quantum computing device is limited and the qubits need to be remapped in order to run a quantum program successfully on the quantum computing hardware. The full matrix form is given by:</p>
+<p>\[
+U = \begin{pmatrix}
+1 &amp; 0 &amp; 0 &amp; 0 \\
+0 &amp; 0 &amp; 1 &amp; 0 \\
+0 &amp; 1 &amp; 0 &amp; 0 \\
+0 &amp; 0 &amp; 0 &amp; 1
+\end{pmatrix}
+\].</p>
+<h2 id="variablesmsxx"><a class="header" href="#variablesmsxx">VariablesMSXX</a></h2>
+<p>The variable-angle MolmerSorensen XX gate as defined by the unitary matrix of the form:</p>
+<p>\[
+U = \begin{pmatrix}
+\cos(\theta/2) &amp; 0 &amp; 0 &amp; -\mathrm{i} \sin(\theta/2) \\
+0 &amp; \cos(\theta/2) &amp; -\mathrm{i} \sin(\theta/2) &amp; 0 \\
+0 &amp; -\mathrm{i} \sin(\theta/2) &amp; \cos(\theta/2) &amp; 0 \\
+-\mathrm{i}\sin(\theta/2) &amp; 0 &amp; 0 &amp; \cos(\theta/2)
+\end{pmatrix}
+\].</p>
+<p>In general, the MolmerSorensenXX gate can be used to represent global laser-driver entangling operations, for example in the context of quantum computing hardware based on trapped ions, as introduced in this <a href="http://arxiv.org/abs/1705.02771">reference</a>.</p>
+<h2 id="xy"><a class="header" href="#xy">XY</a></h2>
+<p>The definition of the XY gate in matrix form is given by:</p>
+<p>\[
+U = \begin{pmatrix}
+1 &amp; 0 &amp; 0 &amp; 0 \\
+0 &amp; \cos(\theta/2) &amp; \mathrm{i} \sin(\theta/2) &amp; 0 \\
+0 &amp; \mathrm{i} \sin(\theta/2) &amp; \cos(\theta/2) &amp; 0 \\
+0 &amp; 0 &amp; 0 &amp; 1
+\end{pmatrix}
+\].</p>
+<p>It implements the same interaction as described by the <code>PMInteraction</code> gate but with a different prefactor.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../gate_operations/single_qubit_gates.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../gate_operations/multi_qubit_gates.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../gate_operations/single_qubit_gates.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../gate_operations/multi_qubit_gates.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

@@ -1,0 +1,378 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>PauliZProduct Measurement - HQS qoqo User Documentation</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">HQS qoqo User Documentation</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="paulizproduct-measurement"><a class="header" href="#paulizproduct-measurement">PauliZProduct Measurement</a></h1>
+<p>The <code>PauliZProduct</code> measurement is based on measuring the product of PauliZ operators for given qubits. Combined with a basis rotation of the measured qubits, it can be used to measure arbitrary expectation values. It uses projective qubit readouts like <code>MeasureQubit</code> or <code>PragmaRepeatedMeasurement</code>. It can be run on real quantum computer hardware and simulators.</p>
+<p>The <code>PauliZProduct</code> measurement takes as inputs:</p>
+<ul>
+<li><code>constant_circuit</code>: circuit that is always executed first. This circuit can be used to prepare the inital state from the \(Z\)-basis state, \(|0...00\rangle\).</li>
+<li><code>circuits</code>: list of circuits to perform computations or measurements.</li>
+<li><code>input</code>: Post-processing of measurements. It prescribes how readout registers from <code>circuits</code> are combined to generate the required expectation value.</li>
+</ul>
+<pre><code class="language-python">measurement = PauliZProduct(
+constant_circuit=init_circuit,
+circuits=[circuit1, circuit2, ... ],
+input=measurement_input)
+</code></pre>
+<p>As an example, let us consider the measurement of the following Hamiltonian
+\[
+\hat{H} = 0.1\cdot X + 0.2\cdot Z \:,
+\] where \(X\) and \(Z\) are Pauli operators. The target is to measure \(\hat{H} \) with respect to a state
+\[
+|\psi\rangle = \frac{1}{\sqrt{2}}\Big(|0\rangle + |1\rangle\Big)\:.
+\]</p>
+<p>An <code>init_circuit</code> will be used to prepare the state \( |\psi\rangle \) by applying the Hadamard gate.</p>
+<pre><code class="language-python"># initialize |psi&gt;
+init_circuit = Circuit()
+init_circuit += ops.Hadamard(0)
+</code></pre>
+<p>The given Hamiltonian includes \(X\) and \(Z\) terms that cannot be measured at the same time, since they are measured using different bases. Thus, we need to create a list of <code>circuits</code> for each type of measurement, \( \langle Z \rangle\) and \( \langle X \rangle\). The circuit for measuring \( \langle X \rangle\) requires an additional <code>Hadamard</code> gate that rotates the qubit basis into the \(X\)-basis. In this example, each measured Pauli product contains only one Pauli operator. In general, one can measure the expectation values of the products of local Pauli operators, <em>e.g.</em> \(\langle Z_0 \rangle\), \(\langle Z_1 \rangle\), \(\langle X_0 Z_1 \rangle\), \(\langle X_0 X_3 \rangle\), <em>etc.</em></p>
+<p>We define bit-registers <code>"ro_z"</code> and <code>"ro_x"</code> to store the measurements in the \(Z\)- and \(X\)-basis respectively. The <code>PragmaRepeatedMeasurement</code> operation is used to set the number of shots for expectation value measurements to 1000 for each circuit.</p>
+<pre><code class="language-python"># Z-basis measurement circuit with 1000 shots
+z_circuit = Circuit()
+z_circuit += ops.DefinitionBit("ro_z", 1, is_output=True)
+z_circuit += ops.PragmaRepeatedMeasurement("ro_z", 1000, None)
+
+# X-basis measurement circuit with 1000 shots
+x_circuit = Circuit()
+x_circuit += ops.DefinitionBit("ro_x", 1, is_output=True)
+# Changing to the X basis with a Hadamard gate
+x_circuit += ops.Hadamard(0)
+x_circuit += ops.PragmaRepeatedMeasurement("ro_x", 1000, None)
+</code></pre>
+<p>For the post-processing of the measured results, the <code>PauliZProduct</code> measurement needs two more inputs provided by the object <code>PauliZProductInput</code>:</p>
+<ul>
+<li>The definition of the measured Pauli products after basis transformations (<code>add_pauliz_product()</code>),</li>
+<li>The weights of the Pauli product expectation values in the final expectation values (<code>add_linear_exp_val()</code>).</li>
+</ul>
+<p>The <code>PauliZProductInput</code> is used to define all measurement products required for the computation. For instance, in the provided example, two measurements of \( \langle Z_0 \rangle\) are performed:
+one after applying a rotation to the X-basis (equivalent to measuring \( \langle X_0 \rangle\)) and another without any rotation, directly measured in the Z-basis.</p>
+<p>The <code>PauliZProductInput</code> specifies how qubit measurements in the Z-basis (or their rotated variants) are combined to calculate the desired observables in the quantum computation.</p>
+<p>We prepare the measurement input for one qubit. The <code>PauliZProductInput</code> starts with just the number of qubits. The option <code>use_flipped_measurement</code> is used to specify whether the endianess is flipped.</p>
+<pre><code class="language-python">measurement_input = PauliZProductInput(1, use_flipped_measurement=False)
+</code></pre>
+<p>Next, pauli products are added to the <code>PauliZProductInput</code>, using <code>add_pauliz_product</code> where we specify the register and list of qubits measured.</p>
+<pre><code class="language-python"># Read out product of Z on site 0 for register ro_z (no basis change)
+z_basis_index = measurement_input.add_pauliz_product("ro_z", [0,])
+# Read out product of Z on site 0 for register ro_x
+# (after basis change effectively a &lt;X&gt; measurement)
+x_basis_index = measurement_input.add_pauliz_product("ro_x", [0,])
+</code></pre>
+<p>Last, instructions on how to combine the single expectation values into the total result are provided. In this example, \(0.1\) is the coefficient of the first product and \(0.2\) of the second.</p>
+<pre><code class="language-Python"># Add a result (the expectation value of H) that is a combination of
+# the PauliProduct expectation values.
+measurement_input.add_linear_exp_val(
+    "&lt;H&gt;", {x_basis_index: 0.1, z_basis_index: 0.2},
+)
+</code></pre>
+<p>We can now define a qoqo measurement that can be seamlessly supplied to a quantum program for execution on either a simulator or quantum hardware. Below is the complete code for creating this measurement.</p>
+<pre><code class="language-python">from qoqo import Circuit
+from qoqo import operations as ops
+from qoqo.measurements import PauliZProduct, PauliZProductInput
+
+# initialize |psi&gt;
+init_circuit = Circuit()
+init_circuit += ops.Hadamard(0)
+
+# Z-basis measurement circuit with 1000 shots
+z_circuit = Circuit()
+z_circuit += ops.DefinitionBit("ro_z", 1, is_output=True)
+z_circuit += ops.PragmaRepeatedMeasurement("ro_z", 1000, None)
+
+# X-basis measurement circuit with 1000 shots
+x_circuit = Circuit()
+x_circuit += ops.DefinitionBit("ro_x", 1, is_output=True)
+# Changing to the X basis with a Hadamard gate
+x_circuit += ops.Hadamard(0)
+x_circuit += ops.PragmaRepeatedMeasurement("ro_x", 1000, None)
+
+# Preparing the measurement input for one qubit
+# The PauliZProductInput starts with just the number of qubits
+# and if to use a flipped measurements set.
+measurement_input = PauliZProductInput(1, False)
+# Next, pauli products are added to the PauliZProductInput
+# Read out product of Z on site 0 for register ro_z (no basis change)
+z_basis_index = measurement_input.add_pauliz_product("ro_z", [0,])
+# Read out product of Z on site 0 for register ro_x
+# (after basis change effectively a &lt;X&gt; measurement)
+x_basis_index = measurement_input.add_pauliz_product("ro_x", [0,])
+
+# Last, instructions how to combine the single expectation values
+# into the total result are provided.
+# Add a result (the expectation value of H) that is a combination of
+# the PauliProduct expectation values.
+measurement_input.add_linear_exp_val(
+    "&lt;H&gt;", {x_basis_index: 0.1, z_basis_index: 0.2},
+)
+
+measurement = PauliZProduct(
+   constant_circuit=init_circuit,
+   circuits=[z_circuit, x_circuit],
+   input=measurement_input,
+)
+</code></pre>
+<p>The same example in Rust:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use roqoqo::{Circuit, operations::*};
+use roqoqo::measurements::{PauliZProduct, PauliZProductInput};
+use std::collections::HashMap;
+
+// initialize |psi&gt;
+let mut init_circuit = Circuit::new();
+init_circuit.add_operation(Hadamard::new(0));
+
+// Z-basis measurement circuit with 1000 shots
+let mut z_circuit = Circuit::new();
+z_circuit.add_operation(DefinitionBit::new("ro_z".to_string(), 1, true));
+z_circuit.add_operation(
+    PragmaRepeatedMeasurement::new("ro_z".to_string(), 1000, None),
+);
+
+// X-basis measurement circuit with 1000 shots
+let mut x_circuit = Circuit::new();
+x_circuit.add_operation(DefinitionBit::new("ro_x".to_string(), 1, true));
+// Changing to the X-basis with a Hadamard gate
+x_circuit.add_operation(Hadamard::new(0));
+x_circuit.add_operation(
+    PragmaRepeatedMeasurement::new("ro_x".to_string(), 1000, None),
+);
+
+// Preparing the measurement input for one qubit
+// The PauliZProductInput starts with just the number of qubits
+// and if to use a flipped measurements set.
+let mut measurement_input = PauliZProductInput::new(1, false);
+// Next, pauli products are added to the PauliZProductInput
+// Read out product of Z on site 0 for register ro_z (no basis change)
+measurement_input
+    .add_pauliz_product("ro_z".to_string(), vec![0])
+    .unwrap();
+// Read out product of Z on site 0 for register ro_x
+// (after basis change effectively a &lt;X&gt; measurement)
+measurement_input
+    .add_pauliz_product("ro_x".to_string(), vec![0])
+    .unwrap();
+
+// Last, instructions how to combine the single expectation values
+// into the total result are provided.
+// Add a result (the expectation value of H) that is a combination
+// of the PauliProduct expectation values.
+measurement_input
+    .add_linear_exp_val(
+        "&lt;H&gt;".to_string(), HashMap::from([(0, 0.1), (1, 0.2)]),
+    )
+    .unwrap();
+
+let measurement = PauliZProduct {
+    input: measurement_input,
+    circuits: vec![z_circuit.clone(), x_circuit.clone()],
+    constant_circuit: Some(init_circuit.clone()),
+
+println!("{:?}", measurement);
+};
+<span class="boring">}</span></code></pre></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../high-level/intro.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../high-level/program.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../high-level/intro.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../high-level/program.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

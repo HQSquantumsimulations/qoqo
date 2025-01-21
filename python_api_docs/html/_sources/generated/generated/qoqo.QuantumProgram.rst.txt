@@ -1,0 +1,33 @@
+qoqo.QuantumProgram
+===================
+
+.. currentmodule:: qoqo
+
+.. autoclass:: QuantumProgram
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~QuantumProgram.__init__
+      ~QuantumProgram.current_version
+      ~QuantumProgram.from_bincode
+      ~QuantumProgram.from_json
+      ~QuantumProgram.input_parameter_names
+      ~QuantumProgram.json_schema
+      ~QuantumProgram.measurement
+      ~QuantumProgram.min_supported_version
+      ~QuantumProgram.run
+      ~QuantumProgram.run_registers
+      ~QuantumProgram.to_bincode
+      ~QuantumProgram.to_json
+   
+   
+
+   
+   
+   

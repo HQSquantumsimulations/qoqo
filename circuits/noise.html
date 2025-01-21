@@ -1,0 +1,277 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Noise Operations - HQS qoqo User Documentation</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">HQS qoqo User Documentation</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="noise-operations"><a class="header" href="#noise-operations">Noise Operations</a></h1>
+<p>qoqo/roqoqo enables the user to construct finely controlled noise models. Noise acting on the quantum computer is modeled as noise operations acting on individual qubits in between each unitary gate applied on the quantum computer.</p>
+<p>The noise operations can be directly added to a quantum circuit and can be simulated by compatible backends. Since noise cannot be actively controlled on a quantum computer normally, the noise operations are defined as <a href="pragma.html">Pragma</a> operations in qoqo/roqoqo. The strength of the noise is determined by defining a <code>gate_time</code> and a <code>rate</code>. The noise Pragma operation affects the system as a Lindblad type noise acting on the system with the rate <code>rate</code> for the time <code>gate_time</code>.</p>
+<p><em>Note</em>: as long as gate times and rates are scaled inversely any kind of units can be used.</p>
+<h2 id="example"><a class="header" href="#example">Example</a></h2>
+<p>For example we can add dephasing noise to qubit 0, damping noise to qubit 1, and depolarising noise to qubit 2 after a <code>CNOT</code> gate has been applied.</p>
+<p>In Python:</p>
+<pre><code class="language-python">
+from qoqo import Circuit
+from qoqo import operations
+
+circuit = Circuit()
+circuit += operations.CNOT(0,1)
+# Adding dephasing noise acting on gate 0 with gate_time 1.0 and rate 1e-3
+circuit += operations.PragmaDephasing(qubit=0, gate_time=1.0, rate=1e-3)
+circuit += operations.PragmaDamping(1, 1.0, 2e-3)
+circuit += operations.PragmaDepolarising(3, 1.0, 5e-3)
+
+</code></pre>
+<p>In Rust:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use roqoqo::Circuit;
+use roqoqo::operations;
+
+let mut circuit = Circuit::new();
+circuit += operations::CNOT::new(0,1);
+// Adding dephasing noise acting on gate 0 with gate_time 1.0 and rate 1e-3
+circuit += operations::PragmaDephasing::new(0, 1.0, 1e-3.into());
+circuit += operations::PragmaDamping::new(1, 1.0, 2e-3.into());
+circuit += operations::PragmaDepolarising::new(3, 1.0, 5e-3.into());
+<span class="boring">}</span></code></pre></pre>
+<h2 id="superoperator-representation"><a class="header" href="#superoperator-representation">Superoperator representation</a></h2>
+<p>All noise operations in qoqo/roqoqo provide a <code>superoperator()</code> method that returns the definition of the noise operation in superoperator matrix form.
+In the superoperator formalism, the density matrix of the system is rewritten as a vector in row-major form. Applying the noise to the quantum computer then corresponds to multiplying the vector with the superoperator matrix.
+The superoperator matrix ignores the qubits the noise operation acts on to fit in the smallest possible matrix dimension.</p>
+<p>For other methods available for noise operations see the API documentation of <a href="https://docs.rs/roqoqo/latest/roqoqo/operations/index.html">roqoqo</a> and <a href="https://hqsquantumsimulations.github.io/qoqo/generated/generated/qoqo.operations.html">qoqo</a>.</p>
+<h2 id="noise-operations-1"><a class="header" href="#noise-operations-1">Noise operations</a></h2>
+<p>The single noise operations shown in the example above are:</p>
+<ul>
+<li><code>PragmaDamping</code>, which applies a pure damping error corresponding to <em>zero</em> temperature environments.</li>
+<li><code>PragmaDepolarising</code>, which applies a depolarising noise.</li>
+<li><code>PragmaDephasing</code>, which applies a pure dephasing noise.</li>
+</ul>
+<p>For a stochastically unravelled combination of dephasing and depolarising, the user can choose to use the <code>PragmaRandomNoise</code>. The error rate of the depolaristion (<code>depolarising_rate</code>) and the error rate of the dephasing (<code>dephasing_rate</code>) are provided as input parameters for this random noise operation.</p>
+<h3 id="pragmageneralnoise"><a class="header" href="#pragmageneralnoise">PragmaGeneralNoise</a></h3>
+<p>The most general noise can be modeled in qoqo by the PragmaGeneralNoise operation. This Pragma operation applies a noise term according to the given rates. The rates are represented by a 3x3 matrix:</p>
+<p>\[
+M = \begin{pmatrix}
+a &amp; b &amp; c \\
+d &amp; e &amp; f \\
+g &amp; h &amp; j \\
+\end{pmatrix}
+\],</p>
+<p>where the coefficients correspond to the following summands expanded from the first term of the non-coherent part of the Lindblad equation:
+\[
+\frac{d}{dt}\rho = \sum_{i,j=0}^{2} M_{i,j} L_{i} \rho L_{j}^{\dagger} - \frac{1}{2} { L_{j}^{\dagger} L_i, \rho }
+\],</p>
+<p>with \( L_0 = \sigma^{+} \), \( L_1 = \sigma^{-} \) and \( L_3 = \sigma_{z} \).</p>
+<p>Applying a Pragma noise operation with a given <code>gate_time</code> corresponds to applying the full time-evolution under the Lindblad equation.</p>
+<h2 id="error-pragmas-that-are-not-noise-operations"><a class="header" href="#error-pragmas-that-are-not-noise-operations">Error Pragmas that are not noise operations</a></h2>
+<p>qoqo/roqoqo also supports Pragma operations that lead to errors in the execution of the quantum program that do not correspond to applying physical noise to the system</p>
+<h3 id="pragmaoverrotation"><a class="header" href="#pragmaoverrotation">PragmaOverrotation</a></h3>
+<p>This operation applies a statistical overrotation to the next rotation gate in the circuit, which matches the name given in the <code>gate</code> parameter of <code>PragmaOverrotation</code> and the involved qubits provided in <code>qubits</code>. The applied overrotation corresponds to adding a random number to the rotation angle.
+The random number is drawn from a normal distribution with mean <code>0</code> and standard deviation whose variance is given by the input parameter <code>variance</code>, which is then multiplied by the <code>amplitude</code> parameter.</p>
+<h3 id="pragmaboostnoise"><a class="header" href="#pragmaboostnoise">PragmaBoostNoise</a></h3>
+<p>This operation boosts noise and overrotations in the circuit. The input parameter <code>noise_coefficient</code> defines the coefficient by which the noise is boosted, <em>i.e.</em> the number by which the <code>gate_time</code> is multiplied.</p>
+<h3 id="pragmasleep"><a class="header" href="#pragmasleep">PragmaSleep</a></h3>
+<p>This operation makes the quantum computer hardware, that provides this functionality, wait a given amount of time (<code>sleep_time</code>). Waiting for a given time can increase the effect of continuous noise on the result of running a quantum circuit. This is sometimes used in noise-extrapolation error mitigation techniques.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../circuits/pragma.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../high-level/intro.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../circuits/pragma.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../high-level/intro.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

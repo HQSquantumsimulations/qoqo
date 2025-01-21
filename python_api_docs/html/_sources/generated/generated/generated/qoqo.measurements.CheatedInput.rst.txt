@@ -1,0 +1,30 @@
+qoqo.measurements.CheatedInput
+==============================
+
+.. currentmodule:: qoqo.measurements
+
+.. autoclass:: CheatedInput
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~CheatedInput.__init__
+      ~CheatedInput.add_operator_exp_val
+      ~CheatedInput.current_version
+      ~CheatedInput.from_bincode
+      ~CheatedInput.from_json
+      ~CheatedInput.json_schema
+      ~CheatedInput.min_supported_version
+      ~CheatedInput.to_bincode
+      ~CheatedInput.to_json
+   
+   
+
+   
+   
+   

@@ -1,0 +1,117 @@
+qoqo.operations
+===============
+
+.. automodule:: qoqo.operations
+
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      BeamSplitter
+      Bogoliubov
+      CNOT
+      CZQubitResonator
+      ComplexPMInteraction
+      ControlledControlledPauliZ
+      ControlledControlledPhaseShift
+      ControlledPauliY
+      ControlledPauliZ
+      ControlledPhaseShift
+      ControlledRotateX
+      ControlledRotateXY
+      ControlledSWAP
+      DefinitionBit
+      DefinitionComplex
+      DefinitionFloat
+      DefinitionUsize
+      EchoCrossResonance
+      FSwap
+      Fsim
+      GPi
+      GPi2
+      GivensRotation
+      GivensRotationLittleEndian
+      Hadamard
+      ISwap
+      Identity
+      InputBit
+      InputSymbolic
+      InvSGate
+      InvSXGate
+      InvSqrtISwap
+      InvSqrtPauliX
+      InvSqrtPauliY
+      InvTGate
+      JaynesCummings
+      LongitudinalCoupling
+      MeasureQubit
+      MolmerSorensenXX
+      MultiQubitMS
+      MultiQubitZZ
+      PMInteraction
+      PauliX
+      PauliY
+      PauliZ
+      PhaseDisplacement
+      PhaseShift
+      PhaseShiftState0
+      PhaseShiftState1
+      PhaseShiftedControlledControlledPhase
+      PhaseShiftedControlledControlledZ
+      PhaseShiftedControlledPhase
+      PhaseShiftedControlledZ
+      PhotonDetection
+      PragmaActiveReset
+      PragmaAnnotatedOp
+      PragmaBoostNoise
+      PragmaChangeDevice
+      PragmaConditional
+      PragmaControlledCircuit
+      PragmaDamping
+      PragmaDephasing
+      PragmaDepolarising
+      PragmaGeneralNoise
+      PragmaGetDensityMatrix
+      PragmaGetOccupationProbability
+      PragmaGetPauliProduct
+      PragmaGetStateVector
+      PragmaGlobalPhase
+      PragmaLoop
+      PragmaOverrotation
+      PragmaRandomNoise
+      PragmaRepeatGate
+      PragmaRepeatedMeasurement
+      PragmaSetDensityMatrix
+      PragmaSetNumberOfMeasurements
+      PragmaSetStateVector
+      PragmaSleep
+      PragmaStartDecompositionBlock
+      PragmaStopDecompositionBlock
+      PragmaStopParallelBlock
+      Qsim
+      QuantumRabi
+      RotateAroundSphericalAxis
+      RotateX
+      RotateXY
+      RotateY
+      RotateZ
+      SGate
+      SWAP
+      SXGate
+      SingleExcitationLoad
+      SingleExcitationStore
+      SingleQubitGate
+      SpinInteraction
+      SqrtISwap
+      SqrtPauliX
+      SqrtPauliY
+      Squeezing
+      TGate
+      Toffoli
+      TripleControlledPauliX
+      TripleControlledPauliZ
+      TripleControlledPhaseShift
+      VariableMSXX
+      XY
+   
