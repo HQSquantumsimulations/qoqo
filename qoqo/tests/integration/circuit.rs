@@ -13,9 +13,7 @@
 use pyo3::exceptions::PyIndexError;
 use pyo3::prelude::*;
 use qoqo::measurements::{PauliZProductInputWrapper, PauliZProductWrapper};
-use qoqo::operations::{
-    convert_operation_to_pyobject, RotateXWrapper,
-};
+use qoqo::operations::{convert_operation_to_pyobject, RotateXWrapper};
 use qoqo::{CircuitWrapper, OperationIteratorWrapper, QOQO_VERSION};
 use qoqo_calculator::CalculatorFloat;
 use roqoqo::operations::Operation;
