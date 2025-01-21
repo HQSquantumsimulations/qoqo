@@ -24,10 +24,10 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip maturin
-          pip install ${{inputs.py_interface_folder}}/[docs]
+          pip install qoqo/[docs]
       - name: build
         run: |
-          cd ${{inputs.py_docs_folder}}
+          cd qoqo/docs
           python -m sphinx -T -E -b html . _build/html
           mv _build/html ../../documentation/src/python_api_docs
           cd ../..

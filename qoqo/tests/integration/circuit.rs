@@ -13,9 +13,7 @@
 use pyo3::exceptions::PyIndexError;
 use pyo3::prelude::*;
 use qoqo::measurements::{PauliZProductInputWrapper, PauliZProductWrapper};
-use qoqo::operations::{
-    convert_operation_to_pyobject, PragmaOverrotationWrapper, RotateXWrapper, RotateYWrapper,
-};
+use qoqo::operations::{convert_operation_to_pyobject, RotateXWrapper};
 use qoqo::{CircuitWrapper, OperationIteratorWrapper, QOQO_VERSION};
 use qoqo_calculator::CalculatorFloat;
 use roqoqo::operations::Operation;
@@ -964,6 +962,7 @@ fn test_convert_into_circuit() {
 #[test]
 #[cfg(feature = "overrotate")]
 fn test_circuit_overrotate() {
+    use qoqo::operations::{PragmaOverrotationWrapper, RotateYWrapper};
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         let circuit = new_circuit(py);

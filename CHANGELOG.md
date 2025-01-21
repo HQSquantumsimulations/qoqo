@@ -4,6 +4,8 @@ This changelog track changes to the qoqo project starting at version v0.5.0
 
 ## Unreleased
 
+* Fixed documentation building by hardcoding the paths
+
 ## 1.17.0
 
 ### Added in 1.17.0
