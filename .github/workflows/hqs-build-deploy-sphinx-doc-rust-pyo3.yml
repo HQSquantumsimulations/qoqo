@@ -9,9 +9,6 @@ jobs:
   publish_documentation:
     runs-on: ubuntu-latest
     steps:
-      with:
-        py_interface_folder: "qoqo"
-        py_docs_folder: "qoqo/docs"
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
         with:
@@ -25,10 +22,14 @@ jobs:
           toolchain: stable
           default: true
       - name: Install dependencies
+        with:
+          py_interface_folder: "qoqo"
         run: |
           python -m pip install --upgrade pip maturin
           pip install ${{inputs.py_interface_folder}}/[docs]
       - name: build
+        with:
+          py_docs_folder: "qoqo/docs"
         run: |
           cd ${{inputs.py_docs_folder}}
           python -m sphinx -T -E -b html . _build/html
