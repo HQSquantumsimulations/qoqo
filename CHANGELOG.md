@@ -5,7 +5,9 @@ This changelog track changes to the qoqo project starting at version v0.5.0
 ## Unreleased
 
 * Fixed documentation building by hardcoding the paths.
-* Updated minimum rust version from 1.70 to 1.76.
+* Updated minimum supported Rust version from 1.70 to 1.76.
+* Updated minimum supported Python version from 3.8 to 3.9.
+* Updated to struqture 1.11.0.
 
 ## 1.17.0
 

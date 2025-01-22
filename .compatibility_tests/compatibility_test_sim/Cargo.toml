@@ -28,7 +28,7 @@ roqoqo = { version = "~1.17", path = "../../roqoqo", features = [
     "overrotate",
 ] }
 num-complex = { version = "0.4" }
-ndarray = "0.15"
+ndarray = "0.16"
 
 [dev-dependencies]
 test-case = "3.0"
