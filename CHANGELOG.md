@@ -4,7 +4,8 @@ This changelog track changes to the qoqo project starting at version v0.5.0
 
 ## Unreleased
 
-* Fixed documentation building by hardcoding the paths
+* Fixed documentation building by hardcoding the paths.
+* Updated minimum rust version from 1.70 to 1.76.
 
 ## 1.17.0
 
