@@ -85,15 +85,3 @@ unstable_chain_with_environment = [
 unstable_analog_operations = ["roqoqo/unstable_analog_operations"]
 unstable_operation_definition = ["roqoqo/unstable_operation_definition"]
 unstable_simulation_repetitions = ["roqoqo/unstable_simulation_repetitions"]
-
-[target.x86_64-apple-darwin]
-rustflags = [
-  "-C", "link-arg=-undefined",
-  "-C", "link-arg=dynamic_lookup",
-]
-
-[target.aarch64-apple-darwin]
-rustflags = [
-  "-C", "link-arg=-undefined",
-  "-C", "link-arg=dynamic_lookup",
-]
