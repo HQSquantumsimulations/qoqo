@@ -26,7 +26,7 @@ roqoqo = { version = "~1.18", path = "../../roqoqo", features = [
     "overrotate",
 ] }
 bincode = { version = "1.3" }
-ndarray = "0.16"
+ndarray = "0.15"
 
 [dev-dependencies]
 test-case = "3.0"
