@@ -74,7 +74,7 @@ master_doc = "index"
 # General information about the project.
 project = "qoqo"
 copyright = "2021, HQS Quantum Simulations GmbH"
-author = "The qoqo developers"
+author = "HQS Quantum Simulations GmbH"
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the

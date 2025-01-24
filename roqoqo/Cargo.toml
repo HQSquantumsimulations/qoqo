@@ -24,7 +24,7 @@ doctest = false
 [dependencies]
 roqoqo-derive = { version = "~1.17", path = "../roqoqo-derive" }
 
-qoqo_calculator = { version = "~1.3" }
+qoqo_calculator = { version = "~1.4" }
 struqture = { version = "~1.11", features = ["json_schema"] }
 
 nalgebra = "0.33.1"
