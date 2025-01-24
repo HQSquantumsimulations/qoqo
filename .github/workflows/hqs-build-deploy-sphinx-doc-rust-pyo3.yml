@@ -29,7 +29,7 @@ jobs:
         run: |
           cd qoqo/docs
           python -m sphinx -T -E -b html . _build/html
-          mv _build/html ../../documentation/src/python_api_docs
+          mv _build/html/* ../../documentation/src/python_api_docs
           cd ../..
           mdbook build documentation
       - name: publish
