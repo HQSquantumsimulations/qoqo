@@ -1,0 +1,520 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="English" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>qoqo.measurements.PauliZProductInput &mdash; qoqo 1.18.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=2bf93d87"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="qoqo.measurements.CheatedPauliZProductInput" href="qoqo.measurements.CheatedPauliZProductInput.html" />
+    <link rel="prev" title="qoqo.measurements" href="../qoqo.measurements.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            qoqo
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../../modules.html">qoqo documentation</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../../qoqo.html">qoqo</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.Circuit.html">qoqo.Circuit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.CircuitDag.html">qoqo.CircuitDag</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.operations.html">qoqo.operations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.QuantumProgram.html">qoqo.QuantumProgram</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../qoqo.measurements.html">qoqo.measurements</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">qoqo.measurements.PauliZProductInput</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.measurements.CheatedPauliZProductInput.html">qoqo.measurements.CheatedPauliZProductInput</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.measurements.CheatedInput.html">qoqo.measurements.CheatedInput</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.measurements.PauliZProduct.html">qoqo.measurements.PauliZProduct</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.measurements.CheatedPauliZProduct.html">qoqo.measurements.CheatedPauliZProduct</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.measurements.Cheated.html">qoqo.measurements.Cheated</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.measurements.ClassicalRegister.html">qoqo.measurements.ClassicalRegister</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../qoqo.measurements.html#qoqo.measurements.Cheated"><code class="docutils literal notranslate"><span class="pre">Cheated</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../qoqo.measurements.html#qoqo.measurements.CheatedInput"><code class="docutils literal notranslate"><span class="pre">CheatedInput</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../qoqo.measurements.html#qoqo.measurements.CheatedPauliZProduct"><code class="docutils literal notranslate"><span class="pre">CheatedPauliZProduct</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../qoqo.measurements.html#qoqo.measurements.CheatedPauliZProductInput"><code class="docutils literal notranslate"><span class="pre">CheatedPauliZProductInput</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../qoqo.measurements.html#qoqo.measurements.ClassicalRegister"><code class="docutils literal notranslate"><span class="pre">ClassicalRegister</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../qoqo.measurements.html#qoqo.measurements.PauliZProduct"><code class="docutils literal notranslate"><span class="pre">PauliZProduct</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../qoqo.measurements.html#qoqo.measurements.PauliZProductInput"><code class="docutils literal notranslate"><span class="pre">PauliZProductInput</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.devices.html">qoqo.devices</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.noise_models.html">qoqo.noise_models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.AllToAllDevice"><code class="docutils literal notranslate"><span class="pre">AllToAllDevice</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.BeamSplitter"><code class="docutils literal notranslate"><span class="pre">BeamSplitter</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.Bogoliubov"><code class="docutils literal notranslate"><span class="pre">Bogoliubov</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.CNOT"><code class="docutils literal notranslate"><span class="pre">CNOT</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.CZQubitResonator"><code class="docutils literal notranslate"><span class="pre">CZQubitResonator</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.Cheated"><code class="docutils literal notranslate"><span class="pre">Cheated</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.CheatedInput"><code class="docutils literal notranslate"><span class="pre">CheatedInput</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.CheatedPauliZProduct"><code class="docutils literal notranslate"><span class="pre">CheatedPauliZProduct</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.CheatedPauliZProductInput"><code class="docutils literal notranslate"><span class="pre">CheatedPauliZProductInput</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.Circuit"><code class="docutils literal notranslate"><span class="pre">Circuit</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.CircuitDag"><code class="docutils literal notranslate"><span class="pre">CircuitDag</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.ClassicalRegister"><code class="docutils literal notranslate"><span class="pre">ClassicalRegister</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.ComplexPMInteraction"><code class="docutils literal notranslate"><span class="pre">ComplexPMInteraction</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.ContinuousDecoherenceModel"><code class="docutils literal notranslate"><span class="pre">ContinuousDecoherenceModel</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.ControlledControlledPauliZ"><code class="docutils literal notranslate"><span class="pre">ControlledControlledPauliZ</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.ControlledControlledPhaseShift"><code class="docutils literal notranslate"><span class="pre">ControlledControlledPhaseShift</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.ControlledPauliY"><code class="docutils literal notranslate"><span class="pre">ControlledPauliY</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.ControlledPauliZ"><code class="docutils literal notranslate"><span class="pre">ControlledPauliZ</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.ControlledPhaseShift"><code class="docutils literal notranslate"><span class="pre">ControlledPhaseShift</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.ControlledRotateX"><code class="docutils literal notranslate"><span class="pre">ControlledRotateX</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.ControlledRotateXY"><code class="docutils literal notranslate"><span class="pre">ControlledRotateXY</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.ControlledSWAP"><code class="docutils literal notranslate"><span class="pre">ControlledSWAP</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.DecoherenceOnGateModel"><code class="docutils literal notranslate"><span class="pre">DecoherenceOnGateModel</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.DecoherenceOnIdleModel"><code class="docutils literal notranslate"><span class="pre">DecoherenceOnIdleModel</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.DefinitionBit"><code class="docutils literal notranslate"><span class="pre">DefinitionBit</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.DefinitionComplex"><code class="docutils literal notranslate"><span class="pre">DefinitionComplex</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.DefinitionFloat"><code class="docutils literal notranslate"><span class="pre">DefinitionFloat</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.DefinitionUsize"><code class="docutils literal notranslate"><span class="pre">DefinitionUsize</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.EchoCrossResonance"><code class="docutils literal notranslate"><span class="pre">EchoCrossResonance</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.FSwap"><code class="docutils literal notranslate"><span class="pre">FSwap</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.Fsim"><code class="docutils literal notranslate"><span class="pre">Fsim</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.GPi"><code class="docutils literal notranslate"><span class="pre">GPi</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.GPi2"><code class="docutils literal notranslate"><span class="pre">GPi2</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.GenericDevice"><code class="docutils literal notranslate"><span class="pre">GenericDevice</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.GivensRotation"><code class="docutils literal notranslate"><span class="pre">GivensRotation</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.GivensRotationLittleEndian"><code class="docutils literal notranslate"><span class="pre">GivensRotationLittleEndian</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.Hadamard"><code class="docutils literal notranslate"><span class="pre">Hadamard</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.ISwap"><code class="docutils literal notranslate"><span class="pre">ISwap</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.Identity"><code class="docutils literal notranslate"><span class="pre">Identity</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.ImperfectReadoutModel"><code class="docutils literal notranslate"><span class="pre">ImperfectReadoutModel</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.InputBit"><code class="docutils literal notranslate"><span class="pre">InputBit</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.InputSymbolic"><code class="docutils literal notranslate"><span class="pre">InputSymbolic</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.InvSGate"><code class="docutils literal notranslate"><span class="pre">InvSGate</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.InvSXGate"><code class="docutils literal notranslate"><span class="pre">InvSXGate</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.InvSqrtISwap"><code class="docutils literal notranslate"><span class="pre">InvSqrtISwap</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.InvSqrtPauliX"><code class="docutils literal notranslate"><span class="pre">InvSqrtPauliX</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.InvSqrtPauliY"><code class="docutils literal notranslate"><span class="pre">InvSqrtPauliY</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.InvTGate"><code class="docutils literal notranslate"><span class="pre">InvTGate</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.JaynesCummings"><code class="docutils literal notranslate"><span class="pre">JaynesCummings</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.LongitudinalCoupling"><code class="docutils literal notranslate"><span class="pre">LongitudinalCoupling</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.MeasureQubit"><code class="docutils literal notranslate"><span class="pre">MeasureQubit</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.MolmerSorensenXX"><code class="docutils literal notranslate"><span class="pre">MolmerSorensenXX</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.MultiQubitMS"><code class="docutils literal notranslate"><span class="pre">MultiQubitMS</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.MultiQubitZZ"><code class="docutils literal notranslate"><span class="pre">MultiQubitZZ</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.PMInteraction"><code class="docutils literal notranslate"><span class="pre">PMInteraction</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.PauliX"><code class="docutils literal notranslate"><span class="pre">PauliX</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.PauliY"><code class="docutils literal notranslate"><span class="pre">PauliY</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.PauliZ"><code class="docutils literal notranslate"><span class="pre">PauliZ</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.PauliZProduct"><code class="docutils literal notranslate"><span class="pre">PauliZProduct</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.PauliZProductInput"><code class="docutils literal notranslate"><span class="pre">PauliZProductInput</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.PhaseDisplacement"><code class="docutils literal notranslate"><span class="pre">PhaseDisplacement</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.PhaseShift"><code class="docutils literal notranslate"><span class="pre">PhaseShift</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.PhaseShiftState0"><code class="docutils literal notranslate"><span class="pre">PhaseShiftState0</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.PhaseShiftState1"><code class="docutils literal notranslate"><span class="pre">PhaseShiftState1</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.PhaseShiftedControlledControlledPhase"><code class="docutils literal notranslate"><span class="pre">PhaseShiftedControlledControlledPhase</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.PhaseShiftedControlledControlledZ"><code class="docutils literal notranslate"><span class="pre">PhaseShiftedControlledControlledZ</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.PhaseShiftedControlledPhase"><code class="docutils literal notranslate"><span class="pre">PhaseShiftedControlledPhase</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.PhaseShiftedControlledZ"><code class="docutils literal notranslate"><span class="pre">PhaseShiftedControlledZ</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.PhotonDetection"><code class="docutils literal notranslate"><span class="pre">PhotonDetection</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.PragmaActiveReset"><code class="docutils literal notranslate"><span class="pre">PragmaActiveReset</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.PragmaAnnotatedOp"><code class="docutils literal notranslate"><span class="pre">PragmaAnnotatedOp</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.PragmaBoostNoise"><code class="docutils literal notranslate"><span class="pre">PragmaBoostNoise</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.PragmaChangeDevice"><code class="docutils literal notranslate"><span class="pre">PragmaChangeDevice</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.PragmaConditional"><code class="docutils literal notranslate"><span class="pre">PragmaConditional</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.PragmaControlledCircuit"><code class="docutils literal notranslate"><span class="pre">PragmaControlledCircuit</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.PragmaDamping"><code class="docutils literal notranslate"><span class="pre">PragmaDamping</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.PragmaDephasing"><code class="docutils literal notranslate"><span class="pre">PragmaDephasing</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.PragmaDepolarising"><code class="docutils literal notranslate"><span class="pre">PragmaDepolarising</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.PragmaGeneralNoise"><code class="docutils literal notranslate"><span class="pre">PragmaGeneralNoise</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.PragmaGetDensityMatrix"><code class="docutils literal notranslate"><span class="pre">PragmaGetDensityMatrix</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.PragmaGetOccupationProbability"><code class="docutils literal notranslate"><span class="pre">PragmaGetOccupationProbability</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.PragmaGetPauliProduct"><code class="docutils literal notranslate"><span class="pre">PragmaGetPauliProduct</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.PragmaGetStateVector"><code class="docutils literal notranslate"><span class="pre">PragmaGetStateVector</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.PragmaGlobalPhase"><code class="docutils literal notranslate"><span class="pre">PragmaGlobalPhase</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.PragmaLoop"><code class="docutils literal notranslate"><span class="pre">PragmaLoop</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.PragmaOverrotation"><code class="docutils literal notranslate"><span class="pre">PragmaOverrotation</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.PragmaRandomNoise"><code class="docutils literal notranslate"><span class="pre">PragmaRandomNoise</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.PragmaRepeatGate"><code class="docutils literal notranslate"><span class="pre">PragmaRepeatGate</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.PragmaRepeatedMeasurement"><code class="docutils literal notranslate"><span class="pre">PragmaRepeatedMeasurement</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.PragmaSetDensityMatrix"><code class="docutils literal notranslate"><span class="pre">PragmaSetDensityMatrix</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.PragmaSetNumberOfMeasurements"><code class="docutils literal notranslate"><span class="pre">PragmaSetNumberOfMeasurements</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.PragmaSetStateVector"><code class="docutils literal notranslate"><span class="pre">PragmaSetStateVector</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.PragmaSleep"><code class="docutils literal notranslate"><span class="pre">PragmaSleep</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.PragmaStartDecompositionBlock"><code class="docutils literal notranslate"><span class="pre">PragmaStartDecompositionBlock</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.PragmaStopDecompositionBlock"><code class="docutils literal notranslate"><span class="pre">PragmaStopDecompositionBlock</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.PragmaStopParallelBlock"><code class="docutils literal notranslate"><span class="pre">PragmaStopParallelBlock</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.Qsim"><code class="docutils literal notranslate"><span class="pre">Qsim</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.QuantumProgram"><code class="docutils literal notranslate"><span class="pre">QuantumProgram</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.QuantumRabi"><code class="docutils literal notranslate"><span class="pre">QuantumRabi</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.RotateAroundSphericalAxis"><code class="docutils literal notranslate"><span class="pre">RotateAroundSphericalAxis</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.RotateX"><code class="docutils literal notranslate"><span class="pre">RotateX</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.RotateXY"><code class="docutils literal notranslate"><span class="pre">RotateXY</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.RotateY"><code class="docutils literal notranslate"><span class="pre">RotateY</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.RotateZ"><code class="docutils literal notranslate"><span class="pre">RotateZ</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.SGate"><code class="docutils literal notranslate"><span class="pre">SGate</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.SWAP"><code class="docutils literal notranslate"><span class="pre">SWAP</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.SXGate"><code class="docutils literal notranslate"><span class="pre">SXGate</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.SingleExcitationLoad"><code class="docutils literal notranslate"><span class="pre">SingleExcitationLoad</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.SingleExcitationStore"><code class="docutils literal notranslate"><span class="pre">SingleExcitationStore</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.SingleQubitGate"><code class="docutils literal notranslate"><span class="pre">SingleQubitGate</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.SingleQubitOverrotationDescription"><code class="docutils literal notranslate"><span class="pre">SingleQubitOverrotationDescription</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.SingleQubitOverrotationOnGate"><code class="docutils literal notranslate"><span class="pre">SingleQubitOverrotationOnGate</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.SpinInteraction"><code class="docutils literal notranslate"><span class="pre">SpinInteraction</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.SqrtISwap"><code class="docutils literal notranslate"><span class="pre">SqrtISwap</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.SqrtPauliX"><code class="docutils literal notranslate"><span class="pre">SqrtPauliX</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.SqrtPauliY"><code class="docutils literal notranslate"><span class="pre">SqrtPauliY</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.SquareLatticeDevice"><code class="docutils literal notranslate"><span class="pre">SquareLatticeDevice</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.Squeezing"><code class="docutils literal notranslate"><span class="pre">Squeezing</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.TGate"><code class="docutils literal notranslate"><span class="pre">TGate</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.Toffoli"><code class="docutils literal notranslate"><span class="pre">Toffoli</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.TripleControlledPauliX"><code class="docutils literal notranslate"><span class="pre">TripleControlledPauliX</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.TripleControlledPauliZ"><code class="docutils literal notranslate"><span class="pre">TripleControlledPauliZ</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.TripleControlledPhaseShift"><code class="docutils literal notranslate"><span class="pre">TripleControlledPhaseShift</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.VariableMSXX"><code class="docutils literal notranslate"><span class="pre">VariableMSXX</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.XY"><code class="docutils literal notranslate"><span class="pre">XY</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.available_gates_hqslang"><code class="docutils literal notranslate"><span class="pre">available_gates_hqslang()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">qoqo</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../modules.html">qoqo documentation</a></li>
+          <li class="breadcrumb-item"><a href="../../qoqo.html">qoqo</a></li>
+          <li class="breadcrumb-item"><a href="../qoqo.measurements.html">qoqo.measurements</a></li>
+      <li class="breadcrumb-item active">qoqo.measurements.PauliZProductInput</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/generated/generated/generated/qoqo.measurements.PauliZProductInput.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="qoqo-measurements-paulizproductinput">
+<h1>qoqo.measurements.PauliZProductInput<a class="headerlink" href="#qoqo-measurements-paulizproductinput" title="Link to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="qoqo.measurements.PauliZProductInput">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">qoqo.measurements.</span></span><span class="sig-name descname"><span class="pre">PauliZProductInput</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">number_qubits</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_flipped_measurement</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.measurements.PauliZProductInput" title="Link to this definition"></a></dt>
+<dd><p>Provides Necessary Information to run a [roqoqo::measurements::PauliZProduct] measurement.</p>
+<p>The PauliZProductInput starts with just the number of qubtis and flipped measurements set.
+The pauli_poduct_qubit_masks and measured_exp_vals start empty
+and can be extended with [PauliZProductInput::add_pauliz_product]
+[PauliZProductInput::add_linear_exp_val] and [PauliZProductInput::add_symbolic_exp_val]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>number_qubits</strong> (<em>int</em>) -- The number of qubits in the PauliZProduct measurement.</p></li>
+<li><p><strong>use_flipped_measurement</strong> (<em>bool</em>) -- Whether or not to use flipped measurements.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>The new instance of PauliZProductInput with pauli_product_qubit_masks = an empty dictionary, the</dt><dd><p>specified number of qubits in input, number_pauli_products = 0, measured_exp_vals = an empty
+dictionary, and whether to use flipped measurements as specified in input.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>self</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.measurements.PauliZProductInput.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.measurements.PauliZProductInput.__init__" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.measurements.PauliZProductInput.__init__" title="qoqo.measurements.PauliZProductInput.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../qoqo.measurements.html#qoqo.measurements.PauliZProductInput.add_linear_exp_val" title="qoqo.measurements.PauliZProductInput.add_linear_exp_val"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_linear_exp_val</span></code></a>(name, linear)</p></td>
+<td><p>Add linear definition of expectation value to measurement input.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../qoqo.measurements.html#qoqo.measurements.PauliZProductInput.add_pauliz_product" title="qoqo.measurements.PauliZProductInput.add_pauliz_product"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_pauliz_product</span></code></a>(readout, pauli_product_mask)</p></td>
+<td><p>Add measured Pauli product to PauliZProductInput and returns index of Pauli product.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../qoqo.measurements.html#qoqo.measurements.PauliZProductInput.add_symbolic_exp_val" title="qoqo.measurements.PauliZProductInput.add_symbolic_exp_val"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_symbolic_exp_val</span></code></a>(name, symbolic)</p></td>
+<td><p>Add symbolic definition of expectation value to measurement input.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../qoqo.measurements.html#qoqo.measurements.PauliZProductInput.current_version" title="qoqo.measurements.PauliZProductInput.current_version"><code class="xref py py-obj docutils literal notranslate"><span class="pre">current_version</span></code></a>()</p></td>
+<td><p>Returns the current version of the qoqo library .</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../qoqo.measurements.html#qoqo.measurements.PauliZProductInput.from_bincode" title="qoqo.measurements.PauliZProductInput.from_bincode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_bincode</span></code></a>(input)</p></td>
+<td><p>Convert the bincode representation of the PauliZProductInput to a PauliZProductInput using the [bincode] crate.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../qoqo.measurements.html#qoqo.measurements.PauliZProductInput.from_json" title="qoqo.measurements.PauliZProductInput.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a>(json_string)</p></td>
+<td><p>Deserialize the PauliZProductInput from json form.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../qoqo.measurements.html#qoqo.measurements.PauliZProductInput.json_schema" title="qoqo.measurements.PauliZProductInput.json_schema"><code class="xref py py-obj docutils literal notranslate"><span class="pre">json_schema</span></code></a>()</p></td>
+<td><p>Return the JsonSchema for the json serialisation of the class.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../qoqo.measurements.html#qoqo.measurements.PauliZProductInput.min_supported_version" title="qoqo.measurements.PauliZProductInput.min_supported_version"><code class="xref py py-obj docutils literal notranslate"><span class="pre">min_supported_version</span></code></a>()</p></td>
+<td><p>Return the minimum version of qoqo that supports this object.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../qoqo.measurements.html#qoqo.measurements.PauliZProductInput.to_bincode" title="qoqo.measurements.PauliZProductInput.to_bincode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_bincode</span></code></a>()</p></td>
+<td><p>Return the bincode representation of the PauliZProductInput using the [bincode] crate.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../qoqo.measurements.html#qoqo.measurements.PauliZProductInput.to_json" title="qoqo.measurements.PauliZProductInput.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a>()</p></td>
+<td><p>Serialize the PauliZProductInput to json form.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.measurements.PauliZProductInput.add_linear_exp_val">
+<span class="sig-name descname"><span class="pre">add_linear_exp_val</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">linear</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.measurements.PauliZProductInput.add_linear_exp_val" title="Link to this definition"></a></dt>
+<dd><p>Add linear definition of expectation value to measurement input.</p>
+<p>Adds an expectation value that is defined by a linear combination
+of expectation values of Pauli products.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) -- The name of the expectation value.</p></li>
+<li><p><strong>linear</strong> (<em>Dict</em><em>[</em><em>int</em><em>, </em><em>float</em><em>]</em>) -- The linear combination of expectation values as a map between Pauli product index and coefficient.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>RuntimeError</strong> -- Failed to add linear expectation value.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.measurements.PauliZProductInput.add_pauliz_product">
+<span class="sig-name descname"><span class="pre">add_pauliz_product</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">readout</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pauli_product_mask</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.measurements.PauliZProductInput.add_pauliz_product" title="Link to this definition"></a></dt>
+<dd><p>Add measured Pauli product to PauliZProductInput and returns index of Pauli product.</p>
+<p>When the pauli product is already in the measurement input the function only returns
+it index.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>readout</strong> (<em>str</em>) -- The name of the readout register the pauli_product is defined on.</p></li>
+<li><p><strong>pauli_product_mask</strong> (<em>List</em><em>[</em><em>int</em><em>]</em>) -- List of the qubits involved in the Pauli produc measurement.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The index of the added Pauli product in the list of all Pauli products.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>RuntimeError</strong> -- Failed to add pauli product.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.measurements.PauliZProductInput.add_symbolic_exp_val">
+<span class="sig-name descname"><span class="pre">add_symbolic_exp_val</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symbolic</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.measurements.PauliZProductInput.add_symbolic_exp_val" title="Link to this definition"></a></dt>
+<dd><p>Add symbolic definition of expectation value to measurement input.</p>
+<p>Adds an expectation value that is defined by a symbolic combination
+of expectation values of Pauli products.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) -- The name of the expectation value.</p></li>
+<li><p><strong>symbolic</strong> (<em>str</em>) -- The symbolic expression for the expectation values given by [qoqo_calculator::CalculatorFloat].</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>RuntimeError</strong> -- Failed to add symbolic expectation value.</p>
+</dd>
+</dl>
+<p>The i-th PauliProducts are hardcoded as variables pauli_product_i
+in the string expression of CalculatorFloat.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.measurements.PauliZProductInput.current_version">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">current_version</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.measurements.PauliZProductInput.current_version" title="Link to this definition"></a></dt>
+<dd><p>Returns the current version of the qoqo library .</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The current version of the library.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.measurements.PauliZProductInput.from_bincode">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_bincode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.measurements.PauliZProductInput.from_bincode" title="Link to this definition"></a></dt>
+<dd><p>Convert the bincode representation of the PauliZProductInput to a PauliZProductInput using the [bincode] crate.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>input</strong> (<em>ByteArray</em>) -- The serialized PauliZProductInput (in [bincode] form).</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The deserialized PauliZProductInput.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="../qoqo.measurements.html#qoqo.measurements.PauliZProductInput" title="qoqo.measurements.PauliZProductInput">PauliZProductInput</a></p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>TypeError</strong> -- Input cannot be converted to byte array.</p></li>
+<li><p><strong>ValueError</strong> -- Input cannot be deserialized to PauliZProductInput.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.measurements.PauliZProductInput.from_json">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">json_string</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.measurements.PauliZProductInput.from_json" title="Link to this definition"></a></dt>
+<dd><p>Deserialize the PauliZProductInput from json form.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The deserialized PauliZProductInput.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="../qoqo.measurements.html#qoqo.measurements.PauliZProductInput" title="qoqo.measurements.PauliZProductInput">PauliZProductInput</a></p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>PyRuntimeError</strong> -- Cannot deserialize string to PauliZProductInput.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.measurements.PauliZProductInput.json_schema">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">json_schema</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.measurements.PauliZProductInput.json_schema" title="Link to this definition"></a></dt>
+<dd><p>Return the JsonSchema for the json serialisation of the class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The json schema serialized to json</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.measurements.PauliZProductInput.min_supported_version">
+<span class="sig-name descname"><span class="pre">min_supported_version</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.measurements.PauliZProductInput.min_supported_version" title="Link to this definition"></a></dt>
+<dd><p>Return the minimum version of qoqo that supports this object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The minimum version of the qoqo library to deserialize this object.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.measurements.PauliZProductInput.to_bincode">
+<span class="sig-name descname"><span class="pre">to_bincode</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.measurements.PauliZProductInput.to_bincode" title="Link to this definition"></a></dt>
+<dd><p>Return the bincode representation of the PauliZProductInput using the [bincode] crate.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The serialized PauliZProductInput (in [bincode] form).</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>ByteArray</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> -- Cannot serialize PauliZProductInput to bytes.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.measurements.PauliZProductInput.to_json">
+<span class="sig-name descname"><span class="pre">to_json</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.measurements.PauliZProductInput.to_json" title="Link to this definition"></a></dt>
+<dd><p>Serialize the PauliZProductInput to json form.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The serialized PauliZProductInput.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>PyRuntimeError</strong> -- Unexpected error serializing PauliZProductInput.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../qoqo.measurements.html" class="btn btn-neutral float-left" title="qoqo.measurements" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="qoqo.measurements.CheatedPauliZProductInput.html" class="btn btn-neutral float-right" title="qoqo.measurements.CheatedPauliZProductInput" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, HQS Quantum Simulations GmbH.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

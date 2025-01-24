@@ -1,0 +1,619 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="English" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>qoqo.CircuitDag &mdash; qoqo 1.18.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=2bf93d87"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="qoqo.operations" href="qoqo.operations.html" />
+    <link rel="prev" title="qoqo.Circuit" href="qoqo.Circuit.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            qoqo
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../modules.html">qoqo documentation</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../qoqo.html">qoqo</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="qoqo.Circuit.html">qoqo.Circuit</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">qoqo.CircuitDag</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#qoqo.CircuitDag"><code class="docutils literal notranslate"><span class="pre">CircuitDag</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="qoqo.operations.html">qoqo.operations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="qoqo.QuantumProgram.html">qoqo.QuantumProgram</a></li>
+<li class="toctree-l3"><a class="reference internal" href="qoqo.measurements.html">qoqo.measurements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="qoqo.devices.html">qoqo.devices</a></li>
+<li class="toctree-l3"><a class="reference internal" href="qoqo.noise_models.html">qoqo.noise_models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.AllToAllDevice"><code class="docutils literal notranslate"><span class="pre">AllToAllDevice</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.BeamSplitter"><code class="docutils literal notranslate"><span class="pre">BeamSplitter</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.Bogoliubov"><code class="docutils literal notranslate"><span class="pre">Bogoliubov</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.CNOT"><code class="docutils literal notranslate"><span class="pre">CNOT</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.CZQubitResonator"><code class="docutils literal notranslate"><span class="pre">CZQubitResonator</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.Cheated"><code class="docutils literal notranslate"><span class="pre">Cheated</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.CheatedInput"><code class="docutils literal notranslate"><span class="pre">CheatedInput</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.CheatedPauliZProduct"><code class="docutils literal notranslate"><span class="pre">CheatedPauliZProduct</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.CheatedPauliZProductInput"><code class="docutils literal notranslate"><span class="pre">CheatedPauliZProductInput</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.Circuit"><code class="docutils literal notranslate"><span class="pre">Circuit</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.CircuitDag"><code class="docutils literal notranslate"><span class="pre">CircuitDag</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.ClassicalRegister"><code class="docutils literal notranslate"><span class="pre">ClassicalRegister</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.ComplexPMInteraction"><code class="docutils literal notranslate"><span class="pre">ComplexPMInteraction</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.ContinuousDecoherenceModel"><code class="docutils literal notranslate"><span class="pre">ContinuousDecoherenceModel</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.ControlledControlledPauliZ"><code class="docutils literal notranslate"><span class="pre">ControlledControlledPauliZ</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.ControlledControlledPhaseShift"><code class="docutils literal notranslate"><span class="pre">ControlledControlledPhaseShift</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.ControlledPauliY"><code class="docutils literal notranslate"><span class="pre">ControlledPauliY</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.ControlledPauliZ"><code class="docutils literal notranslate"><span class="pre">ControlledPauliZ</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.ControlledPhaseShift"><code class="docutils literal notranslate"><span class="pre">ControlledPhaseShift</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.ControlledRotateX"><code class="docutils literal notranslate"><span class="pre">ControlledRotateX</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.ControlledRotateXY"><code class="docutils literal notranslate"><span class="pre">ControlledRotateXY</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.ControlledSWAP"><code class="docutils literal notranslate"><span class="pre">ControlledSWAP</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.DecoherenceOnGateModel"><code class="docutils literal notranslate"><span class="pre">DecoherenceOnGateModel</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.DecoherenceOnIdleModel"><code class="docutils literal notranslate"><span class="pre">DecoherenceOnIdleModel</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.DefinitionBit"><code class="docutils literal notranslate"><span class="pre">DefinitionBit</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.DefinitionComplex"><code class="docutils literal notranslate"><span class="pre">DefinitionComplex</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.DefinitionFloat"><code class="docutils literal notranslate"><span class="pre">DefinitionFloat</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.DefinitionUsize"><code class="docutils literal notranslate"><span class="pre">DefinitionUsize</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.EchoCrossResonance"><code class="docutils literal notranslate"><span class="pre">EchoCrossResonance</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.FSwap"><code class="docutils literal notranslate"><span class="pre">FSwap</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.Fsim"><code class="docutils literal notranslate"><span class="pre">Fsim</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.GPi"><code class="docutils literal notranslate"><span class="pre">GPi</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.GPi2"><code class="docutils literal notranslate"><span class="pre">GPi2</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.GenericDevice"><code class="docutils literal notranslate"><span class="pre">GenericDevice</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.GivensRotation"><code class="docutils literal notranslate"><span class="pre">GivensRotation</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.GivensRotationLittleEndian"><code class="docutils literal notranslate"><span class="pre">GivensRotationLittleEndian</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.Hadamard"><code class="docutils literal notranslate"><span class="pre">Hadamard</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.ISwap"><code class="docutils literal notranslate"><span class="pre">ISwap</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.Identity"><code class="docutils literal notranslate"><span class="pre">Identity</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.ImperfectReadoutModel"><code class="docutils literal notranslate"><span class="pre">ImperfectReadoutModel</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.InputBit"><code class="docutils literal notranslate"><span class="pre">InputBit</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.InputSymbolic"><code class="docutils literal notranslate"><span class="pre">InputSymbolic</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.InvSGate"><code class="docutils literal notranslate"><span class="pre">InvSGate</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.InvSXGate"><code class="docutils literal notranslate"><span class="pre">InvSXGate</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.InvSqrtISwap"><code class="docutils literal notranslate"><span class="pre">InvSqrtISwap</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.InvSqrtPauliX"><code class="docutils literal notranslate"><span class="pre">InvSqrtPauliX</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.InvSqrtPauliY"><code class="docutils literal notranslate"><span class="pre">InvSqrtPauliY</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.InvTGate"><code class="docutils literal notranslate"><span class="pre">InvTGate</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.JaynesCummings"><code class="docutils literal notranslate"><span class="pre">JaynesCummings</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.LongitudinalCoupling"><code class="docutils literal notranslate"><span class="pre">LongitudinalCoupling</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.MeasureQubit"><code class="docutils literal notranslate"><span class="pre">MeasureQubit</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.MolmerSorensenXX"><code class="docutils literal notranslate"><span class="pre">MolmerSorensenXX</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.MultiQubitMS"><code class="docutils literal notranslate"><span class="pre">MultiQubitMS</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.MultiQubitZZ"><code class="docutils literal notranslate"><span class="pre">MultiQubitZZ</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.PMInteraction"><code class="docutils literal notranslate"><span class="pre">PMInteraction</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.PauliX"><code class="docutils literal notranslate"><span class="pre">PauliX</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.PauliY"><code class="docutils literal notranslate"><span class="pre">PauliY</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.PauliZ"><code class="docutils literal notranslate"><span class="pre">PauliZ</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.PauliZProduct"><code class="docutils literal notranslate"><span class="pre">PauliZProduct</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.PauliZProductInput"><code class="docutils literal notranslate"><span class="pre">PauliZProductInput</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.PhaseDisplacement"><code class="docutils literal notranslate"><span class="pre">PhaseDisplacement</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.PhaseShift"><code class="docutils literal notranslate"><span class="pre">PhaseShift</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.PhaseShiftState0"><code class="docutils literal notranslate"><span class="pre">PhaseShiftState0</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.PhaseShiftState1"><code class="docutils literal notranslate"><span class="pre">PhaseShiftState1</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.PhaseShiftedControlledControlledPhase"><code class="docutils literal notranslate"><span class="pre">PhaseShiftedControlledControlledPhase</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.PhaseShiftedControlledControlledZ"><code class="docutils literal notranslate"><span class="pre">PhaseShiftedControlledControlledZ</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.PhaseShiftedControlledPhase"><code class="docutils literal notranslate"><span class="pre">PhaseShiftedControlledPhase</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.PhaseShiftedControlledZ"><code class="docutils literal notranslate"><span class="pre">PhaseShiftedControlledZ</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.PhotonDetection"><code class="docutils literal notranslate"><span class="pre">PhotonDetection</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.PragmaActiveReset"><code class="docutils literal notranslate"><span class="pre">PragmaActiveReset</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.PragmaAnnotatedOp"><code class="docutils literal notranslate"><span class="pre">PragmaAnnotatedOp</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.PragmaBoostNoise"><code class="docutils literal notranslate"><span class="pre">PragmaBoostNoise</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.PragmaChangeDevice"><code class="docutils literal notranslate"><span class="pre">PragmaChangeDevice</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.PragmaConditional"><code class="docutils literal notranslate"><span class="pre">PragmaConditional</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.PragmaControlledCircuit"><code class="docutils literal notranslate"><span class="pre">PragmaControlledCircuit</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.PragmaDamping"><code class="docutils literal notranslate"><span class="pre">PragmaDamping</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.PragmaDephasing"><code class="docutils literal notranslate"><span class="pre">PragmaDephasing</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.PragmaDepolarising"><code class="docutils literal notranslate"><span class="pre">PragmaDepolarising</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.PragmaGeneralNoise"><code class="docutils literal notranslate"><span class="pre">PragmaGeneralNoise</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.PragmaGetDensityMatrix"><code class="docutils literal notranslate"><span class="pre">PragmaGetDensityMatrix</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.PragmaGetOccupationProbability"><code class="docutils literal notranslate"><span class="pre">PragmaGetOccupationProbability</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.PragmaGetPauliProduct"><code class="docutils literal notranslate"><span class="pre">PragmaGetPauliProduct</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.PragmaGetStateVector"><code class="docutils literal notranslate"><span class="pre">PragmaGetStateVector</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.PragmaGlobalPhase"><code class="docutils literal notranslate"><span class="pre">PragmaGlobalPhase</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.PragmaLoop"><code class="docutils literal notranslate"><span class="pre">PragmaLoop</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.PragmaOverrotation"><code class="docutils literal notranslate"><span class="pre">PragmaOverrotation</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.PragmaRandomNoise"><code class="docutils literal notranslate"><span class="pre">PragmaRandomNoise</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.PragmaRepeatGate"><code class="docutils literal notranslate"><span class="pre">PragmaRepeatGate</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.PragmaRepeatedMeasurement"><code class="docutils literal notranslate"><span class="pre">PragmaRepeatedMeasurement</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.PragmaSetDensityMatrix"><code class="docutils literal notranslate"><span class="pre">PragmaSetDensityMatrix</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.PragmaSetNumberOfMeasurements"><code class="docutils literal notranslate"><span class="pre">PragmaSetNumberOfMeasurements</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.PragmaSetStateVector"><code class="docutils literal notranslate"><span class="pre">PragmaSetStateVector</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.PragmaSleep"><code class="docutils literal notranslate"><span class="pre">PragmaSleep</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.PragmaStartDecompositionBlock"><code class="docutils literal notranslate"><span class="pre">PragmaStartDecompositionBlock</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.PragmaStopDecompositionBlock"><code class="docutils literal notranslate"><span class="pre">PragmaStopDecompositionBlock</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.PragmaStopParallelBlock"><code class="docutils literal notranslate"><span class="pre">PragmaStopParallelBlock</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.Qsim"><code class="docutils literal notranslate"><span class="pre">Qsim</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.QuantumProgram"><code class="docutils literal notranslate"><span class="pre">QuantumProgram</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.QuantumRabi"><code class="docutils literal notranslate"><span class="pre">QuantumRabi</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.RotateAroundSphericalAxis"><code class="docutils literal notranslate"><span class="pre">RotateAroundSphericalAxis</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.RotateX"><code class="docutils literal notranslate"><span class="pre">RotateX</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.RotateXY"><code class="docutils literal notranslate"><span class="pre">RotateXY</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.RotateY"><code class="docutils literal notranslate"><span class="pre">RotateY</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.RotateZ"><code class="docutils literal notranslate"><span class="pre">RotateZ</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.SGate"><code class="docutils literal notranslate"><span class="pre">SGate</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.SWAP"><code class="docutils literal notranslate"><span class="pre">SWAP</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.SXGate"><code class="docutils literal notranslate"><span class="pre">SXGate</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.SingleExcitationLoad"><code class="docutils literal notranslate"><span class="pre">SingleExcitationLoad</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.SingleExcitationStore"><code class="docutils literal notranslate"><span class="pre">SingleExcitationStore</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.SingleQubitGate"><code class="docutils literal notranslate"><span class="pre">SingleQubitGate</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.SingleQubitOverrotationDescription"><code class="docutils literal notranslate"><span class="pre">SingleQubitOverrotationDescription</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.SingleQubitOverrotationOnGate"><code class="docutils literal notranslate"><span class="pre">SingleQubitOverrotationOnGate</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.SpinInteraction"><code class="docutils literal notranslate"><span class="pre">SpinInteraction</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.SqrtISwap"><code class="docutils literal notranslate"><span class="pre">SqrtISwap</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.SqrtPauliX"><code class="docutils literal notranslate"><span class="pre">SqrtPauliX</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.SqrtPauliY"><code class="docutils literal notranslate"><span class="pre">SqrtPauliY</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.SquareLatticeDevice"><code class="docutils literal notranslate"><span class="pre">SquareLatticeDevice</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.Squeezing"><code class="docutils literal notranslate"><span class="pre">Squeezing</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.TGate"><code class="docutils literal notranslate"><span class="pre">TGate</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.Toffoli"><code class="docutils literal notranslate"><span class="pre">Toffoli</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.TripleControlledPauliX"><code class="docutils literal notranslate"><span class="pre">TripleControlledPauliX</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.TripleControlledPauliZ"><code class="docutils literal notranslate"><span class="pre">TripleControlledPauliZ</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.TripleControlledPhaseShift"><code class="docutils literal notranslate"><span class="pre">TripleControlledPhaseShift</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.VariableMSXX"><code class="docutils literal notranslate"><span class="pre">VariableMSXX</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.XY"><code class="docutils literal notranslate"><span class="pre">XY</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.available_gates_hqslang"><code class="docutils literal notranslate"><span class="pre">available_gates_hqslang()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">qoqo</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../modules.html">qoqo documentation</a></li>
+          <li class="breadcrumb-item"><a href="../qoqo.html">qoqo</a></li>
+      <li class="breadcrumb-item active">qoqo.CircuitDag</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/generated/generated/qoqo.CircuitDag.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="qoqo-circuitdag">
+<h1>qoqo.CircuitDag<a class="headerlink" href="#qoqo-circuitdag" title="Link to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="qoqo.CircuitDag">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">qoqo.</span></span><span class="sig-name descname"><span class="pre">CircuitDag</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node_number</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edge_number</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">300</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.CircuitDag" title="Link to this definition"></a></dt>
+<dd><p>Represents the Direct Acyclic Graph (DAG) of a Circuit.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.CircuitDag.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.CircuitDag.__init__" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.CircuitDag.__init__" title="qoqo.CircuitDag.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../qoqo.html#qoqo.CircuitDag.add_to_back" title="qoqo.CircuitDag.add_to_back"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_to_back</span></code></a>(op)</p></td>
+<td><p>Add an Operation to the back of the CircuitDag, if necessary.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../qoqo.html#qoqo.CircuitDag.add_to_front" title="qoqo.CircuitDag.add_to_front"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_to_front</span></code></a>(op)</p></td>
+<td><p>Add an Operation to the front of the CircuitDag, if necessary.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../qoqo.html#qoqo.CircuitDag.blocking_predecessors" title="qoqo.CircuitDag.blocking_predecessors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">blocking_predecessors</span></code></a>(already_executed, ...)</p></td>
+<td><p>Checks which of the direct predecessors of an Operation in the CircuitDag blocks the execution.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../qoqo.html#qoqo.CircuitDag.commuting_operations" title="qoqo.CircuitDag.commuting_operations"><code class="xref py py-obj docutils literal notranslate"><span class="pre">commuting_operations</span></code></a>()</p></td>
+<td><p>Returns the list of nodes of commuting operations in CircuitDag.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../qoqo.html#qoqo.CircuitDag.execution_blocked" title="qoqo.CircuitDag.execution_blocked"><code class="xref py py-obj docutils literal notranslate"><span class="pre">execution_blocked</span></code></a>(already_executed, ...)</p></td>
+<td><p>Checks if executing an operation is blocked by any not-yet executed operation.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../qoqo.html#qoqo.CircuitDag.first_operation_involving_classical" title="qoqo.CircuitDag.first_operation_involving_classical"><code class="xref py py-obj docutils literal notranslate"><span class="pre">first_operation_involving_classical</span></code></a>()</p></td>
+<td><p>Returns a dictionary where a key is composed by the name and the size of the classical register and its value represents the first node that involves that register.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../qoqo.html#qoqo.CircuitDag.first_operation_involving_qubit" title="qoqo.CircuitDag.first_operation_involving_qubit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">first_operation_involving_qubit</span></code></a>()</p></td>
+<td><p>Returns a dictionary where a key represents a qubit and its value represents the first node that involves that qubit.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../qoqo.html#qoqo.CircuitDag.first_parallel_block" title="qoqo.CircuitDag.first_parallel_block"><code class="xref py py-obj docutils literal notranslate"><span class="pre">first_parallel_block</span></code></a>()</p></td>
+<td><p>Returns a set containing the nodes in the first parallel block.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../qoqo.html#qoqo.CircuitDag.from_bincode" title="qoqo.CircuitDag.from_bincode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_bincode</span></code></a>(input)</p></td>
+<td><p>Convert the bincode representation of the CircuitDag to a CircuitDag using the [bincode] crate.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../qoqo.html#qoqo.CircuitDag.from_circuit" title="qoqo.CircuitDag.from_circuit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_circuit</span></code></a>()</p></td>
+<td><p>Create a CircuitDag from a given Circuit;</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../qoqo.html#qoqo.CircuitDag.get" title="qoqo.CircuitDag.get"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get</span></code></a>(index)</p></td>
+<td><p>Given a NodeIndex, returns the Operation contained in the node of the CircuitDag.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../qoqo.html#qoqo.CircuitDag.last_operation_involving_classical" title="qoqo.CircuitDag.last_operation_involving_classical"><code class="xref py py-obj docutils literal notranslate"><span class="pre">last_operation_involving_classical</span></code></a>()</p></td>
+<td><p>Returns a dictionary where a key is composed by the name and the size of the classical register and its value represents the last node that involves that register.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../qoqo.html#qoqo.CircuitDag.last_operation_involving_qubit" title="qoqo.CircuitDag.last_operation_involving_qubit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">last_operation_involving_qubit</span></code></a>()</p></td>
+<td><p>Returns a dictionary where a key represents a qubit and its value represents the last node that involves that qubit.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../qoqo.html#qoqo.CircuitDag.last_parallel_block" title="qoqo.CircuitDag.last_parallel_block"><code class="xref py py-obj docutils literal notranslate"><span class="pre">last_parallel_block</span></code></a>()</p></td>
+<td><p>Returns a set containing the nodes in the last parallel block.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../qoqo.html#qoqo.CircuitDag.new_front_layer" title="qoqo.CircuitDag.new_front_layer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">new_front_layer</span></code></a>(already_executed, ...)</p></td>
+<td><p>Returns a new front-layer after executing an operation from the current front layer.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../qoqo.html#qoqo.CircuitDag.parallel_blocks" title="qoqo.CircuitDag.parallel_blocks"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parallel_blocks</span></code></a>()</p></td>
+<td><p>Returns an iterator over the possible parallel blocks in circuit that can be executed simultaneously</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../qoqo.html#qoqo.CircuitDag.successors" title="qoqo.CircuitDag.successors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">successors</span></code></a>(node)</p></td>
+<td><p>Returns the list of the successors of a given node in the CircuitDag.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../qoqo.html#qoqo.CircuitDag.to_bincode" title="qoqo.CircuitDag.to_bincode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_bincode</span></code></a>()</p></td>
+<td><p>Return the bincode representation of the CircuitDag using the [bincode] crate.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../qoqo.html#qoqo.CircuitDag.to_circuit" title="qoqo.CircuitDag.to_circuit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_circuit</span></code></a>()</p></td>
+<td><p>Transforms the CircuitDag into a Circuit.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.CircuitDag.add_to_back">
+<span class="sig-name descname"><span class="pre">add_to_back</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">op</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.CircuitDag.add_to_back" title="Link to this definition"></a></dt>
+<dd><p>Add an Operation to the back of the CircuitDag, if necessary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>op</strong> (<em>Operation</em>) -- The Operation to add to the back of the CircuitDag.</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>TypeError</strong> -- The Python Object cannot be converted to Operation.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.CircuitDag.add_to_front">
+<span class="sig-name descname"><span class="pre">add_to_front</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">op</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.CircuitDag.add_to_front" title="Link to this definition"></a></dt>
+<dd><p>Add an Operation to the front of the CircuitDag, if necessary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>op</strong> (<em>Operation</em>) -- The Operation to add to the front of the CircuitDag.</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>TypeError</strong> -- The Python Object cannot be converted to Operation.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.CircuitDag.blocking_predecessors">
+<span class="sig-name descname"><span class="pre">blocking_predecessors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">already_executed</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">to_be_executed</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.CircuitDag.blocking_predecessors" title="Link to this definition"></a></dt>
+<dd><p>Checks which of the direct predecessors of an Operation in the CircuitDag blocks the execution.</p>
+<p>Warning:
+This method can only be used to determine if an operation can be executed when <cite>already_executed</cite> is consistent.
+When the list  <cite>already_executed</cite> is inconsistent (a n operation is reported as executed that could not have been executed yet)
+this method returning an empty vector does not imply that the <cite>to_be_executed</cite> operation can be executed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>already_executed</strong> (<em>List</em><em>[</em><em>int</em><em>]</em>) -- List of NodeIndices of Nodes that have already been executed in the Circuit.</p></li>
+<li><p><strong>to_be_executed</strong> (<em>int</em>) -- NodeIndex of the Operation that should be executed next.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List containing the sorted blocking elements.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[int]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.CircuitDag.commuting_operations">
+<span class="sig-name descname"><span class="pre">commuting_operations</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.CircuitDag.commuting_operations" title="Link to this definition"></a></dt>
+<dd><p>Returns the list of nodes of commuting operations in CircuitDag.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The list of nodes of commuting operations.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>List[int]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.CircuitDag.execution_blocked">
+<span class="sig-name descname"><span class="pre">execution_blocked</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">already_executed</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">to_be_executed</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.CircuitDag.execution_blocked" title="Link to this definition"></a></dt>
+<dd><p>Checks if executing an operation is blocked by any not-yet executed operation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>already_executed</strong> (<em>List</em><em>[</em><em>int</em><em>]</em>) -- List of NodeIndices of Nodes that have already been executed in the Circuit.</p></li>
+<li><p><strong>to_be_executed</strong> (<em>int</em>) -- NodeIndex of the operation that should be executed next.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List containing the sorted blocking elements.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[int]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.CircuitDag.first_operation_involving_classical">
+<span class="sig-name descname"><span class="pre">first_operation_involving_classical</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.CircuitDag.first_operation_involving_classical" title="Link to this definition"></a></dt>
+<dd><p>Returns a dictionary where a key is composed by the name and the size
+of the classical register and its value represents the first node that involves that
+register.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The dictionary of {(str, int), int} elements.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dict[(str, int), int]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.CircuitDag.first_operation_involving_qubit">
+<span class="sig-name descname"><span class="pre">first_operation_involving_qubit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.CircuitDag.first_operation_involving_qubit" title="Link to this definition"></a></dt>
+<dd><p>Returns a dictionary where a key represents a qubit and its value represents
+the first node that involves that qubit.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The dictionary of {qubit: node} elements.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dict[int, int]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.CircuitDag.first_parallel_block">
+<span class="sig-name descname"><span class="pre">first_parallel_block</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.CircuitDag.first_parallel_block" title="Link to this definition"></a></dt>
+<dd><p>Returns a set containing the nodes in the first parallel block.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The set of nodes in the first parallel block.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Set[int]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.CircuitDag.from_bincode">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_bincode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.CircuitDag.from_bincode" title="Link to this definition"></a></dt>
+<dd><p>Convert the bincode representation of the CircuitDag to a CircuitDag using the [bincode] crate.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>input</strong> (<em>ByteArray</em>) -- The serialized CircuitDag (in [bincode] form).</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The deserialized CircuitDag.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="../qoqo.html#qoqo.CircuitDag" title="qoqo.CircuitDag">CircuitDag</a></p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>TypeError</strong> -- Input cannot be converted to byte array.</p></li>
+<li><p><strong>ValueError</strong> -- Input cannot be deserialized to CircuitDag.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.CircuitDag.from_circuit">
+<span class="sig-name descname"><span class="pre">from_circuit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.CircuitDag.from_circuit" title="Link to this definition"></a></dt>
+<dd><p>Create a CircuitDag from a given Circuit;</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>circuit</strong> (<a class="reference internal" href="../qoqo.html#qoqo.Circuit" title="qoqo.Circuit"><em>Circuit</em></a>) -- The Circuit to build the new CircuitDag from.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The new CircuitDag.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>self</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.CircuitDag.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.CircuitDag.get" title="Link to this definition"></a></dt>
+<dd><p>Given a NodeIndex, returns the Operation contained in the node of
+the CircuitDag.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>index</strong> (<em>int</em>) -- The index of the node to get from the CircuitDag.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The Operation at the given index (if it exists).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Operation</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>IndexError</strong> -- Index out of range.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.CircuitDag.last_operation_involving_classical">
+<span class="sig-name descname"><span class="pre">last_operation_involving_classical</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.CircuitDag.last_operation_involving_classical" title="Link to this definition"></a></dt>
+<dd><p>Returns a dictionary where a key is composed by the name and the size
+of the classical register and its value represents the last node that involves that
+register.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The dictionary of {(str, int), int} elements.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dict[(str, int), int]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.CircuitDag.last_operation_involving_qubit">
+<span class="sig-name descname"><span class="pre">last_operation_involving_qubit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.CircuitDag.last_operation_involving_qubit" title="Link to this definition"></a></dt>
+<dd><p>Returns a dictionary where a key represents a qubit and its value represents
+the last node that involves that qubit.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The dictionary of {qubit: node} elements.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dict[int, int]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.CircuitDag.last_parallel_block">
+<span class="sig-name descname"><span class="pre">last_parallel_block</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.CircuitDag.last_parallel_block" title="Link to this definition"></a></dt>
+<dd><p>Returns a set containing the nodes in the last parallel block.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The set of nodes in the last parallel block.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Set[int]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.CircuitDag.new_front_layer">
+<span class="sig-name descname"><span class="pre">new_front_layer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">already_executed</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">current_front_layer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">to_be_executed</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.CircuitDag.new_front_layer" title="Link to this definition"></a></dt>
+<dd><p>Returns a new front-layer after executing an operation from the current front layer.</p>
+<p>Returns an error if operation to be executed is not in the current front layer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>already_executed</strong> (<em>List</em><em>[</em><em>int</em><em>]</em>) -- List of NodeIndices of Nodes that have already been executed in the Circuit.</p></li>
+<li><p><strong>current_front_layer</strong> (<em>List</em><em>[</em><em>int</em><em>]</em>) -- List of NodeIndices in the current front layer ready to be executed if physically possible.</p></li>
+<li><p><strong>to_be_executed</strong> (<em>int</em>) -- NodeIndex of the operation that should be executed next.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.CircuitDag.parallel_blocks">
+<span class="sig-name descname"><span class="pre">parallel_blocks</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.CircuitDag.parallel_blocks" title="Link to this definition"></a></dt>
+<dd><p>Returns an iterator over the possible parallel blocks in circuit that can be executed simultaneously</p>
+<p>Returns an Iterator over Vectors of references to the NodeIndices in the parallel block as well
+as references to the Operation in the blocks</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.CircuitDag.successors">
+<span class="sig-name descname"><span class="pre">successors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.CircuitDag.successors" title="Link to this definition"></a></dt>
+<dd><p>Returns the list of the successors of a given node in the CircuitDag.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.CircuitDag.to_bincode">
+<span class="sig-name descname"><span class="pre">to_bincode</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.CircuitDag.to_bincode" title="Link to this definition"></a></dt>
+<dd><p>Return the bincode representation of the CircuitDag using the [bincode] crate.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The serialized CircuitDag (in [bincode] form).</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>ByteArray</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> -- Cannot serialize CircuitDag to bytes.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.CircuitDag.to_circuit">
+<span class="sig-name descname"><span class="pre">to_circuit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.CircuitDag.to_circuit" title="Link to this definition"></a></dt>
+<dd><p>Transforms the CircuitDag into a Circuit.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="qoqo.Circuit.html" class="btn btn-neutral float-left" title="qoqo.Circuit" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="qoqo.operations.html" class="btn btn-neutral float-right" title="qoqo.operations" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, HQS Quantum Simulations GmbH.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
