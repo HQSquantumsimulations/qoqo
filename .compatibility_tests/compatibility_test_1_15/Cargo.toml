@@ -25,7 +25,7 @@ roqoqo = { version = "~1.17", path = "../../roqoqo", features = [
     "overrotate",
 ] }
 struqture = { git = "https://github.com/HQSquantumsimulations/struqture" }
-struqture_1_7 = { git = "https://github.com/HQSquantumsimulations/struqture", package = "struqture", tag = "v1.7.1" }
+struqture_1_9 = { git = "https://github.com/HQSquantumsimulations/struqture", package = "struqture", tag = "v1.9.2" }
 bincode = { version = "1.3" }
 ndarray = "0.16"
 qoqo_calculator = { git = "https://github.com/HQSquantumsimulations/qoqo_calculator" }
@@ -33,7 +33,7 @@ qoqo_calculator_1_2 = { git = "https://github.com/HQSquantumsimulations/qoqo_cal
 
 [patch.crates-io]
 struqture = { git = "https://github.com/HQSquantumsimulations/struqture" }
-struqture_1_7 = { git = "https://github.com/HQSquantumsimulations/struqture", package = "struqture", tag = "v1.7.1" }
+struqture_1_9 = { git = "https://github.com/HQSquantumsimulations/struqture", package = "struqture", tag = "v1.9.2" }
 qoqo_calculator = { git = "https://github.com/HQSquantumsimulations/qoqo_calculator" }
 qoqo_calculator_1_2 = { git = "https://github.com/HQSquantumsimulations/qoqo_calculator", package = "qoqo_calculator", tag = "v1.2.4" }
 
