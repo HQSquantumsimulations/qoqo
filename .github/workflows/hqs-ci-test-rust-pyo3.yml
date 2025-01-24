@@ -18,15 +18,15 @@ jobs:
       macos: true
       rust_package_name: "roqoqo"
       python_3_13: true
-      features: "json_schema overrotate circuitdag unstable_chain_with_environment unstable_analog_operations unstable_operation_definition"
+      features: "json_schema overrotate circuitdag unstable_chain_with_environment unstable_analog_operations unstable_operation_definition unstable_simulation_repetitions"
 
   build_tests:
     uses: HQSquantumsimulations/reusable_workflows/.github/workflows/reusable_build_tests_rust_pyo3.yml@main
     with: 
       # Run tests also on windows runners
-      windows: false
+      windows: true
       # Run tests also on macos runners
       macos: false
       py_interface_folder: "qoqo"
-      python_3_13: false
-      has_python_tests: false
+      python_3_13: true
+      has_python_tests: true
