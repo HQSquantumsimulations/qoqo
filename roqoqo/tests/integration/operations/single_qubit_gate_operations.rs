@@ -21,7 +21,7 @@ use num_complex::Complex64;
 use qoqo_calculator::Calculator;
 use qoqo_calculator::CalculatorError::FloatSymbolicNotConvertable;
 use qoqo_calculator::CalculatorFloat;
-use rand::distributions::Standard;
+use rand::distr::StandardUniform;
 use rand::prelude::*;
 use rand::rngs::StdRng;
 use roqoqo::operations::*;
@@ -1881,15 +1881,15 @@ fn test_singlequbitgates_partialeq(
 fn test_general_multiplication(seed: u64) {
     let mut rng = StdRng::seed_from_u64(seed);
 
-    let angle_phi_alpha_left: f64 = rng.sample(Standard);
-    let angle_phi_beta_left: f64 = rng.sample(Standard);
-    let angle_theta_left: f64 = rng.sample(Standard);
-    let pahse_left: f64 = rng.sample(Standard);
+    let angle_phi_alpha_left: f64 = rng.sample(StandardUniform);
+    let angle_phi_beta_left: f64 = rng.sample(StandardUniform);
+    let angle_theta_left: f64 = rng.sample(StandardUniform);
+    let pahse_left: f64 = rng.sample(StandardUniform);
 
-    let angle_phi_alpha_right: f64 = rng.sample(Standard);
-    let angle_phi_beta_right: f64 = rng.sample(Standard);
-    let angle_theta_right: f64 = rng.sample(Standard);
-    let pahse_right: f64 = rng.sample(Standard);
+    let angle_phi_alpha_right: f64 = rng.sample(StandardUniform);
+    let angle_phi_beta_right: f64 = rng.sample(StandardUniform);
+    let angle_theta_right: f64 = rng.sample(StandardUniform);
+    let pahse_right: f64 = rng.sample(StandardUniform);
 
     let left_gate = SingleQubitGate::new(
         0,

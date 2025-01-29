@@ -14,11 +14,10 @@ use std::collections::HashMap;
 
 use nalgebra::{Complex, DMatrix, DVector};
 use ndarray::Array2;
-use rand::distributions::{Standard, Uniform};
+use rand::distr::{StandardUniform, Uniform};
 use rand::prelude::*;
+use rand::rng;
 use rand::rngs::StdRng;
-use rand::seq::SliceRandom;
-use rand::thread_rng;
 
 use roqoqo::operations::{
     DefinitionBit, GateOperation, PauliZ, PragmaRepeatedMeasurement, TwoQubitGateOperation,
@@ -76,7 +75,7 @@ pub fn prepare_monte_carlo_gate_test(
     let mut measurement_input = PauliZProductInput::new(number_qubits, false);
     let mut measurement_circuits: Vec<Circuit> = Vec::new();
     // for random number generation
-    let mut rng = thread_rng();
+    let mut rng = rng();
 
     // loop over test runs
     for i in 0..number_stochastic_tests {
@@ -178,7 +177,7 @@ pub fn construct_random_circuit(circuit_length: usize, number_qubits: usize, see
     let mut rng = StdRng::seed_from_u64(seed);
     let mut circuit = Circuit::new();
     for _ in 0..circuit_length {
-        let tmp_seed: u64 = rng.sample(Standard);
+        let tmp_seed: u64 = rng.sample(StandardUniform);
         add_random_operation(&mut circuit, number_qubits, tmp_seed)
     }
     circuit
@@ -197,9 +196,12 @@ pub fn construct_random_circuit(circuit_length: usize, number_qubits: usize, see
 ///
 pub fn add_random_operation(circuit: &mut Circuit, number_qubits: usize, seed: u64) {
     let mut rng = StdRng::seed_from_u64(seed);
-    let qubits_dist = Uniform::from(0..number_qubits);
-    let two_qubits_dist = Uniform::from(0..number_qubits - 1);
-    let gate_type_dist = Uniform::from(0..35);
+    let qubits_dist = Uniform::new(0, number_qubits)
+        .expect("Couldn't create uniform distribution for single qubits");
+    let two_qubits_dist = Uniform::new(0, number_qubits - 1)
+        .expect("Couldn't create uniform distribution for two qubits");
+    let gate_type_dist =
+        Uniform::new(0, 35).expect("Couldn't create uniform distribution for gates");
     let new_op: Operation = match gate_type_dist.sample(&mut rng) {
         0 => PauliX::new(qubits_dist.sample(&mut rng)).into(),
         1 => PauliY::new(qubits_dist.sample(&mut rng)).into(),
@@ -208,15 +210,15 @@ pub fn add_random_operation(circuit: &mut Circuit, number_qubits: usize, seed: u
         4 => SqrtPauliX::new(qubits_dist.sample(&mut rng)).into(),
         5 => InvSqrtPauliX::new(qubits_dist.sample(&mut rng)).into(),
         6 => {
-            let theta: f64 = rng.sample(Standard);
+            let theta: f64 = rng.sample(StandardUniform);
             RotateX::new(qubits_dist.sample(&mut rng), theta.into()).into()
         }
         7 => {
-            let theta: f64 = rng.sample(Standard);
+            let theta: f64 = rng.sample(StandardUniform);
             RotateY::new(qubits_dist.sample(&mut rng), theta.into()).into()
         }
         8 => {
-            let theta: f64 = rng.sample(Standard);
+            let theta: f64 = rng.sample(StandardUniform);
             RotateZ::new(qubits_dist.sample(&mut rng), theta.into()).into()
         }
         9 => {
@@ -240,25 +242,25 @@ pub fn add_random_operation(circuit: &mut Circuit, number_qubits: usize, seed: u
             SqrtISwap::new(qubit, qubit + 1).into()
         }
         14 => {
-            let theta: f64 = rng.sample(Standard);
+            let theta: f64 = rng.sample(StandardUniform);
             let qubit = two_qubits_dist.sample(&mut rng);
             VariableMSXX::new(qubit, qubit + 1, theta.into()).into()
         }
         15 => {
-            let theta: f64 = rng.sample(Standard);
+            let theta: f64 = rng.sample(StandardUniform);
             let qubit = two_qubits_dist.sample(&mut rng);
             ControlledPhaseShift::new(qubit, qubit + 1, theta.into()).into()
         }
         16 => {
             let qubit = two_qubits_dist.sample(&mut rng);
-            let delta_real: f64 = rng.sample(Standard);
-            let delta_imag: f64 = rng.sample(Standard);
+            let delta_real: f64 = rng.sample(StandardUniform);
+            let delta_imag: f64 = rng.sample(StandardUniform);
             Bogoliubov::new(qubit, qubit + 1, delta_real.into(), delta_imag.into()).into()
         }
         17 => {
             let qubit = two_qubits_dist.sample(&mut rng);
-            let t_real: f64 = rng.sample(Standard);
-            let t_imag: f64 = rng.sample(Standard);
+            let t_real: f64 = rng.sample(StandardUniform);
+            let t_imag: f64 = rng.sample(StandardUniform);
             ComplexPMInteraction::new(qubit, qubit + 1, t_real.into(), t_imag.into()).into()
         }
         18 => {
@@ -267,21 +269,21 @@ pub fn add_random_operation(circuit: &mut Circuit, number_qubits: usize, seed: u
         }
         19 => {
             let qubit = two_qubits_dist.sample(&mut rng);
-            let t: f64 = rng.sample(Standard);
-            let u: f64 = rng.sample(Standard);
-            let delta: f64 = rng.sample(Standard);
+            let t: f64 = rng.sample(StandardUniform);
+            let u: f64 = rng.sample(StandardUniform);
+            let delta: f64 = rng.sample(StandardUniform);
             Fsim::new(qubit, qubit + 1, t.into(), u.into(), delta.into()).into()
         }
         20 => {
             let qubit = two_qubits_dist.sample(&mut rng);
-            let theta: f64 = rng.sample(Standard);
-            let phi: f64 = rng.sample(Standard);
+            let theta: f64 = rng.sample(StandardUniform);
+            let phi: f64 = rng.sample(StandardUniform);
             GivensRotation::new(qubit, qubit + 1, theta.into(), phi.into()).into()
         }
         21 => {
             let qubit = two_qubits_dist.sample(&mut rng);
-            let theta: f64 = rng.sample(Standard);
-            let phi: f64 = rng.sample(Standard);
+            let theta: f64 = rng.sample(StandardUniform);
+            let phi: f64 = rng.sample(StandardUniform);
             GivensRotationLittleEndian::new(qubit, qubit + 1, theta.into(), phi.into()).into()
         }
         22 => {
@@ -293,37 +295,37 @@ pub fn add_random_operation(circuit: &mut Circuit, number_qubits: usize, seed: u
             InvSqrtISwap::new(qubit, qubit + 1).into()
         }
         24 => {
-            let t: f64 = rng.sample(Standard);
+            let t: f64 = rng.sample(StandardUniform);
             let qubit = two_qubits_dist.sample(&mut rng);
             PMInteraction::new(qubit, qubit + 1, t.into()).into()
         }
         25 => {
-            let theta: f64 = rng.sample(Standard);
+            let theta: f64 = rng.sample(StandardUniform);
             let qubit = qubits_dist.sample(&mut rng);
             PhaseShiftState0::new(qubit, theta.into()).into()
         }
         26 => {
-            let theta: f64 = rng.sample(Standard);
+            let theta: f64 = rng.sample(StandardUniform);
             let qubit = qubits_dist.sample(&mut rng);
             PhaseShiftState1::new(qubit, theta.into()).into()
         }
         27 => {
-            let phi: f64 = rng.sample(Standard);
+            let phi: f64 = rng.sample(StandardUniform);
             let qubit = two_qubits_dist.sample(&mut rng);
             PhaseShiftedControlledZ::new(qubit, qubit + 1, phi.into()).into()
         }
         28 => {
             let qubit = two_qubits_dist.sample(&mut rng);
-            let x: f64 = rng.sample(Standard);
-            let y: f64 = rng.sample(Standard);
-            let z: f64 = rng.sample(Standard);
+            let x: f64 = rng.sample(StandardUniform);
+            let y: f64 = rng.sample(StandardUniform);
+            let z: f64 = rng.sample(StandardUniform);
             Qsim::new(qubit, qubit + 1, x.into(), y.into(), z.into()).into()
         }
         29 => {
             let qubit = qubits_dist.sample(&mut rng);
-            let theta: f64 = rng.sample(Standard);
-            let spherical_theta: f64 = rng.sample(Standard);
-            let spherical_phi: f64 = rng.sample(Standard);
+            let theta: f64 = rng.sample(StandardUniform);
+            let spherical_theta: f64 = rng.sample(StandardUniform);
+            let spherical_phi: f64 = rng.sample(StandardUniform);
             RotateAroundSphericalAxis::new(
                 qubit,
                 theta.into(),
@@ -340,20 +342,20 @@ pub fn add_random_operation(circuit: &mut Circuit, number_qubits: usize, seed: u
         }
         33 => {
             let qubit = two_qubits_dist.sample(&mut rng);
-            let x: f64 = rng.sample(Standard);
-            let y: f64 = rng.sample(Standard);
-            let z: f64 = rng.sample(Standard);
+            let x: f64 = rng.sample(StandardUniform);
+            let y: f64 = rng.sample(StandardUniform);
+            let z: f64 = rng.sample(StandardUniform);
             SpinInteraction::new(qubit, qubit + 1, x.into(), y.into(), z.into()).into()
         }
         34 => {
-            let theta: f64 = rng.sample(Standard);
+            let theta: f64 = rng.sample(StandardUniform);
             let qubit = two_qubits_dist.sample(&mut rng);
             XY::new(qubit, qubit + 1, theta.into()).into()
         }
         35 => SqrtPauliY::new(qubits_dist.sample(&mut rng)).into(),
         36 => InvSqrtPauliY::new(qubits_dist.sample(&mut rng)).into(),
         _ => {
-            let theta: f64 = rng.sample(Standard);
+            let theta: f64 = rng.sample(StandardUniform);
             RotateZ::new(qubits_dist.sample(&mut rng), theta.into()).into()
         }
     };
@@ -378,18 +380,19 @@ pub fn add_random_operation(circuit: &mut Circuit, number_qubits: usize, seed: u
 pub fn add_random_multi_qubit_gate(number_qubits: usize, seed: u64) -> Operation {
     let mut rng = StdRng::seed_from_u64(seed);
     let qubits: Vec<usize> = (0..number_qubits).collect();
-    let gate_type_dist = Uniform::<i64>::from(0..2);
+    let gate_type_dist =
+        Uniform::<i64>::new(0, 2).expect("Couldn't create uniform distribution for gate types");
     let new_op: Operation = match gate_type_dist.sample(&mut rng) {
         0 => {
-            let theta: f64 = rng.sample(Standard);
+            let theta: f64 = rng.sample(StandardUniform);
             MultiQubitMS::new(qubits, theta.into()).into()
         }
         1 => {
-            let theta: f64 = rng.sample(Standard);
+            let theta: f64 = rng.sample(StandardUniform);
             MultiQubitZZ::new(qubits, theta.into()).into()
         }
         _ => {
-            let theta: f64 = rng.sample(Standard);
+            let theta: f64 = rng.sample(StandardUniform);
             MultiQubitZZ::new(qubits, theta.into()).into()
         }
     };
