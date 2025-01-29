@@ -413,7 +413,7 @@ fn rotate_struct(ident: Ident) -> TokenStream {
             fn overrotate(&self, amplitude: &f64, variance: &f64) -> Self {
                 let mut return_gate = self.clone();
                 let distr = Normal::new(0.0, *variance).unwrap();
-                return_gate.theta += *amplitude * distr.sample(&mut rand::thread_rng());
+                return_gate.theta += *amplitude * distr.sample(&mut rand::rng());
                 return_gate
             }
 
