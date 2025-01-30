@@ -4,6 +4,8 @@ This changelog track changes to the qoqo project starting at version v0.5.0
 
 ## Unreleased
 
+* Updated badges in top-level readme.
+
 ## 1.18.1
 
 ## Updated in 1.18.1
