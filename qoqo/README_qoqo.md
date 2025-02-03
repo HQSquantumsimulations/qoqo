@@ -7,7 +7,7 @@
 [![Crates.io](https://img.shields.io/crates/v/roqoqo)](https://crates.io/crates/qoqo)
 ![Crates.io](https://img.shields.io/crates/l/qoqo)
 
-**qoqo** is a toolkit to represent quantum circuits by [HQS Quantum Simulations](https://quantumsimulations.de). The name “qoqo” stands for “Quantum Operation Quantum Operation,” making use of reduplication. 
+**qoqo** is a toolkit to represent quantum circuits by [HQS Quantum Simulations](https://quantumsimulations.de). 
 
 For a detailed introduction see the [user documentation](https://hqsquantumsimulations.github.io/qoqo_examples/) and the [qoqo examples repository](https://github.com/HQSquantumsimulations/qoqo_examples)
 

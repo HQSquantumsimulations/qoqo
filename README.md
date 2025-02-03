@@ -9,11 +9,9 @@
 [![Crates.io](https://img.shields.io/crates/v/roqoqo)](https://crates.io/crates/qoqo)
 ![Crates.io](https://img.shields.io/crates/l/qoqo)
 
-**qoqo** is a toolkit to represent quantum circuits by [HQS Quantum Simulations](https://quantumsimulations.de). The name “qoqo” stands for “Quantum Operation Quantum Operation,” making use of reduplication. 
+**qoqo** is a toolkit to represent quantum circuits by [HQS Quantum Simulations](https://quantumsimulations.de). The name “qoqo” stands for “Quantum Operation Quantum Operation,” making use of [reduplication](https://en.wikipedia.org/wiki/Reduplication). 
 
-For a detailed introduction see the [user documentation](https://hqsquantumsimulations.github.io/qoqo_examples/) and the [qoqo examples repository](https://github.com/HQSquantumsimulations/qoqo_examples)
-
-<img src="./documentation/src/images/Introduction_Graphics.png" alt="qoqo" width="70%">
+For a detailed introduction see the [user documentation](https://hqsquantumsimulations.github.io/qoqo_examples/) and the [qoqo examples repository](https://github.com/HQSquantumsimulations/qoqo_examples).
 
 What qoqo is:
 
@@ -22,6 +20,10 @@ What qoqo is:
 * A way to serialize quantum circuits and measurement information.
 * A set of optional interfaces to devices, simulators and toolkits (e.g. [qoqo_quest](https://github.com/HQSquantumsimulations/qoqo-quest), [qoqo_qiskit](https://github.com/HQSquantumsimulations/qoqo-qiskit), [qoqo_for_braket](https://github.com/HQSquantumsimulations/qoqo-for-braket), [qoqo_iqm](https://github.com/HQSquantumsimulations/qoqo_iqm)).
 
+
+<img src="./documentation/src/images/Introduction_Graphics.png" alt="qoqo" width="70%">
+
+
 What qoqo is **not**:
 
 * A decomposer translating circuits to a specific set of gates
@@ -29,6 +31,7 @@ What qoqo is **not**:
 * A collection of quantum algorithms
 
 If you are looking for a comprehensive package that integrates all these features, we invite you to explore our [HQStage](https://cloud.quantumsimulations.de/) software.
+
 
 This repository contains two components:
 
@@ -44,19 +47,7 @@ On Linux, macOS and Windows on x86 precompiled packages can be found on PyPi and
 pip install qoqo
 ```
 
-### Installing from source (optional)
-
-If no pre-built python wheel is available for your architecture you can install qoqo from the source distribution using a rust toolchain (for example available via rustup) and maturin (also available via pip). After installing the rust toolchain and maturing run the same pip install command as above. In some cases on macOS it can be necessary to provide specific linker arguments as shown below:
-
-```shell
-# can be necessary on mscOS
-RUSTFLAGS="-C link-arg=-undefined -C link-arg=dynamic_lookup" pip install qoqo
-```
-
-```shell
-RUSTFLAGS="-C link-arg=-undefined -C link-arg=dynamic_lookup" maturin build -m qoqo/Cargo.toml  --release
-pip install target/wheels/$NAME_OF_WHEEL
-```
+If no pre-built python wheel is available for your architecture you can install qoqo from the source distribution using a rust toolchain as described [here](./qoqo/README_qoqo.md).
 
 ## Create your first circuit in qoqo
 
