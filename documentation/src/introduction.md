@@ -10,6 +10,8 @@ The qoqo and roqoqo packages are a pair of quantum computing toolkits by [HQS Qu
 
 Like many quantum toolkits, qoqo and roqoqo are circuit-based toolkits, at the core. A sequence of operations to be run on a quantum computer is grouped into a [quantum circuit](circuits/intro.md).
 
+<img src="./images/Introduction_Graphics.png" alt="qoqo" width="60%">
+
 In the majority of quantum computing applications, the output of several quantum circuits needs to be collected and processed using additional classical measurement input, in order to construct a usable measurement result (e.g. when using a quantum computer to simulate physical quantum systems).
 
 qoqo and roqoqo also provide tools to group quantum circuits and measurement input into a [QuantumProgram](high-level/intro.md). QuantumPrograms are designed as a high-level interface to quantum computations that can be used similar to standard function calls.

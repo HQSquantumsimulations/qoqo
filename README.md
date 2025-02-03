@@ -9,6 +9,8 @@ qoqo/roqoqo is a toolkit to represent quantum circuits by [HQS Quantum Simulatio
 
 For a detailed introduction see the [user documentation](https://hqsquantumsimulations.github.io/qoqo_examples/) and the [qoqo examples repository](https://github.com/HQSquantumsimulations/qoqo_examples)
 
+<img src="./documentation/src/images/Introduction_Graphics.png" alt="qoqo" width="70%">
+
 What roqoqo/qoqo is:
 
 * A toolkit to represent quantum programs including circuits and measurement information
