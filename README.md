@@ -32,7 +32,7 @@ This repository contains two components:
 ## roqoqo
 
 [![Crates.io](https://img.shields.io/crates/v/roqoqo)](https://crates.io/crates/roqoqo)
-[![GitHub Workflow Status](https://github.com/HQSquantumsimulations/qoqo/workflows/ci_tests/badge.svg)](https://github.com/HQSquantumsimulations/qoqo/actions)
+![GitHub Workflow Status](https://github.com/HQSquantumsimulations/qoqo/actions/workflows/hqs-ci-test-rust-pyo3.yml/badge.svg)
 [![docs.rs](https://img.shields.io/docsrs/roqoqo)](https://docs.rs/roqoqo/)
 ![Crates.io](https://img.shields.io/crates/l/roqoqo)
 [![codecov](https://codecov.io/gh/HQSquantumsimulations/qoqo/branch/main/graph/badge.svg?token=S1IN066V2W)](https://codecov.io/gh/HQSquantumsimulations/qoqo)
@@ -66,7 +66,7 @@ to the `[dependencies]` section of the project Cargo.toml.
 ## qoqo
 
 [![Documentation Status](https://img.shields.io/badge/docs-read-blue)](https://hqsquantumsimulations.github.io/qoqo/)
-[![GitHub Workflow Status](https://github.com/HQSquantumsimulations/qoqo/workflows/ci_tests/badge.svg)](https://github.com/HQSquantumsimulations/qoqo/actions)
+![GitHub Workflow Status](https://github.com/HQSquantumsimulations/qoqo/actions/workflows/hqs-ci-test-rust-pyo3.yml/badge.svg)
 [![PyPI](https://img.shields.io/pypi/v/qoqo)](https://pypi.org/project/qoqo/)
 [![PyPI - Format](https://img.shields.io/pypi/format/qoqo)](https://pypi.org/project/qoqo/)
 [![Crates.io](https://img.shields.io/crates/v/roqoqo)](https://crates.io/crates/qoqo)

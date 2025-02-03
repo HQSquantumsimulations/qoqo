@@ -4,6 +4,19 @@ This changelog track changes to the qoqo project starting at version v0.5.0
 
 ## Unreleased
 
+* Updated badges in top-level readme.
+
+## 1.18.1
+
+## Updated in 1.18.1
+
+* Updated dependencies which were out of date.
+* Updated github actions to latest versions.
+
+## Fixed 1.18.1
+
+* Fixed new clippy warnings.
+
 ## 1.18.0
 
 ### Fixed 1.18.0

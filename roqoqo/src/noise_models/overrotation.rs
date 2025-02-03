@@ -148,9 +148,13 @@ impl schemars::JsonSchema for SingleQubitOverrotationOnGate {
     }
 }
 
+#[cfg(feature = "serialize")]
 type SingleQubitGateIndex = (String, usize);
+#[cfg(feature = "serialize")]
 type SingleQubitOverrotation = Vec<(SingleQubitGateIndex, SingleQubitOverrotationDescription)>;
+#[cfg(feature = "serialize")]
 type TwoQubitGateIndex = (String, (usize, usize));
+#[cfg(feature = "serialize")]
 type TwoQubitOverrotation = Vec<(
     TwoQubitGateIndex,
     (
@@ -165,6 +169,7 @@ type TwoQubitOverrotation = Vec<(
     derive(schemars::JsonSchema),
     schemars(deny_unknown_fields)
 )]
+#[cfg(feature = "serialize")]
 struct SingleQubitOverrotationOnGateSerialize {
     /// Overrotation for single qubit gates.
     single_qubit_overrotation: SingleQubitOverrotation,
