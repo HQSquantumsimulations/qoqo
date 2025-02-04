@@ -5,6 +5,7 @@ This changelog track changes to the qoqo project starting at version v0.5.0
 ## Unreleased
 
 * Updated badges in top-level readme.
+* Added qoqo/.cargo/config file with aarch64 and x86_64 targets for macos.
 
 ## 1.18.1
 
