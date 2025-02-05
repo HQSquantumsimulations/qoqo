@@ -26,7 +26,7 @@ jobs:
       # Run tests also on windows runners
       windows: true
       # Run tests also on macos runners
-      macos: false
+      macos: true
       py_interface_folder: "qoqo"
       python_3_13: true
       has_python_tests: true
