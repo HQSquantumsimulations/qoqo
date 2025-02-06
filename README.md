@@ -100,10 +100,10 @@ In order to facilitate the contribution of the addition of a new gate, please al
 If you use **qoqo**, please cite by including the URL of this github repository or as per the provided BibTeX entry:
 
 ```
-@misc{qoqo2025,
+@misc{qoqo2021,
       title={qoqo - toolkit to represent quantum circuits},
       author={HQS Quantum Simulations GmbH},
-      year={2025},
+      year={2021},
       url={https://github.com/HQSquantumsimulations/qoqo},
 }
 ```
