@@ -1,5 +1,3 @@
-<img src="qoqo_Logo_vertical_color.png" alt="qoqo logo" width="300" />
-
 # qoqo
 
 [![Documentation Status](https://img.shields.io/badge/docs-read-blue)](https://hqsquantumsimulations.github.io/qoqo/)
@@ -19,10 +17,6 @@ What qoqo is:
 * A thin runtime to run quantum measurements.
 * A way to serialize quantum circuits and measurement information.
 * A set of optional interfaces to devices, simulators and toolkits (e.g. [qoqo_quest](https://github.com/HQSquantumsimulations/qoqo-quest), [qoqo_qiskit](https://github.com/HQSquantumsimulations/qoqo-qiskit), [qoqo_for_braket](https://github.com/HQSquantumsimulations/qoqo-for-braket), [qoqo_iqm](https://github.com/HQSquantumsimulations/qoqo_iqm)).
-
-
-<img src="../documentation/src/images/Introduction_Graphics.png" alt="qoqo" width="70%">
-
 
 What qoqo is **not**:
 
