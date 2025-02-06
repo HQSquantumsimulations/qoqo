@@ -1,7 +1,7 @@
 # roqoqo
 
 [![Crates.io](https://img.shields.io/crates/v/roqoqo)](https://crates.io/crates/roqoqo)
-[![GitHub Workflow Status](https://github.com/HQSquantumsimulations/qoqo/workflows/ci_tests/badge.svg)](https://github.com/HQSquantumsimulations/qoqo/actions)
+![GitHub Workflow Status](https://github.com/HQSquantumsimulations/qoqo/actions/workflows/hqs-ci-test-rust-pyo3.yml/badge.svg)
 [![docs.rs](https://img.shields.io/docsrs/roqoqo)](https://docs.rs/roqoqo/)
 ![Crates.io](https://img.shields.io/crates/l/roqoqo)
 [![codecov](https://codecov.io/gh/HQSquantumsimulations/qoqo/branch/main/graph/badge.svg?token=S1IN066V2W)](https://codecov.io/gh/HQSquantumsimulations/qoqo)
@@ -22,6 +22,10 @@ What roqoqo is **not**:
 * A decomposer translating circuits to a specific set of gates
 * A quantum circuit optimizer
 * A collection of quantum algorithms
+
+
+If you are looking for a comprehensive package that integrates all these features, we invite you to explore our [HQStage](https://cloud.quantumsimulations.de/) software.
+
 
 ## Installation
 
@@ -65,3 +69,7 @@ roqoqo provides:
 * An `EvaluatingBackend` trait defining a standard for interfacing from qoqo to hardware and simulators that can return measured values
 * A `Device` trait defining a standard to obtain connectivity information and a noise model for quantum computing devices
 * Serialize and deserialize support for `Circuit` and `QuantumProgram` via the serde crate.
+
+## Support
+
+This project has been partly supported by [PlanQK](https://planqk.de) and is partially supported by [QSolid](https://www.q-solid.de/) and [PhoQuant](https://www.quantentechnologien.de/forschung/foerderung/quantencomputer-demonstrationsaufbauten/phoquant.html).
