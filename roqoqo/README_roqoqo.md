@@ -8,7 +8,7 @@
 
 roqoqo is the core rust library for **qoqo** - a toolkit to represent quantum circuits by [HQS Quantum Simulations](https://quantumsimulations.de). 
 
-For a detailed introduction see the [user documentation](https://hqsquantumsimulations.github.io/qoqo_examples/) and the [qoqo examples repository](https://github.com/HQSquantumsimulations/qoqo_examples)
+For a detailed introduction see the [user documentation](https://hqsquantumsimulations.github.io/qoqo) and the [qoqo examples repository](https://github.com/HQSquantumsimulations/qoqo_examples).
 
 What roqoqo is:
 
@@ -46,11 +46,11 @@ qoqo = {version="1.0", default-features=false}
 
 to the `[dependencies]` section of the project Cargo.toml.
 
-A source distribution now exists but requires a Rust install with a rust version > 1.47 and a maturin version { >= 0.12, <0.13 } in order to be built.
+A source distribution now exists but requires a Rust install with a rust version > 1.76 and a maturin version { >=1.0 } in order to be built.
 
 ## Examples
 
-For an expanded collection of examples please see the jupyter notebooks in the extra repository [qoqo_examples](https://github.com/HQSquantumsimulations/qoqo_examples). The qoqo examples require the qoqo_quest and qoqo_mock interfaces.
+For an expanded collection of examples please see the jupyter notebooks in the [qoqo_examples](https://github.com/HQSquantumsimulations/qoqo_examples) repository. The qoqo examples require the qoqo_quest and qoqo_mock interfaces.
 
 The jupyter notebooks in **Rust** can be found in [qoqo_examples/roqoqo/notebooks/](https://github.com/HQSquantumsimulations/qoqo_examples/tree/main/roqoqo/notebooks). Alternatively, you can also find pure **Rust** versions of the examples in [qoqo_examples/roqoqo/standalone/](https://github.com/HQSquantumsimulations/qoqo_examples/tree/main/roqoqo/standalone)
 
@@ -84,7 +84,7 @@ In order to facilitate the contribution of the addition of a new gate, please al
 
 ## Citation
 
-If you use **qoqo**, please cite by including the URL of this github repository or as per the provided BibTeX entry:
+If you use **qoqo**, please cite it by including the URL of this github repository, or using the provided BibTeX entry:
 
 ```
 @misc{qoqo2021,

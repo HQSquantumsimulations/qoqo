@@ -11,7 +11,7 @@
 
 **qoqo** is a toolkit to represent quantum circuits by [HQS Quantum Simulations](https://quantumsimulations.de). The name “qoqo” stands for “Quantum Operation Quantum Operation,” making use of [reduplication](https://en.wikipedia.org/wiki/Reduplication). 
 
-For a detailed introduction see the [user documentation](https://hqsquantumsimulations.github.io/qoqo_examples/) and the [qoqo examples repository](https://github.com/HQSquantumsimulations/qoqo_examples).
+For a detailed introduction see the [user documentation](https://hqsquantumsimulations.github.io/qoqo) and the [qoqo examples repository](https://github.com/HQSquantumsimulations/qoqo_examples).
 
 What qoqo is:
 
@@ -47,11 +47,11 @@ On Linux, macOS and Windows on x86 precompiled packages can be found on PyPi and
 pip install qoqo
 ```
 
-If no pre-built python wheel is available for your architecture you can install qoqo from the source distribution using a rust toolchain as described [here](./qoqo/README_qoqo.md).
+If no pre-built python wheel is available for your architecture, you can install qoqo from the source distribution using a rust toolchain as described [here](./qoqo/README_qoqo.md).
 
 ## Create your first circuit in qoqo
 
-The following code snippet can be used to create your first circuit in qoqo. For an expanded collection of **examples** please see the jupyter notebooks in the extra repository [qoqo_examples](https://github.com/HQSquantumsimulations/qoqo_examples). 
+The following code snippet can be used to create your first circuit in qoqo. For an expanded collection of **examples** please see the jupyter notebooks in the [qoqo_examples](https://github.com/HQSquantumsimulations/qoqo_examples) repository.
 
 ```python
 from qoqo import Circuit
@@ -97,7 +97,7 @@ In order to facilitate the contribution of the addition of a new gate, please al
 
 ## Citation
 
-If you use **qoqo**, please cite by including the URL of this github repository or as per the provided BibTeX entry:
+If you use **qoqo**, please cite it by including the URL of this github repository, or using the provided BibTeX entry:
 
 ```
 @misc{qoqo2021,
