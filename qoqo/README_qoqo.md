@@ -96,6 +96,8 @@ bit_registers, float_registers, complex_registers = backend.run_circuit(circuit)
 * Measurement classes for evaluating observable measurements based on raw readout date returned by quantum computer backends
 * Serialization to json and deserialization from json for circuits and measurement information. Serialization support can easily be expanded to other targets with the help of the serde crate.
 
+Please refer to the [API documentation](https://hqsquantumsimulations.github.io/qoqo/python_api_docs/index.html) for technical details on qoqo functions.
+
 ## Support
 
 This project has been partly supported by [PlanQK](https://planqk.de) and is partially supported by [QSolid](https://www.q-solid.de/) and [PhoQuant](https://www.quantentechnologien.de/forschung/foerderung/quantencomputer-demonstrationsaufbauten/phoquant.html).

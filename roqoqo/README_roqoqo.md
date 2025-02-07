@@ -70,6 +70,8 @@ roqoqo provides:
 * A `Device` trait defining a standard to obtain connectivity information and a noise model for quantum computing devices
 * Serialize and deserialize support for `Circuit` and `QuantumProgram` via the serde crate.
 
+Please refer to the [API documentation](https://docs.rs/roqoqo/latest/roqoqo/) for technical details on roqoqo functionalities.
+
 ## Support
 
 This project has been partly supported by [PlanQK](https://planqk.de) and is partially supported by [QSolid](https://www.q-solid.de/) and [PhoQuant](https://www.quantentechnologien.de/forschung/foerderung/quantencomputer-demonstrationsaufbauten/phoquant.html).
