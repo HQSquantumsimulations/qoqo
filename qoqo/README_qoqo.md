@@ -99,3 +99,22 @@ bit_registers, float_registers, complex_registers = backend.run_circuit(circuit)
 ## Support
 
 This project has been partly supported by [PlanQK](https://planqk.de) and is partially supported by [QSolid](https://www.q-solid.de/) and [PhoQuant](https://www.quantentechnologien.de/forschung/foerderung/quantencomputer-demonstrationsaufbauten/phoquant.html).
+
+## Contribution
+
+We welcome contributions to the project. If you want to contribute code, please have a look at [CONTRIBUTE.md](https://github.com/HQSquantumsimulations/qoqo/blob/main/CONTRIBUTE.md) for our code contribution guidelines.
+
+In order to facilitate the contribution of the addition of a new gate, please also have a look at [add_new_gate.md](https://github.com/HQSquantumsimulations/qoqo/blob/main/add_new_gate.md) to read a quick explanation of the main steps necessary.
+
+## Citation
+
+If you use **qoqo**, please cite by including the URL of this github repository or as per the provided BibTeX entry:
+
+```
+@misc{qoqo2021,
+      title={qoqo - toolkit to represent quantum circuits},
+      author={HQS Quantum Simulations GmbH},
+      year={2021},
+      url={https://github.com/HQSquantumsimulations/qoqo},
+}
+```
