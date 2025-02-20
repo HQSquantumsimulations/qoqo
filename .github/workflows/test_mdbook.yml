@@ -32,4 +32,6 @@ jobs:
           mv _build/html/* ../../documentation/src/python_api_docs
           cd ../..
           cargo install mdbook-cmdrun
-          mdbook build documentation
+          cd documentation
+          mdbook build
+          cd ..
