@@ -34,7 +34,7 @@ features = ["num-complex", "multiple-pymethods"]
 
 [dependencies]
 serde = { version = "1.0", features = ["derive"] }
-ndarray = "0.15"
+ndarray = "0.16"
 num-complex = "0.4"
 thiserror = "1.0"
 qoqo_calculator = { version = "~1.3" }

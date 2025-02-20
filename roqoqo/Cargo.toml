@@ -23,7 +23,7 @@ doctest = false
 
 [dependencies]
 serde = { version = "1.0", features = ["derive"], optional = true }
-ndarray = { version = "0.15" }
+ndarray = { version = "0.16" }
 num-complex = { version = "0.4" }
 thiserror = "1.0"
 dyn-clone = { version = "1.0", optional = true }

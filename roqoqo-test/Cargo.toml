@@ -21,7 +21,7 @@ crate-type = ["rlib"]
 roqoqo = { version = "~1.17", path = "../roqoqo", features = ["serialize"] }
 rand = "~0.8"
 nalgebra = "0.33.1"
-ndarray = { version = "0.15" }
+ndarray = { version = "0.16" }
 
 [build-dependencies]
 quote = "1.0"
