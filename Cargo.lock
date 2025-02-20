@@ -907,7 +907,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "edb929bc0da91a4d85ed6c0a84deaa53d411abfb387fc271124f91bf6b89f14e"
 dependencies = [
  "libc",
- "ndarray 0.16.1",
+ "ndarray",
  "num-complex",
  "num-integer",
  "num-traits",
@@ -1076,7 +1076,7 @@ version = "1.18.1"
 dependencies = [
  "bincode",
  "nalgebra",
- "ndarray 0.16.1",
+ "ndarray",
  "num-complex",
  "numpy",
  "proc-macro2",
@@ -1299,7 +1299,7 @@ dependencies = [
  "futures",
  "jsonschema",
  "nalgebra",
- "ndarray 0.16.1",
+ "ndarray",
  "num-complex",
  "petgraph",
  "proc-macro2",
@@ -1333,7 +1333,7 @@ name = "roqoqo-test"
 version = "1.18.1"
 dependencies = [
  "nalgebra",
- "ndarray 0.16.1",
+ "ndarray",
  "proc-macro2",
  "quote",
  "rand",
