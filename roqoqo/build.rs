@@ -22,7 +22,7 @@ use syn::punctuated::Punctuated;
 use syn::visit::{self, Visit};
 use syn::{AttrStyle, File, Ident, ItemImpl, ItemStruct, LitStr, Path, Token, Type, TypePath};
 
-const NUMBER_OF_MINOR_VERSIONS: usize = 18;
+const NUMBER_OF_MINOR_VERSIONS: usize = 19;
 
 static AVAILABLE_GATES: OnceLock<Mutex<Vec<String>>> = OnceLock::new();
 
@@ -425,6 +425,9 @@ impl<'ast> Visit<'ast> for Visitor {
                 }
                 if trait_name.as_str() == "ImplementedIn1point17" {
                     self.roqoqo_version_register.insert(id.clone(), 17);
+                }
+                if trait_name.as_str() == "ImplementedIn1point18" {
+                    self.roqoqo_version_register.insert(id.clone(), 18);
                 }
                 if trait_name.as_str() == "OperateSingleQubitGate" {
                     self.single_qubit_gate_operations.push(id.clone());

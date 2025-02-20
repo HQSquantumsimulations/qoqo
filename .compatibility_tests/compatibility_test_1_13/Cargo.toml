@@ -1,10 +1,10 @@
 [package]
 name = "compatibility_test_1_13"
-version = "1.17.0"
+version = "1.18.1"
 authors = ["HQS Quantum Simulations <info@quantumsimulations.de>"]
 license = "Apache-2.0"
 edition = "2021"
-rust-version = "1.70"
+rust-version = "1.76"
 categories = ["science", "simulation"]
 homepage = "https://github.com/HQSquantumsimulations/qoqo"
 repository = "https://github.com/HQSquantumsimulations/qoqo"
@@ -20,7 +20,7 @@ publish = false
 
 [dependencies]
 test_roqoqo_1_13 = { package = "roqoqo", version = "=1.13.0" }
-roqoqo = { version = "~1.17", path = "../../roqoqo", features = [
+roqoqo = { version = "~1.18", path = "../../roqoqo", features = [
     "serialize",
     "overrotate",
 ] }

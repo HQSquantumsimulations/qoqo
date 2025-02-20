@@ -1,11 +1,11 @@
 [package]
 name = "qoqo-macros"
-version = "1.17.0"
+version = "1.18.1"
 authors = ["HQS Quantum Simulations <info@quantumsimulations.de>"]
 license = "Apache-2.0"
 readme = "../README.md"
 edition = "2021"
-rust-version = "1.70"
+rust-version = "1.76"
 categories = ["science", "simulation"]
 description = "Macros for the qoqo crate"
 include = ["src*", "LICENSE"]
@@ -16,10 +16,11 @@ proc-macro = true
 doctest = false
 
 [dependencies]
+struqture = { version = "~1.11" }
+
 proc-macro2 = "1.0"
-syn = { version = "2.0", features = ["full", "visit"] }
 quote = "1.0"
-struqture = { version = "~1.10" }
+syn = { version = "2.0", features = ["full", "visit"] }
 
 [features]
 unstable_chain_with_environment = []

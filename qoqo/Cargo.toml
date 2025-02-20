@@ -1,5 +1,5 @@
 [package]
-version = "1.17.0"
+version = "1.18.1"
 name = "qoqo"
 authors = ["HQS Quantum Simulations <info@quantumsimulations.de>"]
 license = "Apache-2.0"
@@ -8,7 +8,7 @@ repository = "https://github.com/HQSquantumsimulations/qoqo"
 documentation = "https://docs.rs/qoqo/"
 readme = "../README.md"
 edition = "2021"
-rust-version = "1.70"
+rust-version = "1.76"
 categories = ["science", "simulation", "development-tools::ffi"]
 description = "Quantum computing circuit toolkit. Python interface of roqoqo"
 include = [
@@ -33,37 +33,39 @@ version = "0.22"
 features = ["num-complex", "multiple-pymethods"]
 
 [dependencies]
-serde = { version = "1.0", features = ["derive"] }
-ndarray = "0.16"
-num-complex = "0.4"
-thiserror = "1.0"
-qoqo_calculator = { version = "~1.3" }
-qoqo_calculator_pyo3 = { version = "~1.3", default-features = false }
-qoqo-macros = { version = "~1.17", path = "../qoqo-macros" }
-roqoqo = { version = "~1.17", path = "../roqoqo", features = [
+qoqo-macros = { version = "~1.18", path = "../qoqo-macros" }
+roqoqo = { version = "~1.18", path = "../roqoqo", features = [
     "serialize",
     "overrotate",
 ] }
-struqture = { version = "~1.10" }
-struqture-py = { version = "~1.10", default-features = false, features = [
+
+qoqo_calculator = "~1.4"
+qoqo_calculator_pyo3 = { version = "~1.4", default-features = false }
+struqture = "~1.11"
+struqture-py = { version = "~1.11", default-features = false, features = [
     "unstable_struqture_2_import",
 ] }
-numpy = "0.22"
+
 bincode = "1.3"
-serde_json = "1.0"
+ndarray = "0.16"
+num-complex = "0.4"
+numpy = "0.22"
 schemars = "0.8"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+thiserror = "2.0"
 
 [dev-dependencies]
-test-case = "3.0"
 nalgebra = "0.33.1"
+test-case = "3.0"
 
 [build-dependencies]
-quote = "1.0"
-syn = { version = "2.0", features = ["full", "visit"] }
 proc-macro2 = "1.0"
 pyo3-build-config = "0.22"
 pyo3 = "0.22"
+quote = "1.0"
 regex = "1.10"
+syn = { version = "2.0", features = ["full", "visit"] }
 
 
 [package.metadata.docs.rs]

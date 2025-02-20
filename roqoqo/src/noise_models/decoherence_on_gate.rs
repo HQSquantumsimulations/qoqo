@@ -69,22 +69,30 @@ impl schemars::JsonSchema for DecoherenceOnGateModel {
     }
 }
 
+#[cfg(feature = "serialize")]
 type SingleQGateIndex = (String, usize);
+#[cfg(feature = "serialize")]
 type SingleQubitErrors = Vec<(
     SingleQGateIndex,
     struqture::spins::PlusMinusLindbladNoiseOperator,
 )>;
+#[cfg(feature = "serialize")]
 type TwoQubitGateIndex = (String, (usize, usize));
+#[cfg(feature = "serialize")]
 type TwoQubitErrors = Vec<(
     TwoQubitGateIndex,
     struqture::spins::PlusMinusLindbladNoiseOperator,
 )>;
+#[cfg(feature = "serialize")]
 type ThreeQubitGateIndex = (String, (usize, usize, usize));
+#[cfg(feature = "serialize")]
 type ThreeQubitErrors = Vec<(
     ThreeQubitGateIndex,
     struqture::spins::PlusMinusLindbladNoiseOperator,
 )>;
+#[cfg(feature = "serialize")]
 type MultiQubitGateIndex = (String, Vec<usize>);
+#[cfg(feature = "serialize")]
 type MultiQubitErrors = Vec<(
     MultiQubitGateIndex,
     struqture::spins::PlusMinusLindbladNoiseOperator,
@@ -96,6 +104,7 @@ type MultiQubitErrors = Vec<(
     derive(schemars::JsonSchema),
     schemars(deny_unknown_fields)
 )]
+#[cfg(feature = "serialize")]
 struct DecoherenceOnGateModelSerialize {
     /// Extra noise for single qubit gates.
     single_qubit_gate_errors: SingleQubitErrors,
