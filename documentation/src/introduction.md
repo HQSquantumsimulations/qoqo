@@ -6,10 +6,7 @@ This user documentation gives a general overview of the design principles and in
 
 ## What are qoqo and roqoqo
 
-<!-- cmdrun cd ../..; cargo run documentation/gates_doc_build -->
-<!-- cmdrun cd ../..; cargo run documentation/gates_doc_build -->
-<!-- cmdrun cd ../..; cargo run documentation/gates_doc_build -->
-
+<!-- cmdrun echo hi -->
 
 The qoqo and roqoqo packages are a pair of quantum computing toolkits by [HQS Quantum Simulations](https://quantumsimulations.de).
 
