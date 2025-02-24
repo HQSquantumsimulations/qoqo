@@ -20,6 +20,7 @@ skip-auditwheel = false
 strip = true
 profile = "release"
 python-source = "python"
+include = [{ path = "LICENSE", format = "sdist" }]
 
 [project.optional-dependencies]
 docs = [
