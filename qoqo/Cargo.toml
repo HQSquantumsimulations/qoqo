@@ -41,9 +41,9 @@ roqoqo = { version = "~1.18", path = "../roqoqo", features = [
 
 qoqo_calculator = "~1.4"
 qoqo_calculator_pyo3 = { version = "~1.4", default-features = false }
-struqture = "~1.11"
-struqture-py = { version = "~1.11", default-features = false, features = [
-    "unstable_struqture_2_import",
+struqture = { version = "~2.0.0-alpha.8", path="../../struqture/struqture" }
+struqture-py = { version = "~2.0.0-alpha.8", path="../../struqture/struqture-py", default-features = false, features = [
+    "struqture_1_import",
 ] }
 
 bincode = "1.3"
