@@ -53,7 +53,7 @@ For a two-qubit state space we write the states of the qubits in the following o
 
  \\[
 \begin{align}
-\textrm{PauliX}(0) \cdot \textrm{PauliZ}(0) &= \textrm{PauliZ(0).unitary_matrix()} \cdot \textrm{PauliX(0).unitary_matrix()} \\\\
+\textrm{PauliX}(0) \cdot \textrm{PauliZ}(0) &= \textrm{PauliZ(0).unitary_matrix()} \cdot \textrm{PauliX(0).unitary_matrix()} \\\\[5pt]
 &= \begin{pmatrix} 1 & 0 \\\\ 0 & -1 \end{pmatrix}  
 \begin{pmatrix} 0 & 1 \\\\ 1 & 0 \end{pmatrix}
 \end{align}
