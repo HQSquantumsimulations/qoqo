@@ -269,7 +269,7 @@ impl DecoherenceOnGateModelWrapper {
     ///
     /// Returns:
     ///     Optional[struqture_py.spins.PlusMinusLindbladNoiseOperator]: The error model applied when gate is applied.
-    pub fn get_three_qubit_gate_error(
+    pub unsafe fn get_three_qubit_gate_error(
         &self,
         gate: &str,
         control0: usize,
