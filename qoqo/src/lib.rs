@@ -98,6 +98,50 @@ pub fn available_gates_hqslang() -> Vec<String> {
         .collect::<Vec<String>>()
 }
 
+use pyo3::sync::GILOnceCell;
+pub(crate) struct StruqtureVersionCell {
+    pub(crate) version: String,
+    cell: GILOnceCell::new(),
+}
+impl StruqtureVersionCell {
+    pub const fn new() -> Self {
+        Self {
+            cell: GILOnceCell::new(),
+            version: String::new()
+        }
+    }
+
+    #[inline]
+    pub fn get_version(&mut self, py: Python) -> String {
+        if self.version = String::new() {
+            let binding = self.cell.get_or_init(py, || {
+                py.import_bound(self.module)
+                    .expect("Could not import importlib.metadata module for function")
+                    .getattr(self.object)
+                    .expect("Could not get version function of importlib.metadata")
+                    .call1(("struqture_py",))
+                    .expect("Could not get version attribute of struqture_py")
+            });
+            let version: String = binding.extract().expect("Could not extract version string");
+            self.version = version;
+        }
+        self.version
+    }
+
+    #[inline]
+    pub fn get_operator(&self, py: Python, function_name: &str) -> &str {
+        self.cell.get_or_init(py, || {
+            py.import_bound("struqture_py.spins")
+                .expect(format!(
+                    "Could not import struqture_py.spins module for {function_name}"
+                ))
+                .getattr("PlusMinusLindbladNoiseOperator")
+                .expect("Could not get PlusMinusLindbladOperator class")
+        })
+    }
+}
+pub static STRUQTURE_VERSION: StruqtureVersionCell =  StruqtureVersionCell::new();
+
 /// Quantum Operation Quantum Operation (qoqo)
 ///
 /// Yes, we use reduplication.

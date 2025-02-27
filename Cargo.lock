@@ -1084,7 +1084,7 @@ dependencies = [
  "schemars",
  "serde",
  "serde_json",
- "struqture 2.0.0-alpha.8",
+ "struqture 2.0.0-alpha.9",
  "struqture-py",
  "syn",
  "test-case",
@@ -1305,7 +1305,7 @@ dependencies = [
  "serde",
  "serde_json",
  "serde_test",
- "struqture 2.0.0-alpha.8",
+ "struqture 2.0.0-alpha.9",
  "syn",
  "test-case",
  "thiserror",
@@ -1518,7 +1518,7 @@ dependencies = [
 
 [[package]]
 name = "struqture"
-version = "2.0.0-alpha.8"
+version = "2.0.0-alpha.9"
 dependencies = [
  "indexmap",
  "itertools",
@@ -1535,7 +1535,7 @@ dependencies = [
 
 [[package]]
 name = "struqture-py"
-version = "2.0.0-alpha.8"
+version = "2.0.0-alpha.9"
 dependencies = [
  "bincode",
  "num-complex",
@@ -1550,7 +1550,7 @@ dependencies = [
  "schemars",
  "serde_json",
  "struqture 1.11.1",
- "struqture 2.0.0-alpha.8",
+ "struqture 2.0.0-alpha.9",
  "struqture-py-macros",
  "syn",
  "thiserror",
@@ -1558,7 +1558,7 @@ dependencies = [
 
 [[package]]
 name = "struqture-py-macros"
-version = "2.0.0-alpha.8"
+version = "2.0.0-alpha.9"
 dependencies = [
  "proc-macro2",
  "quote",

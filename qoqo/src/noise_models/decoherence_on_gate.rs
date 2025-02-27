@@ -10,6 +10,7 @@
 // express or implied. See the License for the specific language governing permissions and
 // limitations under the License.
 
+use crate::STRUQTURE_VERSION;
 use pyo3::{exceptions::PyValueError, prelude::*};
 use qoqo_macros::noise_model_wrapper;
 use roqoqo::noise_models::{DecoherenceOnGateModel, NoiseModel};
@@ -107,20 +108,9 @@ impl DecoherenceOnGateModelWrapper {
     pub fn get_single_qubit_gate_error(&self, gate: &str, qubit: usize) -> Option<Py<PyAny>> {
         match self.internal.get_single_qubit_gate_error(gate, qubit) {
             Some(struqture_obj) => Python::with_gil(|py| {
-                let binding = py
-                    .import_bound("importlib.metadata")
-                    .expect("Could not import importlib.metadata module for get_noise_operator")
-                    .getattr("version")
-                    .expect("Could not get version function of importlib.metadata")
-                    .call1(("struqture_py",))
-                    .expect("Could not get version attribute of struqture_py");
-                let version: &str = binding.extract().expect("Could not extract version string");
+                let version = STRUQTURE_VERSION.get_version(py);
                 if version.starts_with('1') {
-                    let class = py
-                        .import_bound("struqture_py.spins")
-                        .expect("Could not import struqture_py.spins module for get_noise_operator")
-                        .getattr("PlusMinusLindbladNoiseOperator")
-                        .expect("Could not get PlusMinusLindbladOperator class");
+                    let class = STRUQTURE_VERSION.get_operator(py, "get_single_qubit_gate_error");
                     let json_string = serde_json::to_string(
                         &struqture_obj
                             .to_struqture_1()
@@ -202,20 +192,9 @@ impl DecoherenceOnGateModelWrapper {
             .get_two_qubit_gate_error(gate, control, target)
         {
             Some(struqture_obj) => Python::with_gil(|py| {
-                let binding = py
-                    .import_bound("importlib.metadata")
-                    .expect("Could not import importlib.metadata module for get_noise_operator")
-                    .getattr("version")
-                    .expect("Could not get version function of importlib.metadata")
-                    .call1(("struqture_py",))
-                    .expect("Could not get version attribute of struqture_py");
-                let version: &str = binding.extract().expect("Could not extract version string");
+                let version = STRUQTURE_VERSION.get_version(py);
                 if version.starts_with('1') {
-                    let class = py
-                        .import_bound("struqture_py.spins")
-                        .expect("Could not import struqture_py.spins module for get_noise_operator")
-                        .getattr("PlusMinusLindbladNoiseOperator")
-                        .expect("Could not get PlusMinusLindbladOperator class");
+                    let class = STRUQTURE_VERSION.get_operator(py, "get_two_qubit_gate_error");
                     let json_string = serde_json::to_string(
                         &struqture_obj
                             .to_struqture_1()
@@ -302,20 +281,9 @@ impl DecoherenceOnGateModelWrapper {
             .get_three_qubit_gate_error(gate, control0, control1, target)
         {
             Some(struqture_obj) => Python::with_gil(|py| {
-                let binding = py
-                    .import_bound("importlib.metadata")
-                    .expect("Could not import importlib.metadata module for get_noise_operator")
-                    .getattr("version")
-                    .expect("Could not get version function of importlib.metadata")
-                    .call1(("struqture_py",))
-                    .expect("Could not get version attribute of struqture_py");
-                let version: &str = binding.extract().expect("Could not extract version string");
+                let version = STRUQTURE_VERSION.get_version(py);
                 if version.starts_with('1') {
-                    let class = py
-                        .import_bound("struqture_py.spins")
-                        .expect("Could not import struqture_py.spins module for get_noise_operator")
-                        .getattr("PlusMinusLindbladNoiseOperator")
-                        .expect("Could not get PlusMinusLindbladOperator class");
+                    let class = STRUQTURE_VERSION.get_operator(py, "get_three_qubit_gate_error");
                     let json_string = serde_json::to_string(
                         &struqture_obj
                             .to_struqture_1()
@@ -385,20 +353,9 @@ impl DecoherenceOnGateModelWrapper {
     pub fn get_multi_qubit_gate_error(&self, gate: &str, qubits: Vec<usize>) -> Option<Py<PyAny>> {
         match self.internal.get_multi_qubit_gate_error(gate, qubits) {
             Some(struqture_obj) => Python::with_gil(|py| {
-                let binding = py
-                    .import_bound("importlib.metadata")
-                    .expect("Could not import importlib.metadata module for get_noise_operator")
-                    .getattr("version")
-                    .expect("Could not get version function of importlib.metadata")
-                    .call1(("struqture_py",))
-                    .expect("Could not get version attribute of struqture_py");
-                let version: &str = binding.extract().expect("Could not extract version string");
+                let version = STRUQTURE_VERSION.get_version(py);
                 if version.starts_with('1') {
-                    let class = py
-                        .import_bound("struqture_py.spins")
-                        .expect("Could not import struqture_py.spins module for get_noise_operator")
-                        .getattr("PlusMinusLindbladNoiseOperator")
-                        .expect("Could not get PlusMinusLindbladOperator class");
+                    let class = STRUQTURE_VERSION.get_operator(py, "get_multi_qubit_gate_error");
                     let json_string = serde_json::to_string(
                         &struqture_obj
                             .to_struqture_1()

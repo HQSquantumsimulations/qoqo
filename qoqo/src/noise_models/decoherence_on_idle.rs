@@ -10,6 +10,7 @@
 // express or implied. See the License for the specific language governing permissions and
 // limitations under the License.
 
+use crate::STRUQTURE_VERSION;
 use pyo3::{exceptions::PyValueError, prelude::*};
 use qoqo_macros::noise_model_wrapper;
 use roqoqo::noise_models::{DecoherenceOnIdleModel, NoiseModel};
@@ -82,20 +83,9 @@ impl DecoherenceOnIdleModelWrapper {
     ///     PlusMinusLindbladNoiseOperator: The internal Lindblad noise operator of the DecoherenceOnIdle.
     pub fn get_noise_operator(&self) -> Py<PyAny> {
         Python::with_gil(|py| {
-            let binding = py
-                .import_bound("importlib.metadata")
-                .expect("Could not import importlib.metadata module for get_noise_operator")
-                .getattr("version")
-                .expect("Could not get version function of importlib.metadata")
-                .call1(("struqture_py",))
-                .expect("Could not get version attribute of struqture_py");
-            let version: &str = binding.extract().expect("Could not extract version string");
+            let version = STRUQTURE_VERSION.get_version(py);
             if version.starts_with('1') {
-                let class = py
-                    .import_bound("struqture_py.spins")
-                    .expect("Could not import struqture_py.spins module for get_noise_operator")
-                    .getattr("PlusMinusLindbladNoiseOperator")
-                    .expect("Could not get PlusMinusLindbladOperator class");
+                let class = STRUQTURE_VERSION.get_operator(py, "get_noise_operator");
                 let json_string = serde_json::to_string(
                     &self
                         .internal
