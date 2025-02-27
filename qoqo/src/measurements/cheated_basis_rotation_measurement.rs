@@ -223,7 +223,7 @@ impl CheatedPauliZProductWrapper {
             PyValueError::new_err("Cannot serialize CheatedPauliZProductMeasurement to bytes")
         })?;
         let b: Py<PyByteArray> = Python::with_gil(|py| -> Py<PyByteArray> {
-            PyByteArray::new_bound(py, &serialized[..]).into()
+            PyByteArray::new(py, &serialized[..]).into()
         });
         Ok(("CheatedPauliZProduct", b))
     }
@@ -239,7 +239,7 @@ impl CheatedPauliZProductWrapper {
         let serialized = serialize(&self.internal)
             .map_err(|_| PyValueError::new_err("Cannot serialize CheatedPauliZProduct to bytes"))?;
         let b: Py<PyByteArray> = Python::with_gil(|py| -> Py<PyByteArray> {
-            PyByteArray::new_bound(py, &serialized[..]).into()
+            PyByteArray::new(py, &serialized[..]).into()
         });
         Ok(b)
     }

@@ -34,7 +34,7 @@ fn test_new_quantum_rabi(input_operation: Operation, arguments: (u32, u32, f64),
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation_type = py.get_type_bound::<QuantumRabiWrapper>();
+        let operation_type = py.get_type::<QuantumRabiWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding.downcast::<QuantumRabiWrapper>().unwrap();
 
@@ -88,7 +88,7 @@ fn test_new_longitudinal_coupling(
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation_type = py.get_type_bound::<LongitudinalCouplingWrapper>();
+        let operation_type = py.get_type::<LongitudinalCouplingWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding.downcast::<LongitudinalCouplingWrapper>().unwrap();
 
@@ -142,7 +142,7 @@ fn test_new_jaynes_cummings(input_operation: Operation, arguments: (u32, u32, f6
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation_type = py.get_type_bound::<JaynesCummingsWrapper>();
+        let operation_type = py.get_type::<JaynesCummingsWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding.downcast::<JaynesCummingsWrapper>().unwrap();
 
@@ -196,7 +196,7 @@ fn test_new_single_excitation_load(
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation_type = py.get_type_bound::<SingleExcitationLoadWrapper>();
+        let operation_type = py.get_type::<SingleExcitationLoadWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding.downcast::<SingleExcitationLoadWrapper>().unwrap();
 
@@ -240,7 +240,7 @@ fn test_new_single_excitation_store(
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation_type = py.get_type_bound::<SingleExcitationStoreWrapper>();
+        let operation_type = py.get_type::<SingleExcitationStoreWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding.downcast::<SingleExcitationStoreWrapper>().unwrap();
 
@@ -280,7 +280,7 @@ fn test_new_cz_qubit_resonator(input_operation: Operation, arguments: (u32, u32)
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation_type = py.get_type_bound::<CZQubitResonatorWrapper>();
+        let operation_type = py.get_type::<CZQubitResonatorWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding.downcast::<CZQubitResonatorWrapper>().unwrap();
 

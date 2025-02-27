@@ -27,7 +27,7 @@ fn new_alltoalldevice() -> Py<PyAny> {
         let two_qubit_gates = ["CNOT".to_string()];
         let arguments: (usize, [String; 2], [String; 1], f64) =
             (number_qubits, single_qubit_gates, two_qubit_gates, 1.0);
-        let device_type = py.get_type_bound::<AllToAllDeviceWrapper>();
+        let device_type = py.get_type::<AllToAllDeviceWrapper>();
         device_type.call1(arguments).unwrap().into()
     })
 }
@@ -37,7 +37,7 @@ fn new_genericdevice() -> Py<PyAny> {
     Python::with_gil(|py| -> Py<PyAny> {
         let number_qubits: u32 = 4;
         let arguments = (number_qubits,);
-        let device_type = py.get_type_bound::<GenericDeviceWrapper>();
+        let device_type = py.get_type::<GenericDeviceWrapper>();
         device_type.call1(arguments).unwrap().into()
     })
 }
@@ -57,7 +57,7 @@ fn new_genericlattice() -> Py<PyAny> {
             two_qubit_gates,
             1.0,
         );
-        let device_type = py.get_type_bound::<SquareLatticeDeviceWrapper>();
+        let device_type = py.get_type::<SquareLatticeDeviceWrapper>();
         device_type.call1(arguments).unwrap().into()
     })
 }
@@ -862,7 +862,7 @@ mod test_chain_with_environment {
     fn test_chain_with_environment() {
         pyo3::prepare_freethreaded_python();
         let test_device = Python::with_gil(|py| -> Py<PyAny> {
-            let device_type = py.get_type_bound::<TestDeviceWrapper>();
+            let device_type = py.get_type::<TestDeviceWrapper>();
             device_type.call0().unwrap().into()
         });
         Python::with_gil(|py| {
@@ -890,7 +890,7 @@ mod test_chain_with_environment {
     fn test_chain_with_environment_capsule() {
         pyo3::prepare_freethreaded_python();
         let device_capsule = Python::with_gil(|py| -> ChainWithEnvironmentCapsule {
-            let device_type = py.get_type_bound::<TestDeviceWrapper>();
+            let device_type = py.get_type::<TestDeviceWrapper>();
             let test_device = device_type.call0().unwrap();
             ChainWithEnvironmentCapsule::new(&test_device).unwrap()
         });

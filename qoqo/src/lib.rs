@@ -107,7 +107,7 @@ impl StruqtureVersionCell {
     pub const fn new() -> Self {
         Self {
             cell: GILOnceCell::new(),
-            version: String::new()
+            version: String::new(),
         }
     }
 
@@ -115,13 +115,17 @@ impl StruqtureVersionCell {
     pub fn get_version(&mut self, py: Python) -> String {
         if self.version == String::new() {
             let _binding = self.cell.get_or_init(py, || {
-                let binding = py.import("importlib.metadata")
+                let binding = py
+                    .import("importlib.metadata")
                     .expect("Could not import importlib.metadata module for function")
                     .getattr("version")
                     .expect("Could not get version function of importlib.metadata")
                     .call1(("struqture_py",))
-                    .expect("Could not get version attribute of struqture_py").unbind();
-                let version: String = binding.extract(py).expect("Could not extract version string");
+                    .expect("Could not get version attribute of struqture_py")
+                    .unbind();
+                let version: String = binding
+                    .extract(py)
+                    .expect("Could not extract version string");
                 self.version = version;
                 binding
             });
@@ -133,15 +137,17 @@ impl StruqtureVersionCell {
     pub fn get_operator(&self, py: Python, function_name: &str) -> &Py<PyAny> {
         self.cell.get_or_init(py, || {
             py.import("struqture_py.spins")
-                .expect(format!(
-                    "Could not import struqture_py.spins module for {function_name}"
-                ).as_str())
+                .expect(
+                    format!("Could not import struqture_py.spins module for {function_name}")
+                        .as_str(),
+                )
                 .getattr("PlusMinusLindbladNoiseOperator")
-                .expect("Could not get PlusMinusLindbladOperator class").unbind()
+                .expect("Could not get PlusMinusLindbladOperator class")
+                .unbind()
         })
     }
 }
-pub(crate) static mut STRUQTURE_VERSION: StruqtureVersionCell =  StruqtureVersionCell::new();
+pub(crate) static mut STRUQTURE_VERSION: StruqtureVersionCell = StruqtureVersionCell::new();
 
 /// Quantum Operation Quantum Operation (qoqo)
 ///
@@ -178,7 +184,7 @@ fn qoqo(_py: Python, module: &Bound<PyModule>) -> PyResult<()> {
     let wrapper4 = wrap_pymodule!(noise_models::noise_models);
     module.add_wrapped(wrapper4)?;
     // Adding nice imports corresponding to maturin example
-    let system = PyModule::import_bound(_py, "sys")?;
+    let system = PyModule::import(_py, "sys")?;
     let binding = system.getattr("modules")?;
     let system_modules: &Bound<PyDict> = binding.downcast()?;
     system_modules.set_item("qoqo.operations", module.getattr("operations")?)?;

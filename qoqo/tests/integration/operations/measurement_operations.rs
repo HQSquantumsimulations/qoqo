@@ -60,7 +60,7 @@ fn circuit_remapped() -> Circuit {
 }
 
 fn new_circuit(py: Python) -> Bound<CircuitWrapper> {
-    let circuit_type = py.get_type_bound::<CircuitWrapper>();
+    let circuit_type = py.get_type::<CircuitWrapper>();
     circuit_type
         .call0()
         .unwrap()
@@ -513,7 +513,7 @@ fn test_pyo3_richcmp(definition_1: Operation, definition_2: Operation) {
 fn test_pyo3_new_set_number_of_measurements() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = py.get_type_bound::<MeasureQubitWrapper>();
+        let operation = py.get_type::<MeasureQubitWrapper>();
         let binding = operation.call1((0, "ro".to_string(), 1)).unwrap();
         let new_op = binding.downcast::<MeasureQubitWrapper>().unwrap();
 
@@ -544,7 +544,7 @@ fn test_pyo3_new_set_number_of_measurements() {
 fn test_pyo3_new_get_statevector() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = py.get_type_bound::<PragmaGetStateVectorWrapper>();
+        let operation = py.get_type::<PragmaGetStateVectorWrapper>();
         let binding = operation
             .call1(("ro".to_string(), Option::<CircuitWrapper>::None))
             .unwrap();
@@ -581,7 +581,7 @@ fn test_pyo3_new_get_statevector() {
 fn test_pyo3_new_get_density_matrix() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = py.get_type_bound::<PragmaGetDensityMatrixWrapper>();
+        let operation = py.get_type::<PragmaGetDensityMatrixWrapper>();
         let binding = operation
             .call1(("ro".to_string(), Option::<CircuitWrapper>::None))
             .unwrap();
@@ -619,7 +619,7 @@ fn test_pyo3_new_get_density_matrix() {
 fn test_pyo3_new_get_occupation_proba() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = py.get_type_bound::<PragmaGetOccupationProbabilityWrapper>();
+        let operation = py.get_type::<PragmaGetOccupationProbabilityWrapper>();
         let binding = operation
             .call1(("ro".to_string(), Option::<CircuitWrapper>::None))
             .unwrap();
@@ -665,7 +665,7 @@ fn test_pyo3_new_get_occupation_proba() {
 fn test_pyo3_new_get_pauli_product() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = py.get_type_bound::<PragmaGetPauliProductWrapper>();
+        let operation = py.get_type::<PragmaGetPauliProductWrapper>();
         let binding = operation
             .call1((create_qubit_mapping(), "ro".to_string(), new_circuit(py)))
             .unwrap();
@@ -706,7 +706,7 @@ fn test_pyo3_new_get_pauli_product() {
 fn test_pyo3_new_repeated_measurement() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = py.get_type_bound::<PragmaRepeatedMeasurementWrapper>();
+        let operation = py.get_type::<PragmaRepeatedMeasurementWrapper>();
         let binding = operation
             .call1(("ro".to_string(), 1, Some(create_qubit_mapping())))
             .unwrap();

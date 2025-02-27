@@ -95,9 +95,11 @@ impl ContinuousDecoherenceModelWrapper {
                         .expect("Could not convert struqture 2 object to struqture 1"),
                 )
                 .expect("Could not serialize to JSON");
-                class.call_method1(py, "from_json", (json_string.as_str(),)).expect(
-                    "Could not create struqture 1.x PlusMinusLindbladNoiseOperator from JSON",
-                )
+                class
+                    .call_method1(py, "from_json", (json_string.as_str(),))
+                    .expect(
+                        "Could not create struqture 1.x PlusMinusLindbladNoiseOperator from JSON",
+                    )
             } else {
                 let pmlno = PlusMinusLindbladNoiseOperatorWrapper {
                     internal: struqture::spins::PlusMinusLindbladNoiseOperator::from(

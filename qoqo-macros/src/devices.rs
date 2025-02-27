@@ -357,7 +357,7 @@ pub fn device_wrapper_def(
                 let serialized = serialize(&self.internal)
                     .map_err(|_| PyValueError::new_err("Cannot serialize Device to bytes"))?;
                 let b: Py<PyByteArray> = Python::with_gil(|py| -> Py<PyByteArray> {
-                    PyByteArray::new_bound(py, &serialized[..]).into()
+                    PyByteArray::new(py, &serialized[..]).into()
                 });
                 Ok(b)
             }

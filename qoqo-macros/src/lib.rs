@@ -487,12 +487,12 @@ pub fn wrap(
                 let involved = self.internal.involved_modes();
                 match involved {
                     InvolvedModes::All => {
-                        let pyref: &Bound<PySet> = &PySet::new_bound(py, &["All"]).unwrap();
+                        let pyref: &Bound<PySet> = &PySet::new(py, &["All"]).unwrap();
                         let pyobject: PyObject = pyref.to_object(py);
                         pyobject
                     },
                     InvolvedModes::None => {
-                        let pyref: &Bound<PySet> = &PySet::empty_bound(py).unwrap();
+                        let pyref: &Bound<PySet> = &PySet::empty(py).unwrap();
                         let pyobject: PyObject = pyref.to_object(py);
                         pyobject
                     },
@@ -501,7 +501,7 @@ pub fn wrap(
                         for mode in x {
                             vector.push(mode)
                         }
-                        let pyref: &Bound<PySet> = &PySet::new_bound(py, &vector[..]).unwrap();
+                        let pyref: &Bound<PySet> = &PySet::new(py, &vector[..]).unwrap();
                         let pyobject: PyObject = pyref.to_object(py);
                         pyobject
                     },
