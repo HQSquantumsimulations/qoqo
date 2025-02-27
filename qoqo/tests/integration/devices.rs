@@ -11,7 +11,7 @@
 // limitations under the License.
 
 use ndarray::{array, Array2};
-use numpy::{pyarray_bound, PyArray2, PyReadonlyArray2};
+use numpy::{pyarray, PyArray2, PyReadonlyArray2};
 use pyo3::prelude::*;
 use qoqo::devices::{AllToAllDeviceWrapper, GenericDeviceWrapper, SquareLatticeDeviceWrapper};
 use roqoqo::devices::{AllToAllDevice, GenericDevice, SquareLatticeDevice};
@@ -324,7 +324,7 @@ fn test_decoherence_rates_all(device: Py<PyAny>) {
         // reference matrix for an initialized deviced or a non-existing qubit
 
         // test that invalid matrix format is not accepted
-        let pyarray_invalid: &Bound<PyArray2<f64>> = &pyarray_bound![py, [1.0], [2.0], [3.0]];
+        let pyarray_invalid: &Bound<PyArray2<f64>> = &pyarray![py, [1.0], [2.0], [3.0]];
         // let readonly_invalid = pyarray_invalid.readonly();
         let error = device.call_method1(py, "set_all_qubit_decoherence_rates", (pyarray_invalid,));
         assert!(error.is_err());
@@ -332,7 +332,7 @@ fn test_decoherence_rates_all(device: Py<PyAny>) {
         let pyarray_testmatrix: Array2<f64> =
             array![[1.0, 0.0, 0.0], [0.0, 2.0, 0.0], [0.0, 0.0, 3.0]];
         let pyarray: &Bound<PyArray2<f64>> =
-            &pyarray_bound![py, [1.0, 0.0, 0.0], [0.0, 2.0, 0.0], [0.0, 0.0, 3.0]];
+            &pyarray![py, [1.0, 0.0, 0.0], [0.0, 2.0, 0.0], [0.0, 0.0, 3.0]];
         // let readonly = pyarray.readonly();
         let device = device
             .call_method1(py, "set_all_qubit_decoherence_rates", (pyarray,))
@@ -403,7 +403,7 @@ fn test_decoherence_rates(device: Py<PyAny>) {
         assert_eq!(matrix2_test, matrix_zeros_py);
 
         // test that invalid matrix format is not accepted
-        let pyarray_invalid: &Bound<PyArray2<f64>> = &pyarray_bound![py, [1.0], [2.0], [3.0]];
+        let pyarray_invalid: &Bound<PyArray2<f64>> = &pyarray![py, [1.0], [2.0], [3.0]];
         // let readonly_invalid = pyarray_invalid.readonly();
         let error = device.call_method1(py, "set_qubit_decoherence_rates", (0, pyarray_invalid));
         assert!(error.is_err());
@@ -417,7 +417,7 @@ fn test_decoherence_rates(device: Py<PyAny>) {
         let pyarray_testmatrix: Array2<f64> =
             array![[1.0, 0.0, 0.0], [0.0, 2.0, 0.0], [0.0, 0.0, 3.0]];
         let pyarray: &Bound<PyArray2<f64>> =
-            &pyarray_bound![py, [1.0, 0.0, 0.0], [0.0, 2.0, 0.0], [0.0, 0.0, 3.0]];
+            &pyarray![py, [1.0, 0.0, 0.0], [0.0, 2.0, 0.0], [0.0, 0.0, 3.0]];
         // let readonly = pyarray.readonly();
         device
             .call_method1(py, "set_qubit_decoherence_rates", (0, pyarray))

@@ -247,7 +247,7 @@ impl ControlledSWAPWrapper {
             let involved = self.internal.involved_qubits();
             match involved {
                 InvolvedQubits::All => {
-                    let pyref: &Bound<PySet> = &PySet::new(py, &["All"]).unwrap();
+                    let pyref: &Bound<PySet> = &PySet::new(py, ["All"]).unwrap();
                     let pyobject: PyObject = pyref.to_object(py);
                     pyobject
                 }

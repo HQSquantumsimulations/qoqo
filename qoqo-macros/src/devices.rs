@@ -220,10 +220,10 @@ pub fn device_wrapper_def(
             fn qubit_decoherence_rates(&self, qubit: usize) -> Py<PyArray2<f64>> {
                 Python::with_gil(|py| -> Py<PyArray2<f64>> {
                     match self.internal.qubit_decoherence_rates(&qubit) {
-                        Some(matrix) => matrix.to_pyarray_bound(py).to_owned().into(),
+                        Some(matrix) => matrix.to_pyarray(py).to_owned().into(),
                         None => {
                             let matrix = Array2::<f64>::zeros((3, 3));
-                            matrix.to_pyarray_bound(py).to_owned().into()
+                            matrix.to_pyarray(py).to_owned().into()
                         }
                     }
                 })

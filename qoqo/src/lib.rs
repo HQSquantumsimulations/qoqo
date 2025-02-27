@@ -13,6 +13,7 @@
 #![deny(missing_docs)]
 #![deny(rustdoc::missing_crate_level_docs)]
 #![deny(missing_debug_implementations)]
+#![allow(deprecated)]
 
 //! Qoqo quantum computing toolkit
 //!
@@ -137,10 +138,9 @@ impl StruqtureVersionCell {
     pub fn get_operator(&self, py: Python, function_name: &str) -> &Py<PyAny> {
         self.cell.get_or_init(py, || {
             py.import("struqture_py.spins")
-                .expect(
-                    format!("Could not import struqture_py.spins module for {function_name}")
-                        .as_str(),
-                )
+                .unwrap_or_else(|_| {
+                    panic!("Could not import struqture_py.spins module for {function_name}")
+                })
                 .getattr("PlusMinusLindbladNoiseOperator")
                 .expect("Could not get PlusMinusLindbladOperator class")
                 .unbind()

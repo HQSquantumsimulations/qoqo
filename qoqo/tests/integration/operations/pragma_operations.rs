@@ -1823,7 +1823,7 @@ fn test_pyo3_new_set_statevector() {
     Python::with_gil(|py| {
         let operation = py.get_type::<PragmaSetStateVectorWrapper>();
 
-        let pylist = PyList::new(py, vec![1.0, 0.0]);
+        let pylist = PyList::new(py, vec![1.0, 0.0]).unwrap();
         let binding_from_pylist = operation.call1((pylist,));
         assert!(binding_from_pylist.is_ok());
 
@@ -1874,7 +1874,7 @@ fn test_pyo3_new_set_densitymatrix() {
     Python::with_gil(|py| {
         let operation = py.get_type::<PragmaSetDensityMatrixWrapper>();
 
-        let pylist = PyList::new(py, vec![vec![1.0, 0.0], vec![0.0, 0.0]]);
+        let pylist = PyList::new(py, vec![vec![1.0, 0.0], vec![0.0, 0.0]]).unwrap();
         let binding_from_pylist = operation.call1((pylist,));
         assert!(binding_from_pylist.is_ok());
 
@@ -2454,7 +2454,8 @@ fn test_pyo3_new_general_noise() {
                 vec![0.0, 1.0, 0.0],
                 vec![0.0, 0.0, 1.0],
             ],
-        );
+        )
+        .unwrap();
         let binding_from_pylist = operation.call1((0, 1.0, pylist));
         assert!(binding_from_pylist.is_ok());
 
