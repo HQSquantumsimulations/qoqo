@@ -41,10 +41,10 @@ qoqo and roqoqo use little-endian encoding, where the least significant qubit is
 
 For a two-qubit state space we write the states of the qubits in the following order:
  \\[
- \left|00 \right>  =  \textrm{state} 0 \\\\
- \left|01 \right>  =  \textrm{state} 1 \\\\
- \left|10 \right>  =  \textrm{state} 2 \\\\
- \left|11 \right>  =  \textrm{state} 3 \\\\
+ \left|00 \right>  =  \textrm{state}_0 \\\\
+ \left|01 \right>  =  \textrm{state}_1 \\\\
+ \left|10 \right>  =  \textrm{state}_2 \\\\
+ \left|11 \right>  =  \textrm{state}_3 \\\\
  \\].
 
 ## Operation order
@@ -52,15 +52,11 @@ For a two-qubit state space we write the states of the qubits in the following o
  When adding qoqo/roqoqo operations to circuits, the first operation added will be executed first. When writing qoqo/roqoqo operations, they are read left to right. This leads to an inversion of the order when transcribing to matrix form, where the matrix to the right acts first.
 
  \\[
- \textrm{PauliX}(0) \cdot  \textrm{PauliZ}(0)  \\\\ =
-   \textrm{PauliZ(0).unitary_matrix()} \cdot  \textrm{PauliX(0).unitary_matrix()}  \\\\
-   = \begin{pmatrix}
- 1 & 0 \\\\
- 0 & -1
- \end{pmatrix}  \begin{pmatrix}
- 0 & 1 \\\\
- 1 & 0
- \end{pmatrix}
+\begin{align}
+\textrm{PauliX}(0) \cdot \textrm{PauliZ}(0) &= \textrm{PauliZ(0).unitary_matrix()} \cdot \textrm{PauliX(0).unitary_matrix()} \\\\[5pt]
+&= \begin{pmatrix} 1 & 0 \\\\ 0 & -1 \end{pmatrix}  
+\begin{pmatrix} 0 & 1 \\\\ 1 & 0 \end{pmatrix}
+\end{align}
  \\].
 
 ## Qubit naming
