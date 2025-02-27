@@ -81,7 +81,7 @@ impl DecoherenceOnIdleModelWrapper {
     ///
     /// Returns:
     ///     PlusMinusLindbladNoiseOperator: The internal Lindblad noise operator of the DecoherenceOnIdle.
-    pub fn get_noise_operator(&self) -> Py<PyAny> {
+    pub unsafe fn get_noise_operator(&self) -> Py<PyAny> {
         Python::with_gil(|py| {
             let version = STRUQTURE_VERSION.get_version(py);
             if version.starts_with('1') {
@@ -94,10 +94,11 @@ impl DecoherenceOnIdleModelWrapper {
                         .expect("Could not convert struqture 2 object to struqture 1"),
                 )
                 .expect("Could not serialize to JSON");
-                let py_object = class.call_method1("from_json", (json_string,)).expect(
-                    "Could not create struqture 1.x PlusMinusLindbladNoiseOperator from JSON",
-                );
-                py_object.unbind()
+                class
+                    .call_method1(py, "from_json", (json_string.as_str(),))
+                    .expect(
+                        "Could not create struqture 1.x PlusMinusLindbladNoiseOperator from JSON",
+                    )
             } else {
                 let pmlno = PlusMinusLindbladNoiseOperatorWrapper {
                     internal: struqture::spins::PlusMinusLindbladNoiseOperator::from(

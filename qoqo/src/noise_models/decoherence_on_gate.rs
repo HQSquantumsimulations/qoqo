@@ -105,7 +105,11 @@ impl DecoherenceOnGateModelWrapper {
     ///
     /// Returns:
     ///     Optional[struqture_py.spins.PlusMinusLindbladNoiseOperator]: The error model applied when gate is applied.
-    pub fn get_single_qubit_gate_error(&self, gate: &str, qubit: usize) -> Option<Py<PyAny>> {
+    pub unsafe fn get_single_qubit_gate_error(
+        &self,
+        gate: &str,
+        qubit: usize,
+    ) -> Option<Py<PyAny>> {
         match self.internal.get_single_qubit_gate_error(gate, qubit) {
             Some(struqture_obj) => Python::with_gil(|py| {
                 let version = STRUQTURE_VERSION.get_version(py);
@@ -117,10 +121,9 @@ impl DecoherenceOnGateModelWrapper {
                             .expect("Could not convert struqture 2 object to struqture 1"),
                     )
                     .expect("Could not serialize to JSON");
-                    let py_object = class.call_method1("from_json", (json_string,)).expect(
+                    Some(class.call_method1(py, "from_json", (json_string.as_str(),)).expect(
                         "Could not create struqture 1.x PlusMinusLindbladNoiseOperator from JSON",
-                    );
-                    Some(py_object.unbind())
+                    ))
                 } else {
                     let pmlno = struqture_py::spins::PlusMinusLindbladNoiseOperatorWrapper {
                         internal: struqture_obj.clone(),
@@ -181,7 +184,7 @@ impl DecoherenceOnGateModelWrapper {
     ///
     /// Returns:
     ///     Optional[struqture_py.spins.PlusMinusLindbladNoiseOperator]: The error model applied when gate is applied.
-    pub fn get_two_qubit_gate_error(
+    pub unsafe fn get_two_qubit_gate_error(
         &self,
         gate: &str,
         control: usize,
@@ -201,10 +204,9 @@ impl DecoherenceOnGateModelWrapper {
                             .expect("Could not convert struqture 2 object to struqture 1"),
                     )
                     .expect("Could not serialize to JSON");
-                    let py_object = class.call_method1("from_json", (json_string,)).expect(
+                    Some(class.call_method1(py, "from_json", (json_string.as_str(),)).expect(
                         "Could not create struqture 1.x PlusMinusLindbladNoiseOperator from JSON",
-                    );
-                    Some(py_object.unbind())
+                    ))
                 } else {
                     let pmlno = struqture_py::spins::PlusMinusLindbladNoiseOperatorWrapper {
                         internal: struqture_obj.clone(),
@@ -290,10 +292,9 @@ impl DecoherenceOnGateModelWrapper {
                             .expect("Could not convert struqture 2 object to struqture 1"),
                     )
                     .expect("Could not serialize to JSON");
-                    let py_object = class.call_method1("from_json", (json_string,)).expect(
+                    Some(class.call_method1(py, "from_json", (json_string.as_str(),)).expect(
                         "Could not create struqture 1.x PlusMinusLindbladNoiseOperator from JSON",
-                    );
-                    Some(py_object.unbind())
+                    ))
                 } else {
                     let pmlno = struqture_py::spins::PlusMinusLindbladNoiseOperatorWrapper {
                         internal: struqture_obj.clone(),
@@ -350,7 +351,11 @@ impl DecoherenceOnGateModelWrapper {
     ///
     /// Returns:
     ///     Optional[struqture_py.spins.PlusMinusLindbladNoiseOperator]: The error model applied when gate is applied.
-    pub fn get_multi_qubit_gate_error(&self, gate: &str, qubits: Vec<usize>) -> Option<Py<PyAny>> {
+    pub unsafe fn get_multi_qubit_gate_error(
+        &self,
+        gate: &str,
+        qubits: Vec<usize>,
+    ) -> Option<Py<PyAny>> {
         match self.internal.get_multi_qubit_gate_error(gate, qubits) {
             Some(struqture_obj) => Python::with_gil(|py| {
                 let version = STRUQTURE_VERSION.get_version(py);
@@ -362,10 +367,9 @@ impl DecoherenceOnGateModelWrapper {
                             .expect("Could not convert struqture 2 object to struqture 1"),
                     )
                     .expect("Could not serialize to JSON");
-                    let py_object = class.call_method1("from_json", (json_string,)).expect(
+                    Some(class.call_method1(py, "from_json", (json_string.as_str(),)).expect(
                         "Could not create struqture 1.x PlusMinusLindbladNoiseOperator from JSON",
-                    );
-                    Some(py_object.unbind())
+                    ))
                 } else {
                     let pmlno = struqture_py::spins::PlusMinusLindbladNoiseOperatorWrapper {
                         internal: struqture_obj.clone(),
