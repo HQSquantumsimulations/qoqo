@@ -50,7 +50,7 @@ circuit += MeasureQubit::new(0, "ro".to_string(), 0);
 circuit += MeasureQubit::new(1, "ro".to_string(), 1);
 ```
 
-A circuit created with qoqo can also be visualized. It requires to install the package qollage in python or the crate roqollage in rust.
+A circuit created with qoqo can also be visualized. The user can do this by installing the package `qollage` in python or the crate `roqollage` in rust.
 It can be installed the same way as qoqo/roqoqo:
 
 To install the package in a python environment run the following command
@@ -64,7 +64,7 @@ or add this line to the Cargo.toml of a rust project
 qollage = "0.5" # Change this to the latest version to ensure compatibility of the latest qoqo operations.
 ```
 
-In python the following code will output the image using IPython’s display method.
+In python the following code will output an image of the user's circuit using IPython’s display method.
 
 ```python
 from qollage import draw_circuit
@@ -72,7 +72,7 @@ from qollage import draw_circuit
 # draw the circuit
 draw_circuit(circuit)
 ```
-Assume that the circuit is the same as the previous example:
+The generated image of the previous circuit should look like this:
 
 <img src="./images/circuit_example.png" alt="circuit" width="60%">
 
