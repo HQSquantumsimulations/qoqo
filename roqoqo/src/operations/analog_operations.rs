@@ -17,7 +17,7 @@ use crate::operations::{
 use crate::RoqoqoError;
 use qoqo_calculator::{Calculator, CalculatorFloat};
 use std::collections::{HashMap, HashSet};
-use struqture::spins::SpinHamiltonian;
+use struqture::spins::PauliHamiltonian;
 use struqture::OperateOnDensityMatrix;
 use struqture::SpinIndex;
 
@@ -25,23 +25,23 @@ use struqture::SpinIndex;
 #[derive(Debug, Clone, PartialEq, roqoqo_derive::Operate)]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
 #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
-pub struct ApplyConstantSpinHamiltonian {
+pub struct ApplyConstantPauliHamiltonian {
     /// Hamiltonian to be simulated.
-    pub hamiltonian: SpinHamiltonian,
+    pub hamiltonian: PauliHamiltonian,
     /// The duration for which the state evolution takes place.
     pub time: CalculatorFloat,
 }
 
 #[allow(non_upper_case_globals)]
-const TAGS_ApplyConstantSpinHamiltonian: &[&str; 3] = &[
+const TAGS_ApplyConstantPauliHamiltonian: &[&str; 3] = &[
     "Operation",
     "SpinsAnalogOperation",
-    "ApplyConstantSpinHamiltonian",
+    "ApplyConstantPauliHamiltonian",
 ];
 
-impl ImplementedIn1point11 for ApplyConstantSpinHamiltonian {}
+impl ImplementedIn1point11 for ApplyConstantPauliHamiltonian {}
 
-impl OperateSpinsAnalog for ApplyConstantSpinHamiltonian {
+impl OperateSpinsAnalog for ApplyConstantPauliHamiltonian {
     fn spin(&self) -> Result<Vec<usize>, RoqoqoError> {
         let mut qubit_set = HashSet::new();
         for pps in self.hamiltonian.keys() {
@@ -54,29 +54,29 @@ impl OperateSpinsAnalog for ApplyConstantSpinHamiltonian {
         Ok(qubits)
     }
 }
-impl SupportedVersion for ApplyConstantSpinHamiltonian {
+impl SupportedVersion for ApplyConstantPauliHamiltonian {
     fn minimum_supported_roqoqo_version(&self) -> (u32, u32, u32) {
         (1, 11, 0)
     }
 }
 
-impl InvolveQubits for ApplyConstantSpinHamiltonian {
+impl InvolveQubits for ApplyConstantPauliHamiltonian {
     fn involved_qubits(&self) -> InvolvedQubits {
         InvolvedQubits::All
     }
 }
 
-impl Substitute for ApplyConstantSpinHamiltonian {
+impl Substitute for ApplyConstantPauliHamiltonian {
     /// Remaps qubits in operations in clone of the operation.
     fn remap_qubits(&self, mapping: &HashMap<usize, usize>) -> Result<Self, RoqoqoError> {
         crate::operations::check_valid_mapping(mapping)?;
-        let mut new_hamiltonian = SpinHamiltonian::new();
+        let mut new_hamiltonian = PauliHamiltonian::new();
         for (pp, value) in &self.hamiltonian {
             let new_pp = pp.remap_qubits(mapping);
             new_hamiltonian.add_operator_product(new_pp, value.clone())?;
         }
 
-        Ok(ApplyConstantSpinHamiltonian::new(
+        Ok(ApplyConstantPauliHamiltonian::new(
             new_hamiltonian,
             self.time.clone(),
         ))
@@ -90,7 +90,7 @@ impl Substitute for ApplyConstantSpinHamiltonian {
             new_hamiltonian.set(key.clone(), new_value.into())?;
         }
         let new_time = calculator.parse_get(self.time.clone())?;
-        Ok(ApplyConstantSpinHamiltonian::new(
+        Ok(ApplyConstantPauliHamiltonian::new(
             new_hamiltonian,
             new_time.into(),
         ))
@@ -101,9 +101,9 @@ impl Substitute for ApplyConstantSpinHamiltonian {
 #[derive(Debug, Clone, PartialEq, roqoqo_derive::Operate)]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
 #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
-pub struct ApplyTimeDependentSpinHamiltonian {
+pub struct ApplyTimeDependentPauliHamiltonian {
     /// Hamiltonian to be simulated.
-    hamiltonian: SpinHamiltonian,
+    hamiltonian: PauliHamiltonian,
     /// Range of time stored as a vector. The total duration of the simulations is given by the last value in the range.
     time: Vec<f64>,
     /// Values of time-dependent parameters, appearing in `hamiltonian`, at instances given by the vector `time`.
@@ -111,15 +111,15 @@ pub struct ApplyTimeDependentSpinHamiltonian {
 }
 
 #[allow(non_upper_case_globals)]
-const TAGS_ApplyTimeDependentSpinHamiltonian: &[&str; 3] = &[
+const TAGS_ApplyTimeDependentPauliHamiltonian: &[&str; 3] = &[
     "Operation",
     "SpinsAnalogOperation",
-    "ApplyTimeDependentSpinHamiltonian",
+    "ApplyTimeDependentPauliHamiltonian",
 ];
 
-impl ImplementedIn1point11 for ApplyTimeDependentSpinHamiltonian {}
+impl ImplementedIn1point11 for ApplyTimeDependentPauliHamiltonian {}
 
-impl OperateSpinsAnalog for ApplyTimeDependentSpinHamiltonian {
+impl OperateSpinsAnalog for ApplyTimeDependentPauliHamiltonian {
     fn spin(&self) -> Result<Vec<usize>, RoqoqoError> {
         let mut qubit_set = HashSet::new();
         for pps in self.hamiltonian.keys() {
@@ -133,29 +133,29 @@ impl OperateSpinsAnalog for ApplyTimeDependentSpinHamiltonian {
     }
 }
 
-impl SupportedVersion for ApplyTimeDependentSpinHamiltonian {
+impl SupportedVersion for ApplyTimeDependentPauliHamiltonian {
     fn minimum_supported_roqoqo_version(&self) -> (u32, u32, u32) {
         (1, 11, 0)
     }
 }
 
-impl InvolveQubits for ApplyTimeDependentSpinHamiltonian {
+impl InvolveQubits for ApplyTimeDependentPauliHamiltonian {
     fn involved_qubits(&self) -> InvolvedQubits {
         InvolvedQubits::All
     }
 }
 
-impl Substitute for ApplyTimeDependentSpinHamiltonian {
+impl Substitute for ApplyTimeDependentPauliHamiltonian {
     /// Remaps qubits in operations in clone of the operation.
     fn remap_qubits(&self, mapping: &HashMap<usize, usize>) -> Result<Self, RoqoqoError> {
         crate::operations::check_valid_mapping(mapping)?;
-        let mut new_hamiltonian = SpinHamiltonian::new();
+        let mut new_hamiltonian = PauliHamiltonian::new();
         for (pp, value) in &self.hamiltonian {
             let new_pp = pp.remap_qubits(mapping);
             new_hamiltonian.add_operator_product(new_pp, value.clone())?;
         }
 
-        Ok(ApplyTimeDependentSpinHamiltonian::new(
+        Ok(ApplyTimeDependentPauliHamiltonian::new(
             new_hamiltonian,
             self.time.clone(),
             self.values.clone(),
@@ -169,7 +169,7 @@ impl Substitute for ApplyTimeDependentSpinHamiltonian {
             let new_value = calculator.parse_get(value.clone())?;
             new_hamiltonian.set(key.clone(), new_value.into())?;
         }
-        Ok(ApplyTimeDependentSpinHamiltonian::new(
+        Ok(ApplyTimeDependentPauliHamiltonian::new(
             new_hamiltonian,
             self.time.clone(),
             self.values.clone(),

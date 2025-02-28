@@ -122,8 +122,8 @@ use test_roqoqo_1_12;
 #[test_case(test_roqoqo_1_12::operations::SingleExcitationLoad::new(0, 1).into(); "SingleExcitationLoad")]
 #[test_case(test_roqoqo_1_12::operations::SingleExcitationStore::new(0, 1).into(); "SingleExcitationStore")]
 #[test_case(test_roqoqo_1_12::operations::CZQubitResonator::new(0, 1).into(); "CZQubitResonator")]
-// Operations from 1.11 - ApplyConstantSpinHamiltonian and ApplyTimeDependentHamiltonian are unstable in 1.11
-// #[test_case(create_apply_constant_spin_hamiltonian(); "ApplyConstantSpinHamiltonian")]
+// Operations from 1.11 - ApplyConstantPauliHamiltonian and ApplyTimeDependentHamiltonian are unstable in 1.11
+// #[test_case(create_apply_constant_spin_hamiltonian(); "ApplyConstantPauliHamiltonian")]
 // #[test_case(create_apply_timedependent_spin_hamiltonian(); "ApplyTimeDependentHamiltonian")]
 // Operations from 1.13 - GateDefinition and CallDefined gate are unstable, uncomment when stable.
 // #[test_case(test_roqoqo_1_12::operations::GateDefinition::new(test_roqoqo_1_12::Circuit::new(), "name".into(), vec![0, 1], vec!["param".into()]).into(); "GateDefinition")]
@@ -170,32 +170,32 @@ fn test_device_compat() {
     assert_eq!(test_deserialisation, comparsion_device);
 }
 
-// Operations from 1.11 - ApplyConstantSpinHamiltonian and ApplyTimeDependentHamiltonian are unstable in 1.11
+// Operations from 1.11 - ApplyConstantPauliHamiltonian and ApplyTimeDependentHamiltonian are unstable in 1.11
 // use struqture;
 // use struqture::prelude::*;
 // fn create_apply_constant_spin_hamiltonian(
-// ) -> test_roqoqo_1_12::operations::ApplyConstantSpinHamiltonian {
+// ) -> test_roqoqo_1_12::operations::ApplyConstantPauliHamiltonian {
 //     let pp = struqture::spins::PauliProduct::new().z(0);
-//     let mut hamiltonian = struqture::spins::SpinHamiltonian::new();
+//     let mut hamiltonian = struqture::spins::PauliHamiltonian::new();
 //     hamiltonian
 //         .add_operator_product(pp.clone(), 1.0.into())
 //         .unwrap();
-//     return test_roqoqo_1_12::operations::ApplyConstantSpinHamiltonian::new(
+//     return test_roqoqo_1_12::operations::ApplyConstantPauliHamiltonian::new(
 //         hamiltonian,
 //         1.0.into(),
 //     );
 // }
 
 // fn create_apply_timedependent_spin_hamiltonian(
-// ) -> test_roqoqo_1_12::operations::ApplyTimeDependentSpinHamiltonian {
+// ) -> test_roqoqo_1_12::operations::ApplyTimeDependentPauliHamiltonian {
 //     let pp = struqture::spins::PauliProduct::new().z(0);
-//     let mut hamiltonian = struqture::spins::SpinHamiltonian::new();
+//     let mut hamiltonian = struqture::spins::PauliHamiltonian::new();
 //     hamiltonian
 //         .add_operator_product(pp.clone(), "omega".into())
 //         .unwrap();
 //     let mut values = HashMap::new();
 //     values.insert("omega".to_string(), vec![1.0]);
-//     return test_roqoqo_1_12::operations::ApplyTimeDependentSpinHamiltonian::new(
+//     return test_roqoqo_1_12::operations::ApplyTimeDependentPauliHamiltonian::new(
 //         hamiltonian,
 //         vec![1.0],
 //         values.clone(),

@@ -36,7 +36,7 @@ fn operate_struct(ds: DataStruct, ident: Ident) -> TokenStream {
                 "CalculatorFloat" => quote! {#id: &pyo3::Bound<pyo3::PyAny>},
                 "Circuit" => quote! {#id: &pyo3::Bound<pyo3::PyAny>},
                 "Option<Circuit>" => quote! {#id: &pyo3::Bound<pyo3::PyAny>},
-                "SpinHamiltonian" => quote! {#id: &pyo3::Bound<pyo3::PyAny>},
+                "PauliHamiltonian" => quote! {#id: &pyo3::Bound<pyo3::PyAny>},
                 _ => quote! {#id: #ty},
             },
             _ => quote! {#id: #ty},
@@ -67,7 +67,7 @@ fn operate_struct(ds: DataStruct, ident: Ident) -> TokenStream {
                     quote! {
                     #id_extracted}
                 }
-                "SpinHamiltonian" => {
+                "PauliHamiltonian" => {
                     let id_extracted = format_ident!("{}_extracted", id);
                     quote! {
                     #id_extracted}
@@ -118,13 +118,13 @@ fn operate_struct(ds: DataStruct, ident: Ident) -> TokenStream {
                         },
                         _ => None };
             }},
-            "SpinHamiltonian" => {
+            "PauliHamiltonian" => {
                 let id_extracted = format_ident!("{}_extracted", id);
                 quote! {
-                    let temp_op: struqture::spins::SpinHamiltonianSystem = SpinHamiltonianSystemWrapper::from_pyany(#id).map_err(|x| {
-                        pyo3::exceptions::PyTypeError::new_err(format!("Argument cannot be converted to SpinHamiltonianSystem: {:?}",x))
+                    let temp_op: struqture::spins::PauliHamiltonian = PauliHamiltonianWrapper::from_pyany(#id).map_err(|x| {
+                        pyo3::exceptions::PyTypeError::new_err(format!("Argument cannot be converted to PauliHamiltonian: {:?}",x))
                     })?;
-                    let #id_extracted: #ty = temp_op.hamiltonian().clone();
+                    let #id_extracted: #ty = temp_op.clone();
                 }
             },
             _ => {
@@ -169,13 +169,12 @@ fn operate_struct(ds: DataStruct, ident: Ident) -> TokenStream {
                         }
                     }
                 }
-                "SpinHamiltonian" => {
+                "PauliHamiltonian" => {
                     let msg = format!("Get value of struct field {}", id);
                     quote! {
                         #[doc = #msg]
-                        pub fn #id(&self) -> SpinHamiltonianSystemWrapper{
-                            let shs = struqture::spins::SpinHamiltonianSystem::from_hamiltonian(self.internal.#id().clone(), None).expect("Unexpectedly could not construct SpinHamiltonianSystem from SpinHamiltonian");
-                            SpinHamiltonianSystemWrapper{internal: shs}
+                        pub fn #id(&self) -> PauliHamiltonianWrapper{
+                            PauliHamiltonianWrapper{internal: self.internal.#id().clone()}
                         }
                     }
                 }

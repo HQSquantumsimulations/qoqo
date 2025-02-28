@@ -178,24 +178,24 @@ fn test_conversion_unstable(input: Operation) {
 }
 
 #[cfg(feature = "unstable_analog_operations")]
-fn create_apply_constant_spin_hamiltonian<T>(p: T) -> ApplyConstantSpinHamiltonian
+fn create_apply_constant_spin_hamiltonian<T>(p: T) -> ApplyConstantPauliHamiltonian
 where
     CalculatorFloat: From<T>,
 {
     let pp = PauliProduct::new().z(0);
-    let mut hamiltonian = QubitHamiltonian::new();
+    let mut hamiltonian = PauliHamiltonian::new();
     hamiltonian
         .add_operator_product(pp.clone(), CalculatorFloat::from(p))
         .unwrap();
-    ApplyConstantSpinHamiltonian::new(hamiltonian, 1.0.into())
+    ApplyConstantPauliHamiltonian::new(hamiltonian, 1.0.into())
 }
 #[cfg(feature = "unstable_analog_operations")]
-fn create_apply_timedependent_spin_hamiltonian<T>(p: T) -> ApplyTimeDependentSpinHamiltonian
+fn create_apply_timedependent_spin_hamiltonian<T>(p: T) -> ApplyTimeDependentPauliHamiltonian
 where
     CalculatorFloat: From<T>,
 {
     let pp = PauliProduct::new().z(0);
-    let mut hamiltonian = QubitHamiltonian::new();
+    let mut hamiltonian = PauliHamiltonian::new();
     hamiltonian
         .add_operator_product(pp.clone(), CalculatorFloat::from(p))
         .unwrap();
@@ -203,12 +203,12 @@ where
     let mut values = HashMap::new();
     values.insert("omega".to_string(), vec![1.0]);
 
-    ApplyTimeDependentSpinHamiltonian::new(hamiltonian, vec![1.0], values.clone())
+    ApplyTimeDependentPauliHamiltonian::new(hamiltonian, vec![1.0], values.clone())
 }
 
 #[cfg(feature = "unstable_analog_operations")]
-#[test_case(Operation::from(create_apply_constant_spin_hamiltonian(1.0)); "ApplyConstantSpinHamiltonian")]
-#[test_case(Operation::from(create_apply_timedependent_spin_hamiltonian("omega")); "ApplyTimeDependentSpinHamiltonian")]
+#[test_case(Operation::from(create_apply_constant_spin_hamiltonian(1.0)); "ApplyConstantPauliHamiltonian")]
+#[test_case(Operation::from(create_apply_timedependent_spin_hamiltonian("omega")); "ApplyTimeDependentPauliHamiltonian")]
 fn test_conversion_feature(input: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {

@@ -118,7 +118,7 @@ This changelog track changes to the qoqo project starting at version v0.5.0
 ### Added in 1.11.0
 
 * Added the DecoherenceOnIdle noise model
-* Feature `unstable_analog_operations` adding new analog operations: `ApplyConstantSpinHamiltonian`, `ApplyTimeDependentSpinHamiltonian`
+* Feature `unstable_analog_operations` adding new analog operations: `ApplyConstantPauliHamiltonian`, `ApplyTimeDependentPauliHamiltonian`
 * Added `SingleQubitOverrotationDescription`
 * Added `SingleQubitOverrotationOnGate` noise model
 * Updated cargo (including updating mio from v0.8.10 to v0.8.11)
