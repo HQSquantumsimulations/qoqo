@@ -10,6 +10,7 @@
 // express or implied. See the License for the specific language governing permissions and
 // limitations under the License.
 
+use crate::STRUQTURE_VERSION;
 use pyo3::{exceptions::PyValueError, prelude::*};
 use qoqo_macros::noise_model_wrapper;
 use roqoqo::noise_models::{DecoherenceOnGateModel, NoiseModel};
@@ -82,8 +83,8 @@ impl DecoherenceOnGateModelWrapper {
                 noise_operator,
             ) {
                 Ok(x) => x,
-                Err(_) => match struqture_py::spins::PlusMinusLindbladNoiseOperatorWrapper::from_struqture_2(noise_operator) {
-                    Ok(x) => x.internal,
+                Err(_) => match struqture_py::spins::PlusMinusLindbladNoiseOperatorWrapper::from_pyany_struqture_1(noise_operator) {
+                    Ok(x) => x,
                     Err(err) => return Err(PyValueError::new_err(format!("Could not convert input noise_operator from either struqture 1.x or struqture 2.x: {:?}", err))),
                 }
             };
@@ -104,18 +105,34 @@ impl DecoherenceOnGateModelWrapper {
     ///
     /// Returns:
     ///     Optional[struqture_py.spins.PlusMinusLindbladNoiseOperator]: The error model applied when gate is applied.
-    pub fn get_single_qubit_gate_error(
+    pub unsafe fn get_single_qubit_gate_error(
         &self,
         gate: &str,
         qubit: usize,
-    ) -> Option<struqture_py::spins::PlusMinusLindbladNoiseOperatorWrapper> {
-        self.internal
-            .get_single_qubit_gate_error(gate, qubit)
-            .map(
-                |noise_operator| struqture_py::spins::PlusMinusLindbladNoiseOperatorWrapper {
-                    internal: noise_operator.clone(),
-                },
-            )
+    ) -> Option<Py<PyAny>> {
+        match self.internal.get_single_qubit_gate_error(gate, qubit) {
+            Some(struqture_obj) => Python::with_gil(|py| {
+                let version = STRUQTURE_VERSION.get_version(py);
+                if version.starts_with('1') {
+                    let class = STRUQTURE_VERSION.get_operator(py, "get_single_qubit_gate_error");
+                    let json_string = serde_json::to_string(
+                        &struqture_obj
+                            .to_struqture_1()
+                            .expect("Could not convert struqture 2 object to struqture 1"),
+                    )
+                    .expect("Could not serialize to JSON");
+                    Some(class.call_method1(py, "from_json", (json_string.as_str(),)).expect(
+                        "Could not create struqture 1.x PlusMinusLindbladNoiseOperator from JSON",
+                    ))
+                } else {
+                    let pmlno = struqture_py::spins::PlusMinusLindbladNoiseOperatorWrapper {
+                        internal: struqture_obj.clone(),
+                    };
+                    Some(pmlno.into_py(py))
+                }
+            }),
+            None => None,
+        }
     }
 
     /// Set extra noise for a two qubit gate.
@@ -143,8 +160,8 @@ impl DecoherenceOnGateModelWrapper {
                 noise_operator,
             ) {
                 Ok(x) => x,
-                Err(_) => match struqture_py::spins::PlusMinusLindbladNoiseOperatorWrapper::from_struqture_2(noise_operator) {
-                    Ok(x) => x.internal,
+                Err(_) => match struqture_py::spins::PlusMinusLindbladNoiseOperatorWrapper::from_pyany_struqture_1(noise_operator) {
+                    Ok(x) => x,
                     Err(err) => return Err(PyValueError::new_err(format!("Could not convert input noise_operator from either struqture 1.x or struqture 2.x: {:?}", err))),
                 }
             };
@@ -167,19 +184,38 @@ impl DecoherenceOnGateModelWrapper {
     ///
     /// Returns:
     ///     Optional[struqture_py.spins.PlusMinusLindbladNoiseOperator]: The error model applied when gate is applied.
-    pub fn get_two_qubit_gate_error(
+    pub unsafe fn get_two_qubit_gate_error(
         &self,
         gate: &str,
         control: usize,
         target: usize,
-    ) -> Option<struqture_py::spins::PlusMinusLindbladNoiseOperatorWrapper> {
-        self.internal
+    ) -> Option<Py<PyAny>> {
+        match self
+            .internal
             .get_two_qubit_gate_error(gate, control, target)
-            .map(
-                |noise_operator| struqture_py::spins::PlusMinusLindbladNoiseOperatorWrapper {
-                    internal: noise_operator.clone(),
-                },
-            )
+        {
+            Some(struqture_obj) => Python::with_gil(|py| {
+                let version = STRUQTURE_VERSION.get_version(py);
+                if version.starts_with('1') {
+                    let class = STRUQTURE_VERSION.get_operator(py, "get_two_qubit_gate_error");
+                    let json_string = serde_json::to_string(
+                        &struqture_obj
+                            .to_struqture_1()
+                            .expect("Could not convert struqture 2 object to struqture 1"),
+                    )
+                    .expect("Could not serialize to JSON");
+                    Some(class.call_method1(py, "from_json", (json_string.as_str(),)).expect(
+                        "Could not create struqture 1.x PlusMinusLindbladNoiseOperator from JSON",
+                    ))
+                } else {
+                    let pmlno = struqture_py::spins::PlusMinusLindbladNoiseOperatorWrapper {
+                        internal: struqture_obj.clone(),
+                    };
+                    Some(pmlno.into_py(py))
+                }
+            }),
+            None => None,
+        }
     }
 
     /// Set extra noise for a single qubit gate.
@@ -209,8 +245,8 @@ impl DecoherenceOnGateModelWrapper {
                 noise_operator,
             ) {
                 Ok(x) => x,
-                Err(_) => match struqture_py::spins::PlusMinusLindbladNoiseOperatorWrapper::from_struqture_2(noise_operator) {
-                    Ok(x) => x.internal,
+                Err(_) => match struqture_py::spins::PlusMinusLindbladNoiseOperatorWrapper::from_pyany_struqture_1(noise_operator) {
+                    Ok(x) => x,
                     Err(err) => return Err(PyValueError::new_err(format!("Could not convert input noise_operator from either struqture 1.x or struqture 2.x: {:?}", err))),
                 }
             };
@@ -235,20 +271,39 @@ impl DecoherenceOnGateModelWrapper {
     ///
     /// Returns:
     ///     Optional[struqture_py.spins.PlusMinusLindbladNoiseOperator]: The error model applied when gate is applied.
-    pub fn get_three_qubit_gate_error(
+    pub unsafe fn get_three_qubit_gate_error(
         &self,
         gate: &str,
         control0: usize,
         control1: usize,
         target: usize,
-    ) -> Option<struqture_py::spins::PlusMinusLindbladNoiseOperatorWrapper> {
-        self.internal
+    ) -> Option<Py<PyAny>> {
+        match self
+            .internal
             .get_three_qubit_gate_error(gate, control0, control1, target)
-            .map(
-                |noise_operator| struqture_py::spins::PlusMinusLindbladNoiseOperatorWrapper {
-                    internal: noise_operator.clone(),
-                },
-            )
+        {
+            Some(struqture_obj) => Python::with_gil(|py| {
+                let version = STRUQTURE_VERSION.get_version(py);
+                if version.starts_with('1') {
+                    let class = STRUQTURE_VERSION.get_operator(py, "get_three_qubit_gate_error");
+                    let json_string = serde_json::to_string(
+                        &struqture_obj
+                            .to_struqture_1()
+                            .expect("Could not convert struqture 2 object to struqture 1"),
+                    )
+                    .expect("Could not serialize to JSON");
+                    Some(class.call_method1(py, "from_json", (json_string.as_str(),)).expect(
+                        "Could not create struqture 1.x PlusMinusLindbladNoiseOperator from JSON",
+                    ))
+                } else {
+                    let pmlno = struqture_py::spins::PlusMinusLindbladNoiseOperatorWrapper {
+                        internal: struqture_obj.clone(),
+                    };
+                    Some(pmlno.into_py(py))
+                }
+            }),
+            None => None,
+        }
     }
 
     /// Set extra noise for a multi qubit gate.
@@ -274,8 +329,8 @@ impl DecoherenceOnGateModelWrapper {
                 noise_operator,
             ) {
                 Ok(x) => x,
-                Err(_) => match struqture_py::spins::PlusMinusLindbladNoiseOperatorWrapper::from_struqture_2(noise_operator) {
-                    Ok(x) => x.internal,
+                Err(_) => match struqture_py::spins::PlusMinusLindbladNoiseOperatorWrapper::from_pyany_struqture_1(noise_operator) {
+                    Ok(x) => x,
                     Err(err) => return Err(PyValueError::new_err(format!("Could not convert input noise_operator from either struqture 1.x or struqture 2.x: {:?}", err))),
                 }
             };
@@ -296,18 +351,34 @@ impl DecoherenceOnGateModelWrapper {
     ///
     /// Returns:
     ///     Optional[struqture_py.spins.PlusMinusLindbladNoiseOperator]: The error model applied when gate is applied.
-    pub fn get_multi_qubit_gate_error(
+    pub unsafe fn get_multi_qubit_gate_error(
         &self,
         gate: &str,
         qubits: Vec<usize>,
-    ) -> Option<struqture_py::spins::PlusMinusLindbladNoiseOperatorWrapper> {
-        self.internal
-            .get_multi_qubit_gate_error(gate, qubits)
-            .map(
-                |noise_operator| struqture_py::spins::PlusMinusLindbladNoiseOperatorWrapper {
-                    internal: noise_operator.clone(),
-                },
-            )
+    ) -> Option<Py<PyAny>> {
+        match self.internal.get_multi_qubit_gate_error(gate, qubits) {
+            Some(struqture_obj) => Python::with_gil(|py| {
+                let version = STRUQTURE_VERSION.get_version(py);
+                if version.starts_with('1') {
+                    let class = STRUQTURE_VERSION.get_operator(py, "get_multi_qubit_gate_error");
+                    let json_string = serde_json::to_string(
+                        &struqture_obj
+                            .to_struqture_1()
+                            .expect("Could not convert struqture 2 object to struqture 1"),
+                    )
+                    .expect("Could not serialize to JSON");
+                    Some(class.call_method1(py, "from_json", (json_string.as_str(),)).expect(
+                        "Could not create struqture 1.x PlusMinusLindbladNoiseOperator from JSON",
+                    ))
+                } else {
+                    let pmlno = struqture_py::spins::PlusMinusLindbladNoiseOperatorWrapper {
+                        internal: struqture_obj.clone(),
+                    };
+                    Some(pmlno.into_py(py))
+                }
+            }),
+            None => None,
+        }
     }
 
     /// Convert the bincode representation of the Noise-Model to a device using the bincode crate.

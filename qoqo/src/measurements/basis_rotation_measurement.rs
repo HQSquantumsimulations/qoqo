@@ -223,7 +223,7 @@ impl PauliZProductWrapper {
             PyValueError::new_err("Cannot serialize PauliZProductMeasurement to bytes")
         })?;
         let b: Py<PyByteArray> = Python::with_gil(|py| -> Py<PyByteArray> {
-            PyByteArray::new_bound(py, &serialized[..]).into()
+            PyByteArray::new(py, &serialized[..]).into()
         });
         Ok(("PauliZProduct", b))
     }
@@ -239,7 +239,7 @@ impl PauliZProductWrapper {
         let serialized = serialize(&self.internal)
             .map_err(|_| PyValueError::new_err("Cannot serialize PauliZProduct to bytes"))?;
         let b: Py<PyByteArray> = Python::with_gil(|py| -> Py<PyByteArray> {
-            PyByteArray::new_bound(py, &serialized[..]).into()
+            PyByteArray::new(py, &serialized[..]).into()
         });
         Ok(b)
     }

@@ -23,7 +23,7 @@ fn test_pyo3_init() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         let plus_minus_operator = spins::PlusMinusLindbladNoiseOperatorWrapper::new();
-        let br_type = py.get_type_bound::<ContinuousDecoherenceModelWrapper>();
+        let br_type = py.get_type::<ContinuousDecoherenceModelWrapper>();
         let binding = br_type.call1((plus_minus_operator.clone(),)).unwrap();
         let br = binding
             .downcast::<ContinuousDecoherenceModelWrapper>()
@@ -52,7 +52,7 @@ fn test_add_damping() {
             internal: internal_plus_minus,
         };
 
-        let br_type = py.get_type_bound::<ContinuousDecoherenceModelWrapper>();
+        let br_type = py.get_type::<ContinuousDecoherenceModelWrapper>();
         let binding = br_type.call0().unwrap();
         let br = binding
             .downcast::<ContinuousDecoherenceModelWrapper>()
@@ -85,7 +85,7 @@ fn test_add_dephasing() {
             internal: internal_plus_minus,
         };
 
-        let br_type = py.get_type_bound::<ContinuousDecoherenceModelWrapper>();
+        let br_type = py.get_type::<ContinuousDecoherenceModelWrapper>();
         let binding = br_type.call0().unwrap();
         let br = binding
             .downcast::<ContinuousDecoherenceModelWrapper>()
@@ -132,7 +132,7 @@ fn test_add_depolarising() {
             internal: internal_plus_minus,
         };
 
-        let br_type = py.get_type_bound::<ContinuousDecoherenceModelWrapper>();
+        let br_type = py.get_type::<ContinuousDecoherenceModelWrapper>();
         let binding = br_type.call0().unwrap();
         let br = binding
             .downcast::<ContinuousDecoherenceModelWrapper>()
@@ -167,7 +167,7 @@ fn test_add_excitation() {
             internal: internal_plus_minus,
         };
 
-        let br_type = py.get_type_bound::<ContinuousDecoherenceModelWrapper>();
+        let br_type = py.get_type::<ContinuousDecoherenceModelWrapper>();
         let binding = br_type.call0().unwrap();
         let br = binding
             .downcast::<ContinuousDecoherenceModelWrapper>()
@@ -188,7 +188,7 @@ fn test_add_excitation() {
 fn test_pyo3_debug() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let br_type = py.get_type_bound::<ContinuousDecoherenceModelWrapper>();
+        let br_type = py.get_type::<ContinuousDecoherenceModelWrapper>();
         let binding = br_type.call0().unwrap();
         let br = binding
             .downcast::<ContinuousDecoherenceModelWrapper>()
@@ -213,7 +213,7 @@ fn test_pyo3_debug() {
 fn test_to_from_json() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let br_type = py.get_type_bound::<ContinuousDecoherenceModelWrapper>();
+        let br_type = py.get_type::<ContinuousDecoherenceModelWrapper>();
         let binding = br_type.call0().unwrap();
         let br = binding
             .downcast::<ContinuousDecoherenceModelWrapper>()
@@ -248,7 +248,7 @@ fn test_to_from_json() {
 fn test_to_from_bincode() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let br_type = py.get_type_bound::<ContinuousDecoherenceModelWrapper>();
+        let br_type = py.get_type::<ContinuousDecoherenceModelWrapper>();
         let binding = br_type.call0().unwrap();
         let br = binding
             .downcast::<ContinuousDecoherenceModelWrapper>()
@@ -283,7 +283,7 @@ fn test_to_from_bincode() {
 fn test_json_schema() {
     pyo3::prepare_freethreaded_python();
     pyo3::Python::with_gil(|py| {
-        let br_type = py.get_type_bound::<ContinuousDecoherenceModelWrapper>();
+        let br_type = py.get_type::<ContinuousDecoherenceModelWrapper>();
         let binding = br_type.call0().unwrap();
         let br = binding
             .downcast::<ContinuousDecoherenceModelWrapper>()

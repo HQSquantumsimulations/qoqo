@@ -27,7 +27,7 @@ use test_case::test_case;
 fn test_pyo3_new_definition_float() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = py.get_type_bound::<DefinitionFloatWrapper>();
+        let operation = py.get_type::<DefinitionFloatWrapper>();
         let binding = operation.call1(("ro".to_string(), 1, false)).unwrap();
         let new_op = binding.downcast::<DefinitionFloatWrapper>().unwrap();
 
@@ -58,7 +58,7 @@ fn test_pyo3_new_definition_float() {
 fn test_pyo3_new_definition_complex() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = py.get_type_bound::<DefinitionComplexWrapper>();
+        let operation = py.get_type::<DefinitionComplexWrapper>();
         let binding = operation.call1(("ro".to_string(), 1, false)).unwrap();
         let new_op = binding.downcast::<DefinitionComplexWrapper>().unwrap();
 
@@ -90,7 +90,7 @@ fn test_pyo3_new_definition_complex() {
 fn test_pyo3_new_definition_usize() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = py.get_type_bound::<DefinitionUsizeWrapper>();
+        let operation = py.get_type::<DefinitionUsizeWrapper>();
         let binding = operation.call1(("ro".to_string(), 1, false)).unwrap();
         let new_op = binding.downcast::<DefinitionUsizeWrapper>().unwrap();
 
@@ -121,7 +121,7 @@ fn test_pyo3_new_definition_usize() {
 fn test_pyo3_new_definition_bit() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = py.get_type_bound::<DefinitionBitWrapper>();
+        let operation = py.get_type::<DefinitionBitWrapper>();
         let binding = operation.call1(("ro".to_string(), 1, false)).unwrap();
         let new_op = binding.downcast::<DefinitionBitWrapper>().unwrap();
 
@@ -152,7 +152,7 @@ fn test_pyo3_new_definition_bit() {
 fn test_pyo3_new_input_symbolic() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = py.get_type_bound::<InputSymbolicWrapper>();
+        let operation = py.get_type::<InputSymbolicWrapper>();
         let binding = operation.call1(("ro".to_string(), 1.0)).unwrap();
         let new_op = binding.downcast::<InputSymbolicWrapper>().unwrap();
 
@@ -183,7 +183,7 @@ fn test_pyo3_new_input_symbolic() {
 fn test_pyo3_new_input_bit() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = py.get_type_bound::<InputBitWrapper>();
+        let operation = py.get_type::<InputBitWrapper>();
         let binding = operation.call1(("ro".to_string(), 1, false)).unwrap();
         let new_op = binding.downcast::<InputBitWrapper>().unwrap();
 
@@ -215,7 +215,7 @@ fn test_pyo3_new_input_bit() {
 fn test_pyo3_new_gate_definition() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = py.get_type_bound::<GateDefinitionWrapper>();
+        let operation = py.get_type::<GateDefinitionWrapper>();
         let binding = operation
             .call1((
                 new_circuit(py),

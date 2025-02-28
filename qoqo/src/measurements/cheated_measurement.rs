@@ -222,7 +222,7 @@ impl CheatedWrapper {
         let serialized = serialize(&self.internal)
             .map_err(|_| PyValueError::new_err("Cannot serialize CheatedMeasurement to bytes"))?;
         let b: Py<PyByteArray> = Python::with_gil(|py| -> Py<PyByteArray> {
-            PyByteArray::new_bound(py, &serialized[..]).into()
+            PyByteArray::new(py, &serialized[..]).into()
         });
         Ok(("Cheated", b))
     }
@@ -238,7 +238,7 @@ impl CheatedWrapper {
         let serialized = serialize(&self.internal)
             .map_err(|_| PyValueError::new_err("Cannot serialize Cheated to bytes"))?;
         let b: Py<PyByteArray> = Python::with_gil(|py| -> Py<PyByteArray> {
-            PyByteArray::new_bound(py, &serialized[..]).into()
+            PyByteArray::new(py, &serialized[..]).into()
         });
         Ok(b)
     }

@@ -41,7 +41,7 @@ fn test_new_multi_qubit_ms(input_operation: Operation, arguments: (Vec<u32>, f64
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         // Basic initialisation, no errors
-        let operation_type = py.get_type_bound::<MultiQubitMSWrapper>();
+        let operation_type = py.get_type::<MultiQubitMSWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding.downcast::<MultiQubitMSWrapper>().unwrap();
         let comparison = bool::extract_bound(
@@ -81,7 +81,7 @@ fn test_new_multi_qubit_zz(input_operation: Operation, arguments: (Vec<u32>, f64
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         // Basic initialisation, no errors
-        let operation_type = py.get_type_bound::<MultiQubitZZWrapper>();
+        let operation_type = py.get_type::<MultiQubitZZWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding.downcast::<MultiQubitZZWrapper>().unwrap();
         let comparison = bool::extract_bound(
@@ -126,7 +126,7 @@ fn test_new_call_defined_gate(
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         // Basic initialisation, no errors
-        let operation_type = py.get_type_bound::<CallDefinedGateWrapper>();
+        let operation_type = py.get_type::<CallDefinedGateWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding.downcast::<CallDefinedGateWrapper>().unwrap();
         let comparison = bool::extract_bound(

@@ -13,6 +13,7 @@
 #![deny(missing_docs)]
 #![deny(rustdoc::missing_crate_level_docs)]
 #![deny(missing_debug_implementations)]
+#![allow(deprecated)]
 
 //! Qoqo quantum computing toolkit
 //!
@@ -98,6 +99,56 @@ pub fn available_gates_hqslang() -> Vec<String> {
         .collect::<Vec<String>>()
 }
 
+use pyo3::sync::GILOnceCell;
+pub(crate) struct StruqtureVersionCell {
+    pub(crate) version: String,
+    cell: GILOnceCell<Py<PyAny>>,
+}
+impl StruqtureVersionCell {
+    pub const fn new() -> Self {
+        Self {
+            cell: GILOnceCell::new(),
+            version: String::new(),
+        }
+    }
+
+    #[inline]
+    pub fn get_version(&mut self, py: Python) -> String {
+        if self.version == String::new() {
+            let _binding = self.cell.get_or_init(py, || {
+                let binding = py
+                    .import("importlib.metadata")
+                    .expect("Could not import importlib.metadata module for function")
+                    .getattr("version")
+                    .expect("Could not get version function of importlib.metadata")
+                    .call1(("struqture_py",))
+                    .expect("Could not get version attribute of struqture_py")
+                    .unbind();
+                let version: String = binding
+                    .extract(py)
+                    .expect("Could not extract version string");
+                self.version = version;
+                binding
+            });
+        }
+        self.version.clone()
+    }
+
+    #[inline]
+    pub fn get_operator(&self, py: Python, function_name: &str) -> &Py<PyAny> {
+        self.cell.get_or_init(py, || {
+            py.import("struqture_py.spins")
+                .unwrap_or_else(|_| {
+                    panic!("Could not import struqture_py.spins module for {function_name}")
+                })
+                .getattr("PlusMinusLindbladNoiseOperator")
+                .expect("Could not get PlusMinusLindbladOperator class")
+                .unbind()
+        })
+    }
+}
+pub(crate) static mut STRUQTURE_VERSION: StruqtureVersionCell = StruqtureVersionCell::new();
+
 /// Quantum Operation Quantum Operation (qoqo)
 ///
 /// Yes, we use reduplication.
@@ -133,7 +184,7 @@ fn qoqo(_py: Python, module: &Bound<PyModule>) -> PyResult<()> {
     let wrapper4 = wrap_pymodule!(noise_models::noise_models);
     module.add_wrapped(wrapper4)?;
     // Adding nice imports corresponding to maturin example
-    let system = PyModule::import_bound(_py, "sys")?;
+    let system = PyModule::import(_py, "sys")?;
     let binding = system.getattr("modules")?;
     let system_modules: &Bound<PyDict> = binding.downcast()?;
     system_modules.set_item("qoqo.operations", module.getattr("operations")?)?;

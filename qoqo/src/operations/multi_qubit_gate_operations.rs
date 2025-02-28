@@ -186,7 +186,7 @@ impl CallDefinedGateWrapper {
     ///     Set[int]: The involved qubits of the operation.
     fn involved_qubits(&self) -> PyObject {
         let pyobject: PyObject = Python::with_gil(|py| -> PyObject {
-            PySet::new_bound(py, &[self.internal.qubits().clone()])
+            PySet::new(py, &[self.internal.qubits().clone()])
                 .unwrap()
                 .to_object(py)
         });

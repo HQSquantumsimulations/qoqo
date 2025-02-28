@@ -860,7 +860,7 @@ fn test_new_cnot(input_operation: Operation, arguments: (u32, u32), method: &str
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation_type = py.get_type_bound::<CNOTWrapper>();
+        let operation_type = py.get_type::<CNOTWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding.downcast::<CNOTWrapper>().unwrap();
 
@@ -896,7 +896,7 @@ fn test_new_swap(input_operation: Operation, arguments: (u32, u32), method: &str
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation_type = py.get_type_bound::<SWAPWrapper>();
+        let operation_type = py.get_type::<SWAPWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding.downcast::<SWAPWrapper>().unwrap();
 
@@ -932,7 +932,7 @@ fn test_new_iswap(input_operation: Operation, arguments: (u32, u32), method: &st
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation_type = py.get_type_bound::<ISwapWrapper>();
+        let operation_type = py.get_type::<ISwapWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding.downcast::<ISwapWrapper>().unwrap();
 
@@ -968,7 +968,7 @@ fn test_new_fswap(input_operation: Operation, arguments: (u32, u32), method: &st
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation_type = py.get_type_bound::<FSwapWrapper>();
+        let operation_type = py.get_type::<FSwapWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding.downcast::<FSwapWrapper>().unwrap();
 
@@ -1004,7 +1004,7 @@ fn test_new_sqrtiswap(input_operation: Operation, arguments: (u32, u32), method:
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation_type = py.get_type_bound::<SqrtISwapWrapper>();
+        let operation_type = py.get_type::<SqrtISwapWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding.downcast::<SqrtISwapWrapper>().unwrap();
 
@@ -1040,7 +1040,7 @@ fn test_new_invsqrtiswap(input_operation: Operation, arguments: (u32, u32), meth
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation_type = py.get_type_bound::<InvSqrtISwapWrapper>();
+        let operation_type = py.get_type::<InvSqrtISwapWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding.downcast::<InvSqrtISwapWrapper>().unwrap();
 
@@ -1076,7 +1076,7 @@ fn test_new_controlledpauliy(input_operation: Operation, arguments: (u32, u32), 
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation_type = py.get_type_bound::<ControlledPauliYWrapper>();
+        let operation_type = py.get_type::<ControlledPauliYWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding.downcast::<ControlledPauliYWrapper>().unwrap();
 
@@ -1112,7 +1112,7 @@ fn test_new_controlledpauliz(input_operation: Operation, arguments: (u32, u32), 
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation_type = py.get_type_bound::<ControlledPauliZWrapper>();
+        let operation_type = py.get_type::<ControlledPauliZWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding.downcast::<ControlledPauliZWrapper>().unwrap();
 
@@ -1148,7 +1148,7 @@ fn test_new_molmersorensenxx(input_operation: Operation, arguments: (u32, u32), 
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation_type = py.get_type_bound::<MolmerSorensenXXWrapper>();
+        let operation_type = py.get_type::<MolmerSorensenXXWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding.downcast::<MolmerSorensenXXWrapper>().unwrap();
 
@@ -1185,7 +1185,7 @@ fn test_new_xy(input_operation: Operation, arguments: (u32, u32, f64), method: &
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         // Basic initialisation, no errors
-        let operation_type = py.get_type_bound::<XYWrapper>();
+        let operation_type = py.get_type::<XYWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding.downcast::<XYWrapper>().unwrap();
         let comparison = bool::extract_bound(
@@ -1230,7 +1230,7 @@ fn test_new_controlledphaseshift(
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         // Basic initialisation, no errors
-        let operation_type = py.get_type_bound::<ControlledPhaseShiftWrapper>();
+        let operation_type = py.get_type::<ControlledPhaseShiftWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding.downcast::<ControlledPhaseShiftWrapper>().unwrap();
         let comparison = bool::extract_bound(
@@ -1275,7 +1275,7 @@ fn test_new_variablemsxx(input_operation: Operation, arguments: (u32, u32, f64),
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         // Basic initialisation, no errors
-        let operation_type = py.get_type_bound::<VariableMSXXWrapper>();
+        let operation_type = py.get_type::<VariableMSXXWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding.downcast::<VariableMSXXWrapper>().unwrap();
         let comparison = bool::extract_bound(
@@ -1316,7 +1316,7 @@ fn test_new_pminteraction(input_operation: Operation, arguments: (u32, u32, f64)
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         // Basic initialisation, no errors
-        let operation_type = py.get_type_bound::<PMInteractionWrapper>();
+        let operation_type = py.get_type::<PMInteractionWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding.downcast::<PMInteractionWrapper>().unwrap();
         let comparison = bool::extract_bound(
@@ -1361,7 +1361,7 @@ fn test_new_givensrotation(
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         // Basic initialisation, no errors
-        let operation_type = py.get_type_bound::<GivensRotationWrapper>();
+        let operation_type = py.get_type::<GivensRotationWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding.downcast::<GivensRotationWrapper>().unwrap();
         let comparison = bool::extract_bound(
@@ -1409,7 +1409,7 @@ fn test_new_givensrotationlittleendian(
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         // Basic initialisation, no errors
-        let operation_type = py.get_type_bound::<GivensRotationLittleEndianWrapper>();
+        let operation_type = py.get_type::<GivensRotationLittleEndianWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding
             .downcast::<GivensRotationLittleEndianWrapper>()
@@ -1461,7 +1461,7 @@ fn test_new_bogoliubov(input_operation: Operation, arguments: (u32, u32, f64, f6
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         // Basic initialisation, no errors
-        let operation_type = py.get_type_bound::<BogoliubovWrapper>();
+        let operation_type = py.get_type::<BogoliubovWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding.downcast::<BogoliubovWrapper>().unwrap();
         let comparison = bool::extract_bound(
@@ -1509,7 +1509,7 @@ fn test_new_complexpminteraction(
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         // Basic initialisation, no errors
-        let operation_type = py.get_type_bound::<ComplexPMInteractionWrapper>();
+        let operation_type = py.get_type::<ComplexPMInteractionWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding.downcast::<ComplexPMInteractionWrapper>().unwrap();
         let comparison = bool::extract_bound(
@@ -1557,7 +1557,7 @@ fn test_new_qsim(input_operation: Operation, arguments: (u32, u32, f64, f64, f64
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         // Basic initialisation, no errors
-        let operation_type = py.get_type_bound::<QsimWrapper>();
+        let operation_type = py.get_type::<QsimWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding.downcast::<QsimWrapper>().unwrap();
         let comparison = bool::extract_bound(
@@ -1605,7 +1605,7 @@ fn test_new_fsim(input_operation: Operation, arguments: (u32, u32, f64, f64, f64
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         // Basic initialisation, no errors
-        let operation_type = py.get_type_bound::<FsimWrapper>();
+        let operation_type = py.get_type::<FsimWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding.downcast::<FsimWrapper>().unwrap();
         let comparison = bool::extract_bound(
@@ -1656,7 +1656,7 @@ fn test_new_spininteraction(
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         // Basic initialisation, no errors
-        let operation_type = py.get_type_bound::<SpinInteractionWrapper>();
+        let operation_type = py.get_type::<SpinInteractionWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding.downcast::<SpinInteractionWrapper>().unwrap();
 
@@ -1708,7 +1708,7 @@ fn test_new_phaseshiftedcontrolledz(
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         // Basic initialisation, no errors
-        let operation_type = py.get_type_bound::<PhaseShiftedControlledZWrapper>();
+        let operation_type = py.get_type::<PhaseShiftedControlledZWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding
             .downcast::<PhaseShiftedControlledZWrapper>()
@@ -1761,7 +1761,7 @@ fn test_new_phaseshiftedcontrolledphase(
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         // Basic initialization, no errors
-        let operation_type = py.get_type_bound::<PhaseShiftedControlledPhaseWrapper>();
+        let operation_type = py.get_type::<PhaseShiftedControlledPhaseWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding
             .downcast::<PhaseShiftedControlledPhaseWrapper>()
@@ -1814,7 +1814,7 @@ fn test_new_controlledrotatex(
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         // Basic initialization, no errors
-        let operation_type = py.get_type_bound::<ControlledRotateXWrapper>();
+        let operation_type = py.get_type::<ControlledRotateXWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding.downcast::<ControlledRotateXWrapper>().unwrap();
         let comparison = bool::extract_bound(
@@ -1859,7 +1859,7 @@ fn test_new_controlledrotatexy(
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         // Basic initialization, no errors
-        let operation_type = py.get_type_bound::<ControlledRotateXYWrapper>();
+        let operation_type = py.get_type::<ControlledRotateXYWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding.downcast::<ControlledRotateXYWrapper>().unwrap();
         let comparison = bool::extract_bound(
@@ -1900,7 +1900,7 @@ fn test_new_echocrossresonance(input_operation: Operation, arguments: (u32, u32)
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         // Basic initialization, no errors
-        let operation_type = py.get_type_bound::<EchoCrossResonanceWrapper>();
+        let operation_type = py.get_type::<EchoCrossResonanceWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding.downcast::<EchoCrossResonanceWrapper>().unwrap();
         let comparison = bool::extract_bound(

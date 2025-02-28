@@ -10,6 +10,7 @@
 // express or implied. See the License for the specific language governing permissions and
 // limitations under the License.
 
+use crate::STRUQTURE_VERSION;
 use pyo3::{exceptions::PyValueError, prelude::*};
 use qoqo_macros::noise_model_wrapper;
 use roqoqo::noise_models::{ContinuousDecoherenceModel, NoiseModel};
@@ -62,8 +63,8 @@ impl ContinuousDecoherenceModelWrapper {
                     lindblad_operator,
                 ) {
                     Ok(x) => x,
-                    Err(_) => match struqture_py::spins::PlusMinusLindbladNoiseOperatorWrapper::from_struqture_2(lindblad_operator) {
-                        Ok(x) => x.internal,
+                    Err(_) => match struqture_py::spins::PlusMinusLindbladNoiseOperatorWrapper::from_pyany_struqture_1(lindblad_operator) {
+                        Ok(x) => x,
                         Err(err) => return Err(PyValueError::new_err(format!("Could not convert input noise_operator from either struqture 1.x or struqture 2.x: {:?}", err))),
                     }
                 };
@@ -77,14 +78,37 @@ impl ContinuousDecoherenceModelWrapper {
         }
     }
 
-    /// Return the internal Lindblad noise operator of the continuous noise model.
+    /// Return the internal Lindblad noise operator of the ContinuousDecoherenceModel noise model.
     ///
     /// Returns:
-    ///     PlusMinusLindbladNoiseOperator: The internal Lindblad noise operator of the continuous noise
-    pub fn get_noise_operator(&self) -> PlusMinusLindbladNoiseOperatorWrapper {
-        PlusMinusLindbladNoiseOperatorWrapper {
-            internal: struqture::spins::PlusMinusLindbladNoiseOperator::from(self.internal.clone()),
-        }
+    ///     PlusMinusLindbladNoiseOperator: The internal Lindblad noise operator of the ContinuousDecoherenceModel.
+    pub unsafe fn get_noise_operator(&self) -> Py<PyAny> {
+        Python::with_gil(|py| {
+            let version = STRUQTURE_VERSION.get_version(py);
+            if version.starts_with('1') {
+                let class = STRUQTURE_VERSION.get_operator(py, "get_noise_operator");
+                let json_string = serde_json::to_string(
+                    &self
+                        .internal
+                        .lindblad_noise
+                        .to_struqture_1()
+                        .expect("Could not convert struqture 2 object to struqture 1"),
+                )
+                .expect("Could not serialize to JSON");
+                class
+                    .call_method1(py, "from_json", (json_string.as_str(),))
+                    .expect(
+                        "Could not create struqture 1.x PlusMinusLindbladNoiseOperator from JSON",
+                    )
+            } else {
+                let pmlno = PlusMinusLindbladNoiseOperatorWrapper {
+                    internal: struqture::spins::PlusMinusLindbladNoiseOperator::from(
+                        self.internal.clone(),
+                    ),
+                };
+                pmlno.into_py(py)
+            }
+        })
     }
 
     /// Convert the bincode representation of the Noise-Model to a device using the bincode crate.

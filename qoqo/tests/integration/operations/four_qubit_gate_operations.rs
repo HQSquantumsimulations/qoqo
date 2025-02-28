@@ -321,7 +321,7 @@ fn test_new_triplecontrolledpaulix(
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         // Basic initialisation, no errors
-        let operation_type = py.get_type_bound::<TripleControlledPauliXWrapper>();
+        let operation_type = py.get_type::<TripleControlledPauliXWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding.downcast::<TripleControlledPauliXWrapper>().unwrap();
         let comparison = bool::extract_bound(
@@ -372,7 +372,7 @@ fn test_new_triplecontrolledpauliz(
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         // Basic initialisation, no errors
-        let operation_type = py.get_type_bound::<TripleControlledPauliZWrapper>();
+        let operation_type = py.get_type::<TripleControlledPauliZWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding.downcast::<TripleControlledPauliZWrapper>().unwrap();
         let comparison = bool::extract_bound(
@@ -423,7 +423,7 @@ fn test_new_triplecontrolledphaseshift(
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         // Basic initialisation, no errors
-        let operation_type = py.get_type_bound::<TripleControlledPhaseShiftWrapper>();
+        let operation_type = py.get_type::<TripleControlledPhaseShiftWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding
             .downcast::<TripleControlledPhaseShiftWrapper>()

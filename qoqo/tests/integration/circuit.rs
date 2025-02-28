@@ -26,7 +26,7 @@ use test_case::test_case;
 
 // helper functions
 fn new_circuit(py: Python) -> Bound<CircuitWrapper> {
-    let circuit_type = py.get_type_bound::<CircuitWrapper>();
+    let circuit_type = py.get_type::<CircuitWrapper>();
     circuit_type
         .call0()
         .unwrap()
@@ -41,7 +41,7 @@ fn populate_circuit_rotatex(
     start: usize,
     stop: usize,
 ) {
-    let rotatex_type = py.get_type_bound::<RotateXWrapper>();
+    let rotatex_type = py.get_type::<RotateXWrapper>();
     for i in start..stop {
         let new_rotatex_0 = rotatex_type.call1((i, i)).unwrap();
         circuit.call_method1("add", (new_rotatex_0,)).unwrap();
@@ -336,7 +336,7 @@ fn test_to_from_bincode() {
         assert!(serialised_error.is_err());
 
         // testing that 'from_bincode' can be called directly on a circuit (python staticmethod)
-        let circuit_type = py.get_type_bound::<CircuitWrapper>();
+        let circuit_type = py.get_type::<CircuitWrapper>();
         let deserialised_py = circuit_type
             .call_method1("from_bincode", (&serialised,))
             .unwrap();
@@ -352,7 +352,7 @@ fn test_to_from_bincode() {
 fn test_value_error_bincode() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let input_type = py.get_type_bound::<PauliZProductInputWrapper>();
+        let input_type = py.get_type::<PauliZProductInputWrapper>();
         let binding = input_type.call1((3, false)).unwrap();
         let input = binding.downcast::<PauliZProductInputWrapper>().unwrap();
         let tmp_vec: Vec<usize> = Vec::new();
@@ -362,7 +362,7 @@ fn test_value_error_bincode() {
 
         let circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
 
-        let br_type = py.get_type_bound::<PauliZProductWrapper>();
+        let br_type = py.get_type::<PauliZProductWrapper>();
         let binding = br_type
             .call1((Some(CircuitWrapper::new()), circs, input))
             .unwrap();
@@ -413,7 +413,7 @@ fn test_to_from_json() {
         assert!(deserialised_error.is_err());
 
         // testing that 'from_json' can be called directly on a circuit (python staticmethod)
-        let circuit_type = py.get_type_bound::<CircuitWrapper>();
+        let circuit_type = py.get_type::<CircuitWrapper>();
         let deserialised_py = circuit_type
             .call_method1("from_json", (serialised,))
             .unwrap();
@@ -639,7 +639,7 @@ fn test_filter_by_tag() {
         .unwrap();
         assert!(comparison);
 
-        let rotatex_type = py.get_type_bound::<RotateXWrapper>();
+        let rotatex_type = py.get_type::<RotateXWrapper>();
         let binding = rotatex_type.call1((0, 0)).unwrap();
         let rotatex_0 = binding.downcast::<RotateXWrapper>().unwrap();
         let binding = rotatex_type.call1((1, 1)).unwrap();
@@ -850,7 +850,7 @@ fn test_iter() {
         let new_circuit = new_circuit(py);
         populate_circuit_rotatex(py, &new_circuit, 0, 3);
 
-        let rotatex_type = py.get_type_bound::<RotateXWrapper>();
+        let rotatex_type = py.get_type::<RotateXWrapper>();
         let binding = rotatex_type.call1((0, 0)).unwrap();
         let new_rotatex_0 = binding.downcast::<RotateXWrapper>().unwrap();
         let binding = rotatex_type.call1((1, 1)).unwrap();
@@ -967,17 +967,17 @@ fn test_circuit_overrotate() {
     Python::with_gil(|py| {
         let circuit = new_circuit(py);
 
-        let overrotation_type = py.get_type_bound::<PragmaOverrotationWrapper>();
+        let overrotation_type = py.get_type::<PragmaOverrotationWrapper>();
         let _new_overrotation_1 = overrotation_type
             .call1(("RotateY".to_string(), vec![1], 20.0, 30.0))
             .unwrap();
         circuit.call_method1("add", (_new_overrotation_1,)).unwrap();
 
-        let rotatex_type = py.get_type_bound::<RotateXWrapper>();
+        let rotatex_type = py.get_type::<RotateXWrapper>();
         let new_rotatex_0 = rotatex_type.call1((0, 0.0)).unwrap();
         circuit.call_method1("add", (new_rotatex_0,)).unwrap();
 
-        let rotatey_type = py.get_type_bound::<RotateYWrapper>();
+        let rotatey_type = py.get_type::<RotateYWrapper>();
         let new_rotatey_0 = rotatey_type.call1((0, 1.0)).unwrap();
         circuit.call_method1("add", (new_rotatey_0,)).unwrap();
 

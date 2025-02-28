@@ -499,7 +499,7 @@ fn test_new_controlledcontrolledpauliz(
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         // Basic initialisation, no errors
-        let operation_type = py.get_type_bound::<ControlledControlledPauliZWrapper>();
+        let operation_type = py.get_type::<ControlledControlledPauliZWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding
             .downcast::<ControlledControlledPauliZWrapper>()
@@ -554,7 +554,7 @@ fn test_new_controlledcontrolledphaseshift(
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         // Basic initialisation, no errors
-        let operation_type = py.get_type_bound::<ControlledControlledPhaseShiftWrapper>();
+        let operation_type = py.get_type::<ControlledControlledPhaseShiftWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding
             .downcast::<ControlledControlledPhaseShiftWrapper>()
@@ -605,7 +605,7 @@ fn test_new_toffoli(input_operation: Operation, arguments: (u32, u32, u32), meth
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         // Basic initialisation, no errors
-        let operation_type = py.get_type_bound::<ToffoliWrapper>();
+        let operation_type = py.get_type::<ToffoliWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding.downcast::<ToffoliWrapper>().unwrap();
         let comparison = bool::extract_bound(
@@ -648,7 +648,7 @@ fn test_new_controlledswap(input_operation: Operation, arguments: (u32, u32, u32
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         // Basic initialisation, no errors
-        let operation_type = py.get_type_bound::<ControlledSWAPWrapper>();
+        let operation_type = py.get_type::<ControlledSWAPWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding.downcast::<ControlledSWAPWrapper>().unwrap();
         let comparison = bool::extract_bound(
@@ -695,7 +695,7 @@ fn test_new_phaseshiftedccz(
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         // Basic initialisation, no errors
-        let operation_type = py.get_type_bound::<PhaseShiftedControlledControlledZWrapper>();
+        let operation_type = py.get_type::<PhaseShiftedControlledControlledZWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding
             .downcast::<PhaseShiftedControlledControlledZWrapper>()
@@ -750,7 +750,7 @@ fn test_new_phaseshiftedccphase(
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         // Basic initialisation, no errors
-        let operation_type = py.get_type_bound::<PhaseShiftedControlledControlledPhaseWrapper>();
+        let operation_type = py.get_type::<PhaseShiftedControlledControlledPhaseWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding
             .downcast::<PhaseShiftedControlledControlledPhaseWrapper>()

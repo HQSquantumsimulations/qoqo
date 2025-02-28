@@ -22,7 +22,7 @@ use struqture_py::spins;
 fn test_pyo3_init() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let br_type = py.get_type_bound::<DecoherenceOnGateModelWrapper>();
+        let br_type = py.get_type::<DecoherenceOnGateModelWrapper>();
         let binding = br_type.call0().unwrap();
         let br = binding.downcast::<DecoherenceOnGateModelWrapper>().unwrap();
         let br_copied = br
@@ -40,7 +40,7 @@ fn test_pyo3_init() {
 fn test_pyo3_debug() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let br_type = py.get_type_bound::<DecoherenceOnGateModelWrapper>();
+        let br_type = py.get_type::<DecoherenceOnGateModelWrapper>();
         let binding = br_type.call0().unwrap();
         let br = binding.downcast::<DecoherenceOnGateModelWrapper>().unwrap();
         let br_wrapper = br.extract::<DecoherenceOnGateModelWrapper>().unwrap();
@@ -58,7 +58,7 @@ fn test_pyo3_debug() {
 fn test_to_from_json() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let br_type = py.get_type_bound::<DecoherenceOnGateModelWrapper>();
+        let br_type = py.get_type::<DecoherenceOnGateModelWrapper>();
         let binding = br_type.call0().unwrap();
         let br = binding.downcast::<DecoherenceOnGateModelWrapper>().unwrap();
 
@@ -89,7 +89,7 @@ fn test_to_from_json() {
 fn test_to_from_bincode() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let br_type = py.get_type_bound::<DecoherenceOnGateModelWrapper>();
+        let br_type = py.get_type::<DecoherenceOnGateModelWrapper>();
         let binding = br_type.call0().unwrap();
         let br = binding.downcast::<DecoherenceOnGateModelWrapper>().unwrap();
         let new_br = br;
@@ -118,7 +118,7 @@ fn test_to_from_bincode() {
 fn test_singe_qubit_noise_term() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let br_type = py.get_type_bound::<DecoherenceOnGateModelWrapper>();
+        let br_type = py.get_type::<DecoherenceOnGateModelWrapper>();
         let binding = br_type.call0().unwrap();
         let br = binding.downcast::<DecoherenceOnGateModelWrapper>().unwrap();
 
@@ -153,7 +153,7 @@ fn test_singe_qubit_noise_term() {
 fn test_two_qubit_noise_term() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let br_type = py.get_type_bound::<DecoherenceOnGateModelWrapper>();
+        let br_type = py.get_type::<DecoherenceOnGateModelWrapper>();
         let binding = br_type.call0().unwrap();
         let br = binding.downcast::<DecoherenceOnGateModelWrapper>().unwrap();
 
@@ -189,7 +189,7 @@ fn test_two_qubit_noise_term() {
 fn test_three_qubit_noise_term() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let br_type = py.get_type_bound::<DecoherenceOnGateModelWrapper>();
+        let br_type = py.get_type::<DecoherenceOnGateModelWrapper>();
         let binding = br_type.call0().unwrap();
         let br = binding.downcast::<DecoherenceOnGateModelWrapper>().unwrap();
 
@@ -234,7 +234,7 @@ fn test_three_qubit_noise_term() {
 fn test_multi_qubit_noise_term() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let br_type = py.get_type_bound::<DecoherenceOnGateModelWrapper>();
+        let br_type = py.get_type::<DecoherenceOnGateModelWrapper>();
         let binding = br_type.call0().unwrap();
         let br = binding.downcast::<DecoherenceOnGateModelWrapper>().unwrap();
 
@@ -275,7 +275,7 @@ fn test_multi_qubit_noise_term() {
 fn test_json_schema() {
     pyo3::prepare_freethreaded_python();
     pyo3::Python::with_gil(|py| {
-        let br_type = py.get_type_bound::<DecoherenceOnGateModelWrapper>();
+        let br_type = py.get_type::<DecoherenceOnGateModelWrapper>();
         let binding = br_type.call0().unwrap();
         let br = binding.downcast::<DecoherenceOnGateModelWrapper>().unwrap();
 

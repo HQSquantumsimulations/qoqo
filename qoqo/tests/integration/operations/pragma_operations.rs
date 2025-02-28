@@ -90,7 +90,7 @@ fn circuit_remapped() -> Circuit {
 }
 
 pub(crate) fn new_circuit(py: Python) -> Bound<CircuitWrapper> {
-    let circuit_type = py.get_type_bound::<CircuitWrapper>();
+    let circuit_type = py.get_type::<CircuitWrapper>();
     circuit_type
         .call0()
         .unwrap()
@@ -1781,7 +1781,7 @@ fn test_pyo3_richcmp_overrotation() {
 fn test_pyo3_new_set_number_of_measurements() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = py.get_type_bound::<PragmaSetNumberOfMeasurementsWrapper>();
+        let operation = py.get_type::<PragmaSetNumberOfMeasurementsWrapper>();
         let binding = operation.call1((1, "ro".to_string())).unwrap();
         let new_op = binding
             .downcast::<PragmaSetNumberOfMeasurementsWrapper>()
@@ -1821,9 +1821,9 @@ fn test_pyo3_new_set_number_of_measurements() {
 fn test_pyo3_new_set_statevector() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = py.get_type_bound::<PragmaSetStateVectorWrapper>();
+        let operation = py.get_type::<PragmaSetStateVectorWrapper>();
 
-        let pylist = PyList::new_bound(py, vec![1.0, 0.0]);
+        let pylist = PyList::new(py, vec![1.0, 0.0]).unwrap();
         let binding_from_pylist = operation.call1((pylist,));
         assert!(binding_from_pylist.is_ok());
 
@@ -1872,9 +1872,9 @@ fn test_pyo3_new_set_statevector() {
 fn test_pyo3_new_set_densitymatrix() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = py.get_type_bound::<PragmaSetDensityMatrixWrapper>();
+        let operation = py.get_type::<PragmaSetDensityMatrixWrapper>();
 
-        let pylist = PyList::new_bound(py, vec![vec![1.0, 0.0], vec![0.0, 0.0]]);
+        let pylist = PyList::new(py, vec![vec![1.0, 0.0], vec![0.0, 0.0]]).unwrap();
         let binding_from_pylist = operation.call1((pylist,));
         assert!(binding_from_pylist.is_ok());
 
@@ -1923,7 +1923,7 @@ fn test_pyo3_new_set_densitymatrix() {
 fn test_pyo3_new_repeated_gate() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = py.get_type_bound::<PragmaRepeatGateWrapper>();
+        let operation = py.get_type::<PragmaRepeatGateWrapper>();
         let binding = operation.call1((2,)).unwrap();
         let new_op = binding.downcast::<PragmaRepeatGateWrapper>().unwrap();
 
@@ -1955,7 +1955,7 @@ fn test_pyo3_new_overrotation() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         // Basic initialisation, no errors
-        let operation = py.get_type_bound::<PragmaOverrotationWrapper>();
+        let operation = py.get_type::<PragmaOverrotationWrapper>();
         let binding = operation.call1(("RotateX", vec![0], 0.03, 0.001)).unwrap();
         let new_op = binding.downcast::<PragmaOverrotationWrapper>().unwrap();
         let input_definition = Operation::from(PragmaOverrotation::new(
@@ -1998,7 +1998,7 @@ fn test_pyo3_new_boost_noise() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         // Basic initialisation, no errors
-        let operation = py.get_type_bound::<PragmaBoostNoiseWrapper>();
+        let operation = py.get_type::<PragmaBoostNoiseWrapper>();
         let binding = operation.call1((0.003,)).unwrap();
         let new_op = binding.downcast::<PragmaBoostNoiseWrapper>().unwrap();
         let input_definition = Operation::from(PragmaBoostNoise::new(CalculatorFloat::from(0.003)));
@@ -2034,7 +2034,7 @@ fn test_pyo3_new_stop() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         // Basic initialisation, no errors
-        let operation = py.get_type_bound::<PragmaStopParallelBlockWrapper>();
+        let operation = py.get_type::<PragmaStopParallelBlockWrapper>();
         let binding = operation.call1((vec![0], 0.0000001)).unwrap();
         let new_op = binding
             .downcast::<PragmaStopParallelBlockWrapper>()
@@ -2084,7 +2084,7 @@ fn test_pyo3_new_global_phase() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         // Basic initialisation, no errors
-        let operation = py.get_type_bound::<PragmaGlobalPhaseWrapper>();
+        let operation = py.get_type::<PragmaGlobalPhaseWrapper>();
         let binding = operation.call1((0.003,)).unwrap();
         let new_op = binding.downcast::<PragmaGlobalPhaseWrapper>().unwrap();
         let input_definition =
@@ -2121,7 +2121,7 @@ fn test_pyo3_new_sleep() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         // Basic initialisation, no errors
-        let operation = py.get_type_bound::<PragmaSleepWrapper>();
+        let operation = py.get_type::<PragmaSleepWrapper>();
         let binding = operation.call1((vec![0], 0.0000001)).unwrap();
         let new_op = binding.downcast::<PragmaSleepWrapper>().unwrap();
 
@@ -2163,7 +2163,7 @@ fn test_pyo3_new_sleep() {
 fn test_pyo3_new_active_reset() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = py.get_type_bound::<PragmaActiveResetWrapper>();
+        let operation = py.get_type::<PragmaActiveResetWrapper>();
         let binding = operation.call1((0,)).unwrap();
         let new_op = binding.downcast::<PragmaActiveResetWrapper>().unwrap();
 
@@ -2194,7 +2194,7 @@ fn test_pyo3_new_active_reset() {
 fn test_pyo3_new_start_decomposition_block() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = py.get_type_bound::<PragmaStartDecompositionBlockWrapper>();
+        let operation = py.get_type::<PragmaStartDecompositionBlockWrapper>();
         let binding = operation.call1((vec![0], reordering())).unwrap();
         let new_op = binding
             .downcast::<PragmaStartDecompositionBlockWrapper>()
@@ -2234,7 +2234,7 @@ fn test_pyo3_new_start_decomposition_block() {
 fn test_pyo3_new_stop_decomposition_block() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = py.get_type_bound::<PragmaStopDecompositionBlockWrapper>();
+        let operation = py.get_type::<PragmaStopDecompositionBlockWrapper>();
         let binding = operation.call1((vec![0],)).unwrap();
         let new_op = binding
             .downcast::<PragmaStopDecompositionBlockWrapper>()
@@ -2274,7 +2274,7 @@ fn test_pyo3_new_damping() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         // Basic initialisation, no errors
-        let operation = py.get_type_bound::<PragmaDampingWrapper>();
+        let operation = py.get_type::<PragmaDampingWrapper>();
         let binding = operation.call1((0, 0.005, 0.02)).unwrap();
         let new_op = binding.downcast::<PragmaDampingWrapper>().unwrap();
         let input_definition = Operation::from(PragmaDamping::new(
@@ -2316,7 +2316,7 @@ fn test_pyo3_new_depolarising() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         // Basic initialisation, no errors
-        let operation = py.get_type_bound::<PragmaDepolarisingWrapper>();
+        let operation = py.get_type::<PragmaDepolarisingWrapper>();
         let binding = operation.call1((0, 0.005, 0.02)).unwrap();
         let new_op = binding.downcast::<PragmaDepolarisingWrapper>().unwrap();
         let input_definition = Operation::from(PragmaDepolarising::new(
@@ -2358,7 +2358,7 @@ fn test_pyo3_new_dephasing() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         // Basic initialisation, no errors
-        let operation = py.get_type_bound::<PragmaDephasingWrapper>();
+        let operation = py.get_type::<PragmaDephasingWrapper>();
         let binding = operation.call1((0, 0.005, 0.02)).unwrap();
         let new_op = binding.downcast::<PragmaDephasingWrapper>().unwrap();
         let input_definition = Operation::from(PragmaDephasing::new(
@@ -2400,7 +2400,7 @@ fn test_pyo3_new_randomnoise() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         // Basic initialisation, no errors
-        let operation = py.get_type_bound::<PragmaRandomNoiseWrapper>();
+        let operation = py.get_type::<PragmaRandomNoiseWrapper>();
         let binding = operation.call1((0, 0.005, 0.02, 0.01)).unwrap();
         let new_op = binding.downcast::<PragmaRandomNoiseWrapper>().unwrap();
         let input_definition = Operation::from(PragmaRandomNoise::new(
@@ -2445,16 +2445,17 @@ fn test_pyo3_new_general_noise() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         // Basic initialisation, no errors
-        let operation = py.get_type_bound::<PragmaGeneralNoiseWrapper>();
+        let operation = py.get_type::<PragmaGeneralNoiseWrapper>();
 
-        let pylist = PyList::new_bound(
+        let pylist = PyList::new(
             py,
             vec![
                 vec![1.0, 0.0, 0.0],
                 vec![0.0, 1.0, 0.0],
                 vec![0.0, 0.0, 1.0],
             ],
-        );
+        )
+        .unwrap();
         let binding_from_pylist = operation.call1((0, 1.0, pylist));
         assert!(binding_from_pylist.is_ok());
 
@@ -2508,7 +2509,7 @@ fn test_pyo3_new_general_noise() {
 fn test_pyo3_new_conditional() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = py.get_type_bound::<PragmaConditionalWrapper>();
+        let operation = py.get_type::<PragmaConditionalWrapper>();
         let binding = operation
             .call1(("ro".to_string(), 0, new_circuit(py)))
             .unwrap();
@@ -2544,7 +2545,7 @@ fn test_pyo3_new_conditional() {
 fn test_pyo3_new_controlled_circuit() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = py.get_type_bound::<PragmaControlledCircuitWrapper>();
+        let operation = py.get_type::<PragmaControlledCircuitWrapper>();
         let binding = operation.call1((0, new_circuit(py))).unwrap();
         let new_op = binding
             .downcast::<PragmaControlledCircuitWrapper>()
@@ -2581,7 +2582,7 @@ fn test_pyo3_new_controlled_circuit() {
 fn test_pyo3_new_loop() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = py.get_type_bound::<PragmaLoopWrapper>();
+        let operation = py.get_type::<PragmaLoopWrapper>();
         let binding = operation
             .call1(("number_t".to_string(), new_circuit(py)))
             .unwrap();
@@ -2618,7 +2619,7 @@ fn test_pyo3_new_annotated_op() {
     let internal_op_1 = Operation::from(PauliX::new(1));
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = py.get_type_bound::<PragmaAnnotatedOpWrapper>();
+        let operation = py.get_type::<PragmaAnnotatedOpWrapper>();
         let binding = operation
             .call1((
                 convert_operation_to_pyobject(internal_op_0).unwrap(),

@@ -105,7 +105,7 @@ impl SingleQubitOverrotationDescriptionWrapper {
         })?;
         let b: Py<pyo3::types::PyByteArray> =
             Python::with_gil(|py| -> Py<pyo3::types::PyByteArray> {
-                pyo3::types::PyByteArray::new_bound(py, &serialized[..]).into()
+                pyo3::types::PyByteArray::new(py, &serialized[..]).into()
             });
         Ok(b)
     }

@@ -35,7 +35,7 @@ fn test_new_squeezing(input_operation: Operation, arguments: (u32, f64, f64), me
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation_type = py.get_type_bound::<SqueezingWrapper>();
+        let operation_type = py.get_type::<SqueezingWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding.downcast::<SqueezingWrapper>().unwrap();
 
@@ -103,7 +103,7 @@ fn test_new_phasedisplacement(
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation_type = py.get_type_bound::<PhaseDisplacementWrapper>();
+        let operation_type = py.get_type::<PhaseDisplacementWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding.downcast::<PhaseDisplacementWrapper>().unwrap();
 
@@ -166,7 +166,7 @@ fn test_new_phaseshift(input_operation: Operation, arguments: (u32, f64), method
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation_type = py.get_type_bound::<PhaseShiftWrapper>();
+        let operation_type = py.get_type::<PhaseShiftWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding.downcast::<PhaseShiftWrapper>().unwrap();
 
@@ -220,7 +220,7 @@ fn test_new_beamsplitter(
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation_type = py.get_type_bound::<BeamSplitterWrapper>();
+        let operation_type = py.get_type::<BeamSplitterWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding.downcast::<BeamSplitterWrapper>().unwrap();
 
@@ -287,7 +287,7 @@ fn test_new_photondetection(
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation_type = py.get_type_bound::<PhotonDetectionWrapper>();
+        let operation_type = py.get_type::<PhotonDetectionWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding.downcast::<PhotonDetectionWrapper>().unwrap();
 

@@ -31,7 +31,7 @@ use test_case::test_case;
 fn test_returning_circuits() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let input_type = py.get_type_bound::<PauliZProductInputWrapper>();
+        let input_type = py.get_type::<PauliZProductInputWrapper>();
         let binding = input_type.call1((3, false)).unwrap();
         let input = binding.downcast::<PauliZProductInputWrapper>().unwrap();
         let tmp_vec: Vec<usize> = Vec::new();
@@ -49,7 +49,7 @@ fn test_returning_circuits() {
         let mut circ1 = CircuitWrapper::new();
         circ1.internal += roqoqo::operations::RotateX::new(0, 0.0.into());
         circs.push(circ1);
-        let br_type = py.get_type_bound::<PauliZProductWrapper>();
+        let br_type = py.get_type::<PauliZProductWrapper>();
         let binding = br_type
             .call1((Some(CircuitWrapper::new()), circs.clone(), input))
             .unwrap();
@@ -101,7 +101,7 @@ fn test_py03_evaluate_bool(
     pyo3::prepare_freethreaded_python();
 
     Python::with_gil(|py| {
-        let input_type = py.get_type_bound::<PauliZProductInputWrapper>();
+        let input_type = py.get_type::<PauliZProductInputWrapper>();
         let binding = input_type.call1((3, false)).unwrap();
         let input = binding.downcast::<PauliZProductInputWrapper>().unwrap();
         let tmp_vec: Vec<usize> = Vec::new();
@@ -154,7 +154,7 @@ fn test_py03_evaluate_bool(
 
         let circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
 
-        let br_type = py.get_type_bound::<PauliZProductWrapper>();
+        let br_type = py.get_type::<PauliZProductWrapper>();
         let binding = br_type
             .call1((Some(CircuitWrapper::new()), circs, input))
             .unwrap();
@@ -212,7 +212,7 @@ fn test_py03_evaluate_usize(
     pyo3::prepare_freethreaded_python();
 
     Python::with_gil(|py| {
-        let input_type = py.get_type_bound::<PauliZProductInputWrapper>();
+        let input_type = py.get_type::<PauliZProductInputWrapper>();
         let binding = input_type.call1((3, false)).unwrap();
         let input = binding.downcast::<PauliZProductInputWrapper>().unwrap();
         let tmp_vec: Vec<usize> = Vec::new();
@@ -265,7 +265,7 @@ fn test_py03_evaluate_usize(
 
         let circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
 
-        let br_type = py.get_type_bound::<PauliZProductWrapper>();
+        let br_type = py.get_type::<PauliZProductWrapper>();
         let binding = br_type
             .call1((Some(CircuitWrapper::new()), circs, input))
             .unwrap();
@@ -316,7 +316,7 @@ fn test_evaluate_symbolic(register: Vec<Vec<bool>>, constant: f64) {
     pyo3::prepare_freethreaded_python();
 
     Python::with_gil(|py| {
-        let input_type = py.get_type_bound::<PauliZProductInputWrapper>();
+        let input_type = py.get_type::<PauliZProductInputWrapper>();
         let binding = input_type.call1((3, false)).unwrap();
         let input = binding.downcast::<PauliZProductInputWrapper>().unwrap();
         let tmp_vec: Vec<usize> = Vec::new();
@@ -344,7 +344,7 @@ fn test_evaluate_symbolic(register: Vec<Vec<bool>>, constant: f64) {
 
         let circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
 
-        let br_type = py.get_type_bound::<PauliZProductWrapper>();
+        let br_type = py.get_type::<PauliZProductWrapper>();
         let binding = br_type
             .call1((Some(CircuitWrapper::new()), circs, input))
             .unwrap();
@@ -381,7 +381,7 @@ fn test_py03_evaluate_error0() {
     pyo3::prepare_freethreaded_python();
 
     Python::with_gil(|py| {
-        let input_type = py.get_type_bound::<PauliZProductInputWrapper>();
+        let input_type = py.get_type::<PauliZProductInputWrapper>();
         let binding = input_type.call1((3, false)).unwrap();
         let input = binding.downcast::<PauliZProductInputWrapper>().unwrap();
         let tmp_vec: Vec<usize> = Vec::new();
@@ -400,7 +400,7 @@ fn test_py03_evaluate_error0() {
 
         let circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
 
-        let br_type = py.get_type_bound::<PauliZProductWrapper>();
+        let br_type = py.get_type::<PauliZProductWrapper>();
         let binding = br_type
             .call1((Some(CircuitWrapper::new()), circs, input))
             .unwrap();
@@ -430,7 +430,7 @@ fn test_pyo3_copy() {
     pyo3::prepare_freethreaded_python();
 
     Python::with_gil(|py| {
-        let input_type = py.get_type_bound::<PauliZProductInputWrapper>();
+        let input_type = py.get_type::<PauliZProductInputWrapper>();
         let binding = input_type.call1((3, false)).unwrap();
         let input = binding.downcast::<PauliZProductInputWrapper>().unwrap();
         let tmp_vec: Vec<usize> = Vec::new();
@@ -448,7 +448,7 @@ fn test_pyo3_copy() {
         let mut circ1 = CircuitWrapper::new();
         circ1.internal += roqoqo::operations::RotateX::new(0, 0.0.into());
         circs.push(circ1);
-        let br_type = py.get_type_bound::<PauliZProductWrapper>();
+        let br_type = py.get_type::<PauliZProductWrapper>();
         let binding = br_type
             .call1((Some(CircuitWrapper::new()), circs.clone(), input))
             .unwrap();
@@ -483,7 +483,7 @@ fn test_pyo3_debug() {
     pyo3::prepare_freethreaded_python();
 
     Python::with_gil(|py| {
-        let input_type = py.get_type_bound::<PauliZProductInputWrapper>();
+        let input_type = py.get_type::<PauliZProductInputWrapper>();
         let binding = input_type.call1((3, false)).unwrap();
         let input = binding.downcast::<PauliZProductInputWrapper>().unwrap();
         let tmp_vec: Vec<usize> = Vec::new();
@@ -493,7 +493,7 @@ fn test_pyo3_debug() {
 
         let circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
 
-        let br_type = py.get_type_bound::<PauliZProductWrapper>();
+        let br_type = py.get_type::<PauliZProductWrapper>();
         let binding = br_type
             .call1((Some(CircuitWrapper::new()), circs, input))
             .unwrap();
@@ -536,7 +536,7 @@ fn test_pyo3_debug() {
 fn test_internal_to_bincode() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let input_type = py.get_type_bound::<PauliZProductInputWrapper>();
+        let input_type = py.get_type::<PauliZProductInputWrapper>();
         let binding = input_type.call1((3, false)).unwrap();
         let input = binding.downcast::<PauliZProductInputWrapper>().unwrap();
         let tmp_vec: Vec<usize> = Vec::new();
@@ -546,7 +546,7 @@ fn test_internal_to_bincode() {
 
         let circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
 
-        let br_type = py.get_type_bound::<PauliZProductWrapper>();
+        let br_type = py.get_type::<PauliZProductWrapper>();
         let binding = br_type
             .call1((Some(CircuitWrapper::new()), circs, input))
             .unwrap();
@@ -579,7 +579,7 @@ fn test_internal_to_bincode() {
 fn test_to_from_bincode() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let input_type = py.get_type_bound::<PauliZProductInputWrapper>();
+        let input_type = py.get_type::<PauliZProductInputWrapper>();
         let binding = input_type.call1((3, false)).unwrap();
         let input = binding.downcast::<PauliZProductInputWrapper>().unwrap();
         let tmp_vec: Vec<usize> = Vec::new();
@@ -597,7 +597,7 @@ fn test_to_from_bincode() {
 
         let circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
 
-        let br_type = py.get_type_bound::<PauliZProductWrapper>();
+        let br_type = py.get_type::<PauliZProductWrapper>();
         let binding = br_type
             .call1((Some(CircuitWrapper::new()), circs, input))
             .unwrap();
@@ -632,7 +632,7 @@ fn test_to_from_json() {
     pyo3::prepare_freethreaded_python();
 
     Python::with_gil(|py| {
-        let input_type = py.get_type_bound::<PauliZProductInputWrapper>();
+        let input_type = py.get_type::<PauliZProductInputWrapper>();
         let binding = input_type.call1((3, false)).unwrap();
         let input = binding.downcast::<PauliZProductInputWrapper>().unwrap();
         let tmp_vec: Vec<usize> = Vec::new();
@@ -646,7 +646,7 @@ fn test_to_from_json() {
         assert_eq!(format!("{:?}", input), format!("{:?}", deserialised));
         let circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
 
-        let br_type = py.get_type_bound::<PauliZProductWrapper>();
+        let br_type = py.get_type::<PauliZProductWrapper>();
         let binding = br_type
             .call1((Some(CircuitWrapper::new()), circs, input))
             .unwrap();
@@ -680,7 +680,7 @@ fn test_substitute_parameters() {
     pyo3::prepare_freethreaded_python();
 
     Python::with_gil(|py| {
-        let input_type = py.get_type_bound::<PauliZProductInputWrapper>();
+        let input_type = py.get_type::<PauliZProductInputWrapper>();
         let binding = input_type.call1((3, false)).unwrap();
         let input = binding.downcast::<PauliZProductInputWrapper>().unwrap();
         let tmp_vec: Vec<usize> = Vec::new();
@@ -698,7 +698,7 @@ fn test_substitute_parameters() {
         let mut circ1 = CircuitWrapper::new();
         circ1.internal += roqoqo::operations::RotateX::new(0, "theta".into());
         circs.push(circ1);
-        let br_type = py.get_type_bound::<PauliZProductWrapper>();
+        let br_type = py.get_type::<PauliZProductWrapper>();
         let binding = br_type
             .call1((Some(CircuitWrapper::new()), circs.clone(), input))
             .unwrap();
@@ -721,7 +721,7 @@ fn test_substitute_parameters_error() {
     pyo3::prepare_freethreaded_python();
 
     Python::with_gil(|py| {
-        let input_type = py.get_type_bound::<PauliZProductInputWrapper>();
+        let input_type = py.get_type::<PauliZProductInputWrapper>();
         let binding = input_type.call1((3, false)).unwrap();
         let input = binding.downcast::<PauliZProductInputWrapper>().unwrap();
         let tmp_vec: Vec<usize> = Vec::new();
@@ -739,7 +739,7 @@ fn test_substitute_parameters_error() {
         let mut circ1 = CircuitWrapper::new();
         circ1.internal += roqoqo::operations::RotateX::new(0, "theta".into());
         circs.push(circ1);
-        let br_type = py.get_type_bound::<PauliZProductWrapper>();
+        let br_type = py.get_type::<PauliZProductWrapper>();
         let binding = br_type
             .call1((Some(CircuitWrapper::new()), circs.clone(), input))
             .unwrap();
@@ -755,7 +755,7 @@ fn test_substitute_parameters_error() {
 #[test]
 fn test_measurement_type() {
     Python::with_gil(|py| {
-        let input_type = py.get_type_bound::<PauliZProductInputWrapper>();
+        let input_type = py.get_type::<PauliZProductInputWrapper>();
         let binding = input_type.call1((3, false)).unwrap();
         let input = binding.downcast::<PauliZProductInputWrapper>().unwrap();
         let tmp_vec: Vec<usize> = Vec::new();
@@ -765,7 +765,7 @@ fn test_measurement_type() {
 
         let circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
 
-        let br_type = py.get_type_bound::<PauliZProductWrapper>();
+        let br_type = py.get_type::<PauliZProductWrapper>();
         let binding = br_type
             .call1((Some(CircuitWrapper::new()), circs, input))
             .unwrap();
@@ -780,7 +780,7 @@ fn test_measurement_type() {
 #[test]
 fn test_return_input() {
     Python::with_gil(|py| {
-        let input_type = py.get_type_bound::<PauliZProductInputWrapper>();
+        let input_type = py.get_type::<PauliZProductInputWrapper>();
         let binding = input_type.call1((3, false)).unwrap();
         let input = binding.downcast::<PauliZProductInputWrapper>().unwrap();
         let tmp_vec: Vec<usize> = Vec::new();
@@ -790,7 +790,7 @@ fn test_return_input() {
 
         let circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
 
-        let br_type = py.get_type_bound::<PauliZProductWrapper>();
+        let br_type = py.get_type::<PauliZProductWrapper>();
         let binding = br_type
             .call1((Some(CircuitWrapper::new()), circs, input))
             .unwrap();
@@ -808,7 +808,7 @@ fn test_pyo3_format_repr() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         let format_repr = "PauliZProduct { constant_circuit: Some(Circuit { definitions: [], operations: [], _roqoqo_version: RoqoqoVersion }), circuits: [Circuit { definitions: [], operations: [], _roqoqo_version: RoqoqoVersion }], input: PauliZProductInput { pauli_product_qubit_masks: {\"ro\": {0: []}}, number_qubits: 3, number_pauli_products: 1, measured_exp_vals: {}, use_flipped_measurement: false } }";
-        let input_type = py.get_type_bound::<PauliZProductInputWrapper>();
+        let input_type = py.get_type::<PauliZProductInputWrapper>();
         let binding = input_type.call1((3, false)).unwrap();
         let input = binding.downcast::<PauliZProductInputWrapper>().unwrap();
         let tmp_vec: Vec<usize> = Vec::new();
@@ -818,7 +818,7 @@ fn test_pyo3_format_repr() {
 
         let circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
 
-        let br_type = py.get_type_bound::<PauliZProductWrapper>();
+        let br_type = py.get_type::<PauliZProductWrapper>();
         let binding = br_type
             .call1((Some(CircuitWrapper::new()), circs, input))
             .unwrap();
@@ -836,7 +836,7 @@ fn test_pyo3_format_repr() {
 fn test_pyo3_copy_deepcopy() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let input_type = py.get_type_bound::<PauliZProductInputWrapper>();
+        let input_type = py.get_type::<PauliZProductInputWrapper>();
         let binding = input_type.call1((3, false)).unwrap();
         let input = binding.downcast::<PauliZProductInputWrapper>().unwrap();
         let tmp_vec: Vec<usize> = Vec::new();
@@ -846,7 +846,7 @@ fn test_pyo3_copy_deepcopy() {
 
         let circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
 
-        let br_type = py.get_type_bound::<PauliZProductWrapper>();
+        let br_type = py.get_type::<PauliZProductWrapper>();
         let binding = br_type
             .call1((Some(CircuitWrapper::new()), circs, input))
             .unwrap();
@@ -876,7 +876,7 @@ fn test_pyo3_copy_deepcopy() {
 fn test_pyo3_richcmp() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let input_type = py.get_type_bound::<PauliZProductInputWrapper>();
+        let input_type = py.get_type::<PauliZProductInputWrapper>();
         let binding = input_type.call1((3, false)).unwrap();
         let input = binding.downcast::<PauliZProductInputWrapper>().unwrap();
         let tmp_vec: Vec<usize> = Vec::new();
@@ -886,7 +886,7 @@ fn test_pyo3_richcmp() {
 
         let circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
 
-        let br_type = py.get_type_bound::<PauliZProductWrapper>();
+        let br_type = py.get_type::<PauliZProductWrapper>();
         let binding = br_type
             .call1((Some(CircuitWrapper::new()), circs.clone(), input))
             .unwrap();
@@ -917,7 +917,7 @@ fn test_pyo3_json_schema() {
     let rust_schema = serde_json::to_string_pretty(&schemars::schema_for!(PauliZProduct)).unwrap();
     pyo3::prepare_freethreaded_python();
     pyo3::Python::with_gil(|py| {
-        let input_type = py.get_type_bound::<PauliZProductInputWrapper>();
+        let input_type = py.get_type::<PauliZProductInputWrapper>();
         let binding = input_type.call1((3, false)).unwrap();
         let input = binding.downcast::<PauliZProductInputWrapper>().unwrap();
         let tmp_vec: Vec<usize> = Vec::new();
@@ -927,7 +927,7 @@ fn test_pyo3_json_schema() {
 
         let circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
 
-        let br_type = py.get_type_bound::<PauliZProductWrapper>();
+        let br_type = py.get_type::<PauliZProductWrapper>();
         #[allow(clippy::redundant_clone)]
         let binding = br_type
             .call1((Some(CircuitWrapper::new()), circs.clone(), input))

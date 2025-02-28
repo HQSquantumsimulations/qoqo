@@ -247,12 +247,12 @@ impl ControlledSWAPWrapper {
             let involved = self.internal.involved_qubits();
             match involved {
                 InvolvedQubits::All => {
-                    let pyref: &Bound<PySet> = &PySet::new_bound(py, &["All"]).unwrap();
+                    let pyref: &Bound<PySet> = &PySet::new(py, ["All"]).unwrap();
                     let pyobject: PyObject = pyref.to_object(py);
                     pyobject
                 }
                 InvolvedQubits::None => {
-                    let pyref: &Bound<PySet> = &PySet::empty_bound(py).unwrap();
+                    let pyref: &Bound<PySet> = &PySet::empty(py).unwrap();
                     let pyobject: PyObject = pyref.to_object(py);
                     pyobject
                 }
@@ -261,7 +261,7 @@ impl ControlledSWAPWrapper {
                     for qubit in x {
                         vector.push(qubit)
                     }
-                    let pyref: &Bound<PySet> = &PySet::new_bound(py, &vector[..]).unwrap();
+                    let pyref: &Bound<PySet> = &PySet::new(py, &vector[..]).unwrap();
                     let pyobject: PyObject = pyref.to_object(py);
                     pyobject
                 }

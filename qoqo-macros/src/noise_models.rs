@@ -57,7 +57,7 @@ pub fn noise_model_wrapper_def(
                 let serialized = bincode::serialize(&noise_model)
                     .map_err(|_| pyo3::exceptions::PyValueError::new_err("Cannot serialize Noise-Model to bytes"))?;
                 let b: Py<pyo3::types::PyByteArray> = Python::with_gil(|py| -> Py<pyo3::types::PyByteArray> {
-                    pyo3::types::PyByteArray::new_bound(py, &serialized[..]).into()
+                    pyo3::types::PyByteArray::new(py, &serialized[..]).into()
                 });
                 Ok(b)
             }
