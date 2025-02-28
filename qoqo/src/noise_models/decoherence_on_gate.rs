@@ -10,7 +10,7 @@
 // express or implied. See the License for the specific language governing permissions and
 // limitations under the License.
 
-use crate::STRUQTURE_VERSION;
+use crate::{STRUQTURE_OPERATOR, STRUQTURE_VERSION};
 use pyo3::{exceptions::PyValueError, prelude::*};
 use qoqo_macros::noise_model_wrapper;
 use roqoqo::noise_models::{DecoherenceOnGateModel, NoiseModel};
@@ -105,16 +105,14 @@ impl DecoherenceOnGateModelWrapper {
     ///
     /// Returns:
     ///     Optional[struqture_py.spins.PlusMinusLindbladNoiseOperator]: The error model applied when gate is applied.
-    pub unsafe fn get_single_qubit_gate_error(
-        &self,
-        gate: &str,
-        qubit: usize,
-    ) -> Option<Py<PyAny>> {
+    pub fn get_single_qubit_gate_error(&self, gate: &str, qubit: usize) -> Option<Py<PyAny>> {
         match self.internal.get_single_qubit_gate_error(gate, qubit) {
             Some(struqture_obj) => Python::with_gil(|py| {
-                let version = STRUQTURE_VERSION.get_version(py);
+                let version: &String = STRUQTURE_VERSION.get().expect("No struqture version found");
                 if version.starts_with('1') {
-                    let class = STRUQTURE_VERSION.get_operator(py, "get_single_qubit_gate_error");
+                    let class: &Py<PyAny> = STRUQTURE_OPERATOR
+                        .get()
+                        .expect("No struqture operator found");
                     let json_string = serde_json::to_string(
                         &struqture_obj
                             .to_struqture_1()
@@ -184,7 +182,7 @@ impl DecoherenceOnGateModelWrapper {
     ///
     /// Returns:
     ///     Optional[struqture_py.spins.PlusMinusLindbladNoiseOperator]: The error model applied when gate is applied.
-    pub unsafe fn get_two_qubit_gate_error(
+    pub fn get_two_qubit_gate_error(
         &self,
         gate: &str,
         control: usize,
@@ -195,9 +193,11 @@ impl DecoherenceOnGateModelWrapper {
             .get_two_qubit_gate_error(gate, control, target)
         {
             Some(struqture_obj) => Python::with_gil(|py| {
-                let version = STRUQTURE_VERSION.get_version(py);
+                let version: &String = STRUQTURE_VERSION.get().expect("No struqture version found");
                 if version.starts_with('1') {
-                    let class = STRUQTURE_VERSION.get_operator(py, "get_two_qubit_gate_error");
+                    let class: &Py<PyAny> = STRUQTURE_OPERATOR
+                        .get()
+                        .expect("No struqture operator found");
                     let json_string = serde_json::to_string(
                         &struqture_obj
                             .to_struqture_1()
@@ -271,7 +271,7 @@ impl DecoherenceOnGateModelWrapper {
     ///
     /// Returns:
     ///     Optional[struqture_py.spins.PlusMinusLindbladNoiseOperator]: The error model applied when gate is applied.
-    pub unsafe fn get_three_qubit_gate_error(
+    pub fn get_three_qubit_gate_error(
         &self,
         gate: &str,
         control0: usize,
@@ -283,9 +283,11 @@ impl DecoherenceOnGateModelWrapper {
             .get_three_qubit_gate_error(gate, control0, control1, target)
         {
             Some(struqture_obj) => Python::with_gil(|py| {
-                let version = STRUQTURE_VERSION.get_version(py);
+                let version: &String = STRUQTURE_VERSION.get().expect("No struqture version found");
                 if version.starts_with('1') {
-                    let class = STRUQTURE_VERSION.get_operator(py, "get_three_qubit_gate_error");
+                    let class: &Py<PyAny> = STRUQTURE_OPERATOR
+                        .get()
+                        .expect("No struqture operator found");
                     let json_string = serde_json::to_string(
                         &struqture_obj
                             .to_struqture_1()
@@ -351,16 +353,14 @@ impl DecoherenceOnGateModelWrapper {
     ///
     /// Returns:
     ///     Optional[struqture_py.spins.PlusMinusLindbladNoiseOperator]: The error model applied when gate is applied.
-    pub unsafe fn get_multi_qubit_gate_error(
-        &self,
-        gate: &str,
-        qubits: Vec<usize>,
-    ) -> Option<Py<PyAny>> {
+    pub fn get_multi_qubit_gate_error(&self, gate: &str, qubits: Vec<usize>) -> Option<Py<PyAny>> {
         match self.internal.get_multi_qubit_gate_error(gate, qubits) {
             Some(struqture_obj) => Python::with_gil(|py| {
-                let version = STRUQTURE_VERSION.get_version(py);
+                let version: &String = STRUQTURE_VERSION.get().expect("No struqture version found");
                 if version.starts_with('1') {
-                    let class = STRUQTURE_VERSION.get_operator(py, "get_multi_qubit_gate_error");
+                    let class: &Py<PyAny> = STRUQTURE_OPERATOR
+                        .get()
+                        .expect("No struqture operator found");
                     let json_string = serde_json::to_string(
                         &struqture_obj
                             .to_struqture_1()

@@ -99,55 +99,59 @@ pub fn available_gates_hqslang() -> Vec<String> {
         .collect::<Vec<String>>()
 }
 
-use pyo3::sync::GILOnceCell;
-pub(crate) struct StruqtureVersionCell {
-    pub(crate) version: String,
-    cell: GILOnceCell<Py<PyAny>>,
-}
-impl StruqtureVersionCell {
-    pub const fn new() -> Self {
-        Self {
-            cell: GILOnceCell::new(),
-            version: String::new(),
-        }
-    }
+use std::sync::OnceLock;
+static STRUQTURE_VERSION: OnceLock<String> = OnceLock::new();
+static STRUQTURE_OPERATOR: OnceLock<Py<PyAny>> = OnceLock::new();
 
-    #[inline]
-    pub fn get_version(&mut self, py: Python) -> String {
-        if self.version == String::new() {
-            let _binding = self.cell.get_or_init(py, || {
-                let binding = py
-                    .import("importlib.metadata")
-                    .expect("Could not import importlib.metadata module for function")
-                    .getattr("version")
-                    .expect("Could not get version function of importlib.metadata")
-                    .call1(("struqture_py",))
-                    .expect("Could not get version attribute of struqture_py")
-                    .unbind();
-                let version: String = binding
-                    .extract(py)
-                    .expect("Could not extract version string");
-                self.version = version;
-                binding
-            });
-        }
-        self.version.clone()
-    }
+// use pyo3::sync::GILOnceCell;
+// pub(crate) struct StruqtureVersionCell {
+//     pub(crate) version: String,
+//     cell: GILOnceCell<Py<PyAny>>,
+// }
+// impl StruqtureVersionCell {
+//     pub const fn new() -> Self {
+//         Self {
+//             cell: GILOnceCell::new(),
+//             version: String::new(),
+//         }
+//     }
 
-    #[inline]
-    pub fn get_operator(&self, py: Python, function_name: &str) -> &Py<PyAny> {
-        self.cell.get_or_init(py, || {
-            py.import("struqture_py.spins")
-                .unwrap_or_else(|_| {
-                    panic!("Could not import struqture_py.spins module for {function_name}")
-                })
-                .getattr("PlusMinusLindbladNoiseOperator")
-                .expect("Could not get PlusMinusLindbladOperator class")
-                .unbind()
-        })
-    }
-}
-pub(crate) static mut STRUQTURE_VERSION: StruqtureVersionCell = StruqtureVersionCell::new();
+//     #[inline]
+//     pub fn get_version(&self, py: Python) -> String {
+//         if self.version == String::new() {
+//             let _binding = self.cell.get_or_init(py, || {
+//                 let binding = py
+//                     .import("importlib.metadata")
+//                     .expect("Could not import importlib.metadata module for function")
+//                     .getattr("version")
+//                     .expect("Could not get version function of importlib.metadata")
+//                     .call1(("struqture_py",))
+//                     .expect("Could not get version attribute of struqture_py")
+//                     .unbind();
+//                 let version: String = binding
+//                     .extract(py)
+//                     .expect("Could not extract version string");
+//                 self.version = version;
+//                 binding
+//             });
+//         }
+//         self.version.clone()
+//     }
+
+//     #[inline]
+//     pub fn get_operator(&self, py: Python, function_name: &str) -> &Py<PyAny> {
+//         self.cell.get_or_init(py, || {
+//             py.import("struqture_py.spins")
+//                 .unwrap_or_else(|_| {
+//                     panic!("Could not import struqture_py.spins module for {function_name}")
+//                 })
+//                 .getattr("PlusMinusLindbladNoiseOperator")
+//                 .expect("Could not get PlusMinusLindbladOperator class")
+//                 .unbind()
+//         })
+//     }
+// }
+// pub(crate) static STRUQTURE_VERSION: StruqtureVersionCell = StruqtureVersionCell::new();
 
 /// Quantum Operation Quantum Operation (qoqo)
 ///
@@ -191,5 +195,28 @@ fn qoqo(_py: Python, module: &Bound<PyModule>) -> PyResult<()> {
     system_modules.set_item("qoqo.measurements", module.getattr("measurements")?)?;
     system_modules.set_item("qoqo.devices", module.getattr("devices")?)?;
     system_modules.set_item("qoqo.noise_models", module.getattr("noise_models")?)?;
+
+    let binding = _py
+        .import("importlib.metadata")
+        .expect("Could not import importlib.metadata module for function")
+        .getattr("version")
+        .expect("Could not get version function of importlib.metadata")
+        .call1(("struqture_py",))
+        .expect("Could not get version attribute of struqture_py")
+        .unbind();
+    let version: String = binding
+        .extract(_py)
+        .expect("Could not extract version string");
+    STRUQTURE_VERSION.get_or_init(|| version);
+    let operator: Py<PyAny> = _py
+        .import("struqture_py.spins")
+        .unwrap_or_else(|_| {
+            panic!("Could not import struqture_py.spins module for get_noise_operator")
+        })
+        .getattr("PlusMinusLindbladNoiseOperator")
+        .expect("Could not get PlusMinusLindbladOperator class")
+        .unbind();
+    STRUQTURE_OPERATOR.get_or_init(|| operator);
+
     Ok(())
 }

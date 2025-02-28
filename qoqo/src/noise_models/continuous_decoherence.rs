@@ -10,7 +10,7 @@
 // express or implied. See the License for the specific language governing permissions and
 // limitations under the License.
 
-use crate::STRUQTURE_VERSION;
+use crate::{STRUQTURE_OPERATOR, STRUQTURE_VERSION};
 use pyo3::{exceptions::PyValueError, prelude::*};
 use qoqo_macros::noise_model_wrapper;
 use roqoqo::noise_models::{ContinuousDecoherenceModel, NoiseModel};
@@ -82,11 +82,13 @@ impl ContinuousDecoherenceModelWrapper {
     ///
     /// Returns:
     ///     PlusMinusLindbladNoiseOperator: The internal Lindblad noise operator of the ContinuousDecoherenceModel.
-    pub unsafe fn get_noise_operator(&self) -> Py<PyAny> {
+    pub fn get_noise_operator(&self) -> Py<PyAny> {
         Python::with_gil(|py| {
-            let version = STRUQTURE_VERSION.get_version(py);
+            let version: &String = STRUQTURE_VERSION.get().expect("No struqture version found");
             if version.starts_with('1') {
-                let class = STRUQTURE_VERSION.get_operator(py, "get_noise_operator");
+                let class: &Py<PyAny> = STRUQTURE_OPERATOR
+                    .get()
+                    .expect("No struqture operator found");
                 let json_string = serde_json::to_string(
                     &self
                         .internal

@@ -24,8 +24,8 @@ use roqoqo::ROQOQO_VERSION;
 
 use std::collections::HashMap;
 use struqture::prelude::*;
-use struqture::spins::{PauliProduct, SpinHamiltonian};
-use struqture_py::spins::SpinHamiltonianSystemWrapper;
+use struqture::spins::{PauliProduct, QubitHamiltonian};
+use struqture_py::spins::QubitHamiltonianWrapper;
 use test_case::test_case;
 
 fn create_apply_constant_spin_hamiltonian<T>(p: T) -> ApplyConstantSpinHamiltonian
@@ -33,7 +33,7 @@ where
     CalculatorFloat: From<T>,
 {
     let pp = PauliProduct::new().z(0);
-    let mut hamiltonian = SpinHamiltonian::new();
+    let mut hamiltonian = QubitHamiltonian::new();
     hamiltonian
         .add_operator_product(pp.clone(), CalculatorFloat::from(p))
         .unwrap();
@@ -42,7 +42,7 @@ where
 
 fn create_apply_constant_spin_hamiltonian_spin_test() -> ApplyConstantSpinHamiltonian {
     let pp = PauliProduct::new().z(0).x(2).y(4);
-    let mut hamiltonian = SpinHamiltonian::new();
+    let mut hamiltonian = QubitHamiltonian::new();
     hamiltonian
         .add_operator_product(pp.clone(), CalculatorFloat::from(1.0))
         .unwrap();
@@ -54,7 +54,7 @@ where
     CalculatorFloat: From<T>,
 {
     let pp = PauliProduct::new().z(0);
-    let mut hamiltonian = SpinHamiltonian::new();
+    let mut hamiltonian = QubitHamiltonian::new();
     hamiltonian
         .add_operator_product(pp.clone(), CalculatorFloat::from(p))
         .unwrap();
@@ -67,7 +67,7 @@ where
 
 fn create_apply_timedependent_spin_hamiltonian_spin_test() -> ApplyTimeDependentSpinHamiltonian {
     let pp = PauliProduct::new().z(0).x(2).y(4);
-    let mut hamiltonian = SpinHamiltonian::new();
+    let mut hamiltonian = QubitHamiltonian::new();
     hamiltonian
         .add_operator_product(pp.clone(), CalculatorFloat::from("omega"))
         .unwrap();
@@ -78,12 +78,12 @@ fn create_apply_timedependent_spin_hamiltonian_spin_test() -> ApplyTimeDependent
     ApplyTimeDependentSpinHamiltonian::new(hamiltonian, vec![1.0], values.clone())
 }
 
-fn new_system(py: Python, number_spins: Option<usize>) -> Bound<SpinHamiltonianSystemWrapper> {
-    let system_type = py.get_type::<SpinHamiltonianSystemWrapper>();
+fn new_system(py: Python, number_spins: Option<usize>) -> Bound<QubitHamiltonianWrapper> {
+    let system_type = py.get_type::<QubitHamiltonianWrapper>();
     system_type
         .call1((number_spins,))
         .unwrap()
-        .downcast::<SpinHamiltonianSystemWrapper>()
+        .downcast::<QubitHamiltonianWrapper>()
         .unwrap()
         .to_owned()
 }
@@ -101,9 +101,7 @@ fn test_new_constantspinhamiltionian() {
         new_system
             .call_method1("add_operator_product", ("0Z", 1.))
             .unwrap();
-        let system_wrapper = new_system
-            .extract::<SpinHamiltonianSystemWrapper>()
-            .unwrap();
+        let system_wrapper = new_system.extract::<QubitHamiltonianWrapper>().unwrap();
 
         let operation_type = py.get_type::<ApplyConstantSpinHamiltonianWrapper>();
         let binding = operation_type.call1((system_wrapper.clone(), 1.0)).unwrap();
@@ -137,7 +135,7 @@ fn test_new_constantspinhamiltionian() {
 
         assert_eq!(
             format!("{:?}", def_wrapper_diff),
-            "ApplyConstantSpinHamiltonianWrapper { internal: ApplyConstantSpinHamiltonian { hamiltonian: SpinHamiltonian { internal_map: {PauliProduct { items: [(0, Z)] }: Float(1.0)} }, time: Float(0.0) } }"
+            "ApplyConstantSpinHamiltonianWrapper { internal: ApplyConstantSpinHamiltonian { hamiltonian: QubitHamiltonian { internal_map: {PauliProduct { items: [(0, Z)] }: Float(1.0)} }, time: Float(0.0) } }"
         );
     })
 }
@@ -155,9 +153,7 @@ fn test_new_timedependentspinhamiltionian() {
         new_system
             .call_method1("add_operator_product", ("0Z", 1.))
             .unwrap();
-        let system_wrapper = new_system
-            .extract::<SpinHamiltonianSystemWrapper>()
-            .unwrap();
+        let system_wrapper = new_system.extract::<QubitHamiltonianWrapper>().unwrap();
 
         let mut values = HashMap::new();
         values.insert("omega".to_string(), vec![1.0]);
@@ -201,7 +197,7 @@ fn test_new_timedependentspinhamiltionian() {
 
         assert_eq!(
             format!("{:?}", def_wrapper_diff),
-            "ApplyTimeDependentSpinHamiltonianWrapper { internal: ApplyTimeDependentSpinHamiltonian { hamiltonian: SpinHamiltonian { internal_map: {PauliProduct { items: [(0, Z)] }: Float(1.0)} }, time: [0.1], values: {\"omega\": [0.1]} } }"
+            "ApplyTimeDependentSpinHamiltonianWrapper { internal: ApplyTimeDependentSpinHamiltonian { hamiltonian: QubitHamiltonian { internal_map: {PauliProduct { items: [(0, Z)] }: Float(1.0)} }, time: [0.1], values: {\"omega\": [0.1]} } }"
         );
     })
 }
@@ -321,11 +317,11 @@ fn test_pyo3_copy_deepcopy(input_operation: Operation) {
 
 /// Test format and repr functions
 #[test_case(
-    "ApplyConstantSpinHamiltonian { hamiltonian: SpinHamiltonian { internal_map: {PauliProduct { items: [(0, Z)] }: Float(1.0)} }, time: Float(1.0) }",
+    "ApplyConstantSpinHamiltonian { hamiltonian: QubitHamiltonian { internal_map: {PauliProduct { items: [(0, Z)] }: Float(1.0)} }, time: Float(1.0) }",
     Operation::from(create_apply_constant_spin_hamiltonian(1.0));
     "ApplyConstantSpinHamiltonian")]
 #[test_case(
-    "ApplyTimeDependentSpinHamiltonian { hamiltonian: SpinHamiltonian { internal_map: {PauliProduct { items: [(0, Z)] }: Str(\"omega\")} }, time: [1.0], values: {\"omega\": [1.0]} }",
+    "ApplyTimeDependentSpinHamiltonian { hamiltonian: QubitHamiltonian { internal_map: {PauliProduct { items: [(0, Z)] }: Str(\"omega\")} }, time: [1.0], values: {\"omega\": [1.0]} }",
     Operation::from(create_apply_timedependent_spin_hamiltonian("omega"));
     "ApplyTimeDependentSpinHamiltonian")]
 fn test_pyo3_format_repr(format_repr: &str, input_operation: Operation) {
@@ -465,7 +461,7 @@ fn test_pyo3_remapqubits() {
     Python::with_gil(|py| {
         let pp1 = PauliProduct::new().z(0).x(1);
         let pp2 = PauliProduct::new().z(2).x(3);
-        let mut hamiltonian = SpinHamiltonian::new();
+        let mut hamiltonian = QubitHamiltonian::new();
         hamiltonian
             .add_operator_product(pp1, CalculatorFloat::from(1.0))
             .unwrap();
@@ -475,7 +471,7 @@ fn test_pyo3_remapqubits() {
 
         let pp1 = PauliProduct::new().z(2).x(1);
         let pp2 = PauliProduct::new().z(0).x(3);
-        let mut test_hamiltonian = SpinHamiltonian::new();
+        let mut test_hamiltonian = QubitHamiltonian::new();
         test_hamiltonian
             .add_operator_product(pp1, CalculatorFloat::from(1.0))
             .unwrap();

@@ -183,7 +183,7 @@ where
     CalculatorFloat: From<T>,
 {
     let pp = PauliProduct::new().z(0);
-    let mut hamiltonian = SpinHamiltonian::new();
+    let mut hamiltonian = QubitHamiltonian::new();
     hamiltonian
         .add_operator_product(pp.clone(), CalculatorFloat::from(p))
         .unwrap();
@@ -195,7 +195,7 @@ where
     CalculatorFloat: From<T>,
 {
     let pp = PauliProduct::new().z(0);
-    let mut hamiltonian = SpinHamiltonian::new();
+    let mut hamiltonian = QubitHamiltonian::new();
     hamiltonian
         .add_operator_product(pp.clone(), CalculatorFloat::from(p))
         .unwrap();
