@@ -19,7 +19,7 @@ jobs:
       rust_package_name: "roqoqo"
       python_3_13: true
       features: "json_schema overrotate circuitdag unstable_chain_with_environment unstable_analog_operations unstable_operation_definition unstable_simulation_repetitions"
-      pip_install: "numpy,struqture-py"
+      pip_install: "numpy struqture-py"
 
   build_tests:
     uses: HQSquantumsimulations/reusable_workflows/.github/workflows/reusable_build_tests_rust_pyo3.yml@main
