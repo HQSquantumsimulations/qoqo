@@ -118,6 +118,7 @@ fn test_to_from_bincode() {
 fn test_singe_qubit_noise_term() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
+        super::initialise_struqture_version(py);
         let br_type = py.get_type::<DecoherenceOnGateModelWrapper>();
         let binding = br_type.call0().unwrap();
         let br = binding.downcast::<DecoherenceOnGateModelWrapper>().unwrap();
@@ -131,7 +132,7 @@ fn test_singe_qubit_noise_term() {
             0.1.into(),
         );
         let plus_minus_operator = spins::PlusMinusLindbladNoiseOperatorWrapper {
-            internal: internal_plus_minus,
+            internal: internal_plus_minus.clone(),
         };
         let binding = br
             .call_method1(
@@ -142,10 +143,12 @@ fn test_singe_qubit_noise_term() {
         let br = binding.downcast::<DecoherenceOnGateModelWrapper>().unwrap();
         let operator = br
             .call_method1("get_single_qubit_gate_error", ("RotateX", 0))
-            .unwrap()
-            .extract::<spins::PlusMinusLindbladNoiseOperatorWrapper>()
             .unwrap();
-        assert_eq!(operator, plus_minus_operator);
+        assert_eq!(
+            internal_plus_minus,
+            spins::PlusMinusLindbladNoiseOperatorWrapper::from_pyany_struqture_1(&operator)
+                .unwrap()
+        );
     })
 }
 
@@ -153,6 +156,7 @@ fn test_singe_qubit_noise_term() {
 fn test_two_qubit_noise_term() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
+        super::initialise_struqture_version(py);
         let br_type = py.get_type::<DecoherenceOnGateModelWrapper>();
         let binding = br_type.call0().unwrap();
         let br = binding.downcast::<DecoherenceOnGateModelWrapper>().unwrap();
@@ -166,7 +170,7 @@ fn test_two_qubit_noise_term() {
             0.1.into(),
         );
         let plus_minus_operator = spins::PlusMinusLindbladNoiseOperatorWrapper {
-            internal: internal_plus_minus,
+            internal: internal_plus_minus.clone(),
         };
         let br = br
             .call_method1(
@@ -178,10 +182,12 @@ fn test_two_qubit_noise_term() {
             .downcast::<DecoherenceOnGateModelWrapper>()
             .unwrap()
             .call_method1("get_two_qubit_gate_error", ("CNOT", 0, 1))
-            .unwrap()
-            .extract::<spins::PlusMinusLindbladNoiseOperatorWrapper>()
             .unwrap();
-        assert_eq!(operator, plus_minus_operator);
+        assert_eq!(
+            internal_plus_minus,
+            spins::PlusMinusLindbladNoiseOperatorWrapper::from_pyany_struqture_1(&operator)
+                .unwrap()
+        );
     })
 }
 
@@ -189,6 +195,7 @@ fn test_two_qubit_noise_term() {
 fn test_three_qubit_noise_term() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
+        super::initialise_struqture_version(py);
         let br_type = py.get_type::<DecoherenceOnGateModelWrapper>();
         let binding = br_type.call0().unwrap();
         let br = binding.downcast::<DecoherenceOnGateModelWrapper>().unwrap();
@@ -202,7 +209,7 @@ fn test_three_qubit_noise_term() {
             0.1.into(),
         );
         let plus_minus_operator = spins::PlusMinusLindbladNoiseOperatorWrapper {
-            internal: internal_plus_minus,
+            internal: internal_plus_minus.clone(),
         };
         let br = br
             .call_method1(
@@ -223,10 +230,12 @@ fn test_three_qubit_noise_term() {
                 "get_three_qubit_gate_error",
                 ("ControlledControlledPauliZ", 0, 1, 2),
             )
-            .unwrap()
-            .extract::<spins::PlusMinusLindbladNoiseOperatorWrapper>()
             .unwrap();
-        assert_eq!(operator, plus_minus_operator);
+        assert_eq!(
+            internal_plus_minus,
+            spins::PlusMinusLindbladNoiseOperatorWrapper::from_pyany_struqture_1(&operator)
+                .unwrap()
+        );
     })
 }
 
@@ -234,6 +243,7 @@ fn test_three_qubit_noise_term() {
 fn test_multi_qubit_noise_term() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
+        super::initialise_struqture_version(py);
         let br_type = py.get_type::<DecoherenceOnGateModelWrapper>();
         let binding = br_type.call0().unwrap();
         let br = binding.downcast::<DecoherenceOnGateModelWrapper>().unwrap();
@@ -247,7 +257,7 @@ fn test_multi_qubit_noise_term() {
             0.1.into(),
         );
         let plus_minus_operator = spins::PlusMinusLindbladNoiseOperatorWrapper {
-            internal: internal_plus_minus,
+            internal: internal_plus_minus.clone(),
         };
         let br = br
             .call_method1(
@@ -262,10 +272,12 @@ fn test_multi_qubit_noise_term() {
                 "get_multi_qubit_gate_error",
                 ("MultiQubitMS", vec![0, 1, 2]),
             )
-            .unwrap()
-            .extract::<spins::PlusMinusLindbladNoiseOperatorWrapper>()
             .unwrap();
-        assert_eq!(operator, plus_minus_operator);
+        assert_eq!(
+            internal_plus_minus,
+            spins::PlusMinusLindbladNoiseOperatorWrapper::from_pyany_struqture_1(&operator)
+                .unwrap()
+        );
     })
 }
 

@@ -10,14 +10,12 @@
 // express or implied. See the License for the specific language governing permissions and
 // limitations under the License.
 
-use crate::{STRUQTURE_OPERATOR, STRUQTURE_VERSION};
 use pyo3::{exceptions::PyValueError, prelude::*};
 use qoqo_macros::noise_model_wrapper;
 use roqoqo::noise_models::{DecoherenceOnIdleModel, NoiseModel};
 #[cfg(feature = "json_schema")]
 use roqoqo::{operations::SupportedVersion, ROQOQO_VERSION};
 use struqture;
-use struqture_py::spins::PlusMinusLindbladNoiseOperatorWrapper;
 
 /// Noise model representing a continuous decoherence process on idle qubits.
 ///
@@ -82,34 +80,7 @@ impl DecoherenceOnIdleModelWrapper {
     /// Returns:
     ///     PlusMinusLindbladNoiseOperator: The internal Lindblad noise operator of the DecoherenceOnIdle.
     pub fn get_noise_operator(&self) -> Py<PyAny> {
-        Python::with_gil(|py| {
-            let version: &String = STRUQTURE_VERSION.get().expect("No struqture version found");
-            if version.starts_with('1') {
-                let class: &Py<PyAny> = STRUQTURE_OPERATOR
-                    .get()
-                    .expect("No struqture operator found");
-                let json_string = serde_json::to_string(
-                    &self
-                        .internal
-                        .lindblad_noise
-                        .to_struqture_1()
-                        .expect("Could not convert struqture 2 object to struqture 1"),
-                )
-                .expect("Could not serialize to JSON");
-                class
-                    .call_method1(py, "from_json", (json_string.as_str(),))
-                    .expect(
-                        "Could not create struqture 1.x PlusMinusLindbladNoiseOperator from JSON",
-                    )
-            } else {
-                let pmlno = PlusMinusLindbladNoiseOperatorWrapper {
-                    internal: struqture::spins::PlusMinusLindbladNoiseOperator::from(
-                        self.internal.clone(),
-                    ),
-                };
-                pmlno.into_py(py)
-            }
-        })
+        Python::with_gil(|py| crate::get_operator(py, &self.internal.lindblad_noise))
     }
 
     /// Convert the bincode representation of the Noise-Model to a device using the bincode crate.
