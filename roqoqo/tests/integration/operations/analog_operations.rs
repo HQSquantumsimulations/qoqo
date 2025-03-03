@@ -22,8 +22,8 @@ use schemars::schema_for;
 #[cfg(feature = "serialize")]
 use serde_test::{assert_tokens, Configure, Token};
 use std::collections::HashMap;
-use struqture::{prelude::*, STRUQTURE_VERSION};
 use struqture::spins::{PauliHamiltonian, PauliProduct};
+use struqture::{prelude::*, STRUQTURE_VERSION};
 use test_case::test_case;
 
 fn create_apply_constant_spin_hamiltonian<T>(p: T) -> ApplyConstantPauliHamiltonian
