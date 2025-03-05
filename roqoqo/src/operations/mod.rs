@@ -930,7 +930,7 @@ pub trait ImplementedIn1point17: Operate {}
 pub trait ImplementedIn1point18: Operate {}
 
 /// Marker trait to show that some operation has been implemented in roqoqo 1.19.0
-pub(crate) trait ImplementedIn1point19: Operate {}
+pub trait ImplementedIn1point19: Operate {}
 
 #[cfg(feature = "dynamic")]
 /// A wrapper for Operate trait objects.
