@@ -4,6 +4,7 @@ This changelog track changes to the qoqo project starting at version v0.5.0
 
 ## Unreleased
 
+* Switched serialisation of the NoiseModels to struqture 1.0.
 * Updated to struqture 2.0.0-alpha.11.
 * Updated to pyo3 0.23, except the IntoPy and ToPyObject deprecation warnings.
 * Updated the noise models to output struqture 2.0 or 1.0 based on installed struqture-py version.
