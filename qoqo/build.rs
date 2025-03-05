@@ -298,7 +298,7 @@ fn create_doc(module: &str) -> PyResult<String> {
     let mut main_doc = "".to_owned();
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| -> PyResult<String> {
-        let python_module = PyModule::import_bound(py, module)?;
+        let python_module = PyModule::import(py, module)?;
         let dict = python_module.as_ref().getattr("__dict__")?;
         let module_doc = python_module
             .as_ref()
@@ -328,9 +328,7 @@ fn create_doc(module: &str) -> PyResult<String> {
                 ));
                 let class_dict = func.getattr("__dict__")?;
                 let items = class_dict.call_method0("items")?;
-                let dict_obj = py
-                    .import_bound("builtins")?
-                    .call_method1("dict", (items,))?;
+                let dict_obj = py.import("builtins")?.call_method1("dict", (items,))?;
                 let class_r_dict = dict_obj.as_ref().downcast::<PyDict>()?;
                 for (class_fn_name, meth) in pyo3::types::PyDictMethods::iter(class_r_dict) {
                     let meth_name = class_fn_name.str()?.extract::<String>()?;
@@ -482,12 +480,11 @@ fn main() {
                                         _ => None
                                     };
                                 }},
-                                "SpinHamiltonian" => {quote!{
+                                "PauliHamiltonian" => {quote!{
                                     let #pyobject_name = &op
                                     .call_method0(#ident_string)
                                     .map_err(|_| QoqoError::ConversionError)?;
-                                    let temp_op: struqture::spins::SpinHamiltonianSystem = struqture_py::spins::SpinHamiltonianSystemWrapper::from_pyany(#pyobject_name).map_err(|_| QoqoError::ConversionError)?;
-                                    let #ident = temp_op.hamiltonian().clone();
+                                    let #ident: struqture::spins::PauliHamiltonian = struqture_py::spins::PauliHamiltonianWrapper::from_pyany(#pyobject_name).map_err(|_| QoqoError::ConversionError)?;
                                 }},
                                 _ => {
                                     quote!{

@@ -1156,15 +1156,15 @@ pub trait OperateTwoModeGate:
 ///
 /// # Example
 /// ```
-/// use roqoqo::operations::{OperateSpinsAnalog, ApplyConstantSpinHamiltonian};
+/// use roqoqo::operations::{OperateSpinsAnalog, ApplyConstantPauliHamiltonian};
 /// use struqture::prelude::*;
-/// use struqture::spins::{PauliProduct, SpinHamiltonian};
+/// use struqture::spins::{PauliProduct, PauliHamiltonian};
 /// use qoqo_calculator::CalculatorFloat;
 ///
 /// let pp = PauliProduct::new().z(0);
-/// let mut hamiltonian = SpinHamiltonian::new();
+/// let mut hamiltonian = PauliHamiltonian::new();
 /// hamiltonian.add_operator_product(pp.clone(), CalculatorFloat::from(1.0)).unwrap();
-/// let _op = ApplyConstantSpinHamiltonian::new(hamiltonian, CalculatorFloat::from(1.0));
+/// let _op = ApplyConstantPauliHamiltonian::new(hamiltonian, CalculatorFloat::from(1.0));
 /// ```
 ///
 pub trait OperateSpinsAnalog: Operate + Clone + PartialEq + SupportedVersion {

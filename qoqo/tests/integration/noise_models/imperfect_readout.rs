@@ -20,7 +20,7 @@ use roqoqo::{noise_models::ImperfectReadoutModel, ROQOQO_VERSION};
 fn test_pyo3_init() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let br_type = py.get_type_bound::<ImperfectReadoutModelWrapper>();
+        let br_type = py.get_type::<ImperfectReadoutModelWrapper>();
         let binding = br_type.call0().unwrap();
         let _br = binding.downcast::<ImperfectReadoutModelWrapper>().unwrap();
     })
@@ -30,7 +30,7 @@ fn test_pyo3_init() {
 fn test_new_with_uniform_error_init() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let br_type = py.get_type_bound::<ImperfectReadoutModelWrapper>();
+        let br_type = py.get_type::<ImperfectReadoutModelWrapper>();
         let binding = br_type
             .call_method1("new_with_uniform_error", (2, 0.2, 0.1))
             .unwrap();
@@ -65,7 +65,7 @@ fn test_new_with_uniform_error_init() {
 fn test_pyo3_debug() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let br_type = py.get_type_bound::<ImperfectReadoutModelWrapper>();
+        let br_type = py.get_type::<ImperfectReadoutModelWrapper>();
         let binding = br_type.call0().unwrap();
         let br = binding.downcast::<ImperfectReadoutModelWrapper>().unwrap();
         let br_copied = br
@@ -89,7 +89,7 @@ fn test_pyo3_debug() {
 fn test_to_from_json() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let br_type = py.get_type_bound::<ImperfectReadoutModelWrapper>();
+        let br_type = py.get_type::<ImperfectReadoutModelWrapper>();
         let binding = br_type.call0().unwrap();
         let br = binding.downcast::<ImperfectReadoutModelWrapper>().unwrap();
 
@@ -120,7 +120,7 @@ fn test_to_from_json() {
 fn test_to_from_bincode() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let br_type = py.get_type_bound::<ImperfectReadoutModelWrapper>();
+        let br_type = py.get_type::<ImperfectReadoutModelWrapper>();
         let binding = br_type.call0().unwrap();
         let br = binding.downcast::<ImperfectReadoutModelWrapper>().unwrap();
         let new_br = br;
@@ -151,7 +151,7 @@ fn test_to_from_bincode() {
 fn test_json_schema() {
     pyo3::prepare_freethreaded_python();
     pyo3::Python::with_gil(|py| {
-        let br_type = py.get_type_bound::<ImperfectReadoutModelWrapper>();
+        let br_type = py.get_type::<ImperfectReadoutModelWrapper>();
         let binding = br_type.call0().unwrap();
         let br = binding.downcast::<ImperfectReadoutModelWrapper>().unwrap();
 

@@ -4,6 +4,9 @@ This changelog track changes to the qoqo project starting at version v0.5.0
 
 ## Unreleased
 
+* Updated to struqture 2.0.0-alpha.11.
+* Updated to pyo3 0.23, except the IntoPy and ToPyObject deprecation warnings.
+* Updated the noise models to output struqture 2.0 or 1.0 based on installed struqture-py version.
 * Updated badges in top-level readme.
 * Added qoqo/.cargo/config file with aarch64 and x86_64 targets for macos.
 
@@ -116,7 +119,7 @@ This changelog track changes to the qoqo project starting at version v0.5.0
 ### Added in 1.11.0
 
 * Added the DecoherenceOnIdle noise model
-* Feature `unstable_analog_operations` adding new analog operations: `ApplyConstantSpinHamiltonian`, `ApplyTimeDependentSpinHamiltonian`
+* Feature `unstable_analog_operations` adding new analog operations: `ApplyConstantPauliHamiltonian`, `ApplyTimeDependentPauliHamiltonian`
 * Added `SingleQubitOverrotationDescription`
 * Added `SingleQubitOverrotationOnGate` noise model
 * Updated cargo (including updating mio from v0.8.10 to v0.8.11)
