@@ -42,25 +42,40 @@ use struqture::{
 /// For more fine control access the internal lindblad_noise directly and modify it.
 #[derive(Debug, Clone, PartialEq, Default)]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
-#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 #[cfg_attr(
     feature = "serialize",
-    serde(try_from = "ContinuousDecoherenceModelSerializable")
+    serde(try_from = "ContinuousDecoherenceModelSerialize")
 )]
 #[cfg_attr(
     feature = "serialize",
-    serde(into = "ContinuousDecoherenceModelSerializable")
+    serde(into = "ContinuousDecoherenceModelSerialize")
 )]
 pub struct ContinuousDecoherenceModel {
     /// Decoherence rates for all qubits
     pub lindblad_noise: PlusMinusLindbladNoiseOperator,
 }
 
+#[cfg(feature = "json_schema")]
+impl schemars::JsonSchema for ContinuousDecoherenceModel {
+    fn schema_name() -> String {
+        "ContinuousDecoherenceModel".to_string()
+    }
+
+    fn json_schema(gen: &mut schemars::gen::SchemaGenerator) -> schemars::schema::Schema {
+        <ContinuousDecoherenceModelSerialize>::json_schema(gen)
+    }
+}
+
 #[cfg(feature = "serialize")]
 #[derive(Clone, PartialEq, Debug, Default)]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
 #[cfg_attr(feature = "serialize", serde(rename = "ContinuousDecoherenceModel"))]
-struct ContinuousDecoherenceModelSerializable {
+#[cfg_attr(
+    feature = "json_schema",
+    derive(schemars::JsonSchema),
+    schemars(deny_unknown_fields)
+)]
+struct ContinuousDecoherenceModelSerialize {
     /// Decoherence rates for all qubits.
     lindblad_noise: struqture_1::spins::PlusMinusLindbladNoiseOperator,
     /// The roqoqo version.
@@ -68,9 +83,9 @@ struct ContinuousDecoherenceModelSerializable {
 }
 
 #[cfg(feature = "serialize")]
-impl TryFrom<ContinuousDecoherenceModelSerializable> for ContinuousDecoherenceModel {
+impl TryFrom<ContinuousDecoherenceModelSerialize> for ContinuousDecoherenceModel {
     type Error = RoqoqoError;
-    fn try_from(value: ContinuousDecoherenceModelSerializable) -> Result<Self, Self::Error> {
+    fn try_from(value: ContinuousDecoherenceModelSerialize) -> Result<Self, Self::Error> {
         Ok(ContinuousDecoherenceModel {
             lindblad_noise: PlusMinusLindbladNoiseOperator::from_struqture_1(&value.lindblad_noise).expect("Failed to convert PlusMinusLindbladNoiseOperator from struqture 1.x for serialization."),
         })
@@ -78,7 +93,7 @@ impl TryFrom<ContinuousDecoherenceModelSerializable> for ContinuousDecoherenceMo
 }
 
 #[cfg(feature = "serialize")]
-impl From<ContinuousDecoherenceModel> for ContinuousDecoherenceModelSerializable {
+impl From<ContinuousDecoherenceModel> for ContinuousDecoherenceModelSerialize {
     fn from(value: ContinuousDecoherenceModel) -> Self {
         let min_version = value.minimum_supported_roqoqo_version();
         let lindblad_noise = value.lindblad_noise.to_struqture_1().expect(
@@ -405,9 +420,12 @@ mod tests {
         let schema_checker =
             Validator::new(&serde_json::to_value(&schema).unwrap()).expect("schema is valid");
         let value = serde_json::to_value(&model).unwrap();
+        println!("{:?}", value);
         let val = match value {
             serde_json::Value::Object(ob) => ob,
-            _ => panic!(),
+            _ => {
+                panic!()
+            }
         };
         let value: serde_json::Value = serde_json::to_value(val).unwrap();
         let validation = schema_checker.validate(&value);

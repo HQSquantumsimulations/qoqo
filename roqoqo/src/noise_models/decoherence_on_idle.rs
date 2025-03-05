@@ -41,25 +41,37 @@ use struqture::{
 /// For more fine control access the internal lindblad_noise directly and modify it.
 #[derive(Debug, Clone, PartialEq, Default)]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
-#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 #[cfg_attr(
     feature = "serialize",
-    serde(try_from = "DecoherenceOnIdleModelSerializable")
+    serde(try_from = "DecoherenceOnIdleModelSerialize")
 )]
-#[cfg_attr(
-    feature = "serialize",
-    serde(into = "DecoherenceOnIdleModelSerializable")
-)]
+#[cfg_attr(feature = "serialize", serde(into = "DecoherenceOnIdleModelSerialize"))]
 pub struct DecoherenceOnIdleModel {
     /// Decoherence rates for all qubits
     pub lindblad_noise: PlusMinusLindbladNoiseOperator,
+}
+
+#[cfg(feature = "json_schema")]
+impl schemars::JsonSchema for DecoherenceOnIdleModel {
+    fn schema_name() -> String {
+        "DecoherenceOnIdleModel".to_string()
+    }
+
+    fn json_schema(gen: &mut schemars::gen::SchemaGenerator) -> schemars::schema::Schema {
+        <DecoherenceOnIdleModelSerialize>::json_schema(gen)
+    }
 }
 
 #[cfg(feature = "serialize")]
 #[derive(Clone, PartialEq, Debug, Default)]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
 #[cfg_attr(feature = "serialize", serde(rename = "DecoherenceOnIdleModel"))]
-struct DecoherenceOnIdleModelSerializable {
+#[cfg_attr(
+    feature = "json_schema",
+    derive(schemars::JsonSchema),
+    schemars(deny_unknown_fields)
+)]
+struct DecoherenceOnIdleModelSerialize {
     /// Decoherence rates for all qubits.
     lindblad_noise: struqture_1::spins::PlusMinusLindbladNoiseOperator,
     /// The roqoqo version.
@@ -67,9 +79,9 @@ struct DecoherenceOnIdleModelSerializable {
 }
 
 #[cfg(feature = "serialize")]
-impl TryFrom<DecoherenceOnIdleModelSerializable> for DecoherenceOnIdleModel {
+impl TryFrom<DecoherenceOnIdleModelSerialize> for DecoherenceOnIdleModel {
     type Error = RoqoqoError;
-    fn try_from(value: DecoherenceOnIdleModelSerializable) -> Result<Self, Self::Error> {
+    fn try_from(value: DecoherenceOnIdleModelSerialize) -> Result<Self, Self::Error> {
         Ok(DecoherenceOnIdleModel {
             lindblad_noise: PlusMinusLindbladNoiseOperator::from_struqture_1(&value.lindblad_noise).expect("Failed to convert PlusMinusLindbladNoiseOperator from struqture 1.x for serialization."),
         })
@@ -77,7 +89,7 @@ impl TryFrom<DecoherenceOnIdleModelSerializable> for DecoherenceOnIdleModel {
 }
 
 #[cfg(feature = "serialize")]
-impl From<DecoherenceOnIdleModel> for DecoherenceOnIdleModelSerializable {
+impl From<DecoherenceOnIdleModel> for DecoherenceOnIdleModelSerialize {
     fn from(value: DecoherenceOnIdleModel) -> Self {
         let min_version = value.minimum_supported_roqoqo_version();
         let lindblad_noise = value.lindblad_noise.to_struqture_1().expect(
