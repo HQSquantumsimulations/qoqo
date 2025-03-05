@@ -3683,7 +3683,7 @@ limitations under the License.
 
 
 ====================================================
-dyn-clone 1.0.18
+dyn-clone 1.0.19
 https://github.com/dtolnay/dyn-clone
 by David Tolnay <dtolnay@gmail.com>
 Clone trait that is dyn-compatible
@@ -8426,7 +8426,7 @@ DEALINGS IN THE SOFTWARE.
 
 
 ====================================================
-httparse 1.10.0
+httparse 1.10.1
 https://github.com/seanmonstar/httparse
 by Sean McArthur <sean@seanmonstar.com>
 A tiny, safe, speedy, zero-copy HTTP/1.x parser.
@@ -10015,7 +10015,7 @@ limitations under the License.
 
 
 ====================================================
-indoc 2.0.5
+indoc 2.0.6
 https://github.com/dtolnay/indoc
 by David Tolnay <dtolnay@gmail.com>
 Indented document literals
@@ -10229,7 +10229,7 @@ END OF TERMS AND CONDITIONS
 
 
 ====================================================
-inventory 0.3.19
+inventory 0.3.20
 https://github.com/dtolnay/inventory
 by David Tolnay <dtolnay@gmail.com>
 Typed distributed plugin registration
@@ -10907,7 +10907,7 @@ limitations under the License.
 
 
 ====================================================
-itoa 1.0.14
+itoa 1.0.15
 https://github.com/dtolnay/itoa
 by David Tolnay <dtolnay@gmail.com>
 Fast integer primitive to string conversion
@@ -22450,7 +22450,7 @@ limitations under the License.
 
 
 ====================================================
-redox_syscall 0.5.9
+redox_syscall 0.5.10
 https://gitlab.redox-os.org/redox-os/syscall
 by Jeremy Soller <jackpot51@gmail.com>
 A Rust library to access raw Redox system calls
@@ -24993,7 +24993,7 @@ TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
 END OF TERMS AND CONDITIONS
 
 ====================================================
-rustversion 1.0.19
+rustversion 1.0.20
 https://github.com/dtolnay/rustversion
 by David Tolnay <dtolnay@gmail.com>
 Conditional compilation according to rustc compiler version
@@ -25207,7 +25207,7 @@ END OF TERMS AND CONDITIONS
 
 
 ====================================================
-ryu 1.0.19
+ryu 1.0.20
 https://github.com/dtolnay/ryu
 by David Tolnay <dtolnay@gmail.com>
 Fast floating point to string conversion
@@ -28090,7 +28090,7 @@ limitations under the License.
 
 
 ====================================================
-struqture 1.12.1
+struqture 1.12.2
 by HQS Quantum Simulations <info@quantumsimulations.de>
 HQS tool for representing operators, Hamiltonians and open systems.
 License: Apache-2.0
@@ -30955,7 +30955,7 @@ LICENSE:
 MIT OR Apache-2.0
 
 ====================================================
-unicode-ident 1.0.17
+unicode-ident 1.0.18
 https://github.com/dtolnay/unicode-ident
 by David Tolnay <dtolnay@gmail.com>
 Determine whether characters have the XID_Start or XID_Continue properties according to Unicode Standard Annex #31
@@ -31212,7 +31212,7 @@ END OF TERMS AND CONDITIONS
 
 
 ====================================================
-unindent 0.2.3
+unindent 0.2.4
 https://github.com/dtolnay/indoc
 by David Tolnay <dtolnay@gmail.com>
 Remove a column of leading whitespace from a string
