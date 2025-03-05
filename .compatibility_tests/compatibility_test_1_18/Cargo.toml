@@ -1,5 +1,5 @@
 [package]
-name = "compatibility_test_1_17"
+name = "compatibility_test_1_18"
 version = "1.19.0"
 authors = ["HQS Quantum Simulations <info@quantumsimulations.de>"]
 license = "Apache-2.0"
@@ -19,7 +19,7 @@ publish = false
 [workspace]
 
 [dependencies]
-test_roqoqo_1_17 = { package = "roqoqo", version = "=1.17.0" }
+test_roqoqo_1_18 = { package = "roqoqo", version = "=1.18.0" }
 roqoqo = { version = "~1.19", path = "../../roqoqo", features = [
     "serialize",
     "overrotate",

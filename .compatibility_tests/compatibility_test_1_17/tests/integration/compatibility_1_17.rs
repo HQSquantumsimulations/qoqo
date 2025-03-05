@@ -144,7 +144,7 @@ use test_roqoqo_1_17;
 #[test_case(test_roqoqo_1_17::operations::PhaseShiftedControlledControlledPhase::new(0, 1, 2, 1.0.into(), 1.0.into()).into(); "PhaseShiftedControlledControlledPhase")]
 // Operations from 1.17 - PragmaSimulationRepetitions gate are unstable, uncomment when stable.
 // #[test_case(test_roqoqo_1_17::operations::PragmaSimulationRepetitions::new(0).into(); "PragmaSimulationRepetitions")]
-// Operations from 1.18
+// Operations from 1.19
 fn test_bincode_compatibility_1_16(operation: test_roqoqo_1_17::operations::Operation) {
     let mut test_circuit = test_roqoqo_1_17::Circuit::new();
     test_circuit += operation;

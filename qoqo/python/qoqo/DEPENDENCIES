@@ -3163,7 +3163,7 @@ You may use this code under the terms of either license.
 
 
 ====================================================
-bytes 1.10.0
+bytes 1.10.1
 https://github.com/tokio-rs/bytes
 by Carl Lerche <me@carllerche.com>, Sean McArthur <sean@seanmonstar.com>
 Types and traits for working with bytes
@@ -20251,7 +20251,7 @@ END OF TERMS AND CONDITIONS
 
 
 ====================================================
-qoqo 1.18.1
+qoqo 1.19.0
 https://github.com/HQSquantumsimulations/qoqo
 by HQS Quantum Simulations <info@quantumsimulations.de>
 Quantum computing circuit toolkit. Python interface of roqoqo
@@ -20463,7 +20463,7 @@ LICENSE:
 
 
 ====================================================
-qoqo-macros 1.18.1
+qoqo-macros 1.19.0
 by HQS Quantum Simulations <info@quantumsimulations.de>
 Macros for the qoqo crate
 License: Apache-2.0
@@ -23904,7 +23904,7 @@ limitations under the License.
 
 
 ====================================================
-roqoqo 1.18.1
+roqoqo 1.19.0
 https://github.com/HQSquantumsimulations/qoqo
 by HQS Quantum Simulations <info@quantumsimulations.de>
 Rust Quantum Computing Toolkit by HQS
@@ -24116,7 +24116,7 @@ LICENSE:
 
 
 ====================================================
-roqoqo-derive 1.18.1
+roqoqo-derive 1.19.0
 by HQS Quantum Simulations <info@quantumsimulations.de>
 Macros for the roqoqo crate
 License: Apache-2.0
@@ -24327,7 +24327,7 @@ LICENSE:
 
 
 ====================================================
-roqoqo-test 1.18.1
+roqoqo-test 1.19.0
 https://github.com/HQSquantumsimulations/qoqo
 by HQS Quantum Simulations <info@quantumsimulations.de>
 Testing helper functions for roqoqo toolkit
