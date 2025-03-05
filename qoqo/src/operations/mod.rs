@@ -203,5 +203,9 @@ pub fn operations(_py: Python, m: &Bound<PyModule>) -> PyResult<()> {
     #[cfg(feature = "unstable_simulation_repetitions")]
     m.add_class::<PragmaSimulationRepetitionsWrapper>()?;
 
+    // 1.18
+
+    // 1.19
+
     Ok(())
 }

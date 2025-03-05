@@ -4,21 +4,31 @@ This changelog track changes to the qoqo project starting at version v0.5.0
 
 ## Unreleased
 
-* Switched serialisation of the NoiseModels to struqture 1.0.
+## 1.19.0
+
+### Updated in 1.19.0
+
 * Updated to struqture 2.0.0-alpha.11.
 * Updated to pyo3 0.23, except the IntoPy and ToPyObject deprecation warnings.
 * Updated the noise models to output struqture 2.0 or 1.0 based on installed struqture-py version.
 * Updated badges in top-level readme.
+
+### Added in 1.19.0
+
 * Added qoqo/.cargo/config file with aarch64 and x86_64 targets for macos.
+
+### Fixed in 1.19.0
+
+* Switched serialisation of the NoiseModels to struqture 1.0.
 
 ## 1.18.1
 
-## Updated in 1.18.1
+### Updated in 1.18.1
 
 * Updated dependencies which were out of date.
 * Updated github actions to latest versions.
 
-## Fixed 1.18.1
+### Fixed 1.18.1
 
 * Fixed new clippy warnings.
 
