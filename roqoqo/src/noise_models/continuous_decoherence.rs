@@ -10,6 +10,8 @@
 // express or implied. See the License for the specific language governing permissions and
 // limitations under the License.
 
+use crate::{RoqoqoError, RoqoqoVersionSerializable};
+
 use super::SupportedVersion;
 use struqture::{
     spins::PlusMinusLindbladNoiseOperator, spins::PlusMinusProduct, OperateOnDensityMatrix,
@@ -41,9 +43,56 @@ use struqture::{
 #[derive(Debug, Clone, PartialEq, Default)]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
 #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+#[cfg_attr(
+    feature = "serialize",
+    serde(try_from = "ContinuousDecoherenceModelSerializable")
+)]
+#[cfg_attr(
+    feature = "serialize",
+    serde(into = "ContinuousDecoherenceModelSerializable")
+)]
 pub struct ContinuousDecoherenceModel {
     /// Decoherence rates for all qubits
     pub lindblad_noise: PlusMinusLindbladNoiseOperator,
+}
+
+#[cfg(feature = "serialize")]
+#[derive(Clone, PartialEq, Debug, Default)]
+#[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+#[cfg_attr(feature = "serialize", serde(rename = "ContinuousDecoherenceModel"))]
+struct ContinuousDecoherenceModelSerializable {
+    /// Decoherence rates for all qubits.
+    lindblad_noise: struqture_1::spins::PlusMinusLindbladNoiseOperator,
+    /// The roqoqo version.
+    _roqoqo_version: RoqoqoVersionSerializable,
+}
+
+#[cfg(feature = "serialize")]
+impl TryFrom<ContinuousDecoherenceModelSerializable> for ContinuousDecoherenceModel {
+    type Error = RoqoqoError;
+    fn try_from(value: ContinuousDecoherenceModelSerializable) -> Result<Self, Self::Error> {
+        Ok(ContinuousDecoherenceModel {
+            lindblad_noise: PlusMinusLindbladNoiseOperator::from_struqture_1(&value.lindblad_noise).expect("Failed to convert PlusMinusLindbladNoiseOperator from struqture 1.x for serialization."),
+        })
+    }
+}
+
+#[cfg(feature = "serialize")]
+impl From<ContinuousDecoherenceModel> for ContinuousDecoherenceModelSerializable {
+    fn from(value: ContinuousDecoherenceModel) -> Self {
+        let min_version = value.minimum_supported_roqoqo_version();
+        let lindblad_noise = value.lindblad_noise.to_struqture_1().expect(
+            "Failed to convert PlusMinusLindbladNoiseOperator to struqture 1.x for serialization.",
+        );
+        let current_version = RoqoqoVersionSerializable {
+            major_version: min_version.0,
+            minor_version: min_version.1,
+        };
+        Self {
+            lindblad_noise,
+            _roqoqo_version: current_version,
+        }
+    }
 }
 
 impl SupportedVersion for ContinuousDecoherenceModel {
