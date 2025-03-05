@@ -262,7 +262,7 @@ jobs:
           cargo test
 
   unittests_check_compatibility_1_18:
-    name: unittests_check-compatibility-1-17
+    name: unittests_check-compatibility-1-18
     runs-on: "ubuntu-latest"
     steps:
       - uses: actions/checkout@v4
