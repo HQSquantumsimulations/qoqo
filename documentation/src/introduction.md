@@ -6,8 +6,6 @@ This user documentation gives a general overview of the design principles and in
 
 ## What are qoqo and roqoqo
 
-<!-- cmdrun echo hi -->
-
 The qoqo and roqoqo packages are a pair of quantum computing toolkits by [HQS Quantum Simulations](https://quantumsimulations.de).
 
 Like many quantum toolkits, qoqo and roqoqo are circuit-based toolkits, at the core. A sequence of operations to be run on a quantum computer is grouped into a [quantum circuit](circuits/intro.md).
