@@ -6,6 +6,7 @@ This changelog track changes to the qoqo project starting at version v0.5.0
 
 * Updated the user documentation.
 * Updated the readme in the `Cargo.toml` for qoqo and roqoqo.
+
 ## 1.19.1
 
 ### Fixed in 1.19.1
