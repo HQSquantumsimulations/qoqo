@@ -9,7 +9,7 @@ categories = ["science", "simulation"]
 homepage = "https://github.com/HQSquantumsimulations/qoqo"
 repository = "https://github.com/HQSquantumsimulations/qoqo"
 documentation = "https://docs.rs/roqoqo/"
-readme = "../README.md"
+readme = "README_roqoqo.md"
 description = "Rust Quantum Computing Toolkit by HQS"
 include = ["src*", "build.rs", "LICENSE", "README.md"]
 
