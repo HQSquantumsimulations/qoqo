@@ -14,7 +14,7 @@ use pyo3::prelude::*;
 use pyo3::Python;
 use qoqo::operations::convert_operation_to_pyobject;
 use qoqo::operations::{
-    ApplyConstantSpinHamiltonianWrapper, ApplyTimeDependentSpinHamiltonianWrapper,
+    ApplyConstantPauliHamiltonianWrapper, ApplyTimeDependentPauliHamiltonianWrapper,
 };
 use qoqo_calculator::{Calculator, CalculatorFloat};
 use roqoqo::operations::Operation;
@@ -24,37 +24,37 @@ use roqoqo::ROQOQO_VERSION;
 
 use std::collections::HashMap;
 use struqture::prelude::*;
-use struqture::spins::{PauliProduct, SpinHamiltonian};
-use struqture_py::spins::SpinHamiltonianSystemWrapper;
+use struqture::spins::{PauliHamiltonian, PauliProduct};
+use struqture_py::spins::PauliHamiltonianWrapper;
 use test_case::test_case;
 
-fn create_apply_constant_spin_hamiltonian<T>(p: T) -> ApplyConstantSpinHamiltonian
+fn create_apply_constant_spin_hamiltonian<T>(p: T) -> ApplyConstantPauliHamiltonian
 where
     CalculatorFloat: From<T>,
 {
     let pp = PauliProduct::new().z(0);
-    let mut hamiltonian = SpinHamiltonian::new();
+    let mut hamiltonian = PauliHamiltonian::new();
     hamiltonian
         .add_operator_product(pp.clone(), CalculatorFloat::from(p))
         .unwrap();
-    ApplyConstantSpinHamiltonian::new(hamiltonian, 1.0.into())
+    ApplyConstantPauliHamiltonian::new(hamiltonian, 1.0.into())
 }
 
-fn create_apply_constant_spin_hamiltonian_spin_test() -> ApplyConstantSpinHamiltonian {
+fn create_apply_constant_spin_hamiltonian_spin_test() -> ApplyConstantPauliHamiltonian {
     let pp = PauliProduct::new().z(0).x(2).y(4);
-    let mut hamiltonian = SpinHamiltonian::new();
+    let mut hamiltonian = PauliHamiltonian::new();
     hamiltonian
         .add_operator_product(pp.clone(), CalculatorFloat::from(1.0))
         .unwrap();
-    ApplyConstantSpinHamiltonian::new(hamiltonian, 1.0.into())
+    ApplyConstantPauliHamiltonian::new(hamiltonian, 1.0.into())
 }
 
-fn create_apply_timedependent_spin_hamiltonian<T>(p: T) -> ApplyTimeDependentSpinHamiltonian
+fn create_apply_timedependent_spin_hamiltonian<T>(p: T) -> ApplyTimeDependentPauliHamiltonian
 where
     CalculatorFloat: From<T>,
 {
     let pp = PauliProduct::new().z(0);
-    let mut hamiltonian = SpinHamiltonian::new();
+    let mut hamiltonian = PauliHamiltonian::new();
     hamiltonian
         .add_operator_product(pp.clone(), CalculatorFloat::from(p))
         .unwrap();
@@ -62,12 +62,12 @@ where
     let mut values = HashMap::new();
     values.insert("omega".to_string(), vec![1.0]);
 
-    ApplyTimeDependentSpinHamiltonian::new(hamiltonian, vec![1.0], values.clone())
+    ApplyTimeDependentPauliHamiltonian::new(hamiltonian, vec![1.0], values.clone())
 }
 
-fn create_apply_timedependent_spin_hamiltonian_spin_test() -> ApplyTimeDependentSpinHamiltonian {
+fn create_apply_timedependent_spin_hamiltonian_spin_test() -> ApplyTimeDependentPauliHamiltonian {
     let pp = PauliProduct::new().z(0).x(2).y(4);
-    let mut hamiltonian = SpinHamiltonian::new();
+    let mut hamiltonian = PauliHamiltonian::new();
     hamiltonian
         .add_operator_product(pp.clone(), CalculatorFloat::from("omega"))
         .unwrap();
@@ -75,20 +75,20 @@ fn create_apply_timedependent_spin_hamiltonian_spin_test() -> ApplyTimeDependent
     let mut values = HashMap::new();
     values.insert("omega".to_string(), vec![1.0]);
 
-    ApplyTimeDependentSpinHamiltonian::new(hamiltonian, vec![1.0], values.clone())
+    ApplyTimeDependentPauliHamiltonian::new(hamiltonian, vec![1.0], values.clone())
 }
 
-fn new_system(py: Python, number_spins: Option<usize>) -> Bound<SpinHamiltonianSystemWrapper> {
-    let system_type = py.get_type_bound::<SpinHamiltonianSystemWrapper>();
+fn new_system(py: Python) -> Bound<PauliHamiltonianWrapper> {
+    let system_type = py.get_type::<PauliHamiltonianWrapper>();
     system_type
-        .call1((number_spins,))
+        .call0()
         .unwrap()
-        .downcast::<SpinHamiltonianSystemWrapper>()
+        .downcast::<PauliHamiltonianWrapper>()
         .unwrap()
         .to_owned()
 }
 
-/// Test new() function for ApplyConstantSpinHamiltonian
+/// Test new() function for ApplyConstantPauliHamiltonian
 #[test]
 fn test_new_constantspinhamiltionian() {
     let input_operation = Operation::from(create_apply_constant_spin_hamiltonian(1.0));
@@ -96,19 +96,16 @@ fn test_new_constantspinhamiltionian() {
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let number_spins: Option<usize> = None;
-        let new_system = new_system(py, number_spins);
+        let new_system = new_system(py);
         new_system
             .call_method1("add_operator_product", ("0Z", 1.))
             .unwrap();
-        let system_wrapper = new_system
-            .extract::<SpinHamiltonianSystemWrapper>()
-            .unwrap();
+        let system_wrapper = new_system.extract::<PauliHamiltonianWrapper>().unwrap();
 
-        let operation_type = py.get_type_bound::<ApplyConstantSpinHamiltonianWrapper>();
+        let operation_type = py.get_type::<ApplyConstantPauliHamiltonianWrapper>();
         let binding = operation_type.call1((system_wrapper.clone(), 1.0)).unwrap();
         let operation_py = binding
-            .downcast::<ApplyConstantSpinHamiltonianWrapper>()
+            .downcast::<ApplyConstantPauliHamiltonianWrapper>()
             .unwrap();
 
         let comparison = bool::extract_bound(
@@ -121,14 +118,14 @@ fn test_new_constantspinhamiltionian() {
         assert!(comparison);
 
         let def_wrapper = operation_py
-            .extract::<ApplyConstantSpinHamiltonianWrapper>()
+            .extract::<ApplyConstantPauliHamiltonianWrapper>()
             .unwrap();
         let binding = operation_type.call1((system_wrapper.clone(), 0.0)).unwrap();
         let new_op_diff = binding
-            .downcast::<ApplyConstantSpinHamiltonianWrapper>()
+            .downcast::<ApplyConstantPauliHamiltonianWrapper>()
             .unwrap();
         let def_wrapper_diff = new_op_diff
-            .extract::<ApplyConstantSpinHamiltonianWrapper>()
+            .extract::<ApplyConstantPauliHamiltonianWrapper>()
             .unwrap();
         let helper_ne: bool = def_wrapper_diff != def_wrapper;
         assert!(helper_ne);
@@ -137,12 +134,12 @@ fn test_new_constantspinhamiltionian() {
 
         assert_eq!(
             format!("{:?}", def_wrapper_diff),
-            "ApplyConstantSpinHamiltonianWrapper { internal: ApplyConstantSpinHamiltonian { hamiltonian: SpinHamiltonian { internal_map: {PauliProduct { items: [(0, Z)] }: Float(1.0)} }, time: Float(0.0) } }"
+            "ApplyConstantPauliHamiltonianWrapper { internal: ApplyConstantPauliHamiltonian { hamiltonian: PauliHamiltonian { internal_map: {PauliProduct { items: [(0, Z)] }: Float(1.0)} }, time: Float(0.0) } }"
         );
     })
 }
 
-/// Test new() function for ApplyTimeDepenendentSpinHamiltonian
+/// Test new() function for ApplyTimeDepenendentPauliHamiltonian
 #[test]
 fn test_new_timedependentspinhamiltionian() {
     let input_operation = Operation::from(create_apply_timedependent_spin_hamiltonian(1.0));
@@ -150,24 +147,21 @@ fn test_new_timedependentspinhamiltionian() {
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let number_spins: Option<usize> = None;
-        let new_system = new_system(py, number_spins);
+        let new_system = new_system(py);
         new_system
             .call_method1("add_operator_product", ("0Z", 1.))
             .unwrap();
-        let system_wrapper = new_system
-            .extract::<SpinHamiltonianSystemWrapper>()
-            .unwrap();
+        let system_wrapper = new_system.extract::<PauliHamiltonianWrapper>().unwrap();
 
         let mut values = HashMap::new();
         values.insert("omega".to_string(), vec![1.0]);
 
-        let operation_type = py.get_type_bound::<ApplyTimeDependentSpinHamiltonianWrapper>();
+        let operation_type = py.get_type::<ApplyTimeDependentPauliHamiltonianWrapper>();
         let binding = operation_type
             .call1((system_wrapper.clone(), vec![1.0], values.clone()))
             .unwrap();
         let operation_py = binding
-            .downcast::<ApplyTimeDependentSpinHamiltonianWrapper>()
+            .downcast::<ApplyTimeDependentPauliHamiltonianWrapper>()
             .unwrap();
 
         let comparison = bool::extract_bound(
@@ -183,16 +177,16 @@ fn test_new_timedependentspinhamiltionian() {
         values.insert("omega".to_string(), vec![0.1]);
 
         let def_wrapper = operation_py
-            .extract::<ApplyTimeDependentSpinHamiltonianWrapper>()
+            .extract::<ApplyTimeDependentPauliHamiltonianWrapper>()
             .unwrap();
         let binding = operation_type
             .call1((system_wrapper.clone(), vec![0.1], values.clone()))
             .unwrap();
         let new_op_diff = binding
-            .downcast::<ApplyTimeDependentSpinHamiltonianWrapper>()
+            .downcast::<ApplyTimeDependentPauliHamiltonianWrapper>()
             .unwrap();
         let def_wrapper_diff = new_op_diff
-            .extract::<ApplyTimeDependentSpinHamiltonianWrapper>()
+            .extract::<ApplyTimeDependentPauliHamiltonianWrapper>()
             .unwrap();
         let helper_ne: bool = def_wrapper_diff != def_wrapper;
         assert!(helper_ne);
@@ -201,7 +195,7 @@ fn test_new_timedependentspinhamiltionian() {
 
         assert_eq!(
             format!("{:?}", def_wrapper_diff),
-            "ApplyTimeDependentSpinHamiltonianWrapper { internal: ApplyTimeDependentSpinHamiltonian { hamiltonian: SpinHamiltonian { internal_map: {PauliProduct { items: [(0, Z)] }: Float(1.0)} }, time: [0.1], values: {\"omega\": [0.1]} } }"
+            "ApplyTimeDependentPauliHamiltonianWrapper { internal: ApplyTimeDependentPauliHamiltonian { hamiltonian: PauliHamiltonian { internal_map: {PauliProduct { items: [(0, Z)] }: Float(1.0)} }, time: [0.1], values: {\"omega\": [0.1]} } }"
         );
     })
 }
@@ -239,8 +233,8 @@ fn test_pyo3_is_not_parametrized(input_operation: Operation) {
 }
 
 /// Test hqslang() function for Analog Operations
-#[test_case("ApplyConstantSpinHamiltonian", Operation::from(create_apply_constant_spin_hamiltonian(1.0)); "ApplyConstantSpinHamiltonian")]
-#[test_case("ApplyTimeDependentSpinHamiltonian", Operation::from(create_apply_timedependent_spin_hamiltonian("omega")); "ApplyTimeDependentSpinHamiltonian")]
+#[test_case("ApplyConstantPauliHamiltonian", Operation::from(create_apply_constant_spin_hamiltonian(1.0)); "ApplyConstantPauliHamiltonian")]
+#[test_case("ApplyTimeDependentPauliHamiltonian", Operation::from(create_apply_timedependent_spin_hamiltonian("omega")); "ApplyTimeDependentPauliHamiltonian")]
 fn test_pyo3_hqslang(name: &'static str, input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -260,17 +254,17 @@ fn test_pyo3_hqslang(name: &'static str, input_operation: Operation) {
     vec![
         "Operation",
         "SpinsAnalogOperation",
-        "ApplyConstantSpinHamiltonian",
+        "ApplyConstantPauliHamiltonian",
         ];
-    "ApplyConstantSpinHamiltonian")]
+    "ApplyConstantPauliHamiltonian")]
 #[test_case(
     Operation::from(create_apply_timedependent_spin_hamiltonian("omega")),
     vec![
         "Operation",
         "SpinsAnalogOperation",
-        "ApplyTimeDependentSpinHamiltonian",
+        "ApplyTimeDependentPauliHamiltonian",
         ];
-    "ApplyTimeDependentSpinHamiltonian")]
+    "ApplyTimeDependentPauliHamiltonian")]
 /// Test tags() function for Analog Operations
 fn test_pyo3_tags(input_operation: Operation, tags: Vec<&str>) {
     pyo3::prepare_freethreaded_python();
@@ -290,8 +284,8 @@ fn test_pyo3_tags(input_operation: Operation, tags: Vec<&str>) {
 }
 
 /// Test copy and deepcopy functions
-#[test_case(Operation::from(create_apply_constant_spin_hamiltonian(1.0)); "ApplyConstantSpinHamiltonian")]
-#[test_case(Operation::from(create_apply_timedependent_spin_hamiltonian("omega")); "ApplyTimeDependentSpinHamiltonian")]
+#[test_case(Operation::from(create_apply_constant_spin_hamiltonian(1.0)); "ApplyConstantPauliHamiltonian")]
+#[test_case(Operation::from(create_apply_timedependent_spin_hamiltonian("omega")); "ApplyTimeDependentPauliHamiltonian")]
 fn test_pyo3_copy_deepcopy(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -321,13 +315,13 @@ fn test_pyo3_copy_deepcopy(input_operation: Operation) {
 
 /// Test format and repr functions
 #[test_case(
-    "ApplyConstantSpinHamiltonian { hamiltonian: SpinHamiltonian { internal_map: {PauliProduct { items: [(0, Z)] }: Float(1.0)} }, time: Float(1.0) }",
+    "ApplyConstantPauliHamiltonian { hamiltonian: PauliHamiltonian { internal_map: {PauliProduct { items: [(0, Z)] }: Float(1.0)} }, time: Float(1.0) }",
     Operation::from(create_apply_constant_spin_hamiltonian(1.0));
-    "ApplyConstantSpinHamiltonian")]
+    "ApplyConstantPauliHamiltonian")]
 #[test_case(
-    "ApplyTimeDependentSpinHamiltonian { hamiltonian: SpinHamiltonian { internal_map: {PauliProduct { items: [(0, Z)] }: Str(\"omega\")} }, time: [1.0], values: {\"omega\": [1.0]} }",
+    "ApplyTimeDependentPauliHamiltonian { hamiltonian: PauliHamiltonian { internal_map: {PauliProduct { items: [(0, Z)] }: Str(\"omega\")} }, time: [1.0], values: {\"omega\": [1.0]} }",
     Operation::from(create_apply_timedependent_spin_hamiltonian("omega"));
-    "ApplyTimeDependentSpinHamiltonian")]
+    "ApplyTimeDependentPauliHamiltonian")]
 fn test_pyo3_format_repr(format_repr: &str, input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -341,8 +335,8 @@ fn test_pyo3_format_repr(format_repr: &str, input_operation: Operation) {
     })
 }
 
-#[test_case(Operation::from(create_apply_constant_spin_hamiltonian("theta")); "ApplyConstantSpinHamiltonian_theta")]
-#[test_case(Operation::from(create_apply_timedependent_spin_hamiltonian("theta")); "ApplyTimeDependentSpinHamiltonian_theta")]
+#[test_case(Operation::from(create_apply_constant_spin_hamiltonian("theta")); "ApplyConstantPauliHamiltonian_theta")]
+#[test_case(Operation::from(create_apply_timedependent_spin_hamiltonian("theta")); "ApplyTimeDependentPauliHamiltonian_theta")]
 fn test_pyo3_substitute_parameters(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -373,8 +367,8 @@ fn test_pyo3_substitute_parameters(input_operation: Operation) {
     })
 }
 
-#[test_case(Operation::from(create_apply_constant_spin_hamiltonian("theta")); "ApplyConstantSpinHamiltonian_theta")]
-#[test_case(Operation::from(create_apply_timedependent_spin_hamiltonian("theta")); "ApplyTimeDependentSpinHamiltonian_theta")]
+#[test_case(Operation::from(create_apply_constant_spin_hamiltonian("theta")); "ApplyConstantPauliHamiltonian_theta")]
+#[test_case(Operation::from(create_apply_timedependent_spin_hamiltonian("theta")); "ApplyTimeDependentPauliHamiltonian_theta")]
 fn test_pyo3_substitute_params_single(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -403,8 +397,8 @@ fn test_pyo3_substitute_params_single(input_operation: Operation) {
     })
 }
 
-#[test_case(Operation::from(create_apply_constant_spin_hamiltonian("theta")); "ApplyConstantSpinHamiltonian_theta")]
-#[test_case(Operation::from(create_apply_timedependent_spin_hamiltonian("theta")); "ApplyTimeDependentSpinHamiltonian_theta")]
+#[test_case(Operation::from(create_apply_constant_spin_hamiltonian("theta")); "ApplyConstantPauliHamiltonian_theta")]
+#[test_case(Operation::from(create_apply_timedependent_spin_hamiltonian("theta")); "ApplyTimeDependentPauliHamiltonian_theta")]
 fn test_pyo3_substitute_params_error(input_operation: Operation) {
     Python::with_gil(|py| {
         pyo3::prepare_freethreaded_python();
@@ -413,15 +407,15 @@ fn test_pyo3_substitute_params_error(input_operation: Operation) {
         let result = operation.call_method1(py, "substitute_parameters", (substitution_dict,));
         assert!(result.is_err());
         let binding = result.unwrap_err();
-        let e = binding.value_bound(py);
+        let e = binding.value(py);
         assert_eq!(format!("{:?}", e), "RuntimeError('Parameter Substitution failed: CalculatorError(VariableNotSet { name: \"theta\" })')");
     })
 }
 
-#[test_case(Operation::from(create_apply_constant_spin_hamiltonian(0.1)), vec![0]; "ApplyConstantSpinHamiltonian_0")]
-#[test_case(Operation::from(create_apply_timedependent_spin_hamiltonian("omega")), vec![0]; "ApplyTimeDependentSpinHamiltonian_0")]
-#[test_case(Operation::from(create_apply_constant_spin_hamiltonian_spin_test()), vec![0,2,4]; "ApplyConstantSpinHamiltonian_024")]
-#[test_case(Operation::from(create_apply_timedependent_spin_hamiltonian_spin_test()), vec![0,2,4]; "ApplyTimeDependentSpinHamiltonian_024")]
+#[test_case(Operation::from(create_apply_constant_spin_hamiltonian(0.1)), vec![0]; "ApplyConstantPauliHamiltonian_0")]
+#[test_case(Operation::from(create_apply_timedependent_spin_hamiltonian("omega")), vec![0]; "ApplyTimeDependentPauliHamiltonian_0")]
+#[test_case(Operation::from(create_apply_constant_spin_hamiltonian_spin_test()), vec![0,2,4]; "ApplyConstantPauliHamiltonian_024")]
+#[test_case(Operation::from(create_apply_timedependent_spin_hamiltonian_spin_test()), vec![0,2,4]; "ApplyTimeDependentPauliHamiltonian_024")]
 fn test_spin(input_operation: Operation, test_result: Vec<usize>) {
     Python::with_gil(|py| {
         pyo3::prepare_freethreaded_python();
@@ -436,8 +430,8 @@ fn test_spin(input_operation: Operation, test_result: Vec<usize>) {
     })
 }
 
-#[test_case(Operation::from(create_apply_constant_spin_hamiltonian(1.0)); "ApplyConstantSpinHamiltonian")]
-#[test_case(Operation::from(create_apply_timedependent_spin_hamiltonian(1.0)); "ApplyTimeDependentSpinHamiltonian_theta")]
+#[test_case(Operation::from(create_apply_constant_spin_hamiltonian(1.0)); "ApplyConstantPauliHamiltonian")]
+#[test_case(Operation::from(create_apply_timedependent_spin_hamiltonian(1.0)); "ApplyTimeDependentPauliHamiltonian_theta")]
 fn test_ineffective_substitute_parameters(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -465,7 +459,7 @@ fn test_pyo3_remapqubits() {
     Python::with_gil(|py| {
         let pp1 = PauliProduct::new().z(0).x(1);
         let pp2 = PauliProduct::new().z(2).x(3);
-        let mut hamiltonian = SpinHamiltonian::new();
+        let mut hamiltonian = PauliHamiltonian::new();
         hamiltonian
             .add_operator_product(pp1, CalculatorFloat::from(1.0))
             .unwrap();
@@ -475,7 +469,7 @@ fn test_pyo3_remapqubits() {
 
         let pp1 = PauliProduct::new().z(2).x(1);
         let pp2 = PauliProduct::new().z(0).x(3);
-        let mut test_hamiltonian = SpinHamiltonian::new();
+        let mut test_hamiltonian = PauliHamiltonian::new();
         test_hamiltonian
             .add_operator_product(pp1, CalculatorFloat::from(1.0))
             .unwrap();
@@ -483,11 +477,11 @@ fn test_pyo3_remapqubits() {
             .add_operator_product(pp2, CalculatorFloat::from(2.0))
             .unwrap();
 
-        let input_op = Operation::from(ApplyConstantSpinHamiltonian::new(
+        let input_op = Operation::from(ApplyConstantPauliHamiltonian::new(
             hamiltonian.clone(),
             1.0.into(),
         ));
-        let test_op = Operation::from(ApplyConstantSpinHamiltonian::new(
+        let test_op = Operation::from(ApplyConstantPauliHamiltonian::new(
             test_hamiltonian.clone(),
             1.0.into(),
         ));
@@ -512,12 +506,12 @@ fn test_pyo3_remapqubits() {
 
         let mut values = HashMap::new();
         values.insert("omega".to_string(), vec![1.0]);
-        let input_op = Operation::from(ApplyTimeDependentSpinHamiltonian::new(
+        let input_op = Operation::from(ApplyTimeDependentPauliHamiltonian::new(
             hamiltonian,
             vec![1.0],
             values.clone(),
         ));
-        let test_op = Operation::from(ApplyTimeDependentSpinHamiltonian::new(
+        let test_op = Operation::from(ApplyTimeDependentPauliHamiltonian::new(
             test_hamiltonian,
             vec![1.0],
             values.clone(),
@@ -542,10 +536,10 @@ fn test_pyo3_remapqubits() {
 
 #[test_case(
     Operation::from(create_apply_constant_spin_hamiltonian(1.0)),
-    Operation::from(create_apply_constant_spin_hamiltonian(2.0)); "ApplyConstantSpinHamiltonian")]
+    Operation::from(create_apply_constant_spin_hamiltonian(2.0)); "ApplyConstantPauliHamiltonian")]
 #[test_case(
     Operation::from(create_apply_timedependent_spin_hamiltonian("omega1")),
-    Operation::from(create_apply_timedependent_spin_hamiltonian("omega2")); "ApplyTimeDependentSpinHamiltonian")]
+    Operation::from(create_apply_timedependent_spin_hamiltonian("omega2")); "ApplyTimeDependentPauliHamiltonian")]
 fn test_pyo3_richcmp(definition_1: Operation, definition_2: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -579,16 +573,16 @@ fn test_pyo3_richcmp(definition_1: Operation, definition_2: Operation) {
 }
 
 #[cfg(feature = "json_schema")]
-#[test_case(Operation::from(create_apply_constant_spin_hamiltonian(1.0)); "ApplyConstantSpinHamiltonian")]
-#[test_case(Operation::from(create_apply_timedependent_spin_hamiltonian("omega")); "ApplyTimeDependentSpinHamiltonian")]
+#[test_case(Operation::from(create_apply_constant_spin_hamiltonian(1.0)); "ApplyConstantPauliHamiltonian")]
+#[test_case(Operation::from(create_apply_timedependent_spin_hamiltonian("omega")); "ApplyTimeDependentPauliHamiltonian")]
 fn test_pyo3_json_schema(operation: Operation) {
     let rust_schema = match operation {
-        Operation::ApplyConstantSpinHamiltonian(_) => {
-            serde_json::to_string_pretty(&schemars::schema_for!(ApplyConstantSpinHamiltonian))
+        Operation::ApplyConstantPauliHamiltonian(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(ApplyConstantPauliHamiltonian))
                 .unwrap()
         }
-        Operation::ApplyTimeDependentSpinHamiltonian(_) => {
-            serde_json::to_string_pretty(&schemars::schema_for!(ApplyTimeDependentSpinHamiltonian))
+        Operation::ApplyTimeDependentPauliHamiltonian(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(ApplyTimeDependentPauliHamiltonian))
                 .unwrap()
         }
         _ => unreachable!(),

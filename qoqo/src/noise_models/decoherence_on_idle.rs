@@ -10,13 +10,12 @@
 // express or implied. See the License for the specific language governing permissions and
 // limitations under the License.
 
-use pyo3::prelude::*;
+use pyo3::{exceptions::PyValueError, prelude::*};
 use qoqo_macros::noise_model_wrapper;
 use roqoqo::noise_models::{DecoherenceOnIdleModel, NoiseModel};
 #[cfg(feature = "json_schema")]
 use roqoqo::{operations::SupportedVersion, ROQOQO_VERSION};
 use struqture;
-use struqture_py::spins::PlusMinusLindbladNoiseOperatorWrapper;
 
 /// Noise model representing a continuous decoherence process on idle qubits.
 ///
@@ -56,10 +55,16 @@ impl DecoherenceOnIdleModelWrapper {
     #[pyo3(signature = (noise_operator=None))]
     pub fn new(noise_operator: Option<&Bound<PyAny>>) -> PyResult<Self> {
         if let Some(lindblad_operator) = noise_operator {
-            let noise_operator =
-                struqture_py::spins::PlusMinusLindbladNoiseOperatorWrapper::from_pyany(
+            let noise_operator: struqture::spins::PlusMinusLindbladNoiseOperator =
+                match struqture_py::spins::PlusMinusLindbladNoiseOperatorWrapper::from_pyany(
                     lindblad_operator,
-                )?;
+                ) {
+                    Ok(x) => x,
+                    Err(_) => match struqture_py::spins::PlusMinusLindbladNoiseOperatorWrapper::from_pyany_struqture_1(lindblad_operator) {
+                        Ok(x) => x,
+                        Err(err) => return Err(PyValueError::new_err(format!("Could not convert input noise_operator from either struqture 1.x or struqture 2.x: {:?}", err))),
+                    }
+                };
             Ok(Self {
                 internal: DecoherenceOnIdleModel::from(noise_operator),
             })
@@ -70,14 +75,12 @@ impl DecoherenceOnIdleModelWrapper {
         }
     }
 
-    /// Return the internal Lindblad noise operator of the continuous noise model.
+    /// Return the internal Lindblad noise operator of the DecoherenceOnIdle noise model.
     ///
     /// Returns:
-    ///     PlusMinusLindbladNoiseOperator: The internal Lindblad noise operator of the continuous noise
-    pub fn get_noise_operator(&self) -> PlusMinusLindbladNoiseOperatorWrapper {
-        PlusMinusLindbladNoiseOperatorWrapper {
-            internal: struqture::spins::PlusMinusLindbladNoiseOperator::from(self.internal.clone()),
-        }
+    ///     PlusMinusLindbladNoiseOperator: The internal Lindblad noise operator of the DecoherenceOnIdle.
+    pub fn get_noise_operator(&self) -> Py<PyAny> {
+        Python::with_gil(|py| crate::get_operator(py, &self.internal.lindblad_noise))
     }
 
     /// Convert the bincode representation of the Noise-Model to a device using the bincode crate.

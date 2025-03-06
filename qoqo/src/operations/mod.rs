@@ -161,13 +161,13 @@ pub fn operations(_py: Python, m: &Bound<PyModule>) -> PyResult<()> {
     // unstable version of QuantumRabiWrapper, LongitudinalCouplingWrapper,
     // JaynesCummingsWrapper, SingleExcitationStoreWrapper, SingleExcitationLoadWrapper
     // and CZQubitResonatorWrapper now released as stable in 1.11
-    // unstable version of ApplyConstantSpinHamiltonianWrapper and ApplyTimeDependentSpinHamiltonianWrapper
+    // unstable version of ApplyConstantPauliHamiltonianWrapper and ApplyTimeDependentPauliHamiltonianWrapper
     // will be released later
     // 1.11
     #[cfg(feature = "unstable_analog_operations")]
-    m.add_class::<ApplyConstantSpinHamiltonianWrapper>()?;
+    m.add_class::<ApplyConstantPauliHamiltonianWrapper>()?;
     #[cfg(feature = "unstable_analog_operations")]
-    m.add_class::<ApplyTimeDependentSpinHamiltonianWrapper>()?;
+    m.add_class::<ApplyTimeDependentPauliHamiltonianWrapper>()?;
     m.add_class::<QuantumRabiWrapper>()?;
     m.add_class::<LongitudinalCouplingWrapper>()?;
     m.add_class::<JaynesCummingsWrapper>()?;
@@ -202,6 +202,10 @@ pub fn operations(_py: Python, m: &Bound<PyModule>) -> PyResult<()> {
     // 1.17
     #[cfg(feature = "unstable_simulation_repetitions")]
     m.add_class::<PragmaSimulationRepetitionsWrapper>()?;
+
+    // 1.18
+
+    // 1.19
 
     Ok(())
 }

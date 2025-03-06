@@ -163,26 +163,26 @@ fn test_version_1_11_0_single_mode_gate(operation: operations::SingleModeGateOpe
 }
 
 #[cfg(feature = "unstable_analog_operations")]
-fn create_apply_constant_spin_hamiltonian<T>(p: T) -> operations::ApplyConstantSpinHamiltonian
+fn create_apply_constant_spin_hamiltonian<T>(p: T) -> operations::ApplyConstantPauliHamiltonian
 where
     CalculatorFloat: From<T>,
 {
     let pp = spins::PauliProduct::new().z(0);
-    let mut hamiltonian = spins::SpinHamiltonian::new();
+    let mut hamiltonian = spins::PauliHamiltonian::new();
     hamiltonian
         .add_operator_product(pp.clone(), CalculatorFloat::from(p))
         .unwrap();
-    operations::ApplyConstantSpinHamiltonian::new(hamiltonian, 1.0.into())
+    operations::ApplyConstantPauliHamiltonian::new(hamiltonian, 1.0.into())
 }
 #[cfg(feature = "unstable_analog_operations")]
 fn create_apply_timedependent_spin_hamiltonian<T>(
     p: T,
-) -> operations::ApplyTimeDependentSpinHamiltonian
+) -> operations::ApplyTimeDependentPauliHamiltonian
 where
     CalculatorFloat: From<T>,
 {
     let pp = spins::PauliProduct::new().z(0);
-    let mut hamiltonian = spins::SpinHamiltonian::new();
+    let mut hamiltonian = spins::PauliHamiltonian::new();
     hamiltonian
         .add_operator_product(pp.clone(), CalculatorFloat::from(p))
         .unwrap();
@@ -190,11 +190,11 @@ where
     let mut values = HashMap::new();
     values.insert("omega".to_string(), vec![1.0]);
 
-    operations::ApplyTimeDependentSpinHamiltonian::new(hamiltonian, vec![1.0], values.clone())
+    operations::ApplyTimeDependentPauliHamiltonian::new(hamiltonian, vec![1.0], values.clone())
 }
 
 #[cfg(feature = "unstable_analog_operations")]
-#[test_case(operations::SpinsAnalogOperation::from(create_apply_constant_spin_hamiltonian(1.0));"ApplyConstantSpinHamiltonian")]
+#[test_case(operations::SpinsAnalogOperation::from(create_apply_constant_spin_hamiltonian(1.0));"ApplyConstantPauliHamiltonian")]
 #[test_case(operations::SpinsAnalogOperation::from(create_apply_timedependent_spin_hamiltonian("omega"));"ApplyTimeDependentHamiltonian")]
 fn test_version_1_11_0_spin_analog_operations(operation: operations::SpinsAnalogOperation) {
     assert_eq!(operation.minimum_supported_roqoqo_version(), (1, 11, 0));

@@ -153,7 +153,7 @@ pub fn wrap(
             ///
             pub fn superoperator(&self) -> PyResult<Py<PyArray2<f64>>>{
                 Python::with_gil(|py| -> PyResult<Py<PyArray2<f64>>> {
-                    Ok(self.internal.superoperator().unwrap().to_pyarray_bound(py).into())
+                    Ok(self.internal.superoperator().unwrap().to_pyarray(py).into())
                 })
             }
             /// Return the power of the noise gate
@@ -415,7 +415,7 @@ pub fn wrap(
             pub fn unitary_matrix(&self) -> PyResult<Py<PyArray2<Complex64>>>{
                 Python::with_gil(|py| -> PyResult<Py<PyArray2<Complex64>>> {
                     Ok(self.internal.unitary_matrix().map_err(|x| PyValueError::new_err(format!("Error symbolic operation cannot return float unitary matrix {:?}",x)))?
-                        .to_pyarray_bound(py)
+                        .to_pyarray(py)
                         .into())
                 })
             }
@@ -487,12 +487,12 @@ pub fn wrap(
                 let involved = self.internal.involved_modes();
                 match involved {
                     InvolvedModes::All => {
-                        let pyref: &Bound<PySet> = &PySet::new_bound(py, &["All"]).unwrap();
+                        let pyref: &Bound<PySet> = &PySet::new(py, &["All"]).unwrap();
                         let pyobject: PyObject = pyref.to_object(py);
                         pyobject
                     },
                     InvolvedModes::None => {
-                        let pyref: &Bound<PySet> = &PySet::empty_bound(py).unwrap();
+                        let pyref: &Bound<PySet> = &PySet::empty(py).unwrap();
                         let pyobject: PyObject = pyref.to_object(py);
                         pyobject
                     },
@@ -501,7 +501,7 @@ pub fn wrap(
                         for mode in x {
                             vector.push(mode)
                         }
-                        let pyref: &Bound<PySet> = &PySet::new_bound(py, &vector[..]).unwrap();
+                        let pyref: &Bound<PySet> = &PySet::new(py, &vector[..]).unwrap();
                         let pyobject: PyObject = pyref.to_object(py);
                         pyobject
                     },

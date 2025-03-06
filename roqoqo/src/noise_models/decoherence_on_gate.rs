@@ -10,6 +10,8 @@
 // express or implied. See the License for the specific language governing permissions and
 // limitations under the License.
 
+use struqture::spins::PlusMinusLindbladNoiseOperator;
+
 use super::SupportedVersion;
 use std::collections::HashMap;
 
@@ -74,28 +76,28 @@ type SingleQGateIndex = (String, usize);
 #[cfg(feature = "serialize")]
 type SingleQubitErrors = Vec<(
     SingleQGateIndex,
-    struqture::spins::PlusMinusLindbladNoiseOperator,
+    struqture_1::spins::PlusMinusLindbladNoiseOperator,
 )>;
 #[cfg(feature = "serialize")]
 type TwoQubitGateIndex = (String, (usize, usize));
 #[cfg(feature = "serialize")]
 type TwoQubitErrors = Vec<(
     TwoQubitGateIndex,
-    struqture::spins::PlusMinusLindbladNoiseOperator,
+    struqture_1::spins::PlusMinusLindbladNoiseOperator,
 )>;
 #[cfg(feature = "serialize")]
 type ThreeQubitGateIndex = (String, (usize, usize, usize));
 #[cfg(feature = "serialize")]
 type ThreeQubitErrors = Vec<(
     ThreeQubitGateIndex,
-    struqture::spins::PlusMinusLindbladNoiseOperator,
+    struqture_1::spins::PlusMinusLindbladNoiseOperator,
 )>;
 #[cfg(feature = "serialize")]
 type MultiQubitGateIndex = (String, Vec<usize>);
 #[cfg(feature = "serialize")]
 type MultiQubitErrors = Vec<(
     MultiQubitGateIndex,
-    struqture::spins::PlusMinusLindbladNoiseOperator,
+    struqture_1::spins::PlusMinusLindbladNoiseOperator,
 )>;
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
 #[derive(Debug, Clone, PartialEq)]
@@ -120,13 +122,13 @@ struct DecoherenceOnGateModelSerialize {
 impl From<DecoherenceOnGateModel> for DecoherenceOnGateModelSerialize {
     fn from(value: DecoherenceOnGateModel) -> Self {
         let single_qubit_gate_errors: SingleQubitErrors =
-            value.single_qubit_gate_errors.into_iter().collect();
+            value.single_qubit_gate_errors.into_iter().map(|(key, value)|(key, value.to_struqture_1().expect("Failed to convert PlusMinusLindbladNoiseOperator to struqture 1.x for serialization."))).collect();
         let two_qubit_gate_errors: TwoQubitErrors =
-            value.two_qubit_gate_errors.into_iter().collect();
+            value.two_qubit_gate_errors.into_iter().map(|(key, value)|(key, value.to_struqture_1().expect("Failed to convert PlusMinusLindbladNoiseOperator to struqture 1.x for serialization."))).collect();
         let three_qubit_gate_errors: ThreeQubitErrors =
-            value.three_qubit_gate_errors.into_iter().collect();
+            value.three_qubit_gate_errors.into_iter().map(|(key, value)|(key, value.to_struqture_1().expect("Failed to convert PlusMinusLindbladNoiseOperator to struqture 1.x for serialization."))).collect();
         let multi_qubit_gate_errors: MultiQubitErrors =
-            value.multi_qubit_gate_errors.into_iter().collect();
+            value.multi_qubit_gate_errors.into_iter().map(|(key, value)|(key, value.to_struqture_1().expect("Failed to convert PlusMinusLindbladNoiseOperator to struqture 1.x for serialization."))).collect();
         DecoherenceOnGateModelSerialize {
             single_qubit_gate_errors,
             two_qubit_gate_errors,
@@ -142,19 +144,19 @@ impl From<DecoherenceOnGateModelSerialize> for DecoherenceOnGateModel {
         let single_qubit_gate_errors: HashMap<
             (String, usize),
             struqture::spins::PlusMinusLindbladNoiseOperator,
-        > = value.single_qubit_gate_errors.into_iter().collect();
+        > = value.single_qubit_gate_errors.into_iter().map(|(key, value)|(key, PlusMinusLindbladNoiseOperator::from_struqture_1(&value).expect("Failed to convert PlusMinusLindbladNoiseOperator from struqture 1.x for serialization."))).collect();
         let two_qubit_gate_errors: HashMap<
             (String, (usize, usize)),
             struqture::spins::PlusMinusLindbladNoiseOperator,
-        > = value.two_qubit_gate_errors.into_iter().collect();
+        > = value.two_qubit_gate_errors.into_iter().map(|(key, value)|(key, PlusMinusLindbladNoiseOperator::from_struqture_1(&value).expect("Failed to convert PlusMinusLindbladNoiseOperator from struqture 1.x for serialization."))).collect();
         let three_qubit_gate_errors: HashMap<
             (String, (usize, usize, usize)),
             struqture::spins::PlusMinusLindbladNoiseOperator,
-        > = value.three_qubit_gate_errors.into_iter().collect();
+        > = value.three_qubit_gate_errors.into_iter().map(|(key, value)|(key, PlusMinusLindbladNoiseOperator::from_struqture_1(&value).expect("Failed to convert PlusMinusLindbladNoiseOperator from struqture 1.x for serialization."))).collect();
         let multi_qubit_gate_errors: HashMap<
             (String, Vec<usize>),
             struqture::spins::PlusMinusLindbladNoiseOperator,
-        > = value.multi_qubit_gate_errors.into_iter().collect();
+        > = value.multi_qubit_gate_errors.into_iter().map(|(key, value)|(key, PlusMinusLindbladNoiseOperator::from_struqture_1(&value).expect("Failed to convert PlusMinusLindbladNoiseOperator from struqture 1.x for serialization."))).collect();
         DecoherenceOnGateModel {
             single_qubit_gate_errors,
             two_qubit_gate_errors,
