@@ -350,13 +350,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "gates_doc_build"
-version = "0.1.0"
-dependencies = [
- "syn",
-]
-
-[[package]]
 name = "getrandom"
 version = "0.2.15"
 source = "registry+https://github.com/rust-lang/crates.io-index"
