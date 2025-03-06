@@ -18,51 +18,16 @@ A list of the gate operations available in qoqo and roqoqo with their mathematic
 
 | Gate | Short Description |
 |---------|---------|
-| Hadamard     | The Hadamard gate, to create a superposition of states, and so to change the basis.  |
-| InvSqrtPauliX     | The inverse square root of the PauliX gate \\( e^{i \frac{\theta}{4} \sigma_x} \\).  |
-| PauliX     | The Pauli X gate, a rotation with a fixed angle of \\( \frac{\pi}{2} \\), corresponds to a "flip" on x-axis.  |
-| PauliY     | The Pauli Y gate, a rotation with a fixed angle of \\( \frac{\pi}{2} \\), corresponds to a "flip" on y-axis.  |
-| PauliZ     | The Pauli Z gate, a rotation with a fixed angle of \\( \frac{\pi}{2} \\), corresponds to a "flip" on z-axis.  |
-| PhaseShiftState0     | Rotation around z-axis by angle \\(\theta\\) applied on state \\( \left \|0 \right> \\) results in a phase shift compared to RotateZ gate. |
-| PhaseShiftState1     | Rotation around z-axis by angle \\(\theta\\) applied on state \\( \left\|1 \right> \\) results in phase shift compared to RotateZ gate. |
-| RotateAroundSphericalAxis     | Implements a rotation around an axis in spherical coordinates.  |
-| RotateX     | The rotation gate around x-axis \\( e^{-i \frac{\theta}{2} \sigma_x} \\).  |
-| RotateXY     | Implements a rotation around an axis in the x-y plane, where the axis is defined by an angle/spherical coordinates.  |
-| RotateY     | The rotation gate around y-axis \\( e^{-i \frac{\theta}{2} \sigma_y} \\).  |
-| RotateZ     | The rotation gate around z-axis \\( e^{-i \frac{\theta}{2} \sigma_z} \\).  |
-| SGate     | The S gate.  |
-| SqrtPauliX     | The square root of the PauliX gate \\( e^{-i \frac{\theta}{4} \sigma_x} \\).  |
-| TGate     | The T gate.  |
+<!-- cmdrun cargo single run ../../build_gates_table.rs -- single_qubit_gate_operations.rs -->
 
 ## [Two-qubit gates](two_qubit_gates.md)
 
 | Gate | Short Description |
 |---------|---------|
-| Bogoliubov    |  The Bogoliubov DeGennes interaction gate. |
-| CNOT    |  The controlled not gate, *e.g.* to entangle two qubits. |
-| ComplexPMInteraction    |  The complex hopping gate. |
-| ControlledPauliY    |  The controlled PauliY gate. |
-| ControlledPauliZ    |  The controlled PauliZ gate. |
-| ControlledPhaseShift    |  The controlled phase shift gate. |
-| Fsim   |  The fermionic qubit simulation gate. |
-| FSwap   |  The fermionic SWAP gate. |
-| GivensRotation   |  The Givens rotation interaction gate in big endian notation: \\(e^{-\mathrm{i} \theta (X_c Y_t - Y_c X_t)}\cdot e^{-i \phi Z_t/2} \\). |
-| GivensRotationLittleEndian   |  The Givens rotation interaction gate in little-endian notation: \\(e^{-\mathrm{i} \theta (X_c Y_t - Y_c X_t)}\cdot e^{-i \phi Z_c/2} \\). |
-| InvSqrtISwap    |  The inverse square root of the ISwap gate. |
-| ISwap    |  The complex swap gate. |
-| MolmerSorensenXX    |  The fixed-phase Mølmer–Sørensen XX gate. |
-| PhaseShiftedControlledZ    |  The phased-shifted controlled-Z gate. |
-| PMInteraction    |  The transversal interaction gate. |
-| Qsim    |  The qubit simulation gate. |
-| SpinInteraction    |  The generalized, anisotropic XYZ Heisenberg interaction between spins. |
-| SqrtISwap    |  The square root of the ISwap gate. |
-| SWAP    |  The swap gate, to switch the positions of two qubits. |
-| VariablesMSXX    |  The variable-angle Mølmer–Sørensen XX gate. |
-| XY    |  The XY gate. |
+<!-- cmdrun cargo single run ../../build_gates_table.rs -- two_qubit_gate_operations.rs -->
 
 ## [Multi-qubit gates](multi_qubit_gates.md)
 
 | Gate | Short Description |
 |---------|---------|
-| MultiQubitMS    |  The Mølmer–Sørensen gate between multiple qubits. |
-| MultiQubitZZ    |  The multi-qubit PauliZ-product gate. |
+<!-- cmdrun cargo single run ../../build_gates_table.rs -- multi_qubit_gate_operations.rs -->
