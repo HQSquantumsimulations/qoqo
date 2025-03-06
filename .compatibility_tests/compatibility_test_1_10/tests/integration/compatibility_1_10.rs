@@ -116,14 +116,14 @@ use test_roqoqo_1_10;
 // QuantumRabi, LongitudinalCoupling, JaynesCummings, SingleExcitationLoad, SingleExcitationStore and CZQubitResonator were all added
 // as unstable, but have been added as stable in 1.11
 // Operations from 1.11 - uncomment for next unittests
-// ApplyConstantSpinHamiltonian and ApplyTimeDependentHamiltonian are unstable in 1.11
+// ApplyConstantPauliHamiltonian and ApplyTimeDependentHamiltonian are unstable in 1.11
 // #[test_case(test_roqoqo_1_10::operations::QuantumRabi::new(0, 1, 0.1.into()).into(); "QuantumRabi")]
 // #[test_case(test_roqoqo_1_10::operations::LongitudinalCoupling::new(0, 1, 0.1.into()).into(); "LongitudinalCoupling")]
 // #[test_case(test_roqoqo_1_10::operations::JaynesCummings::new(0, 1, 0.1.into()).into(); "JaynesCummings")]
 // #[test_case(test_roqoqo_1_10::operations::SingleExcitationLoad::new(0, 1).into(); "SingleExcitationLoad")]
 // #[test_case(test_roqoqo_1_10::operations::SingleExcitationStore::new(0, 1).into(); "SingleExcitationStore")]
 // #[test_case(test_roqoqo_1_10::operations::CZQubitResonator::new(0, 1).into(); "CZQubitResonator")]
-// #[test_case(create_apply_constant_spin_hamiltonian(); "ApplyConstantSpinHamiltonian")]
+// #[test_case(create_apply_constant_spin_hamiltonian(); "ApplyConstantPauliHamiltonian")]
 // #[test_case(create_apply_timedependent_spin_hamiltonian(); "ApplyTimeDependentHamiltonian")]
 fn test_bincode_compatibility_1_10(operation: test_roqoqo_1_10::operations::Operation) {
     let mut test_circuit = test_roqoqo_1_10::Circuit::new();

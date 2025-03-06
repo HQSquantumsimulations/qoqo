@@ -13,6 +13,7 @@
 #![deny(missing_docs)]
 #![deny(rustdoc::missing_crate_level_docs)]
 #![deny(missing_debug_implementations)]
+#![allow(deprecated)]
 
 //! Qoqo quantum computing toolkit
 //!
@@ -48,6 +49,8 @@ pub use circuitdag::{convert_into_circuitdag, CircuitDagWrapper};
 pub const QOQO_VERSION: &str = env!("CARGO_PKG_VERSION");
 
 use roqoqo::{operations::AVAILABLE_GATES_HQSLANG, RoqoqoBackendError, RoqoqoError};
+use struqture::spins::PlusMinusLindbladNoiseOperator;
+use struqture_py::spins::PlusMinusLindbladNoiseOperatorWrapper;
 use thiserror::Error;
 
 /// Errors that can occur in qoqo.
@@ -98,6 +101,37 @@ pub fn available_gates_hqslang() -> Vec<String> {
         .collect::<Vec<String>>()
 }
 
+use std::sync::OnceLock;
+/// Struqture version installed locally in user's environment
+pub static STRUQTURE_VERSION: OnceLock<String> = OnceLock::new();
+/// Struqture PlusMinusLindbladNoiseOperator object from local struqture package
+pub static STRUQTURE_OPERATOR: OnceLock<Py<PyAny>> = OnceLock::new();
+
+pub(crate) fn get_operator(py: Python, noise: &PlusMinusLindbladNoiseOperator) -> Py<PyAny> {
+    let version: &String = STRUQTURE_VERSION
+        .get()
+        .expect("Could not get STRUQTURE_VERSION");
+    if version.starts_with('1') {
+        let class: &Py<PyAny> = STRUQTURE_OPERATOR
+            .get()
+            .expect("No struqture operator found");
+        let json_string = serde_json::to_string(
+            &noise
+                .to_struqture_1()
+                .expect("Could not convert struqture 2 object to struqture 1"),
+        )
+        .expect("Could not serialize to JSON");
+        class
+            .call_method1(py, "from_json", (json_string.as_str(),))
+            .expect("Could not create struqture 1.x PlusMinusLindbladNoiseOperator from JSON")
+    } else {
+        let pmlno = PlusMinusLindbladNoiseOperatorWrapper {
+            internal: noise.clone(),
+        };
+        pmlno.into_py(py)
+    }
+}
+
 /// Quantum Operation Quantum Operation (qoqo)
 ///
 /// Yes, we use reduplication.
@@ -116,9 +150,29 @@ pub fn available_gates_hqslang() -> Vec<String> {
 ///     noise_models
 ///     available_gates_hqslang
 ///
-
 #[pymodule]
 fn qoqo(_py: Python, module: &Bound<PyModule>) -> PyResult<()> {
+    let binding = PyModule::import(_py, "importlib.metadata")
+        .expect("Could not import importlib.metadata module for function")
+        .getattr("version")
+        .expect("Could not get version function of importlib.metadata")
+        .call1(("struqture_py",))
+        .expect("Could not get version attribute of struqture_py")
+        .unbind();
+    let version: String = binding
+        .extract(_py)
+        .expect("Could not extract version string");
+    STRUQTURE_VERSION.get_or_init(|| version);
+    let operator: Py<PyAny> = _py
+        .import("struqture_py.spins")
+        .unwrap_or_else(|_| {
+            panic!("Could not import struqture_py.spins module for get_noise_operator")
+        })
+        .getattr("PlusMinusLindbladNoiseOperator")
+        .expect("Could not get PlusMinusLindbladOperator class")
+        .unbind();
+    STRUQTURE_OPERATOR.get_or_init(|| operator);
+
     module.add_class::<CircuitWrapper>()?;
     module.add_class::<QuantumProgramWrapper>()?;
     #[cfg(feature = "circuitdag")]
@@ -133,12 +187,13 @@ fn qoqo(_py: Python, module: &Bound<PyModule>) -> PyResult<()> {
     let wrapper4 = wrap_pymodule!(noise_models::noise_models);
     module.add_wrapped(wrapper4)?;
     // Adding nice imports corresponding to maturin example
-    let system = PyModule::import_bound(_py, "sys")?;
+    let system = PyModule::import(_py, "sys")?;
     let binding = system.getattr("modules")?;
     let system_modules: &Bound<PyDict> = binding.downcast()?;
     system_modules.set_item("qoqo.operations", module.getattr("operations")?)?;
     system_modules.set_item("qoqo.measurements", module.getattr("measurements")?)?;
     system_modules.set_item("qoqo.devices", module.getattr("devices")?)?;
     system_modules.set_item("qoqo.noise_models", module.getattr("noise_models")?)?;
+
     Ok(())
 }

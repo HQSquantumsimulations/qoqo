@@ -11,7 +11,7 @@
 // limitations under the License.
 
 use ndarray::{array, Array2};
-use numpy::{pyarray_bound, PyArray2, PyReadonlyArray2};
+use numpy::{pyarray, PyArray2, PyReadonlyArray2};
 use pyo3::prelude::*;
 use qoqo::devices::{AllToAllDeviceWrapper, GenericDeviceWrapper, SquareLatticeDeviceWrapper};
 use roqoqo::devices::{AllToAllDevice, GenericDevice, SquareLatticeDevice};
@@ -27,7 +27,7 @@ fn new_alltoalldevice() -> Py<PyAny> {
         let two_qubit_gates = ["CNOT".to_string()];
         let arguments: (usize, [String; 2], [String; 1], f64) =
             (number_qubits, single_qubit_gates, two_qubit_gates, 1.0);
-        let device_type = py.get_type_bound::<AllToAllDeviceWrapper>();
+        let device_type = py.get_type::<AllToAllDeviceWrapper>();
         device_type.call1(arguments).unwrap().into()
     })
 }
@@ -37,7 +37,7 @@ fn new_genericdevice() -> Py<PyAny> {
     Python::with_gil(|py| -> Py<PyAny> {
         let number_qubits: u32 = 4;
         let arguments = (number_qubits,);
-        let device_type = py.get_type_bound::<GenericDeviceWrapper>();
+        let device_type = py.get_type::<GenericDeviceWrapper>();
         device_type.call1(arguments).unwrap().into()
     })
 }
@@ -57,7 +57,7 @@ fn new_genericlattice() -> Py<PyAny> {
             two_qubit_gates,
             1.0,
         );
-        let device_type = py.get_type_bound::<SquareLatticeDeviceWrapper>();
+        let device_type = py.get_type::<SquareLatticeDeviceWrapper>();
         device_type.call1(arguments).unwrap().into()
     })
 }
@@ -324,7 +324,7 @@ fn test_decoherence_rates_all(device: Py<PyAny>) {
         // reference matrix for an initialized deviced or a non-existing qubit
 
         // test that invalid matrix format is not accepted
-        let pyarray_invalid: &Bound<PyArray2<f64>> = &pyarray_bound![py, [1.0], [2.0], [3.0]];
+        let pyarray_invalid: &Bound<PyArray2<f64>> = &pyarray![py, [1.0], [2.0], [3.0]];
         // let readonly_invalid = pyarray_invalid.readonly();
         let error = device.call_method1(py, "set_all_qubit_decoherence_rates", (pyarray_invalid,));
         assert!(error.is_err());
@@ -332,7 +332,7 @@ fn test_decoherence_rates_all(device: Py<PyAny>) {
         let pyarray_testmatrix: Array2<f64> =
             array![[1.0, 0.0, 0.0], [0.0, 2.0, 0.0], [0.0, 0.0, 3.0]];
         let pyarray: &Bound<PyArray2<f64>> =
-            &pyarray_bound![py, [1.0, 0.0, 0.0], [0.0, 2.0, 0.0], [0.0, 0.0, 3.0]];
+            &pyarray![py, [1.0, 0.0, 0.0], [0.0, 2.0, 0.0], [0.0, 0.0, 3.0]];
         // let readonly = pyarray.readonly();
         let device = device
             .call_method1(py, "set_all_qubit_decoherence_rates", (pyarray,))
@@ -403,7 +403,7 @@ fn test_decoherence_rates(device: Py<PyAny>) {
         assert_eq!(matrix2_test, matrix_zeros_py);
 
         // test that invalid matrix format is not accepted
-        let pyarray_invalid: &Bound<PyArray2<f64>> = &pyarray_bound![py, [1.0], [2.0], [3.0]];
+        let pyarray_invalid: &Bound<PyArray2<f64>> = &pyarray![py, [1.0], [2.0], [3.0]];
         // let readonly_invalid = pyarray_invalid.readonly();
         let error = device.call_method1(py, "set_qubit_decoherence_rates", (0, pyarray_invalid));
         assert!(error.is_err());
@@ -417,7 +417,7 @@ fn test_decoherence_rates(device: Py<PyAny>) {
         let pyarray_testmatrix: Array2<f64> =
             array![[1.0, 0.0, 0.0], [0.0, 2.0, 0.0], [0.0, 0.0, 3.0]];
         let pyarray: &Bound<PyArray2<f64>> =
-            &pyarray_bound![py, [1.0, 0.0, 0.0], [0.0, 2.0, 0.0], [0.0, 0.0, 3.0]];
+            &pyarray![py, [1.0, 0.0, 0.0], [0.0, 2.0, 0.0], [0.0, 0.0, 3.0]];
         // let readonly = pyarray.readonly();
         device
             .call_method1(py, "set_qubit_decoherence_rates", (0, pyarray))
@@ -862,7 +862,7 @@ mod test_chain_with_environment {
     fn test_chain_with_environment() {
         pyo3::prepare_freethreaded_python();
         let test_device = Python::with_gil(|py| -> Py<PyAny> {
-            let device_type = py.get_type_bound::<TestDeviceWrapper>();
+            let device_type = py.get_type::<TestDeviceWrapper>();
             device_type.call0().unwrap().into()
         });
         Python::with_gil(|py| {
@@ -890,7 +890,7 @@ mod test_chain_with_environment {
     fn test_chain_with_environment_capsule() {
         pyo3::prepare_freethreaded_python();
         let device_capsule = Python::with_gil(|py| -> ChainWithEnvironmentCapsule {
-            let device_type = py.get_type_bound::<TestDeviceWrapper>();
+            let device_type = py.get_type::<TestDeviceWrapper>();
             let test_device = device_type.call0().unwrap();
             ChainWithEnvironmentCapsule::new(&test_device).unwrap()
         });

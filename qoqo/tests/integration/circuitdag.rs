@@ -20,7 +20,7 @@ use roqoqo::ROQOQO_VERSION;
 
 // Helper functions
 fn new_circuitdag(py: Python) -> Bound<CircuitDagWrapper> {
-    let circuitdag_type = py.get_type_bound::<CircuitDagWrapper>();
+    let circuitdag_type = py.get_type::<CircuitDagWrapper>();
     circuitdag_type
         .call0()
         .unwrap()
@@ -30,7 +30,7 @@ fn new_circuitdag(py: Python) -> Bound<CircuitDagWrapper> {
 }
 
 fn new_circuit(py: Python) -> Bound<CircuitWrapper> {
-    let circuit_type = py.get_type_bound::<CircuitWrapper>();
+    let circuit_type = py.get_type::<CircuitWrapper>();
     circuit_type
         .call0()
         .unwrap()
@@ -223,7 +223,7 @@ fn test_to_from_bincode() {
         assert!(serialised_error.is_err());
 
         // testing that 'from_bincode' can be called directly on a circuitdag (python staticmethod)
-        let circuitdag_type = py.get_type_bound::<CircuitDagWrapper>();
+        let circuitdag_type = py.get_type::<CircuitDagWrapper>();
         let deserialised_py = circuitdag_type
             .call_method1("from_bincode", (&serialised,))
             .unwrap();

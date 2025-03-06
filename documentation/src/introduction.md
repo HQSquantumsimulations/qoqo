@@ -2,7 +2,7 @@
 
 **Welcome to the user documentation for the qoqo/roqoqo quantum computing toolkit.**
 
-This user documentation gives a general overview of the design principles and intended usage scenarios for qoqo and roqoqo. For a detailed description of all the types and functions, see the API-documentation of [roqoqo](https://docs.rs/roqoqo/) and [qoqo](https://hqsquantumsimulations.github.io/qoqo/).
+This user documentation gives a general overview of the design principles and intended usage scenarios for qoqo and roqoqo. For a detailed description of all the types and functions, see the API-documentation of [roqoqo](https://docs.rs/roqoqo/) and [qoqo](https://hqsquantumsimulations.github.io/qoqo/python_api_docs/index.html).
 
 ## What are qoqo and roqoqo
 

@@ -154,7 +154,7 @@ impl PragmaSetStateVectorWrapper {
     ///     np.ndarray: The statevector representing the qubit register.
     fn statevector(&self) -> Py<PyArray1<Complex64>> {
         Python::with_gil(|py| -> Py<PyArray1<Complex64>> {
-            self.internal.statevector().to_pyarray_bound(py).unbind()
+            self.internal.statevector().to_pyarray(py).unbind()
         })
     }
 
@@ -163,9 +163,8 @@ impl PragmaSetStateVectorWrapper {
     /// Returns:
     ///     Set[int]: The involved qubits of the PRAGMA operation.
     fn involved_qubits(&self) -> PyObject {
-        let pyobject: PyObject = Python::with_gil(|py| -> PyObject {
-            PySet::new_bound(py, &["All"]).unwrap().to_object(py)
-        });
+        let pyobject: PyObject =
+            Python::with_gil(|py| -> PyObject { PySet::new(py, ["All"]).unwrap().to_object(py) });
         pyobject
     }
 
@@ -440,7 +439,7 @@ impl PragmaSetDensityMatrixWrapper {
     ///     np.ndarray: The density matrix (2d array) representing the qubit register.
     fn density_matrix(&self) -> Py<PyArray2<Complex64>> {
         Python::with_gil(|py| -> Py<PyArray2<Complex64>> {
-            self.internal.density_matrix().to_pyarray_bound(py).unbind()
+            self.internal.density_matrix().to_pyarray(py).unbind()
         })
     }
 
@@ -449,9 +448,8 @@ impl PragmaSetDensityMatrixWrapper {
     /// Returns:
     ///     Set[int]: The involved qubits of the PRAGMA operation.
     fn involved_qubits(&self) -> PyObject {
-        let pyobject: PyObject = Python::with_gil(|py| -> PyObject {
-            PySet::new_bound(py, &["All"]).unwrap().to_object(py)
-        });
+        let pyobject: PyObject =
+            Python::with_gil(|py| -> PyObject { PySet::new(py, ["All"]).unwrap().to_object(py) });
         pyobject
     }
 
@@ -1130,7 +1128,7 @@ impl PragmaGeneralNoiseWrapper {
     ///     np.ndarray: The rates of the PRAGMA operation.
     fn rates(&self) -> Py<PyArray2<f64>> {
         Python::with_gil(|py| -> Py<PyArray2<f64>> {
-            self.internal.rates().to_pyarray_bound(py).unbind()
+            self.internal.rates().to_pyarray(py).unbind()
         })
     }
 
@@ -1141,7 +1139,7 @@ impl PragmaGeneralNoiseWrapper {
     fn superoperator(&self) -> PyResult<Py<PyArray2<f64>>> {
         Python::with_gil(|py| -> PyResult<Py<PyArray2<f64>>> {
             match self.internal.superoperator() {
-                Ok(x) => Ok(x.to_pyarray_bound(py).unbind()),
+                Ok(x) => Ok(x.to_pyarray(py).unbind()),
                 Err(err) => Err(PyRuntimeError::new_err(format!("{:?}", err))),
             }
         })
@@ -1153,7 +1151,7 @@ impl PragmaGeneralNoiseWrapper {
     ///     Set[int]: The involved qubits of the PRAGMA operation.
     fn involved_qubits(&self) -> PyObject {
         let pyobject: PyObject = Python::with_gil(|py| -> PyObject {
-            PySet::new_bound(py, &[*self.internal.qubit()])
+            PySet::new(py, [*self.internal.qubit()])
                 .unwrap()
                 .to_object(py)
         });
@@ -1439,7 +1437,7 @@ impl PragmaChangeDeviceWrapper {
     fn wrapped_operation(&self) -> PyResult<Py<PyByteArray>> {
         let serialized: Vec<u8> = self.internal.wrapped_operation.clone();
         let b: Py<PyByteArray> = Python::with_gil(|py| -> Py<PyByteArray> {
-            PyByteArray::new_bound(py, &serialized[..]).into()
+            PyByteArray::new(py, &serialized[..]).into()
         });
         Ok(b)
     }
@@ -1449,9 +1447,8 @@ impl PragmaChangeDeviceWrapper {
     /// Returns:
     ///     Set[int]: The involved qubits of the PRAGMA operation.
     fn involved_qubits(&self) -> PyObject {
-        let pyobject: PyObject = Python::with_gil(|py| -> PyObject {
-            PySet::new_bound(py, &["All"]).unwrap().to_object(py)
-        });
+        let pyobject: PyObject =
+            Python::with_gil(|py| -> PyObject { PySet::new(py, ["All"]).unwrap().to_object(py) });
         pyobject
     }
 
@@ -1716,12 +1713,12 @@ impl PragmaAnnotatedOpWrapper {
             let involved = self.internal.involved_qubits();
             match involved {
                 InvolvedQubits::All => {
-                    let pyref: &Bound<PySet> = &PySet::new_bound(py, &["All"]).unwrap();
+                    let pyref: &Bound<PySet> = &PySet::new(py, ["All"]).unwrap();
                     let pyobject: PyObject = pyref.as_any().to_object(py);
                     pyobject
                 }
                 InvolvedQubits::None => {
-                    let pyref: &Bound<PySet> = &PySet::empty_bound(py).unwrap();
+                    let pyref: &Bound<PySet> = &PySet::empty(py).unwrap();
                     let pyobject: PyObject = pyref.as_any().to_object(py);
                     pyobject
                 }
@@ -1730,7 +1727,7 @@ impl PragmaAnnotatedOpWrapper {
                     for mode in x {
                         vector.push(mode)
                     }
-                    let pyref: &Bound<PySet> = &PySet::new_bound(py, &vector[..]).unwrap();
+                    let pyref: &Bound<PySet> = &PySet::new(py, &vector[..]).unwrap();
                     let pyobject: PyObject = pyref.as_any().to_object(py);
                     pyobject
                 }

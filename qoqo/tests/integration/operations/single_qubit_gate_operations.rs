@@ -47,7 +47,7 @@ fn test_new_paulix(input_operation: Operation, arguments: (u32,), method: &str) 
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation_type = py.get_type_bound::<PauliXWrapper>();
+        let operation_type = py.get_type::<PauliXWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding.downcast::<PauliXWrapper>().unwrap();
 
@@ -83,7 +83,7 @@ fn test_new_pauliy(input_operation: Operation, arguments: (u32,), method: &str) 
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation_type = py.get_type_bound::<PauliYWrapper>();
+        let operation_type = py.get_type::<PauliYWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding.downcast::<PauliYWrapper>().unwrap();
 
@@ -119,7 +119,7 @@ fn test_new_pauliz(input_operation: Operation, arguments: (u32,), method: &str) 
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation_type = py.get_type_bound::<PauliZWrapper>();
+        let operation_type = py.get_type::<PauliZWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding.downcast::<PauliZWrapper>().unwrap();
 
@@ -155,7 +155,7 @@ fn test_new_sqrtpaulix(input_operation: Operation, arguments: (u32,), method: &s
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation_type = py.get_type_bound::<SqrtPauliXWrapper>();
+        let operation_type = py.get_type::<SqrtPauliXWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding.downcast::<SqrtPauliXWrapper>().unwrap();
 
@@ -191,7 +191,7 @@ fn test_new_invsqrtpaulix(input_operation: Operation, arguments: (u32,), method:
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation_type = py.get_type_bound::<InvSqrtPauliXWrapper>();
+        let operation_type = py.get_type::<InvSqrtPauliXWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding.downcast::<InvSqrtPauliXWrapper>().unwrap();
 
@@ -227,7 +227,7 @@ fn test_new_sgate(input_operation: Operation, arguments: (u32,), method: &str) {
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation_type = py.get_type_bound::<SGateWrapper>();
+        let operation_type = py.get_type::<SGateWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding.downcast::<SGateWrapper>().unwrap();
 
@@ -263,7 +263,7 @@ fn test_new_invsgate(input_operation: Operation, arguments: (u32,), method: &str
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation_type = py.get_type_bound::<InvSGateWrapper>();
+        let operation_type = py.get_type::<InvSGateWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding.downcast::<InvSGateWrapper>().unwrap();
 
@@ -299,7 +299,7 @@ fn test_new_tgate(input_operation: Operation, arguments: (u32,), method: &str) {
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation_type = py.get_type_bound::<TGateWrapper>();
+        let operation_type = py.get_type::<TGateWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding.downcast::<TGateWrapper>().unwrap();
 
@@ -335,7 +335,7 @@ fn test_new_invtgate(input_operation: Operation, arguments: (u32,), method: &str
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation_type = py.get_type_bound::<InvTGateWrapper>();
+        let operation_type = py.get_type::<InvTGateWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding.downcast::<InvTGateWrapper>().unwrap();
 
@@ -371,7 +371,7 @@ fn test_new_hadamard(input_operation: Operation, arguments: (u32,), method: &str
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation_type = py.get_type_bound::<HadamardWrapper>();
+        let operation_type = py.get_type::<HadamardWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding.downcast::<HadamardWrapper>().unwrap();
 
@@ -408,7 +408,7 @@ fn test_new_rotatex(input_operation: Operation, arguments: (u32, f64), method: &
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         // Basic initialisation, no errors
-        let operation_type = py.get_type_bound::<RotateXWrapper>();
+        let operation_type = py.get_type::<RotateXWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding.downcast::<RotateXWrapper>().unwrap();
         let comparison = bool::extract_bound(
@@ -449,7 +449,7 @@ fn test_new_rotatey(input_operation: Operation, arguments: (u32, f64), method: &
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         // Basic initialisation, no errors
-        let operation_type = py.get_type_bound::<RotateYWrapper>();
+        let operation_type = py.get_type::<RotateYWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding.downcast::<RotateYWrapper>().unwrap();
         let comparison = bool::extract_bound(
@@ -490,7 +490,7 @@ fn test_new_rotatez(input_operation: Operation, arguments: (u32, f64), method: &
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         // Basic initialisation, no errors
-        let operation_type = py.get_type_bound::<RotateZWrapper>();
+        let operation_type = py.get_type::<RotateZWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding.downcast::<RotateZWrapper>().unwrap();
 
@@ -532,7 +532,7 @@ fn test_new_phaseshiftstate0(input_operation: Operation, arguments: (u32, f64), 
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         // Basic initialisation, no errors
-        let operation_type = py.get_type_bound::<PhaseShiftState0Wrapper>();
+        let operation_type = py.get_type::<PhaseShiftState0Wrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding.downcast::<PhaseShiftState0Wrapper>().unwrap();
 
@@ -574,7 +574,7 @@ fn test_new_phaseshiftstate1(input_operation: Operation, arguments: (u32, f64), 
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         // Basic initialisation, no errors
-        let operation_type = py.get_type_bound::<PhaseShiftState1Wrapper>();
+        let operation_type = py.get_type::<PhaseShiftState1Wrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding.downcast::<PhaseShiftState1Wrapper>().unwrap();
 
@@ -616,7 +616,7 @@ fn test_new_gpi(input_operation: Operation, arguments: (u32, f64), method: &str)
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         // Basic initialisation, no errors
-        let operation_type = py.get_type_bound::<GPiWrapper>();
+        let operation_type = py.get_type::<GPiWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding.downcast::<GPiWrapper>().unwrap();
 
@@ -658,7 +658,7 @@ fn test_new_gpi2(input_operation: Operation, arguments: (u32, f64), method: &str
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         // Basic initialisation, no errors
-        let operation_type = py.get_type_bound::<GPi2Wrapper>();
+        let operation_type = py.get_type::<GPi2Wrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding.downcast::<GPi2Wrapper>().unwrap();
 
@@ -713,7 +713,7 @@ fn test_new_rotate(input_operation: Operation, arguments: (u32, f64, f64, f64), 
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         // Basic initialisation, no errors
-        let operation_type = py.get_type_bound::<RotateAroundSphericalAxisWrapper>();
+        let operation_type = py.get_type::<RotateAroundSphericalAxisWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding
             .downcast::<RotateAroundSphericalAxisWrapper>()
@@ -777,7 +777,7 @@ fn test_new_rotatexy(input_operation: Operation, arguments: (u32, f64, f64), met
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         // Basic initialisation, no errors
-        let operation_type = py.get_type_bound::<RotateXYWrapper>();
+        let operation_type = py.get_type::<RotateXYWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding.downcast::<RotateXYWrapper>().unwrap();
         let comparison = bool::extract_bound(
@@ -841,7 +841,7 @@ fn test_new_singlequbitgate(
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         // Basic initialisation, no errors
-        let operation_type = py.get_type_bound::<SingleQubitGateWrapper>();
+        let operation_type = py.get_type::<SingleQubitGateWrapper>();
         let operation_py = operation_type.call1(arguments).unwrap();
         let comparison = bool::extract_bound(
             &operation
@@ -895,7 +895,7 @@ fn test_new_identity(input_operation: Operation, arguments: (u32,), method: &str
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation_type = py.get_type_bound::<IdentityWrapper>();
+        let operation_type = py.get_type::<IdentityWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding.downcast::<IdentityWrapper>().unwrap();
 
@@ -931,7 +931,7 @@ fn test_new_sqrtpauliy(input_operation: Operation, arguments: (u32,), method: &s
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation_type = py.get_type_bound::<SqrtPauliYWrapper>();
+        let operation_type = py.get_type::<SqrtPauliYWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding.downcast::<SqrtPauliYWrapper>().unwrap();
 
@@ -967,7 +967,7 @@ fn test_new_invsqrtpauliy(input_operation: Operation, arguments: (u32,), method:
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation_type = py.get_type_bound::<InvSqrtPauliYWrapper>();
+        let operation_type = py.get_type::<InvSqrtPauliYWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding.downcast::<InvSqrtPauliYWrapper>().unwrap();
 
@@ -1003,7 +1003,7 @@ fn test_new_sxgate(input_operation: Operation, arguments: (u32,), method: &str) 
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation_type = py.get_type_bound::<SXGateWrapper>();
+        let operation_type = py.get_type::<SXGateWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding.downcast::<SXGateWrapper>().unwrap();
 
@@ -1039,7 +1039,7 @@ fn test_new_invsxgate(input_operation: Operation, arguments: (u32,), method: &st
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation_type = py.get_type_bound::<InvSXGateWrapper>();
+        let operation_type = py.get_type::<InvSXGateWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding.downcast::<InvSXGateWrapper>().unwrap();
 

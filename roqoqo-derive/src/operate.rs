@@ -169,7 +169,7 @@ fn operate_qubits_struct(ds: DataStruct, ident: Ident) -> TokenStream {
 
     let struqture_fields = fields_with_type
         .clone()
-        .filter(|(_, type_string, _)| type_string == &Some("SpinHamiltonian".to_string()))
+        .filter(|(_, type_string, _)| type_string == &Some("PauliHamiltonian".to_string()))
         .map(|(id, _, _)| {
             quote! {
                 self.#id.values().any(|x| !x.is_float())
