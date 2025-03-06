@@ -1,5 +1,5 @@
 [workspace]
-members = ["roqoqo", "roqoqo-derive", "roqoqo-test", "qoqo", "qoqo-macros", "documentation/gates_doc_build"]
+members = ["roqoqo", "roqoqo-derive", "roqoqo-test", "qoqo", "qoqo-macros"]
 
 resolver = "2"
 
