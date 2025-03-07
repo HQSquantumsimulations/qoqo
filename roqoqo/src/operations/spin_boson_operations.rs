@@ -245,7 +245,7 @@ impl SupportedVersion for SingleExcitationLoad {
 }
 
 /// Controlled-Z operation between a qubit and a bosonic mode.
-/// 
+///
 /// The two-dimensional subspace of the bosonic mode spanned by the occupation number states |0⟩_B and |1⟩_B is considered
 /// as the second qubit involved in the CZ operation.
 #[derive(
