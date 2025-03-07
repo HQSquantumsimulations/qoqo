@@ -9,7 +9,7 @@ The given form of the unitary matrix is consistent with the following ordering o
  \left|01 \right>  =  \textrm{state} 1 \\\\
  \left|10 \right>  =  \textrm{state} 2 \\\\
  \left|11 \right>  =  \textrm{state} 3 \\\\
- \\].
+ \\]
 
 ## Bogoliubov
 
