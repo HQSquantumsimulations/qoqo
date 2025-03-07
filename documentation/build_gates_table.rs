@@ -39,8 +39,8 @@ fn main() {
     path.push(format!("roqoqo/src/operations/{}", filename_arg));
     let filename = path.to_str().unwrap();
 
-    let content = fs::read_to_string(filename).expect("Could not read file");
-    let syntax_tree: File = syn::parse_file(&content).expect("Failed to parse file");
+    let content = fs::read_to_string(filename).expect(format!("Failed to read file {}.", filename));
+    let syntax_tree: File = syn::parse_file(&content).expect(format!("Failed to parse file {}.", filename));
     let mut visitor = StructFirstDocLineVisitor {
         names: Vec::new(),
         descriptions: Vec::new(),
