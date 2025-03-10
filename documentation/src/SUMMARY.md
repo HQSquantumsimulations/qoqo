@@ -20,4 +20,8 @@
 - [List of Gate Operations](gate_operations/intro.md)
   - [Single-Qubit Gates](gate_operations/single_qubit_gates.md)
   - [Two-Qubit Gates](gate_operations/two_qubit_gates.md)
+  - [Three-Qubit Gates](gate_operations/three_qubit_gates.md)
+  - [Four-Qubit Gates](gate_operations/four_qubit_gates.md)
   - [Multi-Qubit Gates](gate_operations/multi_qubit_gates.md)
+  - [Bosonic Operations](gate_operations/bosonic_operations.md)
+  - [Spin-Boson Operations](gate_operations/spin_boson_operations.md)
