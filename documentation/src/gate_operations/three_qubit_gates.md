@@ -18,17 +18,95 @@ The given form of the unitary matrix is consistent with the following ordering o
 ## ControlledControlledPauliZ
 Implements the double-controlled PauliZ gate.
 
+\\[
+ U = \begin{pmatrix}
+ 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\\\
+ 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 \\\\
+ 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 \\\\
+ 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 \\\\
+ 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 \\\\
+ 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 \\\\
+ 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 \\\\
+ 0 & 0 & 0 & 0 & 0 & 0 & 0 & -1
+ \end{pmatrix}
+ \\]
+
 ## ControlledControlledPhaseShift
 Implements the double-controlled PhaseShift gate.
+
+\\[
+ U = \begin{pmatrix}
+ 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\\\
+ 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 \\\\
+ 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 \\\\
+ 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 \\\\
+ 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 \\\\
+ 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 \\\\
+ 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 \\\\
+ 0 & 0 & 0 & 0 & 0 & 0 & 0 & e^{\mathrm{i} \theta}
+ \end{pmatrix}
+ \\]
 
 ## ControlledSWAP
 Implements the controlled SWAP gate.
 
+\\[
+ U = \begin{pmatrix}
+ 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\\\
+ 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 \\\\
+ 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 \\\\
+ 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 \\\\
+ 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 \\\\
+ 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 \\\\
+ 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 \\\\
+ 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1
+ \end{pmatrix}
+ \\]
+
 ## PhaseShiftedControlledControlledPhase
 Implements the double-controlled phase-shifted PhaseShift gate.
+
+\\[
+ U = \begin{pmatrix}
+ 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\\\
+ 0 & e^{\mathrm{i} \phi} & 0 & 0 & 0 & 0 & 0 & 0 \\\\
+ 0 & 0 & e^{\mathrm{i} \phi} & 0 & 0 & 0 & 0 & 0 \\\\
+ 0 & 0 & 0 & e^{\mathrm{i} (2\cdot\phi)} & 0 & 0 & 0 & 0 \\\\
+ 0 & 0 & 0 & 0 & e^{\mathrm{i} \phi} & 0 & 0 & 0 \\\\
+ 0 & 0 & 0 & 0 & 0 & e^{\mathrm{i} (2\cdot\phi)} & 0 & 0 \\\\
+ 0 & 0 & 0 & 0 & 0 & 0 & e^{\mathrm{i} (2\cdot\phi)} & 0 \\\\
+ 0 & 0 & 0 & 0 & 0 & 0 & 0 & e^{\mathrm{i} (3\cdot\phi) + \theta} \\\\
+ \end{pmatrix}
+\\]
 
 ## PhaseShiftedControlledControlledZ	
 Implements the double-controlled phase-shifted PauliZ gate.
 
+\\[
+ U = \begin{pmatrix}
+ 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\\\
+ 0 & e^{\mathrm{i} \phi} & 0 & 0 & 0 & 0 & 0 & 0 \\\\
+ 0 & 0 & e^{\mathrm{i} \phi} & 0 & 0 & 0 & 0 & 0 \\\\
+ 0 & 0 & 0 & e^{\mathrm{i} (2\cdot\phi)} & 0 & 0 & 0 & 0 \\\\
+ 0 & 0 & 0 & 0 & e^{\mathrm{i} \phi} & 0 & 0 & 0 \\\\
+ 0 & 0 & 0 & 0 & 0 & e^{\mathrm{i} (2\cdot\phi)} & 0 & 0 \\\\
+ 0 & 0 & 0 & 0 & 0 & 0 & e^{\mathrm{i} (2\cdot\phi)} & 0 \\\\
+ 0 & 0 & 0 & 0 & 0 & 0 & 0 & e^{\mathrm{i} (3\cdot\phi) + \pi} \\\\
+ \end{pmatrix}
+\\]
+
 ## Toffoli
 Implements the Toffoli gate.
+
+\\[
+ U = \begin{pmatrix}
+ 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\\\
+ 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 \\\\
+ 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 \\\\
+ 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 \\\\
+ 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 \\\\
+ 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 \\\\
+ 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 \\\\
+ 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0
+ \end{pmatrix}
+ \\]
