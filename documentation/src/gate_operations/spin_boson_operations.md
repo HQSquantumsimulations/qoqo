@@ -1,5 +1,5 @@
 # Spin-Boson operations
-TODO
+The spin-boson operations facilitate interactions between two-level systems (qubits) and quantized harmonic oscillators (bosonic modes). They implement core models such as the quantum Rabi, Jaynes–Cummings, and longitudinal coupling interactions, as well as operations for transferring single excitations between qubits and resonators. This framework is essential for simulating hybrid quantum systems and implementing quantum logic that leverages both spin and bosonic degrees of freedom.
 
 
 ## CZQubitResonator

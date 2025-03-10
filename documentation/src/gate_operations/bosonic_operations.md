@@ -1,5 +1,5 @@
 # Bosonic operations
-TODO
+The bosonic operations manipulate the quantum state of harmonic oscillator modes. They include single-mode gates—such as squeezing (altering quadrature uncertainties), phase displacement and phase shift (rotating states in phase space)—and a two-mode beam splitter (mixing states between modes). Additionally, a photon detection measurement operation is provided for resolving mode occupancy, enabling state readout at the single-photon level.
 
 
 ## BeamSplitter
