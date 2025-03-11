@@ -3096,73 +3096,6 @@ limitations under the License.
 
 
 ====================================================
-byteorder 1.5.0
-https://github.com/BurntSushi/byteorder
-by Andrew Gallant <jamslam@gmail.com>
-Library for reading/writing numbers in big-endian and little-endian.
-License: Unlicense OR MIT
-----------------------------------------------------
-LICENSE-MIT:
-
-The MIT License (MIT)
-
-Copyright (c) 2015 Andrew Gallant
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
-
-----------------------------------------------------
-UNLICENSE:
-
-This is free and unencumbered software released into the public domain.
-
-Anyone is free to copy, modify, publish, use, compile, sell, or
-distribute this software, either in source code form or as a compiled
-binary, for any purpose, commercial or non-commercial, and by any
-means.
-
-In jurisdictions that recognize copyright laws, the author or authors
-of this software dedicate any and all copyright interest in the
-software to the public domain. We make this dedication for the benefit
-of the public at large and to the detriment of our heirs and
-successors. We intend this dedication to be an overt act of
-relinquishment in perpetuity of all present and future rights to this
-software under copyright law.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
-OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-OTHER DEALINGS IN THE SOFTWARE.
-
-For more information, please refer to <http://unlicense.org/>
-
-----------------------------------------------------
-COPYING:
-
-This project is dual-licensed under the Unlicense and MIT licenses.
-
-You may use this code under the terms of either license.
-
-
-====================================================
 bytes 1.10.1
 https://github.com/tokio-rs/bytes
 by Carl Lerche <me@carllerche.com>, Sean McArthur <sean@seanmonstar.com>
@@ -3897,7 +3830,7 @@ END OF TERMS AND CONDITIONS
 
 
 ====================================================
-either 1.14.0
+either 1.15.0
 https://github.com/rayon-rs/either
 by bluss
 The enum `Either` with variants `Left` and `Right` is a general purpose sum type with two cases.
@@ -9774,7 +9707,7 @@ limitations under the License.
 
 
 ====================================================
-indexmap 2.7.1
+indexmap 2.8.0
 https://github.com/indexmap-rs/indexmap
 by 
 A hash table with consistent order and fast iteration.
@@ -16368,7 +16301,7 @@ limitations under the License.
 
 
 ====================================================
-once_cell 1.20.3
+once_cell 1.21.0
 https://github.com/matklad/once_cell
 by Aleksey Kladov <aleksey.kladov@gmail.com>
 Single assignment cells and lazy values.
@@ -18706,11 +18639,11 @@ LICENSE-APACHE:
 
 
 ====================================================
-ppv-lite86 0.2.20
+ppv-lite86 0.2.21
 https://github.com/cryptocorrosion/cryptocorrosion
 by The CryptoCorrosion Contributors
-Implementation of the crypto-simd API for x86
-License: MIT/Apache-2.0
+Cross-platform cryptography-oriented low-level SIMD library.
+License: MIT OR Apache-2.0
 ----------------------------------------------------
 LICENSE-MIT:
 
@@ -20251,7 +20184,7 @@ END OF TERMS AND CONDITIONS
 
 
 ====================================================
-qoqo 1.19.1
+qoqo 1.19.2
 https://github.com/HQSquantumsimulations/qoqo
 by HQS Quantum Simulations <info@quantumsimulations.de>
 Quantum computing circuit toolkit. Python interface of roqoqo
@@ -20463,7 +20396,7 @@ LICENSE:
 
 
 ====================================================
-qoqo-macros 1.19.1
+qoqo-macros 1.19.2
 by HQS Quantum Simulations <info@quantumsimulations.de>
 Macros for the qoqo crate
 License: Apache-2.0
@@ -23904,7 +23837,7 @@ limitations under the License.
 
 
 ====================================================
-roqoqo 1.19.1
+roqoqo 1.19.2
 https://github.com/HQSquantumsimulations/qoqo
 by HQS Quantum Simulations <info@quantumsimulations.de>
 Rust Quantum Computing Toolkit by HQS
@@ -24116,7 +24049,7 @@ LICENSE:
 
 
 ====================================================
-roqoqo-derive 1.19.1
+roqoqo-derive 1.19.2
 by HQS Quantum Simulations <info@quantumsimulations.de>
 Macros for the roqoqo crate
 License: Apache-2.0
@@ -24327,7 +24260,7 @@ LICENSE:
 
 
 ====================================================
-roqoqo-test 1.19.1
+roqoqo-test 1.19.2
 https://github.com/HQSquantumsimulations/qoqo
 by HQS Quantum Simulations <info@quantumsimulations.de>
 Testing helper functions for roqoqo toolkit
@@ -25831,7 +25764,7 @@ limitations under the License.
 
 
 ====================================================
-serde 1.0.218
+serde 1.0.219
 https://serde.rs
 by Erick Tryzelaar <erick.tryzelaar@gmail.com>, David Tolnay <dtolnay@gmail.com>
 A generic serialization/deserialization framework
@@ -26045,7 +25978,7 @@ END OF TERMS AND CONDITIONS
 
 
 ====================================================
-serde_derive 1.0.218
+serde_derive 1.0.219
 https://serde.rs
 by Erick Tryzelaar <erick.tryzelaar@gmail.com>, David Tolnay <dtolnay@gmail.com>
 Macros 1.1 implementation of #[derive(Serialize, Deserialize)]
@@ -28729,7 +28662,7 @@ LICENSE:
 
 
 ====================================================
-syn 2.0.99
+syn 2.0.100
 https://github.com/dtolnay/syn
 by David Tolnay <dtolnay@gmail.com>
 Parser for Rust source code
@@ -30460,7 +30393,7 @@ SOFTWARE.
 
 
 ====================================================
-tokio 1.43.0
+tokio 1.44.0
 https://tokio.rs
 by Tokio Contributors <team@tokio.rs>
 An event-driven, non-blocking I/O platform for writing asynchronous I/O
@@ -39088,7 +39021,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
 ====================================================
-zerocopy 0.8.21
+zerocopy 0.8.23
 https://github.com/google/zerocopy
 by Joshua Liebow-Feeser <joshlf@google.com>, Jack Wrenn <jswrenn@amazon.com>
 Zerocopy makes zero-cost memory manipulation effortless. We write "unsafe" so you don't have to.
@@ -39630,7 +39563,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
 ====================================================
-zerocopy-derive 0.8.21
+zerocopy-derive 0.8.23
 https://github.com/google/zerocopy
 by Joshua Liebow-Feeser <joshlf@google.com>, Jack Wrenn <jswrenn@amazon.com>
 Custom derive for traits from the zerocopy crate
