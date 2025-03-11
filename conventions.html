@@ -24,9 +24,9 @@
         <link rel="stylesheet" href="fonts/fonts.css">
 
         <!-- Highlight.js Stylesheets -->
-        <link rel="stylesheet" href="highlight.css">
-        <link rel="stylesheet" href="tomorrow-night.css">
-        <link rel="stylesheet" href="ayu-highlight.css">
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
 
@@ -185,23 +185,19 @@
 <p>qoqo and roqoqo use little-endian encoding, where the least significant qubit is at the smallest memory address (or at the lowest index in a vector and at the rightmost entry when writing the qubit state as a sequence of <code>0</code> and <code>1</code> like a binary number).</p>
 <p>For a two-qubit state space we write the states of the qubits in the following order:
 \[
-\left|00 \right&gt;  =  \textrm{state} 0 \\
-\left|01 \right&gt;  =  \textrm{state} 1 \\
-\left|10 \right&gt;  =  \textrm{state} 2 \\
-\left|11 \right&gt;  =  \textrm{state} 3 \\
+\left|00 \right&gt;  =  \textrm{state}_0 \\
+\left|01 \right&gt;  =  \textrm{state}_1 \\
+\left|10 \right&gt;  =  \textrm{state}_2 \\
+\left|11 \right&gt;  =  \textrm{state}_3 \\
 \].</p>
 <h2 id="operation-order"><a class="header" href="#operation-order">Operation order</a></h2>
 <p>When adding qoqo/roqoqo operations to circuits, the first operation added will be executed first. When writing qoqo/roqoqo operations, they are read left to right. This leads to an inversion of the order when transcribing to matrix form, where the matrix to the right acts first.</p>
 <p>\[
-\textrm{PauliX}(0) \cdot  \textrm{PauliZ}(0)  \\ =
-\textrm{PauliZ(0).unitary_matrix()} \cdot  \textrm{PauliX(0).unitary_matrix()}  \\
-= \begin{pmatrix}
-1 &amp; 0 \\
-0 &amp; -1
-\end{pmatrix}  \begin{pmatrix}
-0 &amp; 1 \\
-1 &amp; 0
-\end{pmatrix}
+\begin{align}
+\textrm{PauliX}(0) \cdot \textrm{PauliZ}(0) &amp;= \textrm{PauliZ(0).unitary_matrix()} \cdot \textrm{PauliX(0).unitary_matrix()} \\[5pt]
+&amp;= \begin{pmatrix} 1 &amp; 0 \\ 0 &amp; -1 \end{pmatrix}<br />
+\begin{pmatrix} 0 &amp; 1 \\ 1 &amp; 0 \end{pmatrix}
+\end{align}
 \].</p>
 <h2 id="qubit-naming"><a class="header" href="#qubit-naming">Qubit naming</a></h2>
 <p>qoqo uses a unified naming scheme for qubits in operations</p>

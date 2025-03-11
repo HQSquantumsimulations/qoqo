@@ -24,9 +24,9 @@
         <link rel="stylesheet" href="../fonts/fonts.css">
 
         <!-- Highlight.js Stylesheets -->
-        <link rel="stylesheet" href="../highlight.css">
-        <link rel="stylesheet" href="../tomorrow-night.css">
-        <link rel="stylesheet" href="../ayu-highlight.css">
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
 
@@ -200,6 +200,30 @@ circuit += CNOT::new(0, 1);
 circuit += MeasureQubit::new(0, "ro".to_string(), 0);
 circuit += MeasureQubit::new(1, "ro".to_string(), 1);
 <span class="boring">}</span></code></pre></pre>
+<p>A circuit created with qoqo can also be visualized. The user can do this by installing the package <code>qollage</code> in python or the crate <code>roqollage</code> in rust.
+It can be installed the same way as qoqo/roqoqo:</p>
+<p>To install the package in a python environment run the following command</p>
+<pre><code class="language-bash">pip install qollage
+</code></pre>
+<p>or add this line to the Cargo.toml of a rust project</p>
+<pre><code class="language-TOML">qollage = "0.5" # Change this to the latest version to ensure compatibility of the latest qoqo operations.
+</code></pre>
+<p>In python the following code will output an image of the user's circuit using IPython’s display method.</p>
+<pre><code class="language-python">from qollage import draw_circuit
+
+# draw the circuit
+draw_circuit(circuit)
+</code></pre>
+<p>The generated image of the previous circuit should look like this:</p>
+<img src="./images/circuit_example.png" alt="circuit" width="60%">
+<p>In Rust, the image can be retrieved with the following function:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let image =
+        roqollage::circuit_to_image(&amp;circuit, None, roqollage::RenderPragmas::All, None, None)
+            .expect("Failed to create an image of the circuit.");
+<span class="boring">}</span></code></pre></pre>
+<p>For more information about this tool, please see the full documentation of <a href="https://github.com/HQSquantumsimulations/qollage">qollage</a>.</p>
 <p>For details on the <strong>available methods</strong> of a <code>Circuit</code> please refer to the <strong>API documentation</strong> of <a href="https://docs.rs/roqoqo/latest/roqoqo/struct.Circuit.html">roqoqo</a> and <a href="https://hqsquantumsimulations.github.io/qoqo/generated/qoqo.html#qoqo.Circuit">qoqo</a>.</p>
 
                     </main>

@@ -25,9 +25,9 @@
         <link rel="stylesheet" href="fonts/fonts.css">
 
         <!-- Highlight.js Stylesheets -->
-        <link rel="stylesheet" href="highlight.css">
-        <link rel="stylesheet" href="tomorrow-night.css">
-        <link rel="stylesheet" href="ayu-highlight.css">
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
 
@@ -157,7 +157,7 @@
                     <main>
                         <h1 id="introduction"><a class="header" href="#introduction">Introduction</a></h1>
 <p><strong>Welcome to the user documentation for the qoqo/roqoqo quantum computing toolkit.</strong></p>
-<p>This user documentation gives a general overview of the design principles and intended usage scenarios for qoqo and roqoqo. For a detailed description of all the types and functions, see the API-documentation of <a href="https://docs.rs/roqoqo/">roqoqo</a> and <a href="https://hqsquantumsimulations.github.io/qoqo/">qoqo</a>.</p>
+<p>This user documentation gives a general overview of the design principles and intended usage scenarios for qoqo and roqoqo. For a detailed description of all the types and functions, see the API-documentation of <a href="https://docs.rs/roqoqo/">roqoqo</a> and <a href="https://hqsquantumsimulations.github.io/qoqo/python_api_docs/index.html">qoqo</a>.</p>
 <h2 id="what-are-qoqo-and-roqoqo"><a class="header" href="#what-are-qoqo-and-roqoqo">What are qoqo and roqoqo</a></h2>
 <p>The qoqo and roqoqo packages are a pair of quantum computing toolkits by <a href="https://quantumsimulations.de">HQS Quantum Simulations</a>.</p>
 <p>Like many quantum toolkits, qoqo and roqoqo are circuit-based toolkits, at the core. A sequence of operations to be run on a quantum computer is grouped into a <a href="circuits/intro.html">quantum circuit</a>.</p>
@@ -278,6 +278,30 @@ circuit += CNOT::new(0, 1);
 circuit += MeasureQubit::new(0, "ro".to_string(), 0);
 circuit += MeasureQubit::new(1, "ro".to_string(), 1);
 <span class="boring">}</span></code></pre></pre>
+<p>A circuit created with qoqo can also be visualized. The user can do this by installing the package <code>qollage</code> in python or the crate <code>roqollage</code> in rust.
+It can be installed the same way as qoqo/roqoqo:</p>
+<p>To install the package in a python environment run the following command</p>
+<pre><code class="language-bash">pip install qollage
+</code></pre>
+<p>or add this line to the Cargo.toml of a rust project</p>
+<pre><code class="language-TOML">qollage = "0.5" # Change this to the latest version to ensure compatibility of the latest qoqo operations.
+</code></pre>
+<p>In python the following code will output an image of the user's circuit using IPython’s display method.</p>
+<pre><code class="language-python">from qollage import draw_circuit
+
+# draw the circuit
+draw_circuit(circuit)
+</code></pre>
+<p>The generated image of the previous circuit should look like this:</p>
+<img src="circuits/./images/circuit_example.png" alt="circuit" width="60%">
+<p>In Rust, the image can be retrieved with the following function:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let image =
+        roqollage::circuit_to_image(&amp;circuit, None, roqollage::RenderPragmas::All, None, None)
+            .expect("Failed to create an image of the circuit.");
+<span class="boring">}</span></code></pre></pre>
+<p>For more information about this tool, please see the full documentation of <a href="https://github.com/HQSquantumsimulations/qollage">qollage</a>.</p>
 <p>For details on the <strong>available methods</strong> of a <code>Circuit</code> please refer to the <strong>API documentation</strong> of <a href="https://docs.rs/roqoqo/latest/roqoqo/struct.Circuit.html">roqoqo</a> and <a href="https://hqsquantumsimulations.github.io/qoqo/generated/qoqo.html#qoqo.Circuit">qoqo</a>.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="unitary-operations"><a class="header" href="#unitary-operations">Unitary Operations</a></h1>
 <p>Unitary operations or gate operations are operations that can be executed on all universal quantum computers. The operations correspond to unitary transformations of the state of a quantum computer.</p>
@@ -388,7 +412,7 @@ Unlike standard quantum operations such as gate or measurements, these are <em>n
 <li>Model error sources (<code>PragmaOverrotation</code>)</li>
 </ul>
 <p>For a full list of available Pragma operations see the API documentation of <a href="https://docs.rs/roqoqo/latest/roqoqo/operations/index.html">roqoqo</a>
-and <a href="https://hqsquantumsimulations.github.io/qoqo/generated/generated/qoqo.operations.html">qoqo</a>.</p>
+and <a href="https://hqsquantumsimulations.github.io/qoqo/python_api_docs/index.html">qoqo</a>.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="noise-operations"><a class="header" href="#noise-operations">Noise Operations</a></h1>
 <p>qoqo/roqoqo enables the user to construct finely controlled noise models. Noise acting on the quantum computer is modeled as noise operations acting on individual qubits in between each unitary gate applied on the quantum computer.</p>
 <p>The noise operations can be directly added to a quantum circuit and can be simulated by compatible backends. Since noise cannot be actively controlled on a quantum computer normally, the noise operations are defined as <a href="circuits/pragma.html">Pragma</a> operations in qoqo/roqoqo. The strength of the noise is determined by defining a <code>gate_time</code> and a <code>rate</code>. The noise Pragma operation affects the system as a Lindblad type noise acting on the system with the rate <code>rate</code> for the time <code>gate_time</code>.</p>
@@ -1387,23 +1411,19 @@ square_lattice = devices.SquareLatticeDevice(rows, columns, ["RotateZ"], ["CNOT"
 <p>qoqo and roqoqo use little-endian encoding, where the least significant qubit is at the smallest memory address (or at the lowest index in a vector and at the rightmost entry when writing the qubit state as a sequence of <code>0</code> and <code>1</code> like a binary number).</p>
 <p>For a two-qubit state space we write the states of the qubits in the following order:
 \[
-\left|00 \right&gt;  =  \textrm{state} 0 \\
-\left|01 \right&gt;  =  \textrm{state} 1 \\
-\left|10 \right&gt;  =  \textrm{state} 2 \\
-\left|11 \right&gt;  =  \textrm{state} 3 \\
+\left|00 \right&gt;  =  \textrm{state}_0 \\
+\left|01 \right&gt;  =  \textrm{state}_1 \\
+\left|10 \right&gt;  =  \textrm{state}_2 \\
+\left|11 \right&gt;  =  \textrm{state}_3 \\
 \].</p>
 <h2 id="operation-order"><a class="header" href="#operation-order">Operation order</a></h2>
 <p>When adding qoqo/roqoqo operations to circuits, the first operation added will be executed first. When writing qoqo/roqoqo operations, they are read left to right. This leads to an inversion of the order when transcribing to matrix form, where the matrix to the right acts first.</p>
 <p>\[
-\textrm{PauliX}(0) \cdot  \textrm{PauliZ}(0)  \\ =
-\textrm{PauliZ(0).unitary_matrix()} \cdot  \textrm{PauliX(0).unitary_matrix()}  \\
-= \begin{pmatrix}
-1 &amp; 0 \\
-0 &amp; -1
-\end{pmatrix}  \begin{pmatrix}
-0 &amp; 1 \\
-1 &amp; 0
-\end{pmatrix}
+\begin{align}
+\textrm{PauliX}(0) \cdot \textrm{PauliZ}(0) &amp;= \textrm{PauliZ(0).unitary_matrix()} \cdot \textrm{PauliX(0).unitary_matrix()} \\[5pt]
+&amp;= \begin{pmatrix} 1 &amp; 0 \\ 0 &amp; -1 \end{pmatrix}<br />
+\begin{pmatrix} 0 &amp; 1 \\ 1 &amp; 0 \end{pmatrix}
+\end{align}
 \].</p>
 <h2 id="qubit-naming"><a class="header" href="#qubit-naming">Qubit naming</a></h2>
 <p>qoqo uses a unified naming scheme for qubits in operations</p>
