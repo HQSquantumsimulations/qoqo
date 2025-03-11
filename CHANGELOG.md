@@ -4,8 +4,16 @@ This changelog track changes to the qoqo project starting at version v0.5.0
 
 ## Unreleased
 
+## 1.19.2
+
+### Updated in 1.19.2
+
 * Updated the user documentation.
 * Updated the readme in the `Cargo.toml` for qoqo and roqoqo.
+
+### Fixed in 1.19.2
+
+* Removed `importlib` from the qoqo pyproject.toml, as it is a default install.
 
 ## 1.19.1
 
