@@ -154,7 +154,7 @@ impl SupportedVersion for JaynesCummings {
 
 /// Stores a single excitation from the involved qubit into the involved bosonic mode.
 ///
-/// It works: as follows |0⟩_B ⨂ (a |0⟩_Q + b |1⟩_Q) -> (a|0⟩_B + b |1⟩_B ) ⨂ |0⟩_Q
+/// It works as follows |0⟩_B ⨂ (a |0⟩_Q + b |1⟩_Q) -> (a|0⟩_B + b |1⟩_B ) ⨂ |0⟩_Q
 ///
 /// Note: not defined if the bosonic mode is in a state |n⟩ with n != 0
 #[derive(
