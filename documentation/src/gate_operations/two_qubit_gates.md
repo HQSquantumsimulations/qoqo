@@ -9,7 +9,7 @@ The given form of the unitary matrix is consistent with the following ordering o
  \left|01 \right>  =  \textrm{state} 1 \\\\
  \left|10 \right>  =  \textrm{state} 2 \\\\
  \left|11 \right>  =  \textrm{state} 3 \\\\
- \\].
+ \\]
 
 ## Bogoliubov
 
@@ -241,11 +241,11 @@ The phase-shifted controlled PhaseShift gate of the form:
  1 & 0 & 0 & 0 \\\\
  0 & e^{\mathrm{i} \phi} & 0 & 0 \\\\
  0 & 0 & e^{\mathrm{i} \phi} & 0 \\\\
- 0 & 0 & 0 & e^{\mathrm{i} (2\cdot\phi - \pi)}
+ 0 & 0 & 0 & e^{\mathrm{i} (2\cdot\phi - \theta)}
  \end{pmatrix}
 \\],
 
-with the single-qubit phase \\( \phi \\).
+with the single-qubit phase \\( \phi \\) and phase rotation \\( \theta \\).
 
 ## PhaseShiftedControlledZ
 

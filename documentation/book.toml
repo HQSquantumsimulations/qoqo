@@ -8,3 +8,5 @@ title = "HQS qoqo User Documentation"
 
 [output.html]
 mathjax-support = true
+
+[preprocessor.cmdrun]
