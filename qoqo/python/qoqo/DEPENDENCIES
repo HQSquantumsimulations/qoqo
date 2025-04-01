@@ -3081,6 +3081,19 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
+----------------------------------------------------
+LICENSE-MIT:
+
+MIT License
+
+Copyright (c) 2019 Daniel "Lokathor" Gee.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice (including the next paragraph) shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
 
 ====================================================
 bytes 1.10.1
@@ -3788,14 +3801,6 @@ TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
 
 END OF TERMS AND CONDITIONS
 
-
-====================================================
-either 1.15.0
-https://github.com/rayon-rs/either
-by bluss
-The enum `Either` with variants `Left` and `Right` is a general purpose sum type with two cases.
-
-License: MIT OR Apache-2.0
 ----------------------------------------------------
 LICENSE-MIT:
 
@@ -9671,13 +9676,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-
-====================================================
-indexmap 2.8.0
-https://github.com/indexmap-rs/indexmap
-by 
-A hash table with consistent order and fast iteration.
-License: Apache-2.0 OR MIT
 ----------------------------------------------------
 LICENSE-MIT:
 
@@ -16272,13 +16270,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-
-====================================================
-once_cell 1.21.0
-https://github.com/matklad/once_cell
-by Aleksey Kladov <aleksey.kladov@gmail.com>
-Single assignment cells and lazy values.
-License: MIT OR Apache-2.0
 ----------------------------------------------------
 LICENSE-MIT:
 
@@ -18619,13 +18610,6 @@ LICENSE-APACHE:
 
    END OF TERMS AND CONDITIONS
 
-
-====================================================
-ppv-lite86 0.2.21
-https://github.com/cryptocorrosion/cryptocorrosion
-by The CryptoCorrosion Contributors
-Cross-platform cryptography-oriented low-level SIMD library.
-License: MIT OR Apache-2.0
 ----------------------------------------------------
 LICENSE-MIT:
 
@@ -25756,13 +25740,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-
-====================================================
-serde 1.0.219
-https://serde.rs
-by Erick Tryzelaar <erick.tryzelaar@gmail.com>, David Tolnay <dtolnay@gmail.com>
-A generic serialization/deserialization framework
-License: MIT OR Apache-2.0
 ----------------------------------------------------
 LICENSE-MIT:
 
@@ -25979,13 +25956,6 @@ TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
 
 END OF TERMS AND CONDITIONS
 
-
-====================================================
-serde_derive 1.0.219
-https://serde.rs
-by Erick Tryzelaar <erick.tryzelaar@gmail.com>, David Tolnay <dtolnay@gmail.com>
-Macros 1.1 implementation of #[derive(Serialize, Deserialize)]
-License: MIT OR Apache-2.0
 ----------------------------------------------------
 LICENSE-MIT:
 
@@ -30430,7 +30400,7 @@ SOFTWARE.
 
 
 ====================================================
-tokio 1.44.0
+tokio 1.44.1
 https://tokio.rs
 by Tokio Contributors <team@tokio.rs>
 An event-driven, non-blocking I/O platform for writing asynchronous I/O
@@ -41396,13 +41366,6 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-
-====================================================
-zerocopy 0.8.23
-https://github.com/google/zerocopy
-by Joshua Liebow-Feeser <joshlf@google.com>, Jack Wrenn <jswrenn@amazon.com>
-Zerocopy makes zero-cost memory manipulation effortless. We write "unsafe" so you don't have to.
-License: BSD-2-Clause OR Apache-2.0 OR MIT
 ----------------------------------------------------
 LICENSE-MIT:
 
@@ -41945,13 +41908,6 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-
-====================================================
-zerocopy-derive 0.8.23
-https://github.com/google/zerocopy
-by Joshua Liebow-Feeser <joshlf@google.com>, Jack Wrenn <jswrenn@amazon.com>
-Custom derive for traits from the zerocopy crate
-License: BSD-2-Clause OR Apache-2.0 OR MIT
 ----------------------------------------------------
 LICENSE-MIT:
 
