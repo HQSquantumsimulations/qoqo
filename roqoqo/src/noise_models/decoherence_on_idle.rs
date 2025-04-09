@@ -11,7 +11,6 @@
 // limitations under the License.
 
 use crate::RoqoqoError;
-
 use super::SupportedVersion;
 use struqture::{
     spins::PlusMinusLindbladNoiseOperator, spins::PlusMinusProduct, OperateOnDensityMatrix,
