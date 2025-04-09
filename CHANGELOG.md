@@ -4,6 +4,12 @@ This changelog track changes to the qoqo project starting at version v0.5.0
 
 ## Unreleased
 
+## 1.19.3
+
+### Fixed in 1.19.3
+
+* Fixed a deserialization bug concerning DecoherenceOnIdleModel
+
 ## 1.19.2
 
 ### Updated in 1.19.2
