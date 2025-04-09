@@ -10,8 +10,8 @@
 // express or implied. See the License for the specific language governing permissions and
 // limitations under the License.
 
-use crate::RoqoqoError;
 use super::SupportedVersion;
+use crate::RoqoqoError;
 use struqture::{
     spins::PlusMinusLindbladNoiseOperator, spins::PlusMinusProduct, OperateOnDensityMatrix,
 };
@@ -95,9 +95,7 @@ impl From<ContinuousDecoherenceModel> for ContinuousDecoherenceModelSerialize {
         let lindblad_noise = value.lindblad_noise.to_struqture_1().expect(
             "Failed to convert PlusMinusLindbladNoiseOperator to struqture 1.x for serialization.",
         );
-        Self {
-            lindblad_noise,
-        }
+        Self { lindblad_noise }
     }
 }
 
