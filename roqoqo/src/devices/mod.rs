@@ -15,20 +15,20 @@
 //! Devices in roqoqo have two use cases:
 //!
 //! * Abstract devices: Contain abstract information for the model of a quantum computer and its parameters.
-//!     They can be used to determine which Operations are available on a specific device model.
-//!     A typical example are abstract linear chains of square lattices in which two-qubit operations are only
-//!     available between neighbouring qubits.  
+//!   They can be used to determine which Operations are available on a specific device model.
+//!   A typical example are abstract linear chains of square lattices in which two-qubit operations are only
+//!   available between neighbouring qubits.  
 //!
 //!     The abstract devices can also encode a noise model. Roqoqo noise models are in general based on a (pseudo) time
-//!     needed to execute a quantum operation and Lindblad rates for the qubits in the device.
+//!   needed to execute a quantum operation and Lindblad rates for the qubits in the device.
 //!     
 //!     Note that as long as gate times and decoherence rates are scaled inversely any kind of units can be used,
-//!     but we recommend using nanoseconds and inverse nanosecconds as units for gate times and decoherence rates.
+//!   but we recommend using nanoseconds and inverse nanosecconds as units for gate times and decoherence rates.
 //!
 //!     Specifically in the noise model each qubit undergoes a continuous Lindblad-type decoherence time evolution.
 //!
 //! * Actual hardware devices: These devices are provided by roqoqo backends and contain the necessary information for
-//!     accessing the quantum computing hardware. The devices also encode a connectivity model
+//!   accessing the quantum computing hardware. The devices also encode a connectivity model
 //!
 
 #[cfg(feature = "unstable_chain_with_environment")]

@@ -227,7 +227,7 @@ impl CheatedPauliZProductInput {
     /// # Returns
     ///
     /// * `Self` - The new instance of CheatedPauliZProductInput with measured_exp_vals = an empty
-    ///            HashMap and pauli_product_keys = an empty HashMap.
+    ///   HashMap and pauli_product_keys = an empty HashMap.
     pub fn new() -> Self {
         Self {
             measured_exp_vals: HashMap::new(),
@@ -369,7 +369,7 @@ impl CheatedInput {
     /// # Returns
     ///
     /// * `Self` - The new instance of CheatedInput with measured_operators = an empty HashMap and the
-    ///            specified number of qubits in input.
+    ///   specified number of qubits in input.
     pub fn new(number_qubits: usize) -> Self {
         Self {
             measured_operators: HashMap::new(),
