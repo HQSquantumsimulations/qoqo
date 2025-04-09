@@ -10,7 +10,7 @@
 // express or implied. See the License for the specific language governing permissions and
 // limitations under the License.
 
-use crate::{RoqoqoError, RoqoqoVersionSerializable};
+use crate::RoqoqoError;
 
 use super::SupportedVersion;
 use struqture::{
@@ -78,8 +78,6 @@ impl schemars::JsonSchema for ContinuousDecoherenceModel {
 struct ContinuousDecoherenceModelSerialize {
     /// Decoherence rates for all qubits.
     lindblad_noise: struqture_1::spins::PlusMinusLindbladNoiseOperator,
-    /// The roqoqo version.
-    _roqoqo_version: RoqoqoVersionSerializable,
 }
 
 #[cfg(feature = "serialize")]
@@ -95,17 +93,11 @@ impl TryFrom<ContinuousDecoherenceModelSerialize> for ContinuousDecoherenceModel
 #[cfg(feature = "serialize")]
 impl From<ContinuousDecoherenceModel> for ContinuousDecoherenceModelSerialize {
     fn from(value: ContinuousDecoherenceModel) -> Self {
-        let min_version = value.minimum_supported_roqoqo_version();
         let lindblad_noise = value.lindblad_noise.to_struqture_1().expect(
             "Failed to convert PlusMinusLindbladNoiseOperator to struqture 1.x for serialization.",
         );
-        let current_version = RoqoqoVersionSerializable {
-            major_version: min_version.0,
-            minor_version: min_version.1,
-        };
         Self {
             lindblad_noise,
-            _roqoqo_version: current_version,
         }
     }
 }
