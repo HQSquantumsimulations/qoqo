@@ -176,10 +176,10 @@ fn operate_qubits_struct(ds: DataStruct, ident: Ident) -> TokenStream {
             }
         });
 
-    let is_parametrized_fields = if calculator_float_fields.clone().last().is_none()
-        && circuit_fields.clone().last().is_none()
-        && circuit_fields2.clone().last().is_none()
-        && struqture_fields.clone().last().is_none()
+    let is_parametrized_fields = if calculator_float_fields.clone().next_back().is_none()
+        && circuit_fields.clone().next_back().is_none()
+        && circuit_fields2.clone().next_back().is_none()
+        && struqture_fields.clone().next_back().is_none()
     {
         vec![quote!(false)]
     } else {
