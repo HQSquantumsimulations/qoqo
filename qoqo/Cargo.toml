@@ -42,7 +42,7 @@ roqoqo = { version = "~1.19", path = "../roqoqo", features = [
 qoqo_calculator = "~1.5"
 qoqo_calculator_pyo3 = { version = "~1.5", default-features = false }
 struqture = "~2.0.0-alpha.11"
-struqture-py = { version = "~2.0.0-alpha.11", default-features = false, features = [
+struqture-py = { version = "~2.0.0-alpha.15", default-features = false, features = [
     "struqture_1_import",
 ] }
 
