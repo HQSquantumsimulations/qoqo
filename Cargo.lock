@@ -1112,7 +1112,7 @@ dependencies = [
  "schemars",
  "serde",
  "serde_json",
- "struqture 2.0.0-alpha.14",
+ "struqture 2.0.0-alpha.15",
  "struqture-py",
  "syn",
  "test-case",
@@ -1125,7 +1125,7 @@ version = "1.19.3"
 dependencies = [
  "proc-macro2",
  "quote",
- "struqture 2.0.0-alpha.14",
+ "struqture 2.0.0-alpha.15",
  "syn",
 ]
 
@@ -1347,7 +1347,7 @@ dependencies = [
  "serde_json",
  "serde_test",
  "struqture 1.12.2",
- "struqture 2.0.0-alpha.14",
+ "struqture 2.0.0-alpha.15",
  "syn",
  "test-case",
  "thiserror",
@@ -1566,9 +1566,9 @@ dependencies = [
 
 [[package]]
 name = "struqture"
-version = "2.0.0-alpha.14"
+version = "2.0.0-alpha.15"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f0ebba1a10e98cb1e725755ba9dbba2dd24b40796671f2a65b4c2b915cff900e"
+checksum = "da1b27984b6c38a0212fe7085835bc449ffcceec838d7a3943d8a90d062ae12e"
 dependencies = [
  "indexmap",
  "itertools",
@@ -1585,9 +1585,9 @@ dependencies = [
 
 [[package]]
 name = "struqture-py"
-version = "2.0.0-alpha.14"
+version = "2.0.0-alpha.15"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7b970939c2288b8c9fb76e8db26e6153a9890c4b9e1c4fe0ace379396b975bee"
+checksum = "811806e382b37523596d97e2bb8198e6a8bb21a41f6ce656c7e207ecae6939c5"
 dependencies = [
  "bincode",
  "num-complex",
@@ -1602,7 +1602,7 @@ dependencies = [
  "schemars",
  "serde_json",
  "struqture 1.12.2",
- "struqture 2.0.0-alpha.14",
+ "struqture 2.0.0-alpha.15",
  "struqture-py-macros",
  "syn",
  "thiserror",
@@ -1610,9 +1610,9 @@ dependencies = [
 
 [[package]]
 name = "struqture-py-macros"
-version = "2.0.0-alpha.14"
+version = "2.0.0-alpha.15"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "bdf6e2e2013940801118014a3e077b03f7c8cfe51786378f32183b17bbe5fc74"
+checksum = "4546663867a29a1c37b08bfbde48b280e9b2b007b3639b10b2ed27196cb8aa12"
 dependencies = [
  "proc-macro2",
  "quote",
