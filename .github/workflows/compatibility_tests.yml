@@ -22,7 +22,7 @@ jobs:
             ./.compatibility\_tests/*
       - uses: actions/setup-python@v4
         with:
-          python-version: python3.11
+          python-version: 3.11
         env:
           CARGO_INCREMENTAL: 0  
           CARGO_HOME: "~/cargo"
@@ -32,7 +32,7 @@ jobs:
           for dir in ./.compatibility_tests/compatibility_test_*; do
             if [ -d "$dir" ]; then
               echo "Running tests in $dir"
-              CARGO_TARGET_DIR=../target cargo test
+              CARGO_TARGET_DIR=../target cargo test --no-default-features
               cd - > /dev/null
             fi
           done
