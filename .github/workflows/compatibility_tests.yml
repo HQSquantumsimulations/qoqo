@@ -19,6 +19,7 @@ jobs:
       - uses: Swatinem/rust-cache@v2
       - name: Run all compatibility tests
         run: |
+          export CARGO_TARGET_DIR="./target"
           for dir in ./.compatibility_tests/compatibility_test_*; do
             if [ -d "$dir" ]; then
               echo "Running tests in $dir"
