@@ -17,13 +17,26 @@ jobs:
           toolchain: stable
           default: true
       - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: |
+            ./.compatibility\_tests/*
+        env:
+          CARGO_INCREMENTAL: 0  
+          CARGO_HOME: "~/cargo"
       - name: Run all compatibility tests
         run: |
-          export CARGO_TARGET_DIR="./target"
           for dir in ./.compatibility_tests/compatibility_test_*; do
             if [ -d "$dir" ]; then
-              echo "Running tests in $dir"
-              cd "$dir"
+              version=$(grep 'roqoqo = ' "$dir/Cargo.toml" | grep -o '".*"' | tr -d '"')
+              if [ -z "$version" ]; then
+                echo "⚠️ WARNING: Could not extract roqoqo version from $dir, using default target folder."
+                export CARGO_TARGET_DIR="./target/default"
+              else
+                version_key=${version//./\_}
+                export CARGO\_TARGET\_DIR="./shared\_target/roqoqo_$version_key"
+              fi
+
+              echo "Running tests in $dir with $version"
               cargo test
               cd - > /dev/null
             fi
