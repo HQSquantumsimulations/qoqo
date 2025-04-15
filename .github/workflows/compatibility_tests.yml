@@ -20,11 +20,15 @@ jobs:
         with:
           workspaces: |
             ./.compatibility\_tests/*
+      - uses: actions/setup-python@v4
+        with:
+          python-version: python3.11
         env:
           CARGO_INCREMENTAL: 0  
           CARGO_HOME: "~/cargo"
       - name: Run all compatibility tests
         run: |
+          python -m pip install numpy
           for dir in ./.compatibility_tests/compatibility_test_*; do
             if [ -d "$dir" ]; then
               echo "Running tests in $dir"
