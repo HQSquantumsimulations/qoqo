@@ -402,7 +402,7 @@ fn test_pyo3_copy_deepcopy(input_operation: Operation) {
 
         let comparison_copy = copy_op
             .bind(py)
-            .call_method1("__eq__", (copy_deepcopy_param.clone_ref(py),))
+            .call_method1("__eq__", (copy_deepcopy_param.clone(),))
             .unwrap()
             .extract::<bool>()
             .unwrap();

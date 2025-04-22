@@ -131,12 +131,12 @@ impl QuantumProgramWrapper {
     /// Returns:
     ///     PyObject corresponding to the qoqo measurement type of the QuantumProgram,
     ///     i.e. PauliZProduct, CheatedPauliZProduct, Cheated or ClassicalRegister.
-    pub fn measurement(&self) -> PyObject {
+    pub fn measurement<'py>(&'py self, py: Python<'py>) -> PyResult<Bound<'py, PyAny>> {
         match self.internal.clone() {
             QuantumProgram::PauliZProduct {
                 measurement,
                 input_parameter_names: _,
-            } => Python::with_gil(|py| -> PyObject {
+            } => {
                 let pyref: Py<PauliZProductWrapper> = Py::new(
                     py,
                     PauliZProductWrapper {
@@ -144,12 +144,14 @@ impl QuantumProgramWrapper {
                     },
                 )
                 .unwrap();
-                pyref.to_object(py)
-            }),
+                pyref
+                    .into_pyobject(py)
+                    .map(|bound| bound.as_any().to_owned())
+            }
             QuantumProgram::CheatedPauliZProduct {
                 measurement,
                 input_parameter_names: _,
-            } => Python::with_gil(|py| -> PyObject {
+            } => {
                 let pyref: Py<CheatedPauliZProductWrapper> = Py::new(
                     py,
                     CheatedPauliZProductWrapper {
@@ -157,12 +159,14 @@ impl QuantumProgramWrapper {
                     },
                 )
                 .unwrap();
-                pyref.to_object(py)
-            }),
+                pyref
+                    .into_pyobject(py)
+                    .map(|bound| bound.as_any().to_owned())
+            }
             QuantumProgram::Cheated {
                 measurement,
                 input_parameter_names: _,
-            } => Python::with_gil(|py| -> PyObject {
+            } => {
                 let pyref: Py<CheatedWrapper> = Py::new(
                     py,
                     CheatedWrapper {
@@ -170,12 +174,14 @@ impl QuantumProgramWrapper {
                     },
                 )
                 .unwrap();
-                pyref.to_object(py)
-            }),
+                pyref
+                    .into_pyobject(py)
+                    .map(|bound| bound.as_any().to_owned())
+            }
             QuantumProgram::ClassicalRegister {
                 measurement,
                 input_parameter_names: _,
-            } => Python::with_gil(|py| -> PyObject {
+            } => {
                 let pyref: Py<ClassicalRegisterWrapper> = Py::new(
                     py,
                     ClassicalRegisterWrapper {
@@ -183,10 +189,13 @@ impl QuantumProgramWrapper {
                     },
                 )
                 .unwrap();
-                pyref.to_object(py)
-            }),
+                pyref
+                    .into_pyobject(py)
+                    .map(|bound| bound.as_any().to_owned())
+            }
             _ => panic!("Unknown type of QuantumProgram"),
         }
+        .map_err(|_| PyValueError::new_err("Couldn't convert the measurement to a pyobject."))
     }
 
     /// Returns the input_parameter_names attribute of the qoqo QuantumProgram.

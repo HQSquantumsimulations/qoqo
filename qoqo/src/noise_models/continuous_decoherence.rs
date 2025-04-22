@@ -16,6 +16,7 @@ use roqoqo::noise_models::{ContinuousDecoherenceModel, NoiseModel};
 #[cfg(feature = "json_schema")]
 use roqoqo::{operations::SupportedVersion, ROQOQO_VERSION};
 use struqture;
+use struqture_py::spins::PlusMinusLindbladNoiseOperatorWrapper;
 
 /// Noise model representing a continuous decoherence process on qubits.
 ///
@@ -80,8 +81,11 @@ impl ContinuousDecoherenceModelWrapper {
     ///
     /// Returns:
     ///     PlusMinusLindbladNoiseOperator: The internal Lindblad noise operator of the ContinuousDecoherenceModel.
-    pub fn get_noise_operator(&self) -> Py<PyAny> {
-        Python::with_gil(|py| crate::get_operator(py, &self.internal.lindblad_noise))
+    pub fn get_noise_operator<'py>(
+        &'py self,
+        py: Python<'py>,
+    ) -> PyResult<Bound<'py, PlusMinusLindbladNoiseOperatorWrapper>> {
+        crate::get_operator(py, &self.internal.lindblad_noise)
     }
 
     /// Convert the bincode representation of the Noise-Model to a device using the bincode crate.

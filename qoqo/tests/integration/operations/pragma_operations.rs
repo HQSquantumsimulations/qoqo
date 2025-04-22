@@ -861,7 +861,7 @@ fn test_pyo3_copy_deepcopy(input_measurement: Operation) {
         let comparison_copy = bool::extract_bound(
             &copy_op
                 .bind(py)
-                .call_method1("__eq__", (copy_deepcopy_param.clone_ref(py),))
+                .call_method1("__eq__", (copy_deepcopy_param.clone(),))
                 .unwrap(),
         )
         .unwrap();
@@ -899,7 +899,7 @@ fn test_pyo3_copy_deepcopy_overrotation() {
         let comparison_copy = bool::extract_bound(
             &copy_op
                 .bind(py)
-                .call_method1("__eq__", (operation.clone_ref(py),))
+                .call_method1("__eq__", (operation.clone(),))
                 .unwrap(),
         )
         .unwrap();
@@ -1717,7 +1717,7 @@ fn test_pyo3_richcmp(definition_1: Operation, definition_2: Operation) {
         let comparison = bool::extract_bound(
             &operation_one
                 .bind(py)
-                .call_method1("__eq__", (operation_two.clone_ref(py),))
+                .call_method1("__eq__", (operation_two.clone(),))
                 .unwrap(),
         )
         .unwrap();
@@ -1726,7 +1726,7 @@ fn test_pyo3_richcmp(definition_1: Operation, definition_2: Operation) {
         let comparison = bool::extract_bound(
             &operation_one
                 .bind(py)
-                .call_method1("__ne__", (operation_two.clone_ref(py),))
+                .call_method1("__ne__", (operation_two.clone(),))
                 .unwrap(),
         )
         .unwrap();
@@ -1762,7 +1762,7 @@ fn test_pyo3_richcmp_overrotation() {
         let comparison = bool::extract_bound(
             &operation_one
                 .bind(py)
-                .call_method1("__ne__", (operation_two.clone_ref(py),))
+                .call_method1("__ne__", (operation_two.clone(),))
                 .unwrap(),
         )
         .unwrap();
@@ -2467,9 +2467,7 @@ fn test_pyo3_new_general_noise() {
         let convert_to_get_operators = convert_operation_to_pyobject(to_get_operators).unwrap();
         let operators_op = convert_to_get_operators.call_method0(py, "rates").unwrap();
 
-        let binding = operation
-            .call1((0, 0.005, operators_op.clone_ref(py)))
-            .unwrap();
+        let binding = operation.call1((0, 0.005, operators_op.clone())).unwrap();
         let new_op = binding.downcast::<PragmaGeneralNoiseWrapper>().unwrap();
 
         let comparison_copy = bool::extract_bound(
@@ -2481,10 +2479,10 @@ fn test_pyo3_new_general_noise() {
         assert!(comparison_copy);
 
         // Error initialisation
-        let result = operation.call1((0, vec!["fails"], 0.0, operators_op.clone_ref(py)));
+        let result = operation.call1((0, vec!["fails"], 0.0, operators_op.clone()));
         assert!(result.is_err());
 
-        let result = operation.call1((0, 0.0, vec!["fails"], operators_op.clone_ref(py)));
+        let result = operation.call1((0, 0.0, vec!["fails"], operators_op.clone()));
         assert!(result.is_err());
 
         // Testing PartialEq, Clone and Debug

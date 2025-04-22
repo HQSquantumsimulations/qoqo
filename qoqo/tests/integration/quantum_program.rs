@@ -556,7 +556,8 @@ fn test_richcmp() {
             .unwrap();
         let program_two = binding.downcast::<QuantumProgramWrapper>().unwrap();
 
-        let operation1 = convert_operation_to_pyobject(Operation::from(PauliX::new(0))).unwrap();
+        let operation1 =
+            convert_operation_to_pyobject(Operation::from(PauliX::new(0)), py).unwrap();
 
         let comparison = bool::extract_bound(
             &program_one
@@ -567,7 +568,7 @@ fn test_richcmp() {
         assert!(!comparison);
         let comparison = bool::extract_bound(
             &program_one
-                .call_method1("__eq__", (operation1.clone_ref(py),))
+                .call_method1("__eq__", (operation1.clone(),))
                 .unwrap(),
         )
         .unwrap();
@@ -579,7 +580,7 @@ fn test_richcmp() {
         assert!(comparison);
         let comparison = bool::extract_bound(
             &program_one
-                .call_method1("__ne__", (operation1.clone_ref(py),))
+                .call_method1("__ne__", (operation1.clone(),))
                 .unwrap(),
         )
         .unwrap();
@@ -595,18 +596,17 @@ fn test_convert_into_program() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         let added_op = Operation::from(PauliX::new(0));
-        let operation = convert_operation_to_pyobject(added_op).unwrap();
+        let operation = convert_operation_to_pyobject(added_op, py).unwrap();
         let input = create_measurement(py);
         let program_type = py.get_type::<QuantumProgramWrapper>();
         let binding = program_type
             .call1((&input, vec!["one".to_string()]))
             .unwrap();
         let program = binding.downcast::<QuantumProgramWrapper>().unwrap();
-        let comparison =
-            program.call_method1("convert_into_quantum_program", (operation.clone_ref(py),));
+        let comparison = program.call_method1("convert_into_quantum_program", (operation.clone(),));
         assert!(comparison.is_err());
         assert_eq!(
-            convert_into_quantum_program(operation.bind(py)),
+            convert_into_quantum_program(&operation),
             Err(QoqoError::CannotExtractObject)
         );
         // assert_eq!(convert_into_quantum_program(circ), Err(QoqoError::VersionMismatch));

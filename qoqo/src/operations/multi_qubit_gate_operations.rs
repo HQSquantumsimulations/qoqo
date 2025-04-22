@@ -109,8 +109,7 @@ insert_operation_to_pyobject!(
         {
             let pyref: Py<CallDefinedGateWrapper> =
                 Py::new(py, CallDefinedGateWrapper { internal }).unwrap();
-            let pyobject: PyObject = pyref.to_object(py);
-            Ok(pyobject)
+            pyref.into_pyobject(py).map(|bound| bound.as_any().to_owned()).map_err(|_| PyValueError::new_err("Unable to convert to Python object"))
         }
     }
 );
@@ -184,13 +183,11 @@ impl CallDefinedGateWrapper {
     ///
     /// Returns:
     ///     Set[int]: The involved qubits of the operation.
-    fn involved_qubits(&self) -> PyObject {
-        let pyobject: PyObject = Python::with_gil(|py| -> PyObject {
-            PySet::new(py, &[self.internal.qubits().clone()])
-                .unwrap()
-                .to_object(py)
-        });
-        pyobject
+    fn involved_qubits<'py>(&'py self, py: Python<'py>) -> PyResult<Bound<'py, PySet>> {
+        PySet::new(py, &[self.internal.qubits().clone()])
+            .unwrap()
+            .into_pyobject(py)
+            .map_err(|_| PyRuntimeError::new_err("Unable to convert to Python object"))
     }
 
     /// Return tags classifying the type of the operation.

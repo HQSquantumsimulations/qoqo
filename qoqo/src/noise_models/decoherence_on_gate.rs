@@ -15,7 +15,7 @@ use qoqo_macros::noise_model_wrapper;
 use roqoqo::noise_models::{DecoherenceOnGateModel, NoiseModel};
 #[cfg(feature = "json_schema")]
 use roqoqo::{operations::SupportedVersion, ROQOQO_VERSION};
-use struqture_py;
+use struqture_py::{self, spins::PlusMinusLindbladNoiseOperatorWrapper};
 
 /// Error model for noise that is only present on gate executions.
 ///
@@ -104,11 +104,14 @@ impl DecoherenceOnGateModelWrapper {
     ///
     /// Returns:
     ///     Optional[struqture_py.spins.PlusMinusLindbladNoiseOperator]: The error model applied when gate is applied.
-    pub fn get_single_qubit_gate_error(&self, gate: &str, qubit: usize) -> Option<Py<PyAny>> {
+    pub fn get_single_qubit_gate_error<'py>(
+        &'py self,
+        py: Python<'py>,
+        gate: &str,
+        qubit: usize,
+    ) -> Option<Bound<'py, PlusMinusLindbladNoiseOperatorWrapper>> {
         match self.internal.get_single_qubit_gate_error(gate, qubit) {
-            Some(struqture_obj) => {
-                Python::with_gil(|py| Some(crate::get_operator(py, struqture_obj)))
-            }
+            Some(struqture_obj) => crate::get_operator(py, struqture_obj).ok(),
             None => None,
         }
     }
@@ -162,19 +165,18 @@ impl DecoherenceOnGateModelWrapper {
     ///
     /// Returns:
     ///     Optional[struqture_py.spins.PlusMinusLindbladNoiseOperator]: The error model applied when gate is applied.
-    pub fn get_two_qubit_gate_error(
-        &self,
+    pub fn get_two_qubit_gate_error<'py>(
+        &'py self,
+        py: Python<'py>,
         gate: &str,
         control: usize,
         target: usize,
-    ) -> Option<Py<PyAny>> {
+    ) -> Option<Bound<'py, PlusMinusLindbladNoiseOperatorWrapper>> {
         match self
             .internal
             .get_two_qubit_gate_error(gate, control, target)
         {
-            Some(struqture_obj) => {
-                Python::with_gil(|py| Some(crate::get_operator(py, struqture_obj)))
-            }
+            Some(struqture_obj) => crate::get_operator(py, struqture_obj).ok(),
             None => None,
         }
     }
@@ -232,20 +234,19 @@ impl DecoherenceOnGateModelWrapper {
     ///
     /// Returns:
     ///     Optional[struqture_py.spins.PlusMinusLindbladNoiseOperator]: The error model applied when gate is applied.
-    pub fn get_three_qubit_gate_error(
-        &self,
+    pub fn get_three_qubit_gate_error<'py>(
+        &'py self,
+        py: Python<'py>,
         gate: &str,
         control0: usize,
         control1: usize,
         target: usize,
-    ) -> Option<Py<PyAny>> {
+    ) -> Option<Bound<'py, PlusMinusLindbladNoiseOperatorWrapper>> {
         match self
             .internal
             .get_three_qubit_gate_error(gate, control0, control1, target)
         {
-            Some(struqture_obj) => {
-                Python::with_gil(|py| Some(crate::get_operator(py, struqture_obj)))
-            }
+            Some(struqture_obj) => crate::get_operator(py, struqture_obj).ok(),
             None => None,
         }
     }
@@ -295,11 +296,14 @@ impl DecoherenceOnGateModelWrapper {
     ///
     /// Returns:
     ///     Optional[struqture_py.spins.PlusMinusLindbladNoiseOperator]: The error model applied when gate is applied.
-    pub fn get_multi_qubit_gate_error(&self, gate: &str, qubits: Vec<usize>) -> Option<Py<PyAny>> {
+    pub fn get_multi_qubit_gate_error<'py>(
+        &'py self,
+        py: Python<'py>,
+        gate: &str,
+        qubits: Vec<usize>,
+    ) -> Option<Bound<'py, PlusMinusLindbladNoiseOperatorWrapper>> {
         match self.internal.get_multi_qubit_gate_error(gate, qubits) {
-            Some(struqture_obj) => {
-                Python::with_gil(|py| Some(crate::get_operator(py, struqture_obj)))
-            }
+            Some(struqture_obj) => crate::get_operator(py, struqture_obj).ok(),
             None => None,
         }
     }
