@@ -1609,9 +1609,9 @@ dependencies = [
 
 [[package]]
 name = "struqture-py-macros"
-version = "2.0.0-alpha.16"
+version = "2.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "31440c6e0b085ec25db5a1807377191694665c3ac446ba803db08f1d53a8e120"
+checksum = "3597c97c97c1a18563e05bc5aa3981875346fe564b7a4a91271370cd51204af1"
 dependencies = [
  "proc-macro2",
  "quote",
