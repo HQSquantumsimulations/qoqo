@@ -1,6 +1,6 @@
 [package]
 name = "roqoqo"
-version = "1.19.3"
+version = "1.19.4"
 authors = ["HQS Quantum Simulations <info@quantumsimulations.de>"]
 license = "Apache-2.0"
 edition = "2021"
@@ -25,7 +25,7 @@ doctest = false
 roqoqo-derive = { version = "~1.19", path = "../roqoqo-derive" }
 
 qoqo_calculator = "~1.5"
-struqture = { version = "~2.0.0-alpha.11", features = [
+struqture = { version = "~2.0.0-alpha.16", features = [
     "json_schema",
     "struqture_1_export",
     "struqture_1_import",
