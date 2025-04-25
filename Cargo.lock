@@ -1093,7 +1093,7 @@ dependencies = [
 
 [[package]]
 name = "qoqo"
-version = "1.19.4"
+version = "1.19.5"
 dependencies = [
  "bincode",
  "nalgebra",
@@ -1112,7 +1112,7 @@ dependencies = [
  "schemars",
  "serde",
  "serde_json",
- "struqture 2.0.0-alpha.16",
+ "struqture 2.0.0",
  "struqture-py",
  "syn",
  "test-case",
@@ -1121,11 +1121,11 @@ dependencies = [
 
 [[package]]
 name = "qoqo-macros"
-version = "1.19.4"
+version = "1.19.5"
 dependencies = [
  "proc-macro2",
  "quote",
- "struqture 2.0.0-alpha.16",
+ "struqture 2.0.0",
  "syn",
 ]
 
@@ -1324,7 +1324,7 @@ dependencies = [
 
 [[package]]
 name = "roqoqo"
-version = "1.19.4"
+version = "1.19.5"
 dependencies = [
  "async-trait",
  "bincode",
@@ -1346,7 +1346,7 @@ dependencies = [
  "serde_json",
  "serde_test",
  "struqture 1.12.2",
- "struqture 2.0.0-alpha.16",
+ "struqture 2.0.0",
  "syn",
  "test-case",
  "thiserror",
@@ -1355,7 +1355,7 @@ dependencies = [
 
 [[package]]
 name = "roqoqo-derive"
-version = "1.19.4"
+version = "1.19.5"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -1364,7 +1364,7 @@ dependencies = [
 
 [[package]]
 name = "roqoqo-test"
-version = "1.19.4"
+version = "1.19.5"
 dependencies = [
  "nalgebra",
  "ndarray",
@@ -1565,9 +1565,9 @@ dependencies = [
 
 [[package]]
 name = "struqture"
-version = "2.0.0-alpha.16"
+version = "2.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "70a78d10ff6ec337a8e5f4bb3fac9d63878a6a56091065546dbcb2c3ca3cef30"
+checksum = "95ab57cbcfb80e68ba4990a3ec251d18c271f942ae51f932a8f6df1586a68182"
 dependencies = [
  "indexmap",
  "itertools",
@@ -1584,9 +1584,9 @@ dependencies = [
 
 [[package]]
 name = "struqture-py"
-version = "2.0.0-alpha.16"
+version = "2.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "91b35f62ce78a354480d3510d2465154c63256b37b2f4815a7b04a25db53f91f"
+checksum = "c808b25c4e290d8885ddc5689000611de7b0d78c873c2a0ce4dd19fab64ac6c9"
 dependencies = [
  "bincode",
  "num-complex",
@@ -1601,7 +1601,7 @@ dependencies = [
  "schemars",
  "serde_json",
  "struqture 1.12.2",
- "struqture 2.0.0-alpha.16",
+ "struqture 2.0.0",
  "struqture-py-macros",
  "syn",
  "thiserror",
@@ -1609,9 +1609,9 @@ dependencies = [
 
 [[package]]
 name = "struqture-py-macros"
-version = "2.0.0-alpha.16"
+version = "2.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "31440c6e0b085ec25db5a1807377191694665c3ac446ba803db08f1d53a8e120"
+checksum = "3597c97c97c1a18563e05bc5aa3981875346fe564b7a4a91271370cd51204af1"
 dependencies = [
  "proc-macro2",
  "quote",
