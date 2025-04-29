@@ -889,14 +889,14 @@ mod test_chain_with_environment {
     #[test]
     fn test_chain_with_environment_capsule() {
         pyo3::prepare_freethreaded_python();
-        let device_capsule = Python::with_gil(|py| -> ChainWithEnvironmentCapsule {
+        Python::with_gil(|py| {
             let device_type = py.get_type::<TestDeviceWrapper>();
             let test_device = device_type.call0().unwrap();
-            ChainWithEnvironmentCapsule::new(&test_device).unwrap()
+            let device_capsule = ChainWithEnvironmentCapsule::new(&test_device).unwrap();
+            let chains_with_environment = device_capsule.environment_chains();
+            let simple_test_device = TestDevice;
+            let comparison = simple_test_device.environment_chains();
+            assert_eq!(chains_with_environment, comparison);
         });
-        let chains_with_environment = device_capsule.environment_chains();
-        let simple_test_device = TestDevice;
-        let comparison = simple_test_device.environment_chains();
-        assert_eq!(chains_with_environment, comparison);
     }
 }
