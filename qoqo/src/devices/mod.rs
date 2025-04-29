@@ -77,7 +77,7 @@ impl ChainWithEnvironmentDevice for ChainWithEnvironmentCapsule {
                 .expect("Internal error `environment_chains` on python device failed.");
 
             chains_with_environment
-                  .extract::<Vec<(Vec<usize>, HashMap<usize, Vec<usize>>)>>(py)
+                  .extract::<Vec<(Vec<usize>, HashMap<usize, Vec<usize>>)>>()
                   .expect("Internal error `environment_chains` on python device does not return valid description.")
         })
     }

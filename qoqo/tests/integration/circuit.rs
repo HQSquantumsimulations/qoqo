@@ -48,7 +48,7 @@ fn populate_circuit_rotatex(
     }
 }
 
-fn add_circuit_measurement_operation(circuit: &Bound<CircuitWrapper>) {
+fn add_circuit_measurement_operation(circuit: &Bound<CircuitWrapper>, py: Python<'_>) {
     let mut qubit_mapping: HashMap<usize, usize> = HashMap::new();
     qubit_mapping.insert(0, 1);
     let input_measurement: Operation = Operation::from(PragmaRepeatedMeasurement::new(
@@ -56,7 +56,7 @@ fn add_circuit_measurement_operation(circuit: &Bound<CircuitWrapper>) {
         2,
         Some(qubit_mapping),
     ));
-    let measurement_operation = convert_operation_to_pyobject(input_measurement).unwrap();
+    let measurement_operation = convert_operation_to_pyobject(input_measurement, py).unwrap();
     circuit
         .call_method1("add", (measurement_operation,))
         .unwrap();
@@ -65,9 +65,9 @@ fn add_circuit_measurement_operation(circuit: &Bound<CircuitWrapper>) {
 /// Test default function of CircuitWrapper
 #[test]
 fn test_default() {
-    let operation = convert_operation_to_pyobject(Operation::from(PauliX::new(0))).unwrap();
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
+        let operation = convert_operation_to_pyobject(Operation::from(PauliX::new(0)), py).unwrap();
         let circuit = new_circuit(py);
         circuit.call_method1("add", (operation.clone(),)).unwrap();
         let circuit_wrapper = circuit.extract::<CircuitWrapper>();
@@ -91,7 +91,7 @@ fn test_substitute_parameters() {
     Python::with_gil(|py| {
         let added_operation = Operation::from(RotateX::new(0, CalculatorFloat::from("test")));
 
-        let operation = convert_operation_to_pyobject(added_operation).unwrap();
+        let operation = convert_operation_to_pyobject(added_operation, py).unwrap();
         let circuit = new_circuit(py);
         circuit.call_method1("add", (operation,)).unwrap();
 
@@ -102,7 +102,7 @@ fn test_substitute_parameters() {
             .unwrap();
 
         let to_sub = Operation::from(RotateX::new(0, CalculatorFloat::from(1.0)));
-        let subbed_operation = convert_operation_to_pyobject(to_sub).unwrap();
+        let subbed_operation = convert_operation_to_pyobject(to_sub, py).unwrap();
 
         let comp_op = substitute_circ.call_method1("__getitem__", (0,)).unwrap();
         let comparison =
@@ -123,7 +123,7 @@ fn test_remap_qubits() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         let added_operation = Operation::from(RotateX::new(0, CalculatorFloat::from(1.0)));
-        let operation = convert_operation_to_pyobject(added_operation).unwrap();
+        let operation = convert_operation_to_pyobject(added_operation, py).unwrap();
         let circuit = new_circuit(py);
         circuit.call_method1("add", (operation,)).unwrap();
 
@@ -136,7 +136,7 @@ fn test_remap_qubits() {
             .unwrap();
 
         let to_remap = Operation::from(RotateX::new(2, CalculatorFloat::from(1.0)));
-        let remapped_operation = convert_operation_to_pyobject(to_remap).unwrap();
+        let remapped_operation = convert_operation_to_pyobject(to_remap, py).unwrap();
 
         let comp_op = remap_circ.call_method1("__getitem__", (0,)).unwrap();
         let comparison = bool::extract_bound(
@@ -372,7 +372,7 @@ fn test_to_from_json() {
     Python::with_gil(|py| {
         let circuit = new_circuit(py);
         populate_circuit_rotatex(py, &circuit, 0, 3);
-        add_circuit_measurement_operation(&circuit);
+        add_circuit_measurement_operation(&circuit, py);
 
         // testing 'from_json' and 'to_json' functions
         let serialised = &circuit.call_method0("to_json").unwrap();
