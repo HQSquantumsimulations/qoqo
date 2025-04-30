@@ -110,7 +110,7 @@ pub static STRUQTURE_OPERATOR: OnceLock<Py<PyAny>> = OnceLock::new();
 pub(crate) fn get_operator<'py>(
     py: Python<'py>,
     noise: &PlusMinusLindbladNoiseOperator,
-) -> PyResult<Bound<'py, PlusMinusLindbladNoiseOperatorWrapper>> {
+) -> PyResult<Bound<'py, PyAny>> {
     let version: &String = STRUQTURE_VERSION
         .get()
         .expect("Could not get STRUQTURE_VERSION");
@@ -128,17 +128,19 @@ pub(crate) fn get_operator<'py>(
             .bind(py)
             .call_method1("from_json", (json_string.as_str(),))
             .expect("Could not create struqture 1.x PlusMinusLindbladNoiseOperator from JSON")
-            .downcast::<PlusMinusLindbladNoiseOperatorWrapper>()?
             .to_owned())
     } else {
         let pmlno = PlusMinusLindbladNoiseOperatorWrapper {
             internal: noise.clone(),
         };
-        pmlno.into_pyobject(py).map_err(|_| {
-            PyValueError::new_err(
-                "Could not convert PlusMinusLindbladNoiseOperator into a python object.",
-            )
-        })
+        pmlno
+            .into_pyobject(py)
+            .map_err(|_| {
+                PyValueError::new_err(
+                    "Could not convert PlusMinusLindbladNoiseOperator into a python object.",
+                )
+            })
+            .map(|bound| bound.as_any().to_owned())
     }
 }
 

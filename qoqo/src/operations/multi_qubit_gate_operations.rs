@@ -184,8 +184,7 @@ impl CallDefinedGateWrapper {
     /// Returns:
     ///     Set[int]: The involved qubits of the operation.
     fn involved_qubits<'py>(&'py self, py: Python<'py>) -> PyResult<Bound<'py, PySet>> {
-        PySet::new(py, &[self.internal.qubits().clone()])
-            .unwrap()
+        PySet::new(py, &[self.internal.qubits().clone()])?
             .into_pyobject(py)
             .map_err(|_| PyRuntimeError::new_err("Unable to convert to Python object"))
     }

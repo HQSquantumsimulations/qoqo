@@ -162,8 +162,7 @@ impl PragmaSetStateVectorWrapper {
     /// Returns:
     ///     Set[int]: The involved qubits of the PRAGMA operation.
     fn involved_qubits<'py>(&'py self, py: Python<'py>) -> PyResult<Bound<'py, PySet>> {
-        PySet::new(py, ["All"])
-            .unwrap()
+        PySet::new(py, ["All"])?
             .into_pyobject(py)
             .map_err(|_| PyRuntimeError::new_err("Unable to convert to Python object"))
     }
@@ -448,8 +447,7 @@ impl PragmaSetDensityMatrixWrapper {
     /// Returns:
     ///     Set[int]: The involved qubits of the PRAGMA operation.
     fn involved_qubits<'py>(&'py self, py: Python<'py>) -> PyResult<Bound<'py, PySet>> {
-        PySet::new(py, ["All"])
-            .unwrap()
+        PySet::new(py, ["All"])?
             .into_pyobject(py)
             .map_err(|_| PyRuntimeError::new_err("Unable to convert to Python object"))
     }
@@ -1150,8 +1148,7 @@ impl PragmaGeneralNoiseWrapper {
     /// Returns:
     ///     Set[int]: The involved qubits of the PRAGMA operation.
     fn involved_qubits<'py>(&'py self, py: Python<'py>) -> PyResult<Bound<'py, PySet>> {
-        PySet::new(py, [*self.internal.qubit()])
-            .unwrap()
+        PySet::new(py, [*self.internal.qubit()])?
             .into_pyobject(py)
             .map_err(|_| PyRuntimeError::new_err("Unable to convert to Python object"))
     }
@@ -1444,8 +1441,7 @@ impl PragmaChangeDeviceWrapper {
     /// Returns:
     ///     Set[int]: The involved qubits of the PRAGMA operation.
     fn involved_qubits<'py>(&'py self, py: Python<'py>) -> PyResult<Bound<'py, PySet>> {
-        PySet::new(py, ["All"])
-            .unwrap()
+        PySet::new(py, ["All"])?
             .into_pyobject(py)
             .map_err(|_| PyRuntimeError::new_err("Unable to convert to Python object"))
     }
@@ -1708,14 +1704,14 @@ impl PragmaAnnotatedOpWrapper {
     fn involved_qubits<'py>(&'py self, py: Python<'py>) -> Bound<'py, PySet> {
         let involved = self.internal.involved_qubits();
         match involved {
-            InvolvedQubits::All => PySet::new(py, ["All"]).unwrap(),
-            InvolvedQubits::None => PySet::empty(py).unwrap(),
+            InvolvedQubits::All => PySet::new(py, ["All"])?,
+            InvolvedQubits::None => PySet::empty(py)?,
             InvolvedQubits::Set(x) => {
                 let mut vector: Vec<usize> = Vec::new();
                 for qubit in x {
                     vector.push(qubit)
                 }
-                PySet::new(py, &vector[..]).unwrap()
+                PySet::new(py, &vector[..])?
             }
         }
     }

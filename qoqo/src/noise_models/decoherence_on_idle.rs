@@ -16,7 +16,6 @@ use roqoqo::noise_models::{DecoherenceOnIdleModel, NoiseModel};
 #[cfg(feature = "json_schema")]
 use roqoqo::{operations::SupportedVersion, ROQOQO_VERSION};
 use struqture;
-use struqture_py::spins::PlusMinusLindbladNoiseOperatorWrapper;
 
 /// Noise model representing a continuous decoherence process on idle qubits.
 ///
@@ -80,10 +79,7 @@ impl DecoherenceOnIdleModelWrapper {
     ///
     /// Returns:
     ///     PlusMinusLindbladNoiseOperator: The internal Lindblad noise operator of the DecoherenceOnIdle.
-    pub fn get_noise_operator<'py>(
-        &'py self,
-        py: Python<'py>,
-    ) -> PyResult<Bound<'py, PlusMinusLindbladNoiseOperatorWrapper>> {
+    pub fn get_noise_operator<'py>(&'py self, py: Python<'py>) -> PyResult<Bound<'py, PyAny>> {
         crate::get_operator(py, &self.internal.lindblad_noise)
     }
 
