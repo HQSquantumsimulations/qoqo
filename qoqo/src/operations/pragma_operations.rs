@@ -1704,14 +1704,14 @@ impl PragmaAnnotatedOpWrapper {
     fn involved_qubits<'py>(&'py self, py: Python<'py>) -> Bound<'py, PySet> {
         let involved = self.internal.involved_qubits();
         match involved {
-            InvolvedQubits::All => PySet::new(py, ["All"])?,
-            InvolvedQubits::None => PySet::empty(py)?,
+            InvolvedQubits::All => PySet::new(py, ["All"]).unwrap(),
+            InvolvedQubits::None => PySet::empty(py).unwrap(),
             InvolvedQubits::Set(x) => {
                 let mut vector: Vec<usize> = Vec::new();
                 for qubit in x {
                     vector.push(qubit)
                 }
-                PySet::new(py, &vector[..])?
+                PySet::new(py, &vector[..]).unwrap()
             }
         }
     }
