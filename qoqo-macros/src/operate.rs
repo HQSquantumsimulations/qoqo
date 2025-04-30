@@ -283,14 +283,14 @@ fn operate_struct(ds: DataStruct, ident: Ident) -> TokenStream {
         fn involved_qubits<'py>(&'py self, py: Python<'py>) -> Bound<'py, PySet> {
             let involved = self.internal.involved_qubits();
             match involved {
-                InvolvedQubits::All => PySet::new(py, ["All"]).unwrap(),
-                InvolvedQubits::None => PySet::empty(py).unwrap(),
+                InvolvedQubits::All => PySet::new(py, ["All"]).expect("Could not create PySet."),
+                InvolvedQubits::None => PySet::empty(py).expect("Could not create PySet."),
                 InvolvedQubits::Set(x) => {
                     let mut vector: Vec<usize> = Vec::new();
                     for qubit in x {
                         vector.push(qubit)
                     }
-                    PySet::new(py, &vector[..]).unwrap()
+                    PySet::new(py, &vector[..]).expect("Could not create PySet.")
                 }
             }
         }
