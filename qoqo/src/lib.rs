@@ -13,13 +13,13 @@
 #![deny(missing_docs)]
 #![deny(rustdoc::missing_crate_level_docs)]
 #![deny(missing_debug_implementations)]
-#![allow(deprecated)]
 
 //! Qoqo quantum computing toolkit
 //!
 //! Quantum Operation Quantum Operation
 //! Yes we use [reduplication](https://en.wikipedia.org/wiki/Reduplication)
 
+use pyo3::exceptions::PyValueError;
 use pyo3::prelude::*;
 
 use pyo3::types::PyDict;
@@ -107,7 +107,10 @@ pub static STRUQTURE_VERSION: OnceLock<String> = OnceLock::new();
 /// Struqture PlusMinusLindbladNoiseOperator object from local struqture package
 pub static STRUQTURE_OPERATOR: OnceLock<Py<PyAny>> = OnceLock::new();
 
-pub(crate) fn get_operator(py: Python, noise: &PlusMinusLindbladNoiseOperator) -> Py<PyAny> {
+pub(crate) fn get_operator<'py>(
+    py: Python<'py>,
+    noise: &PlusMinusLindbladNoiseOperator,
+) -> PyResult<Bound<'py, PyAny>> {
     let version: &String = STRUQTURE_VERSION
         .get()
         .expect("Could not get STRUQTURE_VERSION");
@@ -121,14 +124,23 @@ pub(crate) fn get_operator(py: Python, noise: &PlusMinusLindbladNoiseOperator) -
                 .expect("Could not convert struqture 2 object to struqture 1"),
         )
         .expect("Could not serialize to JSON");
-        class
-            .call_method1(py, "from_json", (json_string.as_str(),))
+        Ok(class
+            .bind(py)
+            .call_method1("from_json", (json_string.as_str(),))
             .expect("Could not create struqture 1.x PlusMinusLindbladNoiseOperator from JSON")
+            .to_owned())
     } else {
         let pmlno = PlusMinusLindbladNoiseOperatorWrapper {
             internal: noise.clone(),
         };
-        pmlno.into_py(py)
+        pmlno
+            .into_pyobject(py)
+            .map_err(|_| {
+                PyValueError::new_err(
+                    "Could not convert PlusMinusLindbladNoiseOperator into a python object.",
+                )
+            })
+            .map(|bound| bound.as_any().to_owned())
     }
 }
 

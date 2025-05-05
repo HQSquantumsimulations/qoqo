@@ -242,31 +242,19 @@ impl ControlledSWAPWrapper {
     ///
     /// Returns:
     ///     Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-    fn involved_qubits(&self) -> PyObject {
-        Python::with_gil(|py| -> PyObject {
-            let involved = self.internal.involved_qubits();
-            match involved {
-                InvolvedQubits::All => {
-                    let pyref: &Bound<PySet> = &PySet::new(py, ["All"]).unwrap();
-                    let pyobject: PyObject = pyref.to_object(py);
-                    pyobject
+    fn involved_qubits<'py>(&'py self, py: Python<'py>) -> Bound<'py, PySet> {
+        let involved = self.internal.involved_qubits();
+        match involved {
+            InvolvedQubits::All => PySet::new(py, ["All"]).expect("Could not create PySet"),
+            InvolvedQubits::None => PySet::empty(py).expect("Could not create PySet"),
+            InvolvedQubits::Set(x) => {
+                let mut vector: Vec<usize> = Vec::new();
+                for qubit in x {
+                    vector.push(qubit)
                 }
-                InvolvedQubits::None => {
-                    let pyref: &Bound<PySet> = &PySet::empty(py).unwrap();
-                    let pyobject: PyObject = pyref.to_object(py);
-                    pyobject
-                }
-                InvolvedQubits::Set(x) => {
-                    let mut vector: Vec<usize> = Vec::new();
-                    for qubit in x {
-                        vector.push(qubit)
-                    }
-                    let pyref: &Bound<PySet> = &PySet::new(py, &vector[..]).unwrap();
-                    let pyobject: PyObject = pyref.to_object(py);
-                    pyobject
-                }
+                PySet::new(py, &vector[..]).expect("Could not create PySet")
             }
-        })
+        }
     }
     /// Copies Operation
     ///

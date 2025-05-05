@@ -80,8 +80,8 @@ impl ContinuousDecoherenceModelWrapper {
     ///
     /// Returns:
     ///     PlusMinusLindbladNoiseOperator: The internal Lindblad noise operator of the ContinuousDecoherenceModel.
-    pub fn get_noise_operator(&self) -> Py<PyAny> {
-        Python::with_gil(|py| crate::get_operator(py, &self.internal.lindblad_noise))
+    pub fn get_noise_operator<'py>(&'py self, py: Python<'py>) -> PyResult<Bound<'py, PyAny>> {
+        crate::get_operator(py, &self.internal.lindblad_noise)
     }
 
     /// Convert the bincode representation of the Noise-Model to a device using the bincode crate.

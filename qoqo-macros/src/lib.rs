@@ -482,31 +482,23 @@ pub fn wrap(
         ///
         /// Returns:
         ///     Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-        pub fn involved_modes(&self) -> PyObject {
-            Python::with_gil(|py| -> PyObject {
+        pub fn involved_modes<'py>(&'py self, py: Python<'py>) -> Bound<PySet> {
                 let involved = self.internal.involved_modes();
                 match involved {
                     InvolvedModes::All => {
-                        let pyref: &Bound<PySet> = &PySet::new(py, &["All"]).unwrap();
-                        let pyobject: PyObject = pyref.to_object(py);
-                        pyobject
+                        PySet::new(py, &["All"]).unwrap()
                     },
                     InvolvedModes::None => {
-                        let pyref: &Bound<PySet> = &PySet::empty(py).unwrap();
-                        let pyobject: PyObject = pyref.to_object(py);
-                        pyobject
+                        PySet::empty(py).unwrap()
                     },
                     InvolvedModes::Set(x) => {
                         let mut vector: Vec<usize> = Vec::new();
                         for mode in x {
                             vector.push(mode)
                         }
-                        let pyref: &Bound<PySet> = &PySet::new(py, &vector[..]).unwrap();
-                        let pyobject: PyObject = pyref.to_object(py);
-                        pyobject
+                        PySet::new(py, &vector[..]).unwrap()
                     },
                 }
-            })
             }
         }
     } else {

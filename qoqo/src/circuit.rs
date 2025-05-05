@@ -357,13 +357,13 @@ impl CircuitWrapper {
     ///
     /// Raises:
     ///     IndexError: Index out of range.
-    pub fn get(&self, index: usize) -> PyResult<PyObject> {
+    pub fn get<'py>(&'py self, py: Python<'py>, index: usize) -> PyResult<Bound<'py, PyAny>> {
         let operation = self
             .internal
             .get(index)
             .ok_or_else(|| PyIndexError::new_err(format!("Index {} out of range", index)))?
             .clone();
-        convert_operation_to_pyobject(operation)
+        convert_operation_to_pyobject(operation, py)
     }
 
     /// Return the copy of a slice of the Circuit.
@@ -424,14 +424,14 @@ impl CircuitWrapper {
     ///
     /// Returns:
     ///     List[Operation]: A vector of the definitions in the Circuit.
-    pub fn definitions(&self) -> PyResult<Vec<PyObject>> {
-        let mut defs: Vec<PyObject> = Vec::new();
+    pub fn definitions<'py>(&'py self, py: Python<'py>) -> PyResult<Vec<Bound<'py, PyAny>>> {
+        let mut defs: Vec<Bound<'py, PyAny>> = Vec::new();
         for op in self
             .internal
             .definitions()
             .iter()
             .cloned()
-            .map(convert_operation_to_pyobject)
+            .map(|operation| convert_operation_to_pyobject(operation, py))
         {
             defs.push(op?)
         }
@@ -442,14 +442,14 @@ impl CircuitWrapper {
     ///
     /// Returns:
     ///     List[Operation]: A vector of the operations in the Circuit.
-    pub fn operations(&self) -> PyResult<Vec<PyObject>> {
-        let mut ops: Vec<PyObject> = Vec::new();
+    pub fn operations<'py>(&'py self, py: Python<'py>) -> PyResult<Vec<Bound<'py, PyAny>>> {
+        let mut ops: Vec<Bound<'py, PyAny>> = Vec::new();
         for op in self
             .internal
             .operations()
             .iter()
             .cloned()
-            .map(convert_operation_to_pyobject)
+            .map(|operation| convert_operation_to_pyobject(operation, py))
         {
             ops.push(op?)
         }
@@ -463,14 +463,18 @@ impl CircuitWrapper {
     ///
     /// Returns:
     ///     List[Operation]: A vector of the operations with the specified tag in the Circuit.
-    pub fn filter_by_tag(&self, tag: &str) -> PyResult<Vec<PyObject>> {
-        let mut tagged: Vec<PyObject> = Vec::new();
+    pub fn filter_by_tag<'py>(
+        &'py self,
+        py: Python<'py>,
+        tag: &str,
+    ) -> PyResult<Vec<Bound<'py, PyAny>>> {
+        let mut tagged: Vec<Bound<'py, PyAny>> = Vec::new();
         for op in self
             .internal
             .iter()
             .filter(|x| x.tags().contains(&tag))
             .cloned()
-            .map(convert_operation_to_pyobject)
+            .map(|operation| convert_operation_to_pyobject(operation, py))
         {
             tagged.push(op?)
         }
@@ -566,13 +570,13 @@ impl CircuitWrapper {
     ///
     /// Raises:
     ///     IndexError: Index out of range.
-    fn __getitem__(&self, index: usize) -> PyResult<PyObject> {
+    fn __getitem__<'py>(&self, py: Python<'py>, index: usize) -> PyResult<Bound<'py, PyAny>> {
         let operation = self
             .internal
             .get(index)
             .ok_or_else(|| PyIndexError::new_err(format!("Index {} out of range", index)))?
             .clone();
-        convert_operation_to_pyobject(operation)
+        convert_operation_to_pyobject(operation, py)
     }
 
     /// Set an Operation at the specified index in the Circuit.
@@ -726,9 +730,9 @@ impl OperationIteratorWrapper {
     ///
     /// Returns:
     ///     Optional[Operation]: Operation that is next in the Iterator.
-    fn __next__(mut slf: PyRefMut<Self>) -> Option<PyObject> {
+    fn __next__<'py>(mut slf: PyRefMut<Self>, py: Python<'py>) -> Option<Bound<'py, PyAny>> {
         slf.internal
             .next()
-            .map(|op| convert_operation_to_pyobject(op).unwrap())
+            .map(|op| convert_operation_to_pyobject(op, py).unwrap())
     }
 }

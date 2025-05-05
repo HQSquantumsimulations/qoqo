@@ -66,11 +66,10 @@ use test_case::test_case;
 fn test_pyo3_is_not_parametrized(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = convert_operation_to_pyobject(input_operation).unwrap();
+        let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
         assert!(!operation
-            .call_method0(py, "is_parametrized")
+            .call_method0("is_parametrized")
             .unwrap()
-            .bind(py)
             .extract::<bool>()
             .unwrap());
     })
@@ -287,13 +286,8 @@ fn test_pyo3_is_not_parametrized(input_operation: Operation) {
 fn test_pyo3_tags(tags: Vec<&str>, input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = convert_operation_to_pyobject(input_operation).unwrap();
-        let tags_op: Vec<String> = operation
-            .call_method0(py, "tags")
-            .unwrap()
-            .bind(py)
-            .extract()
-            .unwrap();
+        let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
+        let tags_op: Vec<String> = operation.call_method0("tags").unwrap().extract().unwrap();
         assert_eq!(tags_op.len(), tags.len());
         for i in 0..tags.len() {
             assert_eq!(tags_op[i], tags[i]);
@@ -333,11 +327,10 @@ fn test_pyo3_tags(tags: Vec<&str>, input_operation: Operation) {
 fn test_pyo3_hqslang(name: &'static str, input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = convert_operation_to_pyobject(input_operation).unwrap();
+        let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
         let name_op: String = operation
-            .call_method0(py, "hqslang")
+            .call_method0("hqslang")
             .unwrap()
-            .bind(py)
             .extract()
             .unwrap();
         assert_eq!(name_op, name.to_string());
@@ -373,22 +366,16 @@ fn test_pyo3_hqslang(name: &'static str, input_operation: Operation) {
 fn test_pyo3_remapqubits(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = convert_operation_to_pyobject(input_operation).unwrap();
+        let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
 
         // test initial qubits
         let control: usize = operation
-            .call_method0(py, "control")
+            .call_method0("control")
             .unwrap()
-            .bind(py)
             .extract()
             .unwrap();
         assert_eq!(control.clone(), 0);
-        let target: usize = operation
-            .call_method0(py, "target")
-            .unwrap()
-            .bind(py)
-            .extract()
-            .unwrap();
+        let target: usize = operation.call_method0("target").unwrap().extract().unwrap();
         assert_eq!(target.clone(), 1);
 
         // remap qubits
@@ -398,23 +385,13 @@ fn test_pyo3_remapqubits(input_operation: Operation) {
         qubit_mapping.insert(1, 3);
         qubit_mapping.insert(3, 1);
         let result = operation
-            .call_method1(py, "remap_qubits", (qubit_mapping,))
+            .call_method1("remap_qubits", (qubit_mapping,))
             .unwrap();
 
         // test re-mapped qubit
-        let control_new: usize = result
-            .call_method0(py, "control")
-            .unwrap()
-            .bind(py)
-            .extract()
-            .unwrap();
+        let control_new: usize = result.call_method0("control").unwrap().extract().unwrap();
         assert_eq!(control_new.clone(), 2);
-        let target_new: usize = result
-            .call_method0(py, "target")
-            .unwrap()
-            .bind(py)
-            .extract()
-            .unwrap();
+        let target_new: usize = result.call_method0("target").unwrap().extract().unwrap();
         assert_eq!(target_new.clone(), 3);
 
         // test that initial and rempapped qubits are different
@@ -453,11 +430,11 @@ fn test_pyo3_remapqubits_error(input_operation: Operation) {
     // preparation
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = convert_operation_to_pyobject(input_operation).unwrap();
+        let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
         // remap qubits
         let mut qubit_mapping: HashMap<usize, usize> = HashMap::new();
         qubit_mapping.insert(2, 0);
-        let result = operation.call_method1(py, "remap_qubits", (qubit_mapping,));
+        let result = operation.call_method1("remap_qubits", (qubit_mapping,));
         assert!(result.is_err());
     })
 }
@@ -481,8 +458,8 @@ fn test_pyo3_remapqubits_error(input_operation: Operation) {
 fn test_pyo3_unitarymatrix_error(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = convert_operation_to_pyobject(input_operation.clone()).unwrap();
-        let py_result = operation.call_method0(py, "unitary_matrix");
+        let operation = convert_operation_to_pyobject(input_operation.clone(), py).unwrap();
+        let py_result = operation.call_method0("unitary_matrix");
         assert!(py_result.is_err());
     })
 }
@@ -516,10 +493,10 @@ fn test_pyo3_unitarymatrix_error(input_operation: Operation) {
 fn test_pyo3_unitarymatrix(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = convert_operation_to_pyobject(input_operation.clone()).unwrap();
-        let py_result = operation.call_method0(py, "unitary_matrix").unwrap();
+        let operation = convert_operation_to_pyobject(input_operation.clone(), py).unwrap();
+        let py_result = operation.call_method0("unitary_matrix").unwrap();
         let result_matrix = py_result
-            .extract::<PyReadonlyArray2<Complex64>>(py)
+            .extract::<PyReadonlyArray2<Complex64>>()
             .unwrap()
             .as_array()
             .to_owned();
@@ -613,11 +590,11 @@ fn test_pyo3_unitarymatrix(input_operation: Operation) {
 fn test_pyo3_format_repr(format_repr: &str, input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = convert_operation_to_pyobject(input_operation).unwrap();
-        let to_format = operation.call_method1(py, "__format__", ("",)).unwrap();
-        let format_op: String = to_format.bind(py).extract().unwrap();
-        let to_repr = operation.call_method0(py, "__repr__").unwrap();
-        let repr_op: String = to_repr.bind(py).extract().unwrap();
+        let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
+        let to_format = operation.call_method1("__format__", ("",)).unwrap();
+        let format_op: String = to_format.extract().unwrap();
+        let to_repr = operation.call_method0("__repr__").unwrap();
+        let repr_op: String = to_repr.extract().unwrap();
         assert_eq!(format_op, format_repr);
         assert_eq!(repr_op, format_repr);
     })
@@ -652,22 +629,20 @@ fn test_pyo3_format_repr(format_repr: &str, input_operation: Operation) {
 fn test_pyo3_copy_deepcopy(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = convert_operation_to_pyobject(input_operation).unwrap();
-        let copy_op = operation.call_method0(py, "__copy__").unwrap();
-        let deepcopy_op = operation.call_method1(py, "__deepcopy__", ("",)).unwrap();
+        let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
+        let copy_op = operation.call_method0("__copy__").unwrap();
+        let deepcopy_op = operation.call_method1("__deepcopy__", ("",)).unwrap();
         let copy_deepcopy_param = operation;
 
         let comparison_copy = bool::extract_bound(
             &copy_op
-                .bind(py)
-                .call_method1("__eq__", (copy_deepcopy_param.clone_ref(py),))
+                .call_method1("__eq__", (copy_deepcopy_param.clone(),))
                 .unwrap(),
         )
         .unwrap();
         assert!(comparison_copy);
         let comparison_deepcopy = bool::extract_bound(
             &deepcopy_op
-                .bind(py)
                 .call_method1("__eq__", (copy_deepcopy_param,))
                 .unwrap(),
         )
@@ -755,17 +730,16 @@ fn test_pyo3_copy_deepcopy(input_operation: Operation) {
 fn test_pyo3_substitute_parameters(first_op: Operation, second_op: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = convert_operation_to_pyobject(first_op).unwrap();
+        let operation = convert_operation_to_pyobject(first_op, py).unwrap();
         let mut substitution_dict: HashMap<String, f64> = HashMap::new();
         substitution_dict.insert("test".to_owned(), 1.0);
         let substitute_op = operation
-            .call_method1(py, "substitute_parameters", (substitution_dict,))
+            .call_method1("substitute_parameters", (substitution_dict,))
             .unwrap();
-        let substitute_param = convert_operation_to_pyobject(second_op).unwrap();
+        let substitute_param = convert_operation_to_pyobject(second_op, py).unwrap();
 
         let comparison = bool::extract_bound(
             &substitute_op
-                .bind(py)
                 .call_method1("__eq__", (substitute_param,))
                 .unwrap(),
         )
@@ -805,9 +779,9 @@ fn test_pyo3_substitute_parameters(first_op: Operation, second_op: Operation) {
 fn test_pyo3_substitute_params_error(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = convert_operation_to_pyobject(input_operation).unwrap();
+        let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
         let substitution_dict: HashMap<String, f64> = HashMap::new();
-        let result = operation.call_method1(py, "substitute_parameters", (substitution_dict,));
+        let result = operation.call_method1("substitute_parameters", (substitution_dict,));
         assert!(result.is_err());
     })
 }
@@ -837,16 +811,15 @@ fn test_pyo3_substitute_params_error(input_operation: Operation) {
 fn test_pyo3_powercf(first_op: Operation, second_op: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = convert_operation_to_pyobject(first_op).unwrap();
+        let operation = convert_operation_to_pyobject(first_op, py).unwrap();
 
         let power = convert_cf_to_pyobject(py, CalculatorFloat::from(1.5));
-        let comparison_op = convert_operation_to_pyobject(second_op).unwrap();
+        let comparison_op = convert_operation_to_pyobject(second_op, py).unwrap();
 
-        let remapped_op = operation.call_method1(py, "powercf", (power,)).unwrap();
+        let remapped_op = operation.call_method1("powercf", (power,)).unwrap();
         let comparison = remapped_op
-            .call_method1(py, "__eq__", (comparison_op,))
+            .call_method1("__eq__", (comparison_op,))
             .unwrap()
-            .bind(py)
             .extract::<bool>()
             .unwrap();
         assert!(comparison);
@@ -857,20 +830,15 @@ fn test_pyo3_powercf(first_op: Operation, second_op: Operation) {
 #[test_case(Operation::from(CNOT::new(0, 1)), (0, 1,), "__eq__"; "CNOT_eq")]
 #[test_case(Operation::from(CNOT::new(2, 1)), (0, 1,), "__ne__"; "CNOT_ne")]
 fn test_new_cnot(input_operation: Operation, arguments: (u32, u32), method: &str) {
-    let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
+        let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
         let operation_type = py.get_type::<CNOTWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding.downcast::<CNOTWrapper>().unwrap();
 
-        let comparison = bool::extract_bound(
-            &operation
-                .bind(py)
-                .call_method1(method, (operation_py,))
-                .unwrap(),
-        )
-        .unwrap();
+        let comparison =
+            bool::extract_bound(&operation.call_method1(method, (operation_py,)).unwrap()).unwrap();
         assert!(comparison);
 
         let def_wrapper = operation_py.extract::<CNOTWrapper>().unwrap();
@@ -893,20 +861,15 @@ fn test_new_cnot(input_operation: Operation, arguments: (u32, u32), method: &str
 #[test_case(Operation::from(SWAP::new(0, 1)), (0, 1,), "__eq__"; "SWAP_eq")]
 #[test_case(Operation::from(SWAP::new(2, 1)), (0, 1,), "__ne__"; "SWAP_ne")]
 fn test_new_swap(input_operation: Operation, arguments: (u32, u32), method: &str) {
-    let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
+        let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
         let operation_type = py.get_type::<SWAPWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding.downcast::<SWAPWrapper>().unwrap();
 
-        let comparison = bool::extract_bound(
-            &operation
-                .bind(py)
-                .call_method1(method, (operation_py,))
-                .unwrap(),
-        )
-        .unwrap();
+        let comparison =
+            bool::extract_bound(&operation.call_method1(method, (operation_py,)).unwrap()).unwrap();
         assert!(comparison);
 
         let def_wrapper = operation_py.extract::<SWAPWrapper>().unwrap();
@@ -929,20 +892,15 @@ fn test_new_swap(input_operation: Operation, arguments: (u32, u32), method: &str
 #[test_case(Operation::from(ISwap::new(0, 1)), (0, 1,), "__eq__"; "ISwap_eq")]
 #[test_case(Operation::from(ISwap::new(2, 1)), (0, 1,), "__ne__"; "ISwap_ne")]
 fn test_new_iswap(input_operation: Operation, arguments: (u32, u32), method: &str) {
-    let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
+        let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
         let operation_type = py.get_type::<ISwapWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding.downcast::<ISwapWrapper>().unwrap();
 
-        let comparison = bool::extract_bound(
-            &operation
-                .bind(py)
-                .call_method1(method, (operation_py,))
-                .unwrap(),
-        )
-        .unwrap();
+        let comparison =
+            bool::extract_bound(&operation.call_method1(method, (operation_py,)).unwrap()).unwrap();
         assert!(comparison);
 
         let def_wrapper = operation_py.extract::<ISwapWrapper>().unwrap();
@@ -965,20 +923,15 @@ fn test_new_iswap(input_operation: Operation, arguments: (u32, u32), method: &st
 #[test_case(Operation::from(FSwap::new(0, 1)), (0, 1,), "__eq__"; "FSwap_eq")]
 #[test_case(Operation::from(FSwap::new(2, 1)), (0, 1,), "__ne__"; "FSwap_ne")]
 fn test_new_fswap(input_operation: Operation, arguments: (u32, u32), method: &str) {
-    let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
+        let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
         let operation_type = py.get_type::<FSwapWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding.downcast::<FSwapWrapper>().unwrap();
 
-        let comparison = bool::extract_bound(
-            &operation
-                .bind(py)
-                .call_method1(method, (operation_py,))
-                .unwrap(),
-        )
-        .unwrap();
+        let comparison =
+            bool::extract_bound(&operation.call_method1(method, (operation_py,)).unwrap()).unwrap();
         assert!(comparison);
 
         let def_wrapper = operation_py.extract::<FSwapWrapper>().unwrap();
@@ -1001,20 +954,15 @@ fn test_new_fswap(input_operation: Operation, arguments: (u32, u32), method: &st
 #[test_case(Operation::from(SqrtISwap::new(0, 1)), (0, 1,), "__eq__"; "SqrtISwap_eq")]
 #[test_case(Operation::from(SqrtISwap::new(2, 1)), (0, 1,), "__ne__"; "SqrtISwap_ne")]
 fn test_new_sqrtiswap(input_operation: Operation, arguments: (u32, u32), method: &str) {
-    let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
+        let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
         let operation_type = py.get_type::<SqrtISwapWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding.downcast::<SqrtISwapWrapper>().unwrap();
 
-        let comparison = bool::extract_bound(
-            &operation
-                .bind(py)
-                .call_method1(method, (operation_py,))
-                .unwrap(),
-        )
-        .unwrap();
+        let comparison =
+            bool::extract_bound(&operation.call_method1(method, (operation_py,)).unwrap()).unwrap();
         assert!(comparison);
 
         let def_wrapper = operation_py.extract::<SqrtISwapWrapper>().unwrap();
@@ -1037,20 +985,15 @@ fn test_new_sqrtiswap(input_operation: Operation, arguments: (u32, u32), method:
 #[test_case(Operation::from(InvSqrtISwap::new(0, 1)), (0, 1,), "__eq__"; "InvSqrtISwap_eq")]
 #[test_case(Operation::from(InvSqrtISwap::new(2, 1)), (0, 1,), "__ne__"; "InvSqrtISwap_ne")]
 fn test_new_invsqrtiswap(input_operation: Operation, arguments: (u32, u32), method: &str) {
-    let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
+        let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
         let operation_type = py.get_type::<InvSqrtISwapWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding.downcast::<InvSqrtISwapWrapper>().unwrap();
 
-        let comparison = bool::extract_bound(
-            &operation
-                .bind(py)
-                .call_method1(method, (operation_py,))
-                .unwrap(),
-        )
-        .unwrap();
+        let comparison =
+            bool::extract_bound(&operation.call_method1(method, (operation_py,)).unwrap()).unwrap();
         assert!(comparison);
 
         let def_wrapper = operation_py.extract::<InvSqrtISwapWrapper>().unwrap();
@@ -1073,20 +1016,15 @@ fn test_new_invsqrtiswap(input_operation: Operation, arguments: (u32, u32), meth
 #[test_case(Operation::from(ControlledPauliY::new(0, 1)), (0, 1,), "__eq__"; "ControlledPauliY_eq")]
 #[test_case(Operation::from(ControlledPauliY::new(2, 1)), (0, 1,), "__ne__"; "ControlledPauliY_ne")]
 fn test_new_controlledpauliy(input_operation: Operation, arguments: (u32, u32), method: &str) {
-    let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
+        let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
         let operation_type = py.get_type::<ControlledPauliYWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding.downcast::<ControlledPauliYWrapper>().unwrap();
 
-        let comparison = bool::extract_bound(
-            &operation
-                .bind(py)
-                .call_method1(method, (operation_py,))
-                .unwrap(),
-        )
-        .unwrap();
+        let comparison =
+            bool::extract_bound(&operation.call_method1(method, (operation_py,)).unwrap()).unwrap();
         assert!(comparison);
 
         let def_wrapper = operation_py.extract::<ControlledPauliYWrapper>().unwrap();
@@ -1109,20 +1047,15 @@ fn test_new_controlledpauliy(input_operation: Operation, arguments: (u32, u32), 
 #[test_case(Operation::from(ControlledPauliZ::new(0, 1)), (0, 1,), "__eq__"; "ControlledPauliZ_eq")]
 #[test_case(Operation::from(ControlledPauliZ::new(2, 1)), (0, 1,), "__ne__"; "ControlledPauliZ_ne")]
 fn test_new_controlledpauliz(input_operation: Operation, arguments: (u32, u32), method: &str) {
-    let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
+        let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
         let operation_type = py.get_type::<ControlledPauliZWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding.downcast::<ControlledPauliZWrapper>().unwrap();
 
-        let comparison = bool::extract_bound(
-            &operation
-                .bind(py)
-                .call_method1(method, (operation_py,))
-                .unwrap(),
-        )
-        .unwrap();
+        let comparison =
+            bool::extract_bound(&operation.call_method1(method, (operation_py,)).unwrap()).unwrap();
         assert!(comparison);
 
         let def_wrapper = operation_py.extract::<ControlledPauliZWrapper>().unwrap();
@@ -1145,20 +1078,15 @@ fn test_new_controlledpauliz(input_operation: Operation, arguments: (u32, u32), 
 #[test_case(Operation::from(MolmerSorensenXX::new(0, 1)), (0, 1,), "__eq__"; "MolmerSorensenXX_eq")]
 #[test_case(Operation::from(MolmerSorensenXX::new(2, 1)), (0, 1,), "__ne__"; "MolmerSorensenXX_ne")]
 fn test_new_molmersorensenxx(input_operation: Operation, arguments: (u32, u32), method: &str) {
-    let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
+        let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
         let operation_type = py.get_type::<MolmerSorensenXXWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding.downcast::<MolmerSorensenXXWrapper>().unwrap();
 
-        let comparison = bool::extract_bound(
-            &operation
-                .bind(py)
-                .call_method1(method, (operation_py,))
-                .unwrap(),
-        )
-        .unwrap();
+        let comparison =
+            bool::extract_bound(&operation.call_method1(method, (operation_py,)).unwrap()).unwrap();
         assert!(comparison);
 
         let def_wrapper = operation_py.extract::<MolmerSorensenXXWrapper>().unwrap();
@@ -1181,20 +1109,15 @@ fn test_new_molmersorensenxx(input_operation: Operation, arguments: (u32, u32), 
 #[test_case(Operation::from(XY::new(0, 1, CalculatorFloat::from(0.0))), (0, 1, 0.0), "__eq__"; "XY_eq")]
 #[test_case(Operation::from(XY::new(2, 1, CalculatorFloat::from(0.0))), (0, 1, 0.0), "__ne__"; "XY_ne")]
 fn test_new_xy(input_operation: Operation, arguments: (u32, u32, f64), method: &str) {
-    let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
+        let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
         // Basic initialisation, no errors
         let operation_type = py.get_type::<XYWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding.downcast::<XYWrapper>().unwrap();
-        let comparison = bool::extract_bound(
-            &operation
-                .bind(py)
-                .call_method1(method, (operation_py,))
-                .unwrap(),
-        )
-        .unwrap();
+        let comparison =
+            bool::extract_bound(&operation.call_method1(method, (operation_py,)).unwrap()).unwrap();
         assert!(comparison);
 
         // Error initialisation
@@ -1226,20 +1149,15 @@ fn test_new_controlledphaseshift(
     arguments: (u32, u32, f64),
     method: &str,
 ) {
-    let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
+        let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
         // Basic initialisation, no errors
         let operation_type = py.get_type::<ControlledPhaseShiftWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding.downcast::<ControlledPhaseShiftWrapper>().unwrap();
-        let comparison = bool::extract_bound(
-            &operation
-                .bind(py)
-                .call_method1(method, (operation_py,))
-                .unwrap(),
-        )
-        .unwrap();
+        let comparison =
+            bool::extract_bound(&operation.call_method1(method, (operation_py,)).unwrap()).unwrap();
         assert!(comparison);
 
         // Error initialisation
@@ -1271,20 +1189,15 @@ fn test_new_controlledphaseshift(
 #[test_case(Operation::from(VariableMSXX::new(0, 1, CalculatorFloat::from(0.0))), (0, 1, 0.0), "__eq__"; "VariableMSXX_eq")]
 #[test_case(Operation::from(VariableMSXX::new(2, 1, CalculatorFloat::from(0.0))), (0, 1, 0.0), "__ne__"; "VariableMSXX_ne")]
 fn test_new_variablemsxx(input_operation: Operation, arguments: (u32, u32, f64), method: &str) {
-    let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
+        let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
         // Basic initialisation, no errors
         let operation_type = py.get_type::<VariableMSXXWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding.downcast::<VariableMSXXWrapper>().unwrap();
-        let comparison = bool::extract_bound(
-            &operation
-                .bind(py)
-                .call_method1(method, (operation_py,))
-                .unwrap(),
-        )
-        .unwrap();
+        let comparison =
+            bool::extract_bound(&operation.call_method1(method, (operation_py,)).unwrap()).unwrap();
         assert!(comparison);
 
         // Error initialisation
@@ -1312,20 +1225,15 @@ fn test_new_variablemsxx(input_operation: Operation, arguments: (u32, u32, f64),
 #[test_case(Operation::from(PMInteraction::new(0, 1, CalculatorFloat::from(0.0))), (0, 1, 0.0), "__eq__"; "PMInteraction_eq")]
 #[test_case(Operation::from(PMInteraction::new(2, 1, CalculatorFloat::from(0.0))), (0, 1, 0.0), "__ne__"; "PMInteraction_ne")]
 fn test_new_pminteraction(input_operation: Operation, arguments: (u32, u32, f64), method: &str) {
-    let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
+        let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
         // Basic initialisation, no errors
         let operation_type = py.get_type::<PMInteractionWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding.downcast::<PMInteractionWrapper>().unwrap();
-        let comparison = bool::extract_bound(
-            &operation
-                .bind(py)
-                .call_method1(method, (operation_py,))
-                .unwrap(),
-        )
-        .unwrap();
+        let comparison =
+            bool::extract_bound(&operation.call_method1(method, (operation_py,)).unwrap()).unwrap();
         assert!(comparison);
 
         // Error initialisation
@@ -1357,20 +1265,15 @@ fn test_new_givensrotation(
     arguments: (u32, u32, f64, f64),
     method: &str,
 ) {
-    let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
+        let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
         // Basic initialisation, no errors
         let operation_type = py.get_type::<GivensRotationWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding.downcast::<GivensRotationWrapper>().unwrap();
-        let comparison = bool::extract_bound(
-            &operation
-                .bind(py)
-                .call_method1(method, (operation_py,))
-                .unwrap(),
-        )
-        .unwrap();
+        let comparison =
+            bool::extract_bound(&operation.call_method1(method, (operation_py,)).unwrap()).unwrap();
         assert!(comparison);
 
         // Error initialisation
@@ -1405,22 +1308,17 @@ fn test_new_givensrotationlittleendian(
     arguments: (u32, u32, f64, f64),
     method: &str,
 ) {
-    let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
+        let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
         // Basic initialisation, no errors
         let operation_type = py.get_type::<GivensRotationLittleEndianWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding
             .downcast::<GivensRotationLittleEndianWrapper>()
             .unwrap();
-        let comparison = bool::extract_bound(
-            &operation
-                .bind(py)
-                .call_method1(method, (operation_py,))
-                .unwrap(),
-        )
-        .unwrap();
+        let comparison =
+            bool::extract_bound(&operation.call_method1(method, (operation_py,)).unwrap()).unwrap();
         assert!(comparison);
 
         // Error initialisation
@@ -1457,20 +1355,15 @@ fn test_new_givensrotationlittleendian(
 #[test_case(Operation::from(Bogoliubov::new(0, 1, CalculatorFloat::from(0.0), CalculatorFloat::from(0.0))), (0, 1, 0.0, 0.0), "__eq__"; "Bogoliubov_eq")]
 #[test_case(Operation::from(Bogoliubov::new(2, 1, CalculatorFloat::from(0.0), CalculatorFloat::from(0.0))), (0, 1, 0.0, 0.0), "__ne__"; "Bogoliubov_ne")]
 fn test_new_bogoliubov(input_operation: Operation, arguments: (u32, u32, f64, f64), method: &str) {
-    let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
+        let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
         // Basic initialisation, no errors
         let operation_type = py.get_type::<BogoliubovWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding.downcast::<BogoliubovWrapper>().unwrap();
-        let comparison = bool::extract_bound(
-            &operation
-                .bind(py)
-                .call_method1(method, (operation_py,))
-                .unwrap(),
-        )
-        .unwrap();
+        let comparison =
+            bool::extract_bound(&operation.call_method1(method, (operation_py,)).unwrap()).unwrap();
         assert!(comparison);
 
         // Error initialisation
@@ -1505,20 +1398,15 @@ fn test_new_complexpminteraction(
     arguments: (u32, u32, f64, f64),
     method: &str,
 ) {
-    let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
+        let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
         // Basic initialisation, no errors
         let operation_type = py.get_type::<ComplexPMInteractionWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding.downcast::<ComplexPMInteractionWrapper>().unwrap();
-        let comparison = bool::extract_bound(
-            &operation
-                .bind(py)
-                .call_method1(method, (operation_py,))
-                .unwrap(),
-        )
-        .unwrap();
+        let comparison =
+            bool::extract_bound(&operation.call_method1(method, (operation_py,)).unwrap()).unwrap();
         assert!(comparison);
 
         // Error initialisation
@@ -1553,20 +1441,15 @@ fn test_new_complexpminteraction(
 #[test_case(Operation::from(Qsim::new(0, 1, CalculatorFloat::from(0.0), CalculatorFloat::from(0.0), CalculatorFloat::from(0.0))), (0, 1, 0.0, 0.0, 0.0), "__eq__"; "Qsim_eq")]
 #[test_case(Operation::from(Qsim::new(2, 1, CalculatorFloat::from(0.0), CalculatorFloat::from(0.0), CalculatorFloat::from(0.0))), (0, 1, 0.0, 0.0, 0.0), "__ne__"; "Qsim_ne")]
 fn test_new_qsim(input_operation: Operation, arguments: (u32, u32, f64, f64, f64), method: &str) {
-    let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
+        let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
         // Basic initialisation, no errors
         let operation_type = py.get_type::<QsimWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding.downcast::<QsimWrapper>().unwrap();
-        let comparison = bool::extract_bound(
-            &operation
-                .bind(py)
-                .call_method1(method, (operation_py,))
-                .unwrap(),
-        )
-        .unwrap();
+        let comparison =
+            bool::extract_bound(&operation.call_method1(method, (operation_py,)).unwrap()).unwrap();
         assert!(comparison);
 
         // Error initialisation
@@ -1601,20 +1484,15 @@ fn test_new_qsim(input_operation: Operation, arguments: (u32, u32, f64, f64, f64
 #[test_case(Operation::from(Fsim::new(0, 1, CalculatorFloat::from(0.0), CalculatorFloat::from(0.0), CalculatorFloat::from(0.0))), (0, 1, 0.0, 0.0, 0.0), "__eq__"; "Fsim_eq")]
 #[test_case(Operation::from(Fsim::new(2, 1, CalculatorFloat::from(0.0), CalculatorFloat::from(0.0), CalculatorFloat::from(0.0))), (0, 1, 0.0, 0.0, 0.0), "__ne__"; "Fsim_ne")]
 fn test_new_fsim(input_operation: Operation, arguments: (u32, u32, f64, f64, f64), method: &str) {
-    let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
+        let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
         // Basic initialisation, no errors
         let operation_type = py.get_type::<FsimWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding.downcast::<FsimWrapper>().unwrap();
-        let comparison = bool::extract_bound(
-            &operation
-                .bind(py)
-                .call_method1(method, (operation_py,))
-                .unwrap(),
-        )
-        .unwrap();
+        let comparison =
+            bool::extract_bound(&operation.call_method1(method, (operation_py,)).unwrap()).unwrap();
         assert!(comparison);
 
         // Error initialisation
@@ -1652,21 +1530,16 @@ fn test_new_spininteraction(
     arguments: (u32, u32, f64, f64, f64),
     method: &str,
 ) {
-    let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
+        let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
         // Basic initialisation, no errors
         let operation_type = py.get_type::<SpinInteractionWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding.downcast::<SpinInteractionWrapper>().unwrap();
 
-        let comparison = bool::extract_bound(
-            &operation
-                .bind(py)
-                .call_method1(method, (operation_py,))
-                .unwrap(),
-        )
-        .unwrap();
+        let comparison =
+            bool::extract_bound(&operation.call_method1(method, (operation_py,)).unwrap()).unwrap();
         assert!(comparison);
 
         // Error initialisation
@@ -1704,22 +1577,17 @@ fn test_new_phaseshiftedcontrolledz(
     arguments: (u32, u32, f64),
     method: &str,
 ) {
-    let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
+        let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
         // Basic initialisation, no errors
         let operation_type = py.get_type::<PhaseShiftedControlledZWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding
             .downcast::<PhaseShiftedControlledZWrapper>()
             .unwrap();
-        let comparison = bool::extract_bound(
-            &operation
-                .bind(py)
-                .call_method1(method, (operation_py,))
-                .unwrap(),
-        )
-        .unwrap();
+        let comparison =
+            bool::extract_bound(&operation.call_method1(method, (operation_py,)).unwrap()).unwrap();
         assert!(comparison);
 
         // Error initialisation
@@ -1757,22 +1625,17 @@ fn test_new_phaseshiftedcontrolledphase(
     arguments: (u32, u32, f64, f64),
     method: &str,
 ) {
-    let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
+        let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
         // Basic initialization, no errors
         let operation_type = py.get_type::<PhaseShiftedControlledPhaseWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding
             .downcast::<PhaseShiftedControlledPhaseWrapper>()
             .unwrap();
-        let comparison = bool::extract_bound(
-            &operation
-                .bind(py)
-                .call_method1(method, (operation_py,))
-                .unwrap(),
-        )
-        .unwrap();
+        let comparison =
+            bool::extract_bound(&operation.call_method1(method, (operation_py,)).unwrap()).unwrap();
         assert!(comparison);
 
         // Error initialisation
@@ -1810,20 +1673,15 @@ fn test_new_controlledrotatex(
     arguments: (u32, u32, f64),
     method: &str,
 ) {
-    let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
+        let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
         // Basic initialization, no errors
         let operation_type = py.get_type::<ControlledRotateXWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding.downcast::<ControlledRotateXWrapper>().unwrap();
-        let comparison = bool::extract_bound(
-            &operation
-                .bind(py)
-                .call_method1(method, (operation_py,))
-                .unwrap(),
-        )
-        .unwrap();
+        let comparison =
+            bool::extract_bound(&operation.call_method1(method, (operation_py,)).unwrap()).unwrap();
         assert!(comparison);
 
         // Error initialisation
@@ -1855,20 +1713,15 @@ fn test_new_controlledrotatexy(
     arguments: (u32, u32, f64, f64),
     method: &str,
 ) {
-    let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
+        let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
         // Basic initialization, no errors
         let operation_type = py.get_type::<ControlledRotateXYWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding.downcast::<ControlledRotateXYWrapper>().unwrap();
-        let comparison = bool::extract_bound(
-            &operation
-                .bind(py)
-                .call_method1(method, (operation_py,))
-                .unwrap(),
-        )
-        .unwrap();
+        let comparison =
+            bool::extract_bound(&operation.call_method1(method, (operation_py,)).unwrap()).unwrap();
         assert!(comparison);
 
         // Error initialisation
@@ -1896,20 +1749,15 @@ fn test_new_controlledrotatexy(
 #[test_case(Operation::from(EchoCrossResonance::new(0, 1)), (0, 1), "__eq__"; "EchoCrossResonance_eq")]
 #[test_case(Operation::from(EchoCrossResonance::new(2, 1)), (0, 1), "__ne__"; "EchoCrossResonance_ne")]
 fn test_new_echocrossresonance(input_operation: Operation, arguments: (u32, u32), method: &str) {
-    let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
+        let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
         // Basic initialization, no errors
         let operation_type = py.get_type::<EchoCrossResonanceWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding.downcast::<EchoCrossResonanceWrapper>().unwrap();
-        let comparison = bool::extract_bound(
-            &operation
-                .bind(py)
-                .call_method1(method, (operation_py,))
-                .unwrap(),
-        )
-        .unwrap();
+        let comparison =
+            bool::extract_bound(&operation.call_method1(method, (operation_py,)).unwrap()).unwrap();
         assert!(comparison);
 
         // Error initialisation
@@ -2012,13 +1860,12 @@ fn test_new_echocrossresonance(input_operation: Operation, arguments: (u32, u32)
 fn test_pyo3_richcmp(definition_1: Operation, definition_2: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation_one = convert_operation_to_pyobject(definition_1).unwrap();
-        let operation_two = convert_operation_to_pyobject(definition_2).unwrap();
+        let operation_one = convert_operation_to_pyobject(definition_1, py).unwrap();
+        let operation_two = convert_operation_to_pyobject(definition_2, py).unwrap();
 
         let comparison = bool::extract_bound(
             &operation_one
-                .bind(py)
-                .call_method1("__eq__", (operation_two.clone_ref(py),))
+                .call_method1("__eq__", (operation_two.clone(),))
                 .unwrap(),
         )
         .unwrap();
@@ -2026,17 +1873,16 @@ fn test_pyo3_richcmp(definition_1: Operation, definition_2: Operation) {
 
         let comparison = bool::extract_bound(
             &operation_one
-                .bind(py)
-                .call_method1("__ne__", (operation_two.clone_ref(py),))
+                .call_method1("__ne__", (operation_two.clone(),))
                 .unwrap(),
         )
         .unwrap();
         assert!(comparison);
 
-        let comparison = operation_one.call_method1(py, "__eq__", (vec!["fails"],));
+        let comparison = operation_one.call_method1("__eq__", (vec!["fails"],));
         assert!(comparison.is_err());
 
-        let comparison = operation_one.call_method1(py, "__ge__", (operation_two,));
+        let comparison = operation_one.call_method1("__ge__", (operation_two,));
         assert!(comparison.is_err());
     })
 }
@@ -2159,8 +2005,8 @@ fn test_pyo3_json_schema(operation: TwoQubitGateOperation) {
             _ => "1.0.0".to_string(),
         };
         let converted_op = Operation::from(operation);
-        let pyobject = convert_operation_to_pyobject(converted_op).unwrap();
-        let operation = pyobject.bind(py);
+        let pyobject = convert_operation_to_pyobject(converted_op, py).unwrap();
+        let operation = pyobject;
 
         let schema: String =
             String::extract_bound(&operation.call_method0("json_schema").unwrap()).unwrap();

@@ -33,11 +33,10 @@ use test_case::test_case;
 fn test_pyo3_is_not_parametrized(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = convert_operation_to_pyobject(input_operation).unwrap();
+        let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
         assert!(!operation
-            .call_method0(py, "is_parametrized")
+            .call_method0("is_parametrized")
             .unwrap()
-            .bind(py)
             .extract::<bool>()
             .unwrap());
     })
@@ -47,11 +46,10 @@ fn test_pyo3_is_not_parametrized(input_operation: Operation) {
 fn test_pyo3_is_parametrized(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = convert_operation_to_pyobject(input_operation).unwrap();
+        let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
         assert!(operation
-            .call_method0(py, "is_parametrized")
+            .call_method0("is_parametrized")
             .unwrap()
-            .bind(py)
             .extract::<bool>()
             .unwrap());
     })
@@ -84,13 +82,8 @@ fn test_pyo3_is_parametrized(input_operation: Operation) {
 fn test_pyo3_tags(tags: Vec<&str>, input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = convert_operation_to_pyobject(input_operation).unwrap();
-        let tags_op: Vec<String> = operation
-            .call_method0(py, "tags")
-            .unwrap()
-            .bind(py)
-            .extract()
-            .unwrap();
+        let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
+        let tags_op: Vec<String> = operation.call_method0("tags").unwrap().extract().unwrap();
         assert_eq!(tags_op.len(), tags.len());
         for i in 0..tags.len() {
             assert_eq!(tags_op[i], tags[i]);
@@ -104,11 +97,10 @@ fn test_pyo3_tags(tags: Vec<&str>, input_operation: Operation) {
 fn test_pyo3_hqslang(name: &'static str, input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = convert_operation_to_pyobject(input_operation).unwrap();
+        let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
         let name_op: String = operation
-            .call_method0(py, "hqslang")
+            .call_method0("hqslang")
             .unwrap()
-            .bind(py)
             .extract()
             .unwrap();
         assert_eq!(name_op, name.to_string());
@@ -121,36 +113,28 @@ fn test_pyo3_hqslang(name: &'static str, input_operation: Operation) {
 fn test_pyo3_remapqubits(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = convert_operation_to_pyobject(input_operation).unwrap();
+        let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
 
         // test initial qubits
         let control_0: usize = operation
-            .call_method0(py, "control_0")
+            .call_method0("control_0")
             .unwrap()
-            .bind(py)
             .extract()
             .unwrap();
         assert_eq!(control_0.clone(), 0);
         let control_1: usize = operation
-            .call_method0(py, "control_1")
+            .call_method0("control_1")
             .unwrap()
-            .bind(py)
             .extract()
             .unwrap();
         assert_eq!(control_1.clone(), 1);
         let control_2: usize = operation
-            .call_method0(py, "control_2")
+            .call_method0("control_2")
             .unwrap()
-            .bind(py)
             .extract()
             .unwrap();
         assert_eq!(control_2.clone(), 2);
-        let target: usize = operation
-            .call_method0(py, "target")
-            .unwrap()
-            .bind(py)
-            .extract()
-            .unwrap();
+        let target: usize = operation.call_method0("target").unwrap().extract().unwrap();
         assert_eq!(target.clone(), 3);
 
         // remap qubits
@@ -160,37 +144,17 @@ fn test_pyo3_remapqubits(input_operation: Operation) {
         qubit_mapping.insert(1, 3);
         qubit_mapping.insert(3, 1);
         let result = operation
-            .call_method1(py, "remap_qubits", (qubit_mapping,))
+            .call_method1("remap_qubits", (qubit_mapping,))
             .unwrap();
 
         // test re-mapped qubit
-        let control_0_new: usize = result
-            .call_method0(py, "control_0")
-            .unwrap()
-            .bind(py)
-            .extract()
-            .unwrap();
+        let control_0_new: usize = result.call_method0("control_0").unwrap().extract().unwrap();
         assert_eq!(control_0_new.clone(), 2);
-        let control_1_new: usize = result
-            .call_method0(py, "control_1")
-            .unwrap()
-            .bind(py)
-            .extract()
-            .unwrap();
+        let control_1_new: usize = result.call_method0("control_1").unwrap().extract().unwrap();
         assert_eq!(control_1_new.clone(), 3);
-        let control_2_new: usize = result
-            .call_method0(py, "control_2")
-            .unwrap()
-            .bind(py)
-            .extract()
-            .unwrap();
+        let control_2_new: usize = result.call_method0("control_2").unwrap().extract().unwrap();
         assert_eq!(control_2_new.clone(), 0);
-        let target_new: usize = result
-            .call_method0(py, "target")
-            .unwrap()
-            .bind(py)
-            .extract()
-            .unwrap();
+        let target_new: usize = result.call_method0("target").unwrap().extract().unwrap();
         assert_eq!(target_new.clone(), 1);
 
         // test that initial and rempapped qubits are different
@@ -208,11 +172,11 @@ fn test_pyo3_remapqubits_error(input_operation: Operation) {
     // preparation
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = convert_operation_to_pyobject(input_operation).unwrap();
+        let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
         // remap qubits
         let mut qubit_mapping: HashMap<usize, usize> = HashMap::new();
         qubit_mapping.insert(2, 0);
-        let result = operation.call_method1(py, "remap_qubits", (qubit_mapping,));
+        let result = operation.call_method1("remap_qubits", (qubit_mapping,));
         assert!(result.is_err());
     })
 }
@@ -223,10 +187,10 @@ fn test_pyo3_remapqubits_error(input_operation: Operation) {
 fn test_pyo3_unitarymatrix(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = convert_operation_to_pyobject(input_operation.clone()).unwrap();
-        let py_result = operation.call_method0(py, "unitary_matrix").unwrap();
+        let operation = convert_operation_to_pyobject(input_operation.clone(), py).unwrap();
+        let py_result = operation.call_method0("unitary_matrix").unwrap();
         let result_matrix = py_result
-            .extract::<PyReadonlyArray2<Complex64>>(py)
+            .extract::<PyReadonlyArray2<Complex64>>()
             .unwrap()
             .as_array()
             .to_owned();
@@ -246,11 +210,11 @@ fn test_pyo3_unitarymatrix(input_operation: Operation) {
 fn test_pyo3_format_repr(format_repr: &str, input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = convert_operation_to_pyobject(input_operation).unwrap();
-        let to_format = operation.call_method1(py, "__format__", ("",)).unwrap();
-        let format_op: String = to_format.bind(py).extract().unwrap();
-        let to_repr = operation.call_method0(py, "__repr__").unwrap();
-        let repr_op: String = to_repr.bind(py).extract().unwrap();
+        let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
+        let to_format = operation.call_method1("__format__", ("",)).unwrap();
+        let format_op: String = to_format.extract().unwrap();
+        let to_repr = operation.call_method0("__repr__").unwrap();
+        let repr_op: String = to_repr.extract().unwrap();
         assert_eq!(format_op, format_repr);
         assert_eq!(repr_op, format_repr);
     })
@@ -262,21 +226,19 @@ fn test_pyo3_format_repr(format_repr: &str, input_operation: Operation) {
 fn test_pyo3_copy_deepcopy(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = convert_operation_to_pyobject(input_operation).unwrap();
-        let copy_op = operation.call_method0(py, "__copy__").unwrap();
-        let deepcopy_op = operation.call_method1(py, "__deepcopy__", ("",)).unwrap();
+        let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
+        let copy_op = operation.call_method0("__copy__").unwrap();
+        let deepcopy_op = operation.call_method1("__deepcopy__", ("",)).unwrap();
         let copy_deepcopy_param = operation;
 
         let comparison_copy = copy_op
-            .bind(py)
-            .call_method1("__eq__", (copy_deepcopy_param.clone_ref(py),))
+            .call_method1("__eq__", (copy_deepcopy_param.clone(),))
             .unwrap()
             .extract::<bool>()
             .unwrap();
         assert!(comparison_copy);
         let comparison_deepcopy = bool::extract_bound(
             &deepcopy_op
-                .bind(py)
                 .call_method1("__eq__", (copy_deepcopy_param,))
                 .unwrap(),
         )
@@ -291,17 +253,16 @@ fn test_pyo3_copy_deepcopy(input_operation: Operation) {
 fn test_pyo3_substitute_parameters(first_op: Operation, second_op: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = convert_operation_to_pyobject(first_op).unwrap();
+        let operation = convert_operation_to_pyobject(first_op, py).unwrap();
         let mut substitution_dict: HashMap<String, f64> = HashMap::new();
         substitution_dict.insert("test".to_owned(), 1.0);
         let substitute_op = operation
-            .call_method1(py, "substitute_parameters", (substitution_dict,))
+            .call_method1("substitute_parameters", (substitution_dict,))
             .unwrap();
-        let substitute_param = convert_operation_to_pyobject(second_op).unwrap();
+        let substitute_param = convert_operation_to_pyobject(second_op, py).unwrap();
 
         let comparison = bool::extract_bound(
             &substitute_op
-                .bind(py)
                 .call_method1("__eq__", (substitute_param,))
                 .unwrap(),
         )
@@ -317,20 +278,15 @@ fn test_new_triplecontrolledpaulix(
     arguments: (u32, u32, u32, u32),
     method: &str,
 ) {
-    let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
+        let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
         // Basic initialisation, no errors
         let operation_type = py.get_type::<TripleControlledPauliXWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding.downcast::<TripleControlledPauliXWrapper>().unwrap();
-        let comparison = bool::extract_bound(
-            &operation
-                .bind(py)
-                .call_method1(method, (operation_py,))
-                .unwrap(),
-        )
-        .unwrap();
+        let comparison =
+            bool::extract_bound(&operation.call_method1(method, (operation_py,)).unwrap()).unwrap();
         assert!(comparison);
 
         // Error initialisation
@@ -368,20 +324,15 @@ fn test_new_triplecontrolledpauliz(
     arguments: (u32, u32, u32, u32),
     method: &str,
 ) {
-    let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
+        let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
         // Basic initialisation, no errors
         let operation_type = py.get_type::<TripleControlledPauliZWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding.downcast::<TripleControlledPauliZWrapper>().unwrap();
-        let comparison = bool::extract_bound(
-            &operation
-                .bind(py)
-                .call_method1(method, (operation_py,))
-                .unwrap(),
-        )
-        .unwrap();
+        let comparison =
+            bool::extract_bound(&operation.call_method1(method, (operation_py,)).unwrap()).unwrap();
         assert!(comparison);
 
         // Error initialisation
@@ -419,22 +370,17 @@ fn test_new_triplecontrolledphaseshift(
     arguments: (u32, u32, u32, u32, f64),
     method: &str,
 ) {
-    let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
+        let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
         // Basic initialisation, no errors
         let operation_type = py.get_type::<TripleControlledPhaseShiftWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding
             .downcast::<TripleControlledPhaseShiftWrapper>()
             .unwrap();
-        let comparison = bool::extract_bound(
-            &operation
-                .bind(py)
-                .call_method1(method, (operation_py,))
-                .unwrap(),
-        )
-        .unwrap();
+        let comparison =
+            bool::extract_bound(&operation.call_method1(method, (operation_py,)).unwrap()).unwrap();
         assert!(comparison);
 
         // Error initialisation
@@ -472,9 +418,9 @@ fn test_circuit_pyo3_triplecontrolledpaulix() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         let input_operation = Operation::from(TripleControlledPauliX::new(0, 1, 2, 3));
-        let operation = convert_operation_to_pyobject(input_operation).unwrap();
-        let py_result = operation.call_method0(py, "circuit").unwrap();
-        let result_circuit: CircuitWrapper = py_result.extract(py).unwrap();
+        let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
+        let py_result = operation.call_method0("circuit").unwrap();
+        let result_circuit: CircuitWrapper = py_result.extract().unwrap();
 
         let mut circuit = Circuit::new();
         circuit += CNOT::new(0, 3);
@@ -500,9 +446,9 @@ fn test_circuit_pyo3_triplecontrolledpauliz() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         let input_operation = Operation::from(TripleControlledPauliZ::new(0, 1, 2, 3));
-        let operation = convert_operation_to_pyobject(input_operation).unwrap();
-        let py_result = operation.call_method0(py, "circuit").unwrap();
-        let result_circuit: CircuitWrapper = py_result.extract(py).unwrap();
+        let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
+        let py_result = operation.call_method0("circuit").unwrap();
+        let result_circuit: CircuitWrapper = py_result.extract().unwrap();
 
         let mut circuit = Circuit::new();
         circuit += ControlledPauliZ::new(0, 3);
@@ -534,9 +480,9 @@ fn test_circuit_pyo3_triplecontrolledphaseshift() {
             3,
             CalculatorFloat::FRAC_PI_2,
         ));
-        let operation = convert_operation_to_pyobject(input_operation).unwrap();
-        let py_result = operation.call_method0(py, "circuit").unwrap();
-        let result_circuit: CircuitWrapper = py_result.extract(py).unwrap();
+        let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
+        let py_result = operation.call_method0("circuit").unwrap();
+        let result_circuit: CircuitWrapper = py_result.extract().unwrap();
 
         let mut circuit = Circuit::new();
         circuit += ControlledPhaseShift::new(0, 3, CalculatorFloat::FRAC_PI_4);
@@ -579,8 +525,8 @@ fn test_pyo3_json_schema(operation: FourQubitGateOperation) {
     pyo3::prepare_freethreaded_python();
     pyo3::Python::with_gil(|py| {
         let converted_op = Operation::from(operation);
-        let pyobject = convert_operation_to_pyobject(converted_op).unwrap();
-        let operation = pyobject.bind(py);
+        let pyobject = convert_operation_to_pyobject(converted_op, py).unwrap();
+        let operation = pyobject;
 
         let schema: String =
             String::extract_bound(&operation.call_method0("json_schema").unwrap()).unwrap();

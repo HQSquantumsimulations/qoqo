@@ -93,8 +93,7 @@ insert_operation_to_pyobject!(
         {
             let pyref: Py<PragmaSetStateVectorWrapper> =
                 Py::new(py, PragmaSetStateVectorWrapper { internal }).unwrap();
-            let pyobject: PyObject = pyref.to_object(py);
-            Ok(pyobject)
+            pyref.into_pyobject(py).map(|bound| bound.as_any().to_owned()).map_err(|_| PyValueError::new_err("Unable to convert to Python object"))
         }
     }
 );
@@ -162,10 +161,10 @@ impl PragmaSetStateVectorWrapper {
     ///
     /// Returns:
     ///     Set[int]: The involved qubits of the PRAGMA operation.
-    fn involved_qubits(&self) -> PyObject {
-        let pyobject: PyObject =
-            Python::with_gil(|py| -> PyObject { PySet::new(py, ["All"]).unwrap().to_object(py) });
-        pyobject
+    fn involved_qubits<'py>(&'py self, py: Python<'py>) -> PyResult<Bound<'py, PySet>> {
+        PySet::new(py, ["All"])?
+            .into_pyobject(py)
+            .map_err(|_| PyRuntimeError::new_err("Unable to convert to Python object"))
     }
 
     /// Return tags classifying the type of the operation.
@@ -377,8 +376,8 @@ insert_operation_to_pyobject!(
         {
             let pyref: Py<PragmaSetDensityMatrixWrapper> =
                 Py::new(py, PragmaSetDensityMatrixWrapper { internal }).unwrap();
-            let pyobject: PyObject = pyref.to_object(py);
-            Ok(pyobject)
+            pyref.into_pyobject(py).map(|bound| bound.as_any().to_owned()).map_err(|_| PyValueError::new_err("Unable to convert to Python object"))
+
         }
     }
 );
@@ -447,10 +446,10 @@ impl PragmaSetDensityMatrixWrapper {
     ///
     /// Returns:
     ///     Set[int]: The involved qubits of the PRAGMA operation.
-    fn involved_qubits(&self) -> PyObject {
-        let pyobject: PyObject =
-            Python::with_gil(|py| -> PyObject { PySet::new(py, ["All"]).unwrap().to_object(py) });
-        pyobject
+    fn involved_qubits<'py>(&'py self, py: Python<'py>) -> PyResult<Bound<'py, PySet>> {
+        PySet::new(py, ["All"])?
+            .into_pyobject(py)
+            .map_err(|_| PyRuntimeError::new_err("Unable to convert to Python object"))
     }
 
     /// Return tags classifying the type of the operation.
@@ -1040,8 +1039,7 @@ insert_operation_to_pyobject!(
         {
             let pyref: Py<PragmaGeneralNoiseWrapper> =
                 Py::new(py, PragmaGeneralNoiseWrapper { internal }).unwrap();
-            let pyobject: PyObject = pyref.to_object(py);
-            Ok(pyobject)
+            pyref.into_pyobject(py).map(|bound| bound.as_any().to_owned()).map_err(|_| PyValueError::new_err("Unable to convert to Python object"))
         }
     }
 );
@@ -1149,13 +1147,10 @@ impl PragmaGeneralNoiseWrapper {
     ///
     /// Returns:
     ///     Set[int]: The involved qubits of the PRAGMA operation.
-    fn involved_qubits(&self) -> PyObject {
-        let pyobject: PyObject = Python::with_gil(|py| -> PyObject {
-            PySet::new(py, [*self.internal.qubit()])
-                .unwrap()
-                .to_object(py)
-        });
-        pyobject
+    fn involved_qubits<'py>(&'py self, py: Python<'py>) -> PyResult<Bound<'py, PySet>> {
+        PySet::new(py, [*self.internal.qubit()])?
+            .into_pyobject(py)
+            .map_err(|_| PyRuntimeError::new_err("Unable to convert to Python object"))
     }
 
     /// Return tags classifying the type of the operation.
@@ -1393,8 +1388,7 @@ insert_operation_to_pyobject!(
         {
             let pyref: Py<PragmaChangeDeviceWrapper> =
                 Py::new(py, PragmaChangeDeviceWrapper { internal }).unwrap();
-            let pyobject: PyObject = pyref.to_object(py);
-            Ok(pyobject)
+            pyref.into_pyobject(py).map(|bound| bound.as_any().to_owned()).map_err(|_| PyValueError::new_err("Unable to convert to Python object"))
         }
     }
 );
@@ -1446,10 +1440,10 @@ impl PragmaChangeDeviceWrapper {
     ///
     /// Returns:
     ///     Set[int]: The involved qubits of the PRAGMA operation.
-    fn involved_qubits(&self) -> PyObject {
-        let pyobject: PyObject =
-            Python::with_gil(|py| -> PyObject { PySet::new(py, ["All"]).unwrap().to_object(py) });
-        pyobject
+    fn involved_qubits<'py>(&'py self, py: Python<'py>) -> PyResult<Bound<'py, PySet>> {
+        PySet::new(py, ["All"])?
+            .into_pyobject(py)
+            .map_err(|_| PyRuntimeError::new_err("Unable to convert to Python object"))
     }
 
     /// Return tags classifying the type of the operation.
@@ -1662,8 +1656,7 @@ insert_operation_to_pyobject!(
         {
             let pyref: Py<PragmaAnnotatedOpWrapper> =
                 Py::new(py, PragmaAnnotatedOpWrapper { internal }).unwrap();
-            let pyobject: PyObject = pyref.to_object(py);
-            Ok(pyobject)
+            pyref.into_pyobject(py).map(|bound| bound.as_any().to_owned()).map_err(|_| PyValueError::new_err("Unable to convert to Python object"))
         }
     }
 );
@@ -1691,9 +1684,9 @@ impl PragmaAnnotatedOpWrapper {
     ///
     /// Returns:
     ///     Operation: The annotated Operation.
-    fn operation(&self) -> PyResult<Py<PyAny>> {
+    fn operation<'py>(&'py self, py: Python<'py>) -> PyResult<Bound<'py, PyAny>> {
         let op = self.internal.operation.clone();
-        convert_operation_to_pyobject(*op)
+        convert_operation_to_pyobject(*op, py)
     }
 
     /// Return the annotation.
@@ -1708,31 +1701,19 @@ impl PragmaAnnotatedOpWrapper {
     ///
     /// Returns:
     ///     Set[int]: The involved qubits of the PRAGMA operation.
-    fn involved_qubits(&self) -> PyObject {
-        Python::with_gil(|py| -> PyObject {
-            let involved = self.internal.involved_qubits();
-            match involved {
-                InvolvedQubits::All => {
-                    let pyref: &Bound<PySet> = &PySet::new(py, ["All"]).unwrap();
-                    let pyobject: PyObject = pyref.as_any().to_object(py);
-                    pyobject
+    fn involved_qubits<'py>(&'py self, py: Python<'py>) -> Bound<'py, PySet> {
+        let involved = self.internal.involved_qubits();
+        match involved {
+            InvolvedQubits::All => PySet::new(py, ["All"]).expect("Couldn not create PySet"),
+            InvolvedQubits::None => PySet::empty(py).expect("Couldn not create PySet"),
+            InvolvedQubits::Set(x) => {
+                let mut vector: Vec<usize> = Vec::new();
+                for qubit in x {
+                    vector.push(qubit)
                 }
-                InvolvedQubits::None => {
-                    let pyref: &Bound<PySet> = &PySet::empty(py).unwrap();
-                    let pyobject: PyObject = pyref.as_any().to_object(py);
-                    pyobject
-                }
-                InvolvedQubits::Set(x) => {
-                    let mut vector: Vec<usize> = Vec::new();
-                    for mode in x {
-                        vector.push(mode)
-                    }
-                    let pyref: &Bound<PySet> = &PySet::new(py, &vector[..]).unwrap();
-                    let pyobject: PyObject = pyref.as_any().to_object(py);
-                    pyobject
-                }
+                PySet::new(py, &vector[..]).expect("Couldn not create PySet")
             }
-        })
+        }
     }
 
     /// Return tags classifying the type of the operation.
@@ -1943,10 +1924,9 @@ mod tests {
 
         pyo3::prepare_freethreaded_python();
         Python::with_gil(|py| {
-            let operation = convert_operation_to_pyobject(input_definition).unwrap();
-            let to_involved = operation.call_method0(py, "involved_qubits").unwrap();
-            let involved_op: HashSet<String> =
-                HashSet::extract_bound(to_involved.bind(py)).unwrap();
+            let operation = convert_operation_to_pyobject(input_definition, py).unwrap();
+            let to_involved = operation.call_method0("involved_qubits").unwrap();
+            let involved_op: HashSet<String> = HashSet::extract_bound(&to_involved).unwrap();
             let mut involved_param: HashSet<String> = HashSet::new();
             involved_param.insert("All".to_owned());
             assert_eq!(involved_op, involved_param);
@@ -1963,11 +1943,11 @@ mod tests {
 
         pyo3::prepare_freethreaded_python();
         Python::with_gil(|py| {
-            let operation = convert_operation_to_pyobject(input_measurement).unwrap();
-            let to_format = operation.call_method1(py, "__format__", ("",)).unwrap();
-            let format_op: String = String::extract_bound(to_format.bind(py)).unwrap();
-            let to_repr = operation.call_method0(py, "__repr__").unwrap();
-            let repr_op: String = String::extract_bound(to_repr.bind(py)).unwrap();
+            let operation = convert_operation_to_pyobject(input_measurement, py).unwrap();
+            let to_format = operation.call_method1("__format__", ("",)).unwrap();
+            let format_op: String = String::extract_bound(&to_format).unwrap();
+            let to_repr = operation.call_method0("__repr__").unwrap();
+            let repr_op: String = String::extract_bound(&to_repr).unwrap();
             assert_eq!(format_op, format_repr);
             assert_eq!(repr_op, format_repr);
         })
@@ -1980,24 +1960,22 @@ mod tests {
 
         pyo3::prepare_freethreaded_python();
         Python::with_gil(|py| {
-            let operation = convert_operation_to_pyobject(input_measurement).unwrap();
-            let copy_op = operation.call_method0(py, "__copy__").unwrap();
-            let deepcopy_op = operation.call_method1(py, "__deepcopy__", ("",)).unwrap();
+            let operation = convert_operation_to_pyobject(input_measurement, py).unwrap();
+            let copy_op = operation.call_method0("__copy__").unwrap();
+            let deepcopy_op = operation.call_method1("__deepcopy__", ("",)).unwrap();
             let copy_deepcopy_param = operation;
 
             let comparison_copy = bool::extract_bound(
-                copy_op
-                    .call_method1(py, "__eq__", (copy_deepcopy_param.clone_ref(py),))
-                    .unwrap()
-                    .bind(py),
+                &copy_op
+                    .call_method1("__eq__", (copy_deepcopy_param.clone(),))
+                    .unwrap(),
             )
             .unwrap();
             assert!(comparison_copy);
             let comparison_deepcopy = bool::extract_bound(
-                deepcopy_op
-                    .call_method1(py, "__eq__", (copy_deepcopy_param,))
-                    .unwrap()
-                    .bind(py),
+                &deepcopy_op
+                    .call_method1("__eq__", (copy_deepcopy_param,))
+                    .unwrap(),
             )
             .unwrap();
             assert!(comparison_deepcopy);
@@ -2011,9 +1989,9 @@ mod tests {
 
         pyo3::prepare_freethreaded_python();
         Python::with_gil(|py| {
-            let operation = convert_operation_to_pyobject(input_measurement).unwrap();
-            let to_tag = operation.call_method0(py, "tags").unwrap();
-            let tags_op: &Vec<String> = &Vec::extract_bound(to_tag.bind(py)).unwrap();
+            let operation = convert_operation_to_pyobject(input_measurement, py).unwrap();
+            let to_tag = operation.call_method0("tags").unwrap();
+            let tags_op: &Vec<String> = &Vec::extract_bound(&to_tag).unwrap();
             let tags_param: &[&str] = &["Operation", "PragmaOperation", "PragmaChangeDevice"];
             assert_eq!(tags_op, tags_param);
         })
@@ -2026,10 +2004,9 @@ mod tests {
 
         pyo3::prepare_freethreaded_python();
         Python::with_gil(|py| {
-            let operation = convert_operation_to_pyobject(input_measurement).unwrap();
+            let operation = convert_operation_to_pyobject(input_measurement, py).unwrap();
             let hqslang_op: String =
-                String::extract_bound(operation.call_method0(py, "hqslang").unwrap().bind(py))
-                    .unwrap();
+                String::extract_bound(&operation.call_method0("hqslang").unwrap()).unwrap();
             assert_eq!(hqslang_op, "PragmaChangeDevice".to_string());
         })
     }
@@ -2041,14 +2018,10 @@ mod tests {
 
         pyo3::prepare_freethreaded_python();
         Python::with_gil(|py| {
-            let operation = convert_operation_to_pyobject(input_measurement).unwrap();
-            assert!(!bool::extract_bound(
-                operation
-                    .call_method0(py, "is_parametrized")
-                    .unwrap()
-                    .bind(py)
-            )
-            .unwrap());
+            let operation = convert_operation_to_pyobject(input_measurement, py).unwrap();
+            assert!(
+                !bool::extract_bound(&operation.call_method0("is_parametrized").unwrap()).unwrap()
+            );
         })
     }
 
@@ -2060,19 +2033,18 @@ mod tests {
 
         pyo3::prepare_freethreaded_python();
         Python::with_gil(|py| {
-            let operation = convert_operation_to_pyobject(first_op).unwrap();
+            let operation = convert_operation_to_pyobject(first_op, py).unwrap();
             let mut substitution_dict: HashMap<String, f64> = HashMap::new();
             substitution_dict.insert("test".to_owned(), 1.0);
             let substitute_op = operation
-                .call_method1(py, "substitute_parameters", (substitution_dict,))
+                .call_method1("substitute_parameters", (substitution_dict,))
                 .unwrap();
-            let substitute_param = convert_operation_to_pyobject(second_op).unwrap();
+            let substitute_param = convert_operation_to_pyobject(second_op, py).unwrap();
 
             let comparison = bool::extract_bound(
-                substitute_op
-                    .call_method1(py, "__eq__", (substitute_param,))
-                    .unwrap()
-                    .bind(py),
+                &substitute_op
+                    .call_method1("__eq__", (substitute_param,))
+                    .unwrap(),
             )
             .unwrap();
             assert!(comparison);
@@ -2087,20 +2059,19 @@ mod tests {
 
         pyo3::prepare_freethreaded_python();
         Python::with_gil(|py| {
-            let operation = convert_operation_to_pyobject(first_op).unwrap();
+            let operation = convert_operation_to_pyobject(first_op, py).unwrap();
 
             let mut qubit_mapping: HashMap<usize, usize> = HashMap::new();
             qubit_mapping.insert(0, 0);
             let remapped_op = operation
-                .call_method1(py, "remap_qubits", (qubit_mapping,))
+                .call_method1("remap_qubits", (qubit_mapping,))
                 .unwrap();
-            let comparison_op = convert_operation_to_pyobject(second_op).unwrap();
+            let comparison_op = convert_operation_to_pyobject(second_op, py).unwrap();
 
             let comparison = bool::extract_bound(
-                remapped_op
-                    .call_method1(py, "__eq__", (comparison_op,))
-                    .unwrap()
-                    .bind(py),
+                &remapped_op
+                    .call_method1("__eq__", (comparison_op,))
+                    .unwrap(),
             )
             .unwrap();
             assert!(comparison);
@@ -2114,11 +2085,11 @@ mod tests {
 
         pyo3::prepare_freethreaded_python();
         Python::with_gil(|py| {
-            let operation = convert_operation_to_pyobject(first_op).unwrap();
+            let operation = convert_operation_to_pyobject(first_op, py).unwrap();
 
             let mut qubit_mapping: HashMap<usize, usize> = HashMap::new();
             qubit_mapping.insert(0, 2);
-            let remapped_op = operation.call_method1(py, "remap_qubits", (qubit_mapping,));
+            let remapped_op = operation.call_method1("remap_qubits", (qubit_mapping,));
             assert!(remapped_op.is_err());
         })
     }
@@ -2132,31 +2103,29 @@ mod tests {
 
         pyo3::prepare_freethreaded_python();
         Python::with_gil(|py| {
-            let operation_one = convert_operation_to_pyobject(definition_1).unwrap();
-            let operation_two = convert_operation_to_pyobject(definition_2).unwrap();
+            let operation_one = convert_operation_to_pyobject(definition_1, py).unwrap();
+            let operation_two = convert_operation_to_pyobject(definition_2, py).unwrap();
 
             let comparison = bool::extract_bound(
-                operation_one
-                    .call_method1(py, "__eq__", (operation_two.clone_ref(py),))
-                    .unwrap()
-                    .bind(py),
+                &operation_one
+                    .call_method1("__eq__", (operation_two.clone(),))
+                    .unwrap(),
             )
             .unwrap();
             assert!(!comparison);
 
             let comparison = bool::extract_bound(
-                operation_one
-                    .call_method1(py, "__ne__", (operation_two.clone_ref(py),))
-                    .unwrap()
-                    .bind(py),
+                &operation_one
+                    .call_method1("__ne__", (operation_two.clone(),))
+                    .unwrap(),
             )
             .unwrap();
             assert!(comparison);
 
-            let comparison = operation_one.call_method1(py, "__eq__", (vec!["fails"],));
+            let comparison = operation_one.call_method1("__eq__", (vec!["fails"],));
             assert!(comparison.is_err());
 
-            let comparison = operation_one.call_method1(py, "__ge__", (operation_two,));
+            let comparison = operation_one.call_method1("__ge__", (operation_two,));
             assert!(comparison.is_err());
         })
     }

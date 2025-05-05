@@ -19,7 +19,7 @@ use crate::{QoqoError, QOQO_VERSION};
 use bincode::{deserialize, serialize};
 use pyo3::exceptions::{PyIndexError, PyTypeError, PyValueError};
 use pyo3::prelude::*;
-use pyo3::types::PyByteArray;
+use pyo3::types::{PyByteArray, PyDict};
 use roqoqo::{Circuit, CircuitDag, ROQOQO_VERSION};
 
 use crate::operations::{convert_operation_to_pyobject, convert_pyany_to_operation};
@@ -248,13 +248,13 @@ impl CircuitDagWrapper {
     /// Raises:
     ///     IndexError: Index out of range.
     #[pyo3(text_signature = "($self, index)")]
-    pub fn get(&self, index: usize) -> PyResult<PyObject> {
+    pub fn get<'py>(&'py self, py: Python<'py>, index: usize) -> PyResult<Bound<'py, PyAny>> {
         let operation = self
             .internal
             .get(index)
             .ok_or_else(|| PyIndexError::new_err(format!("Index {} out of range", index)))?
             .clone();
-        convert_operation_to_pyobject(operation)
+        convert_operation_to_pyobject(operation, py)
     }
 
     /// Returns a copy of the CircuitDag (produces a deepcopy).
@@ -401,12 +401,16 @@ impl CircuitDagWrapper {
     /// Returns:
     ///     Dict[int, int]: The dictionary of {qubit: node} elements.
     #[pyo3(text_signature = "($self)")]
-    pub fn first_operation_involving_qubit(&self) -> PyObject {
-        Python::with_gil(|py| -> PyObject {
-            self.internal
-                .first_operation_involving_qubit()
-                .to_object(py)
-        })
+    pub fn first_operation_involving_qubit<'py>(
+        &'py self,
+        py: Python<'py>,
+    ) -> PyResult<Bound<'py, PyDict>> {
+        self.internal
+            .first_operation_involving_qubit()
+            .into_pyobject(py)
+            .map_err(|_| {
+                PyValueError::new_err("Cannot convert  Rust object to a Python dictionary")
+            })
     }
 
     /// Returns a dictionary where a key represents a qubit and its value represents
@@ -415,10 +419,16 @@ impl CircuitDagWrapper {
     /// Returns:
     ///     Dict[int, int]: The dictionary of {qubit: node} elements.
     #[pyo3(text_signature = "($self)")]
-    pub fn last_operation_involving_qubit(&self) -> PyObject {
-        Python::with_gil(|py| -> PyObject {
-            self.internal.last_operation_involving_qubit().to_object(py)
-        })
+    pub fn last_operation_involving_qubit<'py>(
+        &'py self,
+        py: Python<'py>,
+    ) -> PyResult<Bound<'py, PyDict>> {
+        self.internal
+            .last_operation_involving_qubit()
+            .into_pyobject(py)
+            .map_err(|_| {
+                PyValueError::new_err("Cannot convert  Rust object to a Python dictionary")
+            })
     }
 
     /// Returns a dictionary where a key is composed by the name and the size
@@ -428,12 +438,16 @@ impl CircuitDagWrapper {
     /// Returns:
     ///     Dict[(str, int), int]: The dictionary of {(str, int), int} elements.
     #[pyo3(text_signature = "($self)")]
-    pub fn first_operation_involving_classical(&self) -> PyObject {
-        Python::with_gil(|py| -> PyObject {
-            self.internal
-                .first_operation_involving_classical()
-                .to_object(py)
-        })
+    pub fn first_operation_involving_classical<'py>(
+        &'py self,
+        py: Python<'py>,
+    ) -> PyResult<Bound<'py, PyDict>> {
+        self.internal
+            .first_operation_involving_classical()
+            .into_pyobject(py)
+            .map_err(|_| {
+                PyValueError::new_err("Cannot convert  Rust object to a Python dictionary")
+            })
     }
 
     /// Returns a dictionary where a key is composed by the name and the size
@@ -443,12 +457,16 @@ impl CircuitDagWrapper {
     /// Returns:
     ///     Dict[(str, int), int]: The dictionary of {(str, int), int} elements.
     #[pyo3(text_signature = "($self)")]
-    pub fn last_operation_involving_classical(&self) -> PyObject {
-        Python::with_gil(|py| -> PyObject {
-            self.internal
-                .last_operation_involving_classical()
-                .to_object(py)
-        })
+    pub fn last_operation_involving_classical<'py>(
+        &'py self,
+        py: Python<'py>,
+    ) -> PyResult<Bound<'py, PyDict>> {
+        self.internal
+            .last_operation_involving_classical()
+            .into_pyobject(py)
+            .map_err(|_| {
+                PyValueError::new_err("Cannot convert  Rust object to a Python dictionary")
+            })
     }
 }
 
