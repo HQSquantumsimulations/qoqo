@@ -434,7 +434,7 @@ impl GenericDevice {
             .decoherence_rates
             .entry(qubit)
             .or_insert_with(|| Array2::zeros((3, 3)));
-        *aa = aa.clone() + array![[0.0, 0.0, 0.0], [0.0, 0.0, 0.0], [0.0, 0.0, dephasing]];
+        *aa = aa.clone() + array![[0.0, 0.0, 0.0], [0.0, 0.0, 0.0], [0.0, 0.0, 0.5*dephasing]];
         Ok(())
     }
 

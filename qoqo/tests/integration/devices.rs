@@ -352,7 +352,7 @@ fn test_decoherence_rates_all(device: Py<PyAny>) {
         let pyarray_testmatrix: Array2<f64> = array![
             [1.0 + 10. + 100. / 2.0, 0.0, 0.0],
             [0.0, 2.0 + 100.0 / 2.0, 0.0],
-            [0.0, 0.0, 3.0 + 100.0 / 4.0 + 1000.]
+            [0.0, 0.0, 3.0 + 100.0 / 4.0 + 500.]
         ];
         let device = device.call_method1(py, "add_damping_all", (10.,)).unwrap();
         let device = device
@@ -439,7 +439,7 @@ fn test_decoherence_rates(device: Py<PyAny>) {
         let pyarray_testmatrix: Array2<f64> = array![
             [1.0 + 10. + 100. / 2.0, 0.0, 0.0],
             [0.0, 2.0 + 100.0 / 2.0, 0.0],
-            [0.0, 0.0, 3.0 + 100.0 / 4.0 + 1000.]
+            [0.0, 0.0, 3.0 + 100.0 / 4.0 + 500.]
         ];
         device.call_method1(py, "add_damping", (0, 10.)).unwrap();
         device
