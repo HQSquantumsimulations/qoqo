@@ -84,7 +84,7 @@ fn test_add_dephasing() {
         let br_type = py.get_type::<DecoherenceOnIdleModelWrapper>();
         let binding = br_type.call0().unwrap();
         let br = binding.downcast::<DecoherenceOnIdleModelWrapper>().unwrap();
-        let binding = br.call_method1("add_dephasing_rate", ([0], 0.1)).unwrap();
+        let binding = br.call_method1("add_dephasing_rate", ([0], 0.2)).unwrap();
         let br = binding.downcast::<DecoherenceOnIdleModelWrapper>().unwrap();
         let comparison = br.call_method0("get_noise_operator").unwrap();
         assert_eq!(

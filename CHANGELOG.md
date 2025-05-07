@@ -5,6 +5,7 @@ This changelog track changes to the qoqo project starting at version v0.5.0
 ## Unreleased
 
 * Updated to non deprecated pyo3 functions.
+* Fixed bug omitting a factor of 1/2 when adding dephasing
 
 ## 1.19.5
 

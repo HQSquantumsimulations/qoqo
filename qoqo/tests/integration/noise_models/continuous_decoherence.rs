@@ -92,7 +92,7 @@ fn test_add_dephasing() {
         let br = binding
             .downcast::<ContinuousDecoherenceModelWrapper>()
             .unwrap();
-        let binding = br.call_method1("add_dephasing_rate", ([0], 0.1)).unwrap();
+        let binding = br.call_method1("add_dephasing_rate", ([0], 0.2)).unwrap();
         let br = binding
             .downcast::<ContinuousDecoherenceModelWrapper>()
             .unwrap();
