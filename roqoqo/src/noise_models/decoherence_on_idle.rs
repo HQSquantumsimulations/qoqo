@@ -182,7 +182,7 @@ impl DecoherenceOnIdleModel {
                         PlusMinusProduct::new().z(*qubit),
                         PlusMinusProduct::new().z(*qubit),
                     ),
-                    (0.5*rate).into(),
+                    (0.5 * rate).into(),
                 )
                 .expect("Internal struqture bug.");
         }
