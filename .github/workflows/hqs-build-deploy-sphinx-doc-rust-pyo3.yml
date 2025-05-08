@@ -31,7 +31,11 @@ jobs:
           python -m sphinx -T -E -b html . _build/html
           mv _build/html/* ../../documentation/src/python_api_docs
           cd ../..
-          mdbook build documentation
+          cargo install mdbook-cmdrun
+          cargo install cargo-single
+          cd documentation
+          mdbook build
+          cd ..
       - name: publish
         uses: peaceiris/actions-gh-pages@v4
         with:

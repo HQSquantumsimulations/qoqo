@@ -78,7 +78,7 @@ The Pauli Y gate implements a rotation of \\( \frac{\pi}{2} \\) about the y-axis
  0 & -\mathrm{i} \\\\
  \mathrm{i} & 0
  \end{pmatrix}
-\\].
+\\]
 
 ## PauliZ
 

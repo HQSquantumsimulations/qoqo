@@ -1,6 +1,7 @@
 .compatibility_tests/*/Cargo.lock
 compatibility_test/target/*
 compatibility_test_sim/target/*
+documentation/book/*
 */Cargo.lock
 target/*
 */docs/_build*
