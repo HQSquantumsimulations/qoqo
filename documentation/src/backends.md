@@ -14,10 +14,16 @@ The implementation of individual backends is provided not in qoqo itself, but in
 
 At the moment the following EvaluatingBackends are implemented for qoqo/roqoqo:
 
-* [qoqo_aqt](https://github.com/HQSquantumsimulations/qoqo_aqt)
-* [qoqo_mock](https://github.com/HQSquantumsimulations/qoqo_aqt)
-* [qoqo_qryd](https://github.com/HQSquantumsimulations/qoqo_qryd)
-* [qoqo_quest](https://github.com/HQSquantumsimulations/qoqo-quest)
+| Backend | Description |
+| -------- | ------- |
+| [qoqo_quest](https://github.com/HQSquantumsimulations/qoqo-quest) | Simulation backend based on QuEST. |
+| [qoqo_aqt](https://github.com/HQSquantumsimulations/qoqo_aqt)  | Simulation/QPU backend that gives access to AQT's machines. |
+| [qoqo_mock](https://github.com/HQSquantumsimulations/qoqo_mock) | Mocking backend. |
+| [qoqo_qryd](https://github.com/HQSquantumsimulations/qoqo_qryd)    | Simulation backend that gives access to QRyd's machines. |
+| [qoqo_qiskit](https://github.com/HQSquantumsimulations/qoqo-qiskit) | Simulation/QPU backend that gives access to IBM's machines. |
+| [qoqo_qir](https://github.com/HQSquantumsimulations/qoqo-qir)| QIR Interface. |
+| [qoqo_for_braket](https://github.com/HQSquantumsimulations/qoqo-for-braket) | Simulation/QPU backend that gives access to Amazon Braket's machines. |
+| [qoqo_iqm](https://github.com/HQSquantumsimulations/qoqo_iqm) | Simulation/QPU backend that gives access to IQM's machines. |
 
 An EvaluatingBackend provides the functionality to run:
 
