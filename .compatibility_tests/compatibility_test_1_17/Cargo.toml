@@ -1,6 +1,6 @@
 [package]
 name = "compatibility_test_1_17"
-version = "1.19.2"
+version = "1.19.5"
 authors = ["HQS Quantum Simulations <info@quantumsimulations.de>"]
 license = "Apache-2.0"
 edition = "2021"
@@ -29,13 +29,13 @@ struqture_1_9 = { git = "https://github.com/HQSquantumsimulations/struqture", pa
 bincode = { version = "1.3" }
 ndarray = "0.15"
 qoqo_calculator = { git = "https://github.com/HQSquantumsimulations/qoqo_calculator" }
-qoqo_calculator_1_2 = { git = "https://github.com/HQSquantumsimulations/qoqo_calculator", package = "qoqo_calculator", tag = "v1.2.4" }
+qoqo_calculator_1_3 = { git = "https://github.com/HQSquantumsimulations/qoqo_calculator", package = "qoqo_calculator", tag = "v1.3.1" }
 
 [patch.crates-io]
 struqture = { git = "https://github.com/HQSquantumsimulations/struqture" }
 struqture_1_9 = { git = "https://github.com/HQSquantumsimulations/struqture", package = "struqture", tag = "v1.10.0" }
 qoqo_calculator = { git = "https://github.com/HQSquantumsimulations/qoqo_calculator" }
-qoqo_calculator_1_2 = { git = "https://github.com/HQSquantumsimulations/qoqo_calculator", package = "qoqo_calculator", tag = "v1.2.4" }
+qoqo_calculator_1_3 = { git = "https://github.com/HQSquantumsimulations/qoqo_calculator", package = "qoqo_calculator", tag = "v1.3.1" }
 
 [dev-dependencies]
 test-case = "3.0"

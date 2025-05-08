@@ -522,8 +522,7 @@ fn main() {
                     Operation::#ident(internal) => {
                         let pyref: Py<#wrapper_ident> =
                             Py::new(py, #wrapper_ident { internal }).unwrap();
-                        let pyobject: PyObject = pyref.to_object(py);
-                        Ok(pyobject)
+                        pyref.into_pyobject(py).map(|bound| bound.as_any().to_owned()).map_err(|_| PyValueError::new_err("Unable to convert to Python object"))
                     }
                 }
             });
@@ -537,7 +536,7 @@ fn main() {
         use crate::convert_into_circuit;
         use qoqo_calculator::CalculatorFloat;
         use qoqo_calculator_pyo3::convert_into_calculator_float;
-        use pyo3::conversion::ToPyObject;
+        use pyo3::exceptions::PyValueError;
         use roqoqo::operations::*;
         use std::collections::HashMap;
         use ndarray::{Array1, Array2};
@@ -545,14 +544,12 @@ fn main() {
         use numpy::{PyReadonlyArray1, PyReadonlyArray2};
 
         /// Tries to convert a [roqoqo::operations::Operation] to a PyObject
-        pub fn convert_operation_to_pyobject(operation: Operation) -> PyResult<PyObject> {
-            Python::with_gil(|py| -> PyResult<PyObject> {
+        pub fn convert_operation_to_pyobject(operation: Operation, py: Python<'_>) -> PyResult<Bound<'_, PyAny>> {
             match operation {
                 #(#operation_to_pyobject_quotes),*
                 #(#operation_to_pyobject_injected_quotes),*
                 _ => Err(pyo3::exceptions::PyRuntimeError::new_err(format!("Unknown operation: {}", operation.hqslang())))
             }
-        })
         }
 
         /// Tries to convert any python object to a [roqoqo::operations::Operation]

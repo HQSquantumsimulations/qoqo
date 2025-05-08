@@ -1,6 +1,6 @@
 [package]
 name = "qoqo-macros"
-version = "1.19.2"
+version = "1.19.5"
 authors = ["HQS Quantum Simulations <info@quantumsimulations.de>"]
 license = "Apache-2.0"
 readme = "../README.md"
@@ -16,7 +16,7 @@ proc-macro = true
 doctest = false
 
 [dependencies]
-struqture = { version = "~2.0.0-alpha.11" }
+struqture = { version = "~2.0" }
 
 proc-macro2 = "1.0"
 quote = "1.0"

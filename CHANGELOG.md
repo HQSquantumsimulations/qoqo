@@ -4,6 +4,26 @@ This changelog track changes to the qoqo project starting at version v0.5.0
 
 ## Unreleased
 
+* Updated to non deprecated pyo3 functions.
+
+## 1.19.5
+
+### Updated in 1.19.5
+
+* Updated to struqture 2.0.0.
+
+## 1.19.4
+
+### Updated in 1.19.4
+
+* Updated to struqture 2.0.0-alpha.16.
+
+## 1.19.3
+
+### Fixed in 1.19.3
+
+* Fixed a deserialization bug concerning DecoherenceOnIdleModel and ContinuousDecoherenceModel.
+
 ## 1.19.2
 
 ### Updated in 1.19.2

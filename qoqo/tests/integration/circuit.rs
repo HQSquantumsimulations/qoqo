@@ -48,7 +48,7 @@ fn populate_circuit_rotatex(
     }
 }
 
-fn add_circuit_measurement_operation(circuit: &Bound<CircuitWrapper>) {
+fn add_circuit_measurement_operation(circuit: &Bound<CircuitWrapper>, py: Python<'_>) {
     let mut qubit_mapping: HashMap<usize, usize> = HashMap::new();
     qubit_mapping.insert(0, 1);
     let input_measurement: Operation = Operation::from(PragmaRepeatedMeasurement::new(
@@ -56,7 +56,7 @@ fn add_circuit_measurement_operation(circuit: &Bound<CircuitWrapper>) {
         2,
         Some(qubit_mapping),
     ));
-    let measurement_operation = convert_operation_to_pyobject(input_measurement).unwrap();
+    let measurement_operation = convert_operation_to_pyobject(input_measurement, py).unwrap();
     circuit
         .call_method1("add", (measurement_operation,))
         .unwrap();
@@ -65,13 +65,11 @@ fn add_circuit_measurement_operation(circuit: &Bound<CircuitWrapper>) {
 /// Test default function of CircuitWrapper
 #[test]
 fn test_default() {
-    let operation = convert_operation_to_pyobject(Operation::from(PauliX::new(0))).unwrap();
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
+        let operation = convert_operation_to_pyobject(Operation::from(PauliX::new(0)), py).unwrap();
         let circuit = new_circuit(py);
-        circuit
-            .call_method1("add", (operation.clone_ref(py),))
-            .unwrap();
+        circuit.call_method1("add", (operation.clone(),)).unwrap();
         let circuit_wrapper = circuit.extract::<CircuitWrapper>();
 
         let helper_ne: bool = CircuitWrapper::default() != circuit_wrapper.unwrap();
@@ -93,7 +91,7 @@ fn test_substitute_parameters() {
     Python::with_gil(|py| {
         let added_operation = Operation::from(RotateX::new(0, CalculatorFloat::from("test")));
 
-        let operation = convert_operation_to_pyobject(added_operation).unwrap();
+        let operation = convert_operation_to_pyobject(added_operation, py).unwrap();
         let circuit = new_circuit(py);
         circuit.call_method1("add", (operation,)).unwrap();
 
@@ -104,7 +102,7 @@ fn test_substitute_parameters() {
             .unwrap();
 
         let to_sub = Operation::from(RotateX::new(0, CalculatorFloat::from(1.0)));
-        let subbed_operation = convert_operation_to_pyobject(to_sub).unwrap();
+        let subbed_operation = convert_operation_to_pyobject(to_sub, py).unwrap();
 
         let comp_op = substitute_circ.call_method1("__getitem__", (0,)).unwrap();
         let comparison =
@@ -125,7 +123,7 @@ fn test_remap_qubits() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         let added_operation = Operation::from(RotateX::new(0, CalculatorFloat::from(1.0)));
-        let operation = convert_operation_to_pyobject(added_operation).unwrap();
+        let operation = convert_operation_to_pyobject(added_operation, py).unwrap();
         let circuit = new_circuit(py);
         circuit.call_method1("add", (operation,)).unwrap();
 
@@ -138,7 +136,7 @@ fn test_remap_qubits() {
             .unwrap();
 
         let to_remap = Operation::from(RotateX::new(2, CalculatorFloat::from(1.0)));
-        let remapped_operation = convert_operation_to_pyobject(to_remap).unwrap();
+        let remapped_operation = convert_operation_to_pyobject(to_remap, py).unwrap();
 
         let comp_op = remap_circ.call_method1("__getitem__", (0,)).unwrap();
         let comparison = bool::extract_bound(
@@ -162,21 +160,15 @@ fn test_count_occurences() {
     let added_op1 = Operation::from(DefinitionBit::new("ro".to_string(), 1, false));
     let added_op2 = Operation::from(RotateX::new(0, CalculatorFloat::from(1.0)));
     let added_op3 = Operation::from(PauliX::new(0));
-    let operation1 = convert_operation_to_pyobject(added_op1).unwrap();
-    let operation2 = convert_operation_to_pyobject(added_op2).unwrap();
-    let operation3 = convert_operation_to_pyobject(added_op3).unwrap();
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
+        let operation1 = convert_operation_to_pyobject(added_op1, py).unwrap();
+        let operation2 = convert_operation_to_pyobject(added_op2, py).unwrap();
+        let operation3 = convert_operation_to_pyobject(added_op3, py).unwrap();
         let circuit = new_circuit(py);
-        circuit
-            .call_method1("add", (operation1.clone_ref(py),))
-            .unwrap();
-        circuit
-            .call_method1("add", (operation2.clone_ref(py),))
-            .unwrap();
-        circuit
-            .call_method1("add", (operation3.clone_ref(py),))
-            .unwrap();
+        circuit.call_method1("add", (operation1.clone(),)).unwrap();
+        circuit.call_method1("add", (operation2.clone(),)).unwrap();
+        circuit.call_method1("add", (operation3.clone(),)).unwrap();
 
         let comp_op = usize::extract_bound(
             &circuit
@@ -222,21 +214,15 @@ fn test_get_operation_types() {
     let added_op1 = Operation::from(DefinitionBit::new("ro".to_string(), 1, false));
     let added_op2 = Operation::from(RotateX::new(0, CalculatorFloat::from(1.0)));
     let added_op3 = Operation::from(PauliX::new(0));
-    let operation1 = convert_operation_to_pyobject(added_op1).unwrap();
-    let operation2 = convert_operation_to_pyobject(added_op2).unwrap();
-    let operation3 = convert_operation_to_pyobject(added_op3).unwrap();
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
+        let operation1 = convert_operation_to_pyobject(added_op1, py).unwrap();
+        let operation2 = convert_operation_to_pyobject(added_op2, py).unwrap();
+        let operation3 = convert_operation_to_pyobject(added_op3, py).unwrap();
         let circuit = new_circuit(py);
-        circuit
-            .call_method1("add", (operation1.clone_ref(py),))
-            .unwrap();
-        circuit
-            .call_method1("add", (operation2.clone_ref(py),))
-            .unwrap();
-        circuit
-            .call_method1("add", (operation3.clone_ref(py),))
-            .unwrap();
+        circuit.call_method1("add", (operation1.clone(),)).unwrap();
+        circuit.call_method1("add", (operation2.clone(),)).unwrap();
+        circuit.call_method1("add", (operation3.clone(),)).unwrap();
 
         let mut op_types: HashSet<String> = HashSet::new();
         op_types.insert("DefinitionBit".to_owned());
@@ -386,7 +372,7 @@ fn test_to_from_json() {
     Python::with_gil(|py| {
         let circuit = new_circuit(py);
         populate_circuit_rotatex(py, &circuit, 0, 3);
-        add_circuit_measurement_operation(&circuit);
+        add_circuit_measurement_operation(&circuit, py);
 
         // testing 'from_json' and 'to_json' functions
         let serialised = &circuit.call_method0("to_json").unwrap();
@@ -459,24 +445,24 @@ fn test_single_index_access_get() {
 
         // test access at index 1
         let comp_op = circuit.call_method1("get", (1,)).unwrap();
-        let operation = convert_operation_to_pyobject(Operation::from(RotateX::new(
-            1,
-            CalculatorFloat::from(1),
-        )))
+        let operation = convert_operation_to_pyobject(
+            Operation::from(RotateX::new(1, CalculatorFloat::from(1))),
+            py,
+        )
         .unwrap();
         let comparison =
             bool::extract_bound(&comp_op.call_method1("__eq__", (operation,)).unwrap()).unwrap();
         assert!(comparison);
 
         // test setting new operation at index 1
-        let operation2 = convert_operation_to_pyobject(Operation::from(RotateX::new(
-            1,
-            CalculatorFloat::from(10),
-        )))
+        let operation2 = convert_operation_to_pyobject(
+            Operation::from(RotateX::new(1, CalculatorFloat::from(10))),
+            py,
+        )
         .unwrap();
 
         circuit
-            .call_method1("__setitem__", (1, operation2.clone_ref(py)))
+            .call_method1("__setitem__", (1, operation2.clone()))
             .unwrap();
 
         let comp_op = circuit.call_method1("get", (1,)).unwrap();
@@ -559,17 +545,13 @@ fn test_get_slice() {
 fn test_definitions() {
     let added_op1 = Operation::from(DefinitionBit::new("ro".to_string(), 1, false));
     let added_op2 = Operation::from(InputSymbolic::new("test".to_string(), 1.0));
-    let operation1 = convert_operation_to_pyobject(added_op1).unwrap();
-    let operation2 = convert_operation_to_pyobject(added_op2).unwrap();
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
+        let operation1 = convert_operation_to_pyobject(added_op1, py).unwrap();
+        let operation2 = convert_operation_to_pyobject(added_op2, py).unwrap();
         let circuit = new_circuit(py);
-        circuit
-            .call_method1("add", (operation1.clone_ref(py),))
-            .unwrap();
-        circuit
-            .call_method1("add", (operation2.clone_ref(py),))
-            .unwrap();
+        circuit.call_method1("add", (operation1.clone(),)).unwrap();
+        circuit.call_method1("add", (operation2.clone(),)).unwrap();
 
         let comp_op = circuit.call_method0("definitions").unwrap();
         let comparison = bool::extract_bound(
@@ -587,17 +569,13 @@ fn test_definitions() {
 fn test_operations() {
     let added_op1 = Operation::from(RotateX::new(0, CalculatorFloat::from("theta")));
     let added_op2 = Operation::from(RotateZ::new(0, CalculatorFloat::from(0.0)));
-    let operation1 = convert_operation_to_pyobject(added_op1).unwrap();
-    let operation2 = convert_operation_to_pyobject(added_op2).unwrap();
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
+        let operation1 = convert_operation_to_pyobject(added_op1, py).unwrap();
+        let operation2 = convert_operation_to_pyobject(added_op2, py).unwrap();
         let circuit = new_circuit(py);
-        circuit
-            .call_method1("add", (operation1.clone_ref(py),))
-            .unwrap();
-        circuit
-            .call_method1("add", (operation2.clone_ref(py),))
-            .unwrap();
+        circuit.call_method1("add", (operation1.clone(),)).unwrap();
+        circuit.call_method1("add", (operation2.clone(),)).unwrap();
 
         let comp_op = circuit.call_method0("operations").unwrap();
         let comparison = bool::extract_bound(
@@ -615,17 +593,13 @@ fn test_operations() {
 fn test_filter_by_tag() {
     let added_op1 = Operation::from(DefinitionBit::new("ro".to_string(), 1, false));
     let added_op2 = Operation::from(InputSymbolic::new("test".to_string(), 1.0));
-    let operation1 = convert_operation_to_pyobject(added_op1).unwrap();
-    let operation2 = convert_operation_to_pyobject(added_op2).unwrap();
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
+        let operation1 = convert_operation_to_pyobject(added_op1, py).unwrap();
+        let operation2 = convert_operation_to_pyobject(added_op2, py).unwrap();
         let circuit = new_circuit(py);
-        circuit
-            .call_method1("add", (operation1.clone_ref(py),))
-            .unwrap();
-        circuit
-            .call_method1("add", (operation2.clone_ref(py),))
-            .unwrap();
+        circuit.call_method1("add", (operation1.clone(),)).unwrap();
+        circuit.call_method1("add", (operation2.clone(),)).unwrap();
         populate_circuit_rotatex(py, &circuit, 0, 2);
 
         let comp_op = circuit
@@ -663,11 +637,9 @@ fn test_filter_by_tag() {
 fn test_circuit_add_function(added_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = convert_operation_to_pyobject(added_operation).unwrap();
+        let operation = convert_operation_to_pyobject(added_operation, py).unwrap();
         let circuit = new_circuit(py);
-        circuit
-            .call_method1("add", (operation.clone_ref(py),))
-            .unwrap();
+        circuit.call_method1("add", (operation.clone(),)).unwrap();
 
         let comp_op = circuit.call_method1("__getitem__", (0,)).unwrap();
         let comparison =
@@ -723,7 +695,8 @@ fn test_richcmp() {
         populate_circuit_rotatex(py, &circuit_one, 0, 2);
         let circuit_two = new_circuit(py);
         populate_circuit_rotatex(py, &circuit_two, 0, 3);
-        let operation1 = convert_operation_to_pyobject(Operation::from(PauliX::new(0))).unwrap();
+        let operation1 =
+            convert_operation_to_pyobject(Operation::from(PauliX::new(0)), py).unwrap();
 
         let comparison =
             bool::extract_bound(&circuit_one.call_method1("__eq__", (&circuit_two,)).unwrap())
@@ -731,7 +704,7 @@ fn test_richcmp() {
         assert!(!comparison);
         let comparison = bool::extract_bound(
             &circuit_one
-                .call_method1("__eq__", (operation1.clone_ref(py),))
+                .call_method1("__eq__", (operation1.clone(),))
                 .unwrap(),
         )
         .unwrap();
@@ -743,7 +716,7 @@ fn test_richcmp() {
         assert!(comparison);
         let comparison = bool::extract_bound(
             &circuit_one
-                .call_method1("__ne__", (operation1.clone_ref(py),))
+                .call_method1("__ne__", (operation1.clone(),))
                 .unwrap(),
         )
         .unwrap();
@@ -759,22 +732,20 @@ fn test_circuit_iadd_magic_method() {
     let added_op1 = Operation::from(DefinitionBit::new("ro".to_string(), 1, false));
     let added_op2 = Operation::from(RotateX::new(0, CalculatorFloat::from(1.0)));
     let added_op3 = Operation::from(PauliX::new(0));
-    let operation1 = convert_operation_to_pyobject(added_op1).unwrap();
-    let operation2 = convert_operation_to_pyobject(added_op2).unwrap();
-    let operation3 = convert_operation_to_pyobject(added_op3).unwrap();
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
+        let operation1 = convert_operation_to_pyobject(added_op1, py).unwrap();
+        let operation2 = convert_operation_to_pyobject(added_op2, py).unwrap();
+        let operation3 = convert_operation_to_pyobject(added_op3, py).unwrap();
         let added_circuit = new_circuit(py);
         added_circuit
-            .call_method1("add", (operation3.clone_ref(py),))
+            .call_method1("add", (operation3.clone(),))
             .unwrap();
 
         let circuit = new_circuit(py);
+        circuit.call_method1("add", (operation1.clone(),)).unwrap();
         circuit
-            .call_method1("add", (operation1.clone_ref(py),))
-            .unwrap();
-        circuit
-            .call_method1("__iadd__", (operation2.clone_ref(py),))
+            .call_method1("__iadd__", (operation2.clone(),))
             .unwrap();
         circuit.call_method1("__iadd__", (added_circuit,)).unwrap();
 
@@ -804,21 +775,19 @@ fn test_circuit_add_magic_method() {
     let added_op1 = Operation::from(DefinitionBit::new("ro".to_string(), 1, false));
     let added_op2 = Operation::from(RotateX::new(0, CalculatorFloat::from(1.0)));
     let added_op3 = Operation::from(PauliX::new(0));
-    let operation1 = convert_operation_to_pyobject(added_op1).unwrap();
-    let operation2 = convert_operation_to_pyobject(added_op2).unwrap();
-    let operation3 = convert_operation_to_pyobject(added_op3).unwrap();
     Python::with_gil(|py| {
+        let operation1 = convert_operation_to_pyobject(added_op1, py).unwrap();
+        let operation2 = convert_operation_to_pyobject(added_op2, py).unwrap();
+        let operation3 = convert_operation_to_pyobject(added_op3, py).unwrap();
         let added_circuit = new_circuit(py);
         added_circuit
-            .call_method1("add", (operation3.clone_ref(py),))
+            .call_method1("add", (operation3.clone(),))
             .unwrap();
 
         let circuit = new_circuit(py);
-        circuit
-            .call_method1("add", (operation1.clone_ref(py),))
-            .unwrap();
+        circuit.call_method1("add", (operation1.clone(),)).unwrap();
         let circuit1 = circuit
-            .call_method1("__add__", (operation2.clone_ref(py),))
+            .call_method1("__add__", (operation2.clone(),))
             .unwrap();
         let circuit2 = circuit1.call_method1("__add__", (added_circuit,)).unwrap();
 
@@ -905,30 +874,30 @@ fn test_single_index_access_getitem() {
 
         // test access at index 1
         let comp_op = circuit.call_method1("__getitem__", (1,)).unwrap();
-        let operation = convert_operation_to_pyobject(Operation::from(RotateX::new(
-            1,
-            CalculatorFloat::from(1),
-        )))
+        let operation = convert_operation_to_pyobject(
+            Operation::from(RotateX::new(1, CalculatorFloat::from(1))),
+            py,
+        )
         .unwrap();
         let comparison =
             bool::extract_bound(&comp_op.call_method1("__eq__", (operation,)).unwrap()).unwrap();
         assert!(comparison);
 
         // test setting new operation at index 1
-        let operation2 = convert_operation_to_pyobject(Operation::from(RotateX::new(
-            1,
-            CalculatorFloat::from(10),
-        )))
+        let operation2 = convert_operation_to_pyobject(
+            Operation::from(RotateX::new(1, CalculatorFloat::from(10))),
+            py,
+        )
         .unwrap();
 
         circuit
-            .call_method1("__setitem__", (1, operation2.clone_ref(py)))
+            .call_method1("__setitem__", (1, operation2.clone()))
             .unwrap();
 
         let comp_op = circuit.call_method1("__getitem__", (1,)).unwrap();
         let comparison = bool::extract_bound(
             &comp_op
-                .call_method1("__eq__", (operation2.clone_ref(py),))
+                .call_method1("__eq__", (operation2.clone(),))
                 .unwrap(),
         )
         .unwrap();
@@ -950,7 +919,7 @@ fn test_convert_into_circuit() {
     let added_op = Operation::from(PauliX::new(0));
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = convert_operation_to_pyobject(added_op).unwrap();
+        let operation = convert_operation_to_pyobject(added_op, py).unwrap();
 
         let added_circuit = new_circuit(py);
         let comparison = added_circuit.call_method1("convert_into_circuit", (operation,));
