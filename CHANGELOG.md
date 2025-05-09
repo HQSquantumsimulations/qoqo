@@ -9,7 +9,7 @@ This changelog track changes to the qoqo project starting at version v0.5.0
 
 ### Updated in 1.19.6
 
-* Updated to non deprecated pyo3 functions.
+* Updated to non-deprecated pyo3 functions.
 * Updated to pyo3 0.24.
 
 ## 1.19.5
