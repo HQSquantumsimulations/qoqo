@@ -158,8 +158,8 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="list-of-gate-operations"><a class="header" href="#list-of-gate-operations">List of Gate Operations</a></h1>
-<p>Operations are the atomic instructions in any quantum program that can be represented by qoqo/roqoqo. Gate operations are single-, two- or multi-qubit unitary operations that apply a unitary transformation and can be executed on any universal quantum computer. Mathematically, a gate can be represented by a unitary matrix.</p>
-<p>A list of the gate operations available in qoqo and roqoqo with their mathematical description is provided in this section. We differentiate between <a href="single_qubit_gates.html">single-qubit gates</a> acting on a single qubit, <a href="two_qubit_gates.html">two-qubit gates</a> applied on a pair of qubits and <a href="multi_qubit_gates.html">multi-qubit gates</a> affecting a series of qubits.</p>
+<p>Operations are the atomic instructions in any quantum program that can be represented by qoqo/roqoqo. Gate operations are single-, two- three-, four- or multi-qubit unitary operations that apply a unitary transformation and can be executed on any universal quantum computer. Mathematically, a gate can be represented by a unitary matrix.</p>
+<p>A list of the gate operations available in qoqo and roqoqo with their mathematical description is provided in this section. We differentiate between <a href="single_qubit_gates.html">single-qubit gates</a>, <a href="two_qubit_gates.html">two-qubit gates</a>, <a href="three_qubit_gates.html">three-qubit gates</a>, <a href="four_qubit_gates.html">four-qubit gates</a> and <a href="multi_qubit_gates.html">multi-qubit gates</a>, depending on the number of qubits involved in the operation.</p>
 <h3 id="notation"><a class="header" href="#notation">Notation</a></h3>
 <ul>
 <li>A rotation angle is usually annotated with \( \theta \) and its corresponding argument is <code>theta</code>.</li>
@@ -172,52 +172,104 @@
 </ul>
 <h2 id="single-qubit-gates"><a class="header" href="#single-qubit-gates"><a href="single_qubit_gates.html">Single-qubit gates</a></a></h2>
 <div class="table-wrapper"><table><thead><tr><th>Gate</th><th>Short Description</th></tr></thead><tbody>
-<tr><td>Hadamard</td><td>The Hadamard gate, to create a superposition of states, and so to change the basis.</td></tr>
-<tr><td>InvSqrtPauliX</td><td>The inverse square root of the PauliX gate \( e^{i \frac{\theta}{4} \sigma_x} \).</td></tr>
-<tr><td>PauliX</td><td>The Pauli X gate, a rotation with a fixed angle of \( \frac{\pi}{2} \), corresponds to a "flip" on x-axis.</td></tr>
-<tr><td>PauliY</td><td>The Pauli Y gate, a rotation with a fixed angle of \( \frac{\pi}{2} \), corresponds to a "flip" on y-axis.</td></tr>
-<tr><td>PauliZ</td><td>The Pauli Z gate, a rotation with a fixed angle of \( \frac{\pi}{2} \), corresponds to a "flip" on z-axis.</td></tr>
-<tr><td>PhaseShiftState0</td><td>Rotation around z-axis by angle \(\theta\) applied on state \( \left |0 \right&gt; \) results in a phase shift compared to RotateZ gate.</td></tr>
-<tr><td>PhaseShiftState1</td><td>Rotation around z-axis by angle \(\theta\) applied on state \( \left|1 \right&gt; \) results in phase shift compared to RotateZ gate.</td></tr>
-<tr><td>RotateAroundSphericalAxis</td><td>Implements a rotation around an axis in spherical coordinates.</td></tr>
-<tr><td>RotateX</td><td>The rotation gate around x-axis \( e^{-i \frac{\theta}{2} \sigma_x} \).</td></tr>
-<tr><td>RotateXY</td><td>Implements a rotation around an axis in the x-y plane, where the axis is defined by an angle/spherical coordinates.</td></tr>
-<tr><td>RotateY</td><td>The rotation gate around y-axis \( e^{-i \frac{\theta}{2} \sigma_y} \).</td></tr>
-<tr><td>RotateZ</td><td>The rotation gate around z-axis \( e^{-i \frac{\theta}{2} \sigma_z} \).</td></tr>
+<tr><td>GPi</td><td>Implements a pi-rotation with an embedded phase.</td></tr>
+<tr><td>GPi2</td><td>Implements a pi/2-rotation with an embedded phase.</td></tr>
+<tr><td>Hadamard</td><td>The Hadamard gate.</td></tr>
+<tr><td>Identity</td><td>The Identity gate.</td></tr>
+<tr><td>InvSGate</td><td>The InvS gate.</td></tr>
+<tr><td>InvSXGate</td><td>The inverse SX gate.</td></tr>
+<tr><td>InvSqrtPauliX</td><td>The inverse square root of the XPower gate: exp(i * π/4 * σ^x).</td></tr>
+<tr><td>InvSqrtPauliY</td><td>The inverse square root of the YPower gate: exp(i * π/4 * σ^x).</td></tr>
+<tr><td>InvTGate</td><td>The InvT gate.</td></tr>
+<tr><td>PauliX</td><td>The Pauli X gate.</td></tr>
+<tr><td>PauliY</td><td>The Pauli Y gate.</td></tr>
+<tr><td>PauliZ</td><td>The Pauli Z gate.</td></tr>
+<tr><td>PhaseShiftState0</td><td>The phase shift gate applied on state</td></tr>
+<tr><td>PhaseShiftState1</td><td>The phase shift gate applied on state</td></tr>
+<tr><td>RotateAroundSphericalAxis</td><td>Implements a rotation around an axis in the x-y plane in spherical coordinates.</td></tr>
+<tr><td>RotateX</td><td>The XPower gate exp(-i * θ/2 * σ^x).</td></tr>
+<tr><td>RotateXY</td><td>Implements a rotation around an x- and y-axis in spherical coordinates.</td></tr>
+<tr><td>RotateY</td><td>The YPower gate exp(-i * θ/2 * σ^y).</td></tr>
+<tr><td>RotateZ</td><td>The ZPower gate exp(-i * θ/2 * σ^z).</td></tr>
 <tr><td>SGate</td><td>The S gate.</td></tr>
-<tr><td>SqrtPauliX</td><td>The square root of the PauliX gate \( e^{-i \frac{\theta}{4} \sigma_x} \).</td></tr>
+<tr><td>SXGate</td><td>The SX gate, equivalent to SqrtPauliX with a pi/4 global phase factor added.</td></tr>
+<tr><td>SingleQubitGate</td><td>The most general unitary operation acting on one qubit.</td></tr>
+<tr><td>SqrtPauliX</td><td>The square root of the XPower gate exp(-i * π/4 * σ^x).</td></tr>
+<tr><td>SqrtPauliY</td><td>The square root of the PauliY gate exp(-i * π/4 * σ^y).</td></tr>
 <tr><td>TGate</td><td>The T gate.</td></tr>
 </tbody></table>
 </div>
 <h2 id="two-qubit-gates"><a class="header" href="#two-qubit-gates"><a href="two_qubit_gates.html">Two-qubit gates</a></a></h2>
 <div class="table-wrapper"><table><thead><tr><th>Gate</th><th>Short Description</th></tr></thead><tbody>
 <tr><td>Bogoliubov</td><td>The Bogoliubov DeGennes interaction gate.</td></tr>
-<tr><td>CNOT</td><td>The controlled not gate, <em>e.g.</em> to entangle two qubits.</td></tr>
+<tr><td>CNOT</td><td>The CNOT controlled not gate.</td></tr>
 <tr><td>ComplexPMInteraction</td><td>The complex hopping gate.</td></tr>
-<tr><td>ControlledPauliY</td><td>The controlled PauliY gate.</td></tr>
-<tr><td>ControlledPauliZ</td><td>The controlled PauliZ gate.</td></tr>
-<tr><td>ControlledPhaseShift</td><td>The controlled phase shift gate.</td></tr>
+<tr><td>ControlledPauliY</td><td>The controlled-PauliY gate.</td></tr>
+<tr><td>ControlledPauliZ</td><td>The controlled-PauliZ gate.</td></tr>
+<tr><td>ControlledPhaseShift</td><td>Implements the controlled PhaseShift gate.</td></tr>
+<tr><td>ControlledRotateX</td><td>Implements the controlled RotateX operation.</td></tr>
+<tr><td>ControlledRotateXY</td><td>Implements the controlled RotateX operation.</td></tr>
+<tr><td>EchoCrossResonance</td><td>Implements the controlled RotateX operation.</td></tr>
+<tr><td>FSwap</td><td>The Fermionic SWAP gate.</td></tr>
 <tr><td>Fsim</td><td>The fermionic qubit simulation gate.</td></tr>
-<tr><td>FSwap</td><td>The fermionic SWAP gate.</td></tr>
-<tr><td>GivensRotation</td><td>The Givens rotation interaction gate in big endian notation: \(e^{-\mathrm{i} \theta (X_c Y_t - Y_c X_t)}\cdot e^{-i \phi Z_t/2} \).</td></tr>
-<tr><td>GivensRotationLittleEndian</td><td>The Givens rotation interaction gate in little-endian notation: \(e^{-\mathrm{i} \theta (X_c Y_t - Y_c X_t)}\cdot e^{-i \phi Z_c/2} \).</td></tr>
-<tr><td>InvSqrtISwap</td><td>The inverse square root of the ISwap gate.</td></tr>
-<tr><td>ISwap</td><td>The complex swap gate.</td></tr>
-<tr><td>MolmerSorensenXX</td><td>The fixed-phase Mølmer–Sørensen XX gate.</td></tr>
-<tr><td>PhaseShiftedControlledZ</td><td>The phased-shifted controlled-Z gate.</td></tr>
+<tr><td>GivensRotation</td><td>The Givens rotation interaction gate in big endian notation: exp(-i * θ * [X_c Y_t - Y_c X_t]) * exp(-i * φ * Z_t/2).</td></tr>
+<tr><td>GivensRotationLittleEndian</td><td>The Givens rotation interaction gate in little endian notation: exp(-i * θ * [X_c Y_t -Y_c  X_t]) * exp(-i * φ * Z_c/2).</td></tr>
+<tr><td>ISwap</td><td>The ISwap gate.</td></tr>
+<tr><td>InvSqrtISwap</td><td>The inverse square root ISwap gate.</td></tr>
+<tr><td>KakDecomposition</td><td>The KAK decomposition of a two-qubit gate.</td></tr>
+<tr><td>MolmerSorensenXX</td><td>The fixed phase MolmerSorensen XX gate.</td></tr>
 <tr><td>PMInteraction</td><td>The transversal interaction gate.</td></tr>
+<tr><td>PhaseShiftedControlledPhase</td><td>Implements the phase-shifted controlled PhaseShift gate.</td></tr>
+<tr><td>PhaseShiftedControlledZ</td><td>Implements the phased-shifted controlled-Z gate.</td></tr>
 <tr><td>Qsim</td><td>The qubit simulation gate.</td></tr>
+<tr><td>SWAP</td><td>The SWAP gate.</td></tr>
 <tr><td>SpinInteraction</td><td>The generalized, anisotropic XYZ Heisenberg interaction between spins.</td></tr>
-<tr><td>SqrtISwap</td><td>The square root of the ISwap gate.</td></tr>
-<tr><td>SWAP</td><td>The swap gate, to switch the positions of two qubits.</td></tr>
-<tr><td>VariablesMSXX</td><td>The variable-angle Mølmer–Sørensen XX gate.</td></tr>
+<tr><td>SqrtISwap</td><td>The square root ISwap gate.</td></tr>
+<tr><td>VariableMSXX</td><td>The variable-angle MolmerSorensen XX gate.</td></tr>
 <tr><td>XY</td><td>The XY gate.</td></tr>
+</tbody></table>
+</div>
+<h2 id="three-qubit-gates"><a class="header" href="#three-qubit-gates"><a href="three_qubit_gates.html">Three-qubit gates</a></a></h2>
+<div class="table-wrapper"><table><thead><tr><th>Gate</th><th>Short Description</th></tr></thead><tbody>
+<tr><td>ControlledControlledPauliZ</td><td>Implements the double-controlled PauliZ gate.</td></tr>
+<tr><td>ControlledControlledPhaseShift</td><td>Implements the double-controlled PhaseShift gate.</td></tr>
+<tr><td>ControlledSWAP</td><td>Implements the controlled SWAP gate.</td></tr>
+<tr><td>PhaseShiftedControlledControlledPhase</td><td>Implements the double-controlled phase-shifted PhaseShift gate.</td></tr>
+<tr><td>PhaseShiftedControlledControlledZ</td><td>Implements the double-controlled phase-shifted PauliZ gate.</td></tr>
+<tr><td>Toffoli</td><td>Implements the Toffoli gate.</td></tr>
+</tbody></table>
+</div>
+<h2 id="four-qubit-gates"><a class="header" href="#four-qubit-gates"><a href="four_qubit_gates.html">Four-qubit gates</a></a></h2>
+<div class="table-wrapper"><table><thead><tr><th>Gate</th><th>Short Description</th></tr></thead><tbody>
+<tr><td>TripleControlledPauliX</td><td>The triple-controlled PauliX gate.</td></tr>
+<tr><td>TripleControlledPauliZ</td><td>The triple-controlled PauliZ gate.</td></tr>
+<tr><td>TripleControlledPhaseShift</td><td>The triple-controlled PhaseShift gate.</td></tr>
 </tbody></table>
 </div>
 <h2 id="multi-qubit-gates"><a class="header" href="#multi-qubit-gates"><a href="multi_qubit_gates.html">Multi-qubit gates</a></a></h2>
 <div class="table-wrapper"><table><thead><tr><th>Gate</th><th>Short Description</th></tr></thead><tbody>
-<tr><td>MultiQubitMS</td><td>The Mølmer–Sørensen gate between multiple qubits.</td></tr>
-<tr><td>MultiQubitZZ</td><td>The multi-qubit PauliZ-product gate.</td></tr>
+<tr><td>CallDefinedGate</td><td>The gate to be replaced by a gate defined with GateDefinition gate.</td></tr>
+<tr><td>MultiQubitMS</td><td>The Molmer-Sorensen gate between multiple qubits.</td></tr>
+<tr><td>MultiQubitZZ</td><td>The multi qubit Pauli-Z-Product gate.</td></tr>
+</tbody></table>
+</div>
+<h2 id="bosonic-operations"><a class="header" href="#bosonic-operations"><a href="bosonic_operations.html">Bosonic operations</a></a></h2>
+<div class="table-wrapper"><table><thead><tr><th>Gate</th><th>Short Description</th></tr></thead><tbody>
+<tr><td>BeamSplitter</td><td>The 2-mode beam splitter which splits a beam with a transmission amplitude cos(θ) and a reflection amplitude exp(i * φ) * sin(θ).</td></tr>
+<tr><td>PhaseDisplacement</td><td>The single-mode phase-displacement gate with variable magnitude and phase.</td></tr>
+<tr><td>PhaseShift</td><td>The single-mode phase-shift gate with variable phase, given by R(θ) = exp(i * θ * 𝑁̂).</td></tr>
+<tr><td>PhotonDetection</td><td>The photon number-resolving detector measurement for bosons.</td></tr>
+<tr><td>Squeezing</td><td>The single-mode squeezing gate with tunable squeezing.</td></tr>
+</tbody></table>
+</div>
+<h2 id="spin-boson-operations"><a class="header" href="#spin-boson-operations"><a href="soin_boson_operations.html">Spin-Boson operations</a></a></h2>
+<div class="table-wrapper"><table><thead><tr><th>Gate</th><th>Short Description</th></tr></thead><tbody>
+<tr><td>CZQubitResonator</td><td>Controlled-Z operation between a qubit and a bosonic mode.</td></tr>
+<tr><td>JaynesCummings</td><td>The Jaynes-Cummings gate exp(-i * θ * (σ^- * b^† + σ^+ * b))</td></tr>
+<tr><td>LongitudinalCoupling</td><td>Longitudinal coupling gate exp(-i * θ * Z * (b^† + b))</td></tr>
+<tr><td>QuantumRabi</td><td>The quantum Rabi interaction exp(-i * θ * X * (b^† + b))</td></tr>
+<tr><td>SingleExcitationLoad</td><td>Loads a single excitation from a bosonic mode into a qubit.</td></tr>
+<tr><td>SingleExcitationStore</td><td>Stores a single excitation from the involved qubit into the involved bosonic mode.</td></tr>
 </tbody></table>
 </div>
                     </main>

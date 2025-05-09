@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Multi-Qubit Gates - HQS qoqo User Documentation</title>
+        <title>Four-Qubit Gates - HQS qoqo User Documentation</title>
 
 
         <!-- Custom HTML head -->
@@ -157,72 +157,43 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="multi-qubit-gates"><a class="header" href="#multi-qubit-gates">Multi-qubit gates</a></h1>
-<p>Multi-qubit gates in qoqo/roqoqo represent atomic instructions in any quantum computer that act on <code>N</code> number of qubits. In multi-qubit gates the <code>qubits</code> are given as a vector of all involved qubits. The unitary matrix of a multi-qubit gate corresponds to the notation based on <code>qubits=[0..N]</code> where <code>N</code> is the number of qubits in the qubit vector of the multi-qubit gate.</p>
-<h2 id="controlledcontrolledpauliz"><a class="header" href="#controlledcontrolledpauliz">ControlledControlledPauliZ</a></h2>
-<p>Implements the double-controlled PauliZ gate, with two control qubits and one target qubit. The unitary matrix is given by:</p>
+                        <h1 id="four-qubit-gates"><a class="header" href="#four-qubit-gates">Four-qubit gates</a></h1>
+<p>Four-qubit gates in qoqo/roqoqo represent atomic instructions of any quantum computer that act on gour qubits. In three-qubit gates the qubits are referred to as <code>control_0</code>, <code>control_1</code>, <code>control_2</code> and <code>target</code>. For four-qubit gates, the created matrix is always a 16x16-dimensional matrix. This convention corresponds to the little-endian encoding as described in chapter <a href="../conventions.html">conventions</a>. The full matrix form of the four-qubit gates implemented in qoqo/roqoqo is documented in this chapter.</p>
+<p>The given form of the unitary matrix is consistent with the following ordering of qubit states in a four-qubit state space:</p>
 <p>\[
-U = \begin{pmatrix}
-1 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\
-0 &amp; 1 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\
-0 &amp; 0 &amp; 1 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\
-0 &amp; 0 &amp; 0 &amp; 1 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\
-0 &amp; 0 &amp; 0 &amp; 0 &amp; 1 &amp; 0 &amp; 0 &amp; 0 \\
-0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 1 &amp; 0 &amp; 0 \\
-0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 1 &amp; 0 \\
-0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; -1
-\end{pmatrix}
-\].</p>
-<h2 id="controlledcontrolledphaseshift"><a class="header" href="#controlledcontrolledphaseshift">ControlledControlledPhaseShift</a></h2>
-<p>Implements the double-controlled PhaseShift gate, with two control qubits and one target qubit. The unitary matrix is given by:</p>
-<p>\[
-U = \begin{pmatrix}
-1 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\
-0 &amp; 1 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\
-0 &amp; 0 &amp; 1 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\
-0 &amp; 0 &amp; 0 &amp; 1 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\
-0 &amp; 0 &amp; 0 &amp; 0 &amp; 1 &amp; 0 &amp; 0 &amp; 0 \\
-0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 1 &amp; 0 &amp; 0 \\
-0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 1 &amp; 0 \\
-0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; e^{i \theta}
-\end{pmatrix}
-\].</p>
-<h2 id="multiqubitms"><a class="header" href="#multiqubitms">MultiQubitMS</a></h2>
-<p>The Mølmer–Sørensen gate between multiple qubits. The gate applies the rotation under the product of PauliX operators on multiple qubits. In mathematical terms, the gate applies</p>
-<p>\[
-e^{-i * \theta/2 * X_{i0} * X_{i1} * ... * X_{in}},
-\],</p>
-<p>whereas \(\theta\) is the angle parameter of the multi-qubit Mølmer–Sørensen gate and <code>i0</code>, <code>i1</code> <em>etc.</em> are the qubits the gate acts on.</p>
-<h2 id="multiqubitzz"><a class="header" href="#multiqubitzz">MultiQubitZZ</a></h2>
-<p>The multi-qubit PauliZ-product gate. he gate applies the rotation under the product of PauliZ operators on multiple qubits.</p>
-<p>\[
-e^{-i * \theta/2 * Z_{i0} * Z_{i1} * ... * Z_{in}},
-\],</p>
-<p>whereas \(\theta\) is the angle parameter of the multi-qubit PauliZ-product gate and <code>i0</code>, <code>i1</code> <em>etc.</em> are the qubits the gate acts on.</p>
-<h2 id="toffoli"><a class="header" href="#toffoli">Toffoli</a></h2>
-<p>Implements the Toffoli, with two control qubits and one target qubit. The unitary matrix is given by:</p>
-<p>\[
-U = \begin{pmatrix}
-1 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\
-0 &amp; 1 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\
-0 &amp; 0 &amp; 1 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\
-0 &amp; 0 &amp; 0 &amp; 1 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\
-0 &amp; 0 &amp; 0 &amp; 0 &amp; 1 &amp; 0 &amp; 0 &amp; 0 \\
-0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 1 &amp; 0 &amp; 0 \\
-0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 1 \\
-0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 1 &amp; 0
-\end{pmatrix}
-\].</p>
+\left|0000 \right&gt;  =  \textrm{state} 0 \\
+\left|0001 \right&gt;  =  \textrm{state} 1 \\
+\left|0010 \right&gt;  =  \textrm{state} 2 \\
+\left|0011 \right&gt;  =  \textrm{state} 3 \\
+\left|0100 \right&gt;  =  \textrm{state} 4 \\
+\left|0101 \right&gt;  =  \textrm{state} 5 \\
+\left|0110 \right&gt;  =  \textrm{state} 6 \\
+\left|0111 \right&gt;  =  \textrm{state} 7 \\
+\left|1000 \right&gt;  =  \textrm{state} 8 \\
+\left|1001 \right&gt;  =  \textrm{state} 9 \\
+\left|1010 \right&gt;  =  \textrm{state} 10 \\
+\left|1011 \right&gt;  =  \textrm{state} 11 \\
+\left|1100 \right&gt;  =  \textrm{state} 12 \\
+\left|1101 \right&gt;  =  \textrm{state} 13 \\
+\left|1110 \right&gt;  =  \textrm{state} 14 \\
+\left|1111 \right&gt;  =  \textrm{state} 15 \\
+\]</p>
+<h2 id="triplecontrolledpaulix"><a class="header" href="#triplecontrolledpaulix">TripleControlledPauliX</a></h2>
+<p>The triple-controlled PauliX gate.</p>
+<h2 id="triplecontrolledpauliz"><a class="header" href="#triplecontrolledpauliz">TripleControlledPauliZ</a></h2>
+<p>The triple-controlled PauliZ gate.</p>
+<h2 id="triplecontrolledphaseshift"><a class="header" href="#triplecontrolledphaseshift">TripleControlledPhaseShift</a></h2>
+<p>The triple-controlled PhaseShift gate.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../gate_operations/four_qubit_gates.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../gate_operations/three_qubit_gates.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="../gate_operations/bosonic_operations.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../gate_operations/multi_qubit_gates.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -232,11 +203,11 @@ U = \begin{pmatrix}
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../gate_operations/four_qubit_gates.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../gate_operations/three_qubit_gates.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="../gate_operations/bosonic_operations.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../gate_operations/multi_qubit_gates.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>
