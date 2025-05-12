@@ -182,7 +182,7 @@ impl DecoherenceOnIdleModel {
                         PlusMinusProduct::new().z(*qubit),
                         PlusMinusProduct::new().z(*qubit),
                     ),
-                    rate.into(),
+                    (0.5 * rate).into(),
                 )
                 .expect("Internal struqture bug.");
         }
@@ -341,13 +341,13 @@ mod tests {
         lindblad_operator
             .add_operator_product(
                 (PlusMinusProduct::new().z(0), PlusMinusProduct::new().z(0)),
-                0.9.into(),
+                0.45.into(),
             )
             .unwrap();
         lindblad_operator
             .add_operator_product(
                 (PlusMinusProduct::new().z(1), PlusMinusProduct::new().z(1)),
-                0.9.into(),
+                0.45.into(),
             )
             .unwrap();
 
