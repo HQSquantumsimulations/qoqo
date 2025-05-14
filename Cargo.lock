@@ -867,7 +867,7 @@ dependencies = [
  "num-integer",
  "num-traits",
  "pyo3",
- "pyo3-build-config",
+ "pyo3-build-config 0.24.2",
  "rustc-hash",
 ]
 
@@ -1007,7 +1007,7 @@ dependencies = [
  "num-complex",
  "once_cell",
  "portable-atomic",
- "pyo3-build-config",
+ "pyo3-build-config 0.24.2",
  "pyo3-ffi",
  "pyo3-macros",
  "unindent",
@@ -1024,13 +1024,23 @@ dependencies = [
 ]
 
 [[package]]
+name = "pyo3-build-config"
+version = "0.25.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "755ea671a1c34044fa165247aaf6f419ca39caa6003aee791a0df2713d8f1b6d"
+dependencies = [
+ "once_cell",
+ "target-lexicon",
+]
+
+[[package]]
 name = "pyo3-ffi"
 version = "0.24.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "78f9cf92ba9c409279bc3305b5409d90db2d2c22392d443a87df3a1adad59e33"
 dependencies = [
  "libc",
- "pyo3-build-config",
+ "pyo3-build-config 0.24.2",
 ]
 
 [[package]]
@@ -1053,7 +1063,7 @@ checksum = "822ece1c7e1012745607d5cf0bcb2874769f0f7cb34c4cde03b9358eb9ef911a"
 dependencies = [
  "heck",
  "proc-macro2",
- "pyo3-build-config",
+ "pyo3-build-config 0.24.2",
  "quote",
  "syn",
 ]
@@ -1069,7 +1079,7 @@ dependencies = [
  "numpy",
  "proc-macro2",
  "pyo3",
- "pyo3-build-config",
+ "pyo3-build-config 0.25.0",
  "qoqo-macros",
  "qoqo_calculator",
  "qoqo_calculator_pyo3",
@@ -1116,7 +1126,7 @@ checksum = "9de68f1c5cf20823f43db86412d23abc2f548c96a5908350955bea349baf355e"
 dependencies = [
  "num-complex",
  "pyo3",
- "pyo3-build-config",
+ "pyo3-build-config 0.24.2",
  "qoqo_calculator",
 ]
 
@@ -1560,7 +1570,7 @@ dependencies = [
  "numpy",
  "proc-macro2",
  "pyo3",
- "pyo3-build-config",
+ "pyo3-build-config 0.24.2",
  "qoqo_calculator",
  "qoqo_calculator_pyo3",
  "quote",
