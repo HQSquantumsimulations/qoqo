@@ -42,7 +42,7 @@ jobs:
               with:
                 profile: minimal
                 toolchain: stable
-                # target: "aarch64-apple-darwin"
+                target: "aarch64-apple-darwin"
                 default: true
             - uses: actions/setup-python@v4
               with:
