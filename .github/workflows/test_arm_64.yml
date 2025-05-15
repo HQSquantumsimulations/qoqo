@@ -24,7 +24,7 @@ jobs:
           maturin-version: latest
           command: build
           manylinux: 2014
-          args: --out wheels -m ./Cargo.toml --release --locked -i python3.9 python3.10 python3.11 python3.12
+          args: --out wheels -m qoqo/qoqo/Cargo.toml --release --locked -i python3.9 python3.10 python3.11 python3.12
 
     build_macos_arm64:
         name: Build wheels on arm64 MacOS runner
@@ -51,8 +51,8 @@ jobs:
             - name: universal wheels
             #  if: ${{ inputs.universal2 }}
               run: |
-                RUSTFLAGS="-C link-arg=-undefined -C link-arg=dynamic_lookup" maturin build --out wheels  -m ./Cargo.toml --release --locked --target x86_64-apple-darwin
-                RUSTFLAGS="-C link-arg=-undefined -C link-arg=dynamic_lookup" maturin build --out wheels  -m ./Cargo.toml --release --locked --target aarch64-apple-darwin
+                RUSTFLAGS="-C link-arg=-undefined -C link-arg=dynamic_lookup" maturin build --out wheels  -m qoqo/qoqo/Cargo.toml --release --locked --target x86_64-apple-darwin
+                RUSTFLAGS="-C link-arg=-undefined -C link-arg=dynamic_lookup" maturin build --out wheels  -m qoqo/qoqo/Cargo.toml --release --locked --target aarch64-apple-darwin
 
     build_windows_arm64:
         name: Build wheels on arm64 Windows runner
@@ -70,4 +70,4 @@ jobs:
               with:
                 maturin-version: latest
                 command: build
-                args: --out wheels -m ./Cargo.toml --release --locked -i python3.9 python3.10 python3.11 python3.12
+                args: --out wheels -m qoqo/qoqo/Cargo.toml --release --locked -i python3.9 python3.10 python3.11 python3.12
