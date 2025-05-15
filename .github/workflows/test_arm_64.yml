@@ -10,6 +10,7 @@ jobs:
       name: Build wheels on arm64 Linux runner
       runs-on: ubuntu-24.04-arm
       steps:
+      - uses: actions/checkout@v4
       - uses: actions-rs/toolchain@v1
         with:
           profile: minimal
