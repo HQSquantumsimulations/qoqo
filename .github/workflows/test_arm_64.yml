@@ -72,12 +72,6 @@ jobs:
             #     profile: minimal
             #     toolchain: stable
             #     default: true
-            - name: Run pwd
-              run: |
-                pwd
-            - name: Run ls
-              run: |
-                ls -l
             - name: windows wheels
               uses: PyO3/maturin-action@v1
               with:
