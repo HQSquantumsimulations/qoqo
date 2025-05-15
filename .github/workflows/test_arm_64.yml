@@ -1,4 +1,4 @@
-name: manual_build_arm64
+name: test_build_arm64
 
 on:
   workflow_dispatch:
