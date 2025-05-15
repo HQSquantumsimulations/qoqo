@@ -1,0 +1,71 @@
+name: manual_build_arm64
+
+on:
+  workflow_dispatch:
+
+jobs:
+    build_linux_arm64:
+      name: Build wheels on arm64 Linux runner
+      runs-on: ubuntu-24.04-arm
+      steps:
+      - uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: stable
+          default: true
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+      - name: linux wheels
+        uses: PyO3/maturin-action@v1
+        with:
+          maturin-version: latest
+          command: build
+          manylinux: 2014
+          args: --out wheels -m qoqo/Cargo.toml --release --locked -i python3.9 python3.10 python3.11 python3.12
+
+    build_macos_arm64:
+        name: Build wheels on arm64 MacOS runner
+        runs-on: 'macos-latest'
+        steps:
+            - uses: actions/checkout@v4
+            - uses: actions-rs/toolchain@v1
+              with:
+                profile: minimal
+                toolchain: stable
+                # target: "aarch64-apple-darwin"
+                default: true
+            - uses: actions/setup-python@v4
+              with:
+                python-version: '3.12'
+            - name: Install dependencies
+              run: |
+                python -m pip install --upgrade pip pytest numpy twine
+                python -m pip install maturin
+            #- name: macos wheels
+            #  if: ${{ inputs.universal2 == false }}
+            #  run: |
+            #    RUSTFLAGS="-C link-arg=-undefined -C link-arg=dynamic_lookup" maturin build -i ${{ matrix.python.interpreter }} --out wheels  -m ${{inputs.py_interface_folder}}/Cargo.toml --release --locked
+            - name: universal wheels
+            #  if: ${{ inputs.universal2 }}
+              run: |
+                RUSTFLAGS="-C link-arg=-undefined -C link-arg=dynamic_lookup" maturin build --out wheels  -m qoqo/Cargo.toml --release --locked --target x86_64-apple-darwin
+                RUSTFLAGS="-C link-arg=-undefined -C link-arg=dynamic_lookup" maturin build --out wheels  -m qoqo/Cargo.toml --release --locked --target aarch64-apple-darwin
+
+    build_windows_arm64:
+        name: Build wheels on arm64 Windows runner
+        runs-on: 'windows-11-arm'
+        steps:
+            - uses: actions/checkout@v4
+            # - uses: Swatinem/rust-cache@v2
+            - uses: actions-rs/toolchain@v1
+              with:
+                profile: minimal
+                toolchain: stable
+                default: true
+            - name: windows wheels
+              uses: PyO3/maturin-action@v1
+              with:
+                maturin-version: latest
+                command: build
+                args: --out wheels -m qoqo/Cargo.toml --release --locked -i python3.9 python3.10 python3.11 python3.12
