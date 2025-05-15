@@ -31,7 +31,7 @@ jobs:
           maturin-version: latest
           command: build
           manylinux: 2014
-          args: --out wheels -m Cargo.toml --release --locked -i python3.9 python3.10 python3.11 python3.12
+          args: --out wheels -m qoqo/Cargo.toml --release --locked -i python3.9 python3.10 python3.11 python3.12
 
     build_macos_arm64:
         name: Build wheels on arm64 MacOS runner
