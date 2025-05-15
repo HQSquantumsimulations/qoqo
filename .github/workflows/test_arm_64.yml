@@ -67,11 +67,11 @@ jobs:
         steps:
             - uses: actions/checkout@v4
             # - uses: Swatinem/rust-cache@v2
-            - uses: actions-rs/toolchain@v1
-              with:
-                profile: minimal
-                toolchain: stable
-                default: true
+            # - uses: actions-rs/toolchain@v1
+            #   with:
+            #     profile: minimal
+            #     toolchain: stable
+            #     default: true
             - name: Run pwd
               run: |
                 pwd
