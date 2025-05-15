@@ -58,7 +58,7 @@ jobs:
             - name: universal wheels
             #  if: ${{ inputs.universal2 }}
               run: |
-                RUSTFLAGS="-C link-arg=-undefined -C link-arg=dynamic_lookup" maturin build --out wheels -m qoqo/Cargo.toml --release --locked --target x86_64-apple-darwin
+                # RUSTFLAGS="-C link-arg=-undefined -C link-arg=dynamic_lookup" maturin build --out wheels -m qoqo/Cargo.toml --release --locked --target x86_64-apple-darwin
                 RUSTFLAGS="-C link-arg=-undefined -C link-arg=dynamic_lookup" maturin build --out wheels -m qoqo/Cargo.toml --release --locked --target aarch64-apple-darwin
 
     build_windows_arm64:
