@@ -18,7 +18,7 @@ use pyo3::Python;
 use qoqo::operations::convert_operation_to_pyobject;
 #[cfg(feature = "unstable_operation_definition")]
 use qoqo::operations::CallDefinedGateWrapper;
-use qoqo::operations::{MultiQubitMSWrapper, MultiQubitZZWrapper};
+use qoqo::operations::{MultiCNOTWrapper, MultiQubitMSWrapper, MultiQubitZZWrapper};
 use qoqo::CircuitWrapper;
 use qoqo_calculator::Calculator;
 use qoqo_calculator::CalculatorFloat;
@@ -151,23 +151,15 @@ fn test_new_call_defined_gate(
 #[test_case(Operation::from(MultiCNOT::new(vec![0, 1])), vec![0, 1], "__eq__"; "MultiCNOT_eq")]
 #[test_case(Operation::from(MultiCNOT::new(vec![2, 3])), vec![0, 1], "__ne__"; "MultiCNOT_ne")]
 fn test_new_multi_cnot(input_operation: Operation, arguments: Vec<u32>, method: &str) {
-    let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
+        let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
         // Basic initialisation, no errors
         let operation_type = py.get_type::<MultiCNOTWrapper>();
-        let operation_py = operation_type
-            .call1((arguments,))
-            .unwrap()
-            .cast_as::<PyCell<MultiCNOTWrapper>>()
-            .unwrap();
-        let comparison = bool::extract(
-            operation
-                .as_ref(py)
-                .call_method1(method, (operation_py,))
-                .unwrap(),
-        )
-        .unwrap();
+        let binding = operation_type.call1((arguments,)).unwrap();
+        let operation_py = binding.downcast::<MultiCNOTWrapper>().unwrap();
+        let comparison =
+            bool::extract_bound(&operation.call_method1(method, (operation_py,)).unwrap()).unwrap();
         assert!(comparison);
 
         // Error initialisation
@@ -177,11 +169,8 @@ fn test_new_multi_cnot(input_operation: Operation, arguments: Vec<u32>, method: 
 
         // Testing PartialEq, Clone and Debug
         let def_wrapper = operation_py.extract::<MultiCNOTWrapper>().unwrap();
-        let new_op_diff = operation_type
-            .call1((vec![1, 2],))
-            .unwrap()
-            .cast_as::<PyCell<MultiCNOTWrapper>>()
-            .unwrap();
+        let binding = operation_type.call1((vec![1, 2],)).unwrap();
+        let new_op_diff = binding.downcast::<MultiCNOTWrapper>().unwrap();
         let def_wrapper_diff = new_op_diff.extract::<MultiCNOTWrapper>().unwrap();
         let helper_ne: bool = def_wrapper_diff != def_wrapper;
         assert!(helper_ne);
@@ -584,9 +573,9 @@ fn test_pyo3_circuit_multi_cnot() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         let input_operation = Operation::from(MultiCNOT::new(vec![0, 1, 2]));
-        let operation = convert_operation_to_pyobject(input_operation).unwrap();
-        let py_result = operation.call_method0(py, "circuit").unwrap();
-        let result_circuit: CircuitWrapper = py_result.extract(py).unwrap();
+        let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
+        let py_result = operation.call_method0("circuit").unwrap();
+        let result_circuit: CircuitWrapper = py_result.extract().unwrap();
 
         let mut circuit = Circuit::new();
         circuit += Hadamard::new(2);
@@ -683,6 +672,7 @@ fn test_pyo3_copy_deepcopy_call_defined_gate() {
     "MultiQubitZZ { qubits: [0, 1, 2], theta: Float(0.0) }",
     Operation::from(MultiQubitZZ::new(vec![0, 1, 2], CalculatorFloat::ZERO));
     "MultiQubitZZ")]
+#[test_case(
     "MultiCNOT { qubits: [0, 1, 2] }",
     Operation::from(MultiCNOT::new(vec![0, 1, 2]));
     "MultiCNOT")]

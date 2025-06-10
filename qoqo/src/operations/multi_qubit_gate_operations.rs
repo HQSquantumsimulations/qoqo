@@ -48,13 +48,11 @@ pub struct MultiQubitMS {
 #[allow(clippy::upper_case_acronyms)]
 #[wrap(
     Operate,
-    Rotate,
     OperateMultiQubit,
     OperateGate,
     OperateMultiQubitGate,
     JsonSchema
 )]
-#[wrap(Operate, OperateMultiQubit, OperateGate, OperateMultiQubitGate)]
 /// The CNOT gate with multiple controls
 pub struct MultiCNOT {
     /// The qubits involved in the MultiCNOT gate.
