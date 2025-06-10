@@ -54,8 +54,8 @@ pub struct MultiQubitMS {
     JsonSchema
 )]
 /// The CNOT gate with multiple controls
-pub struct MultiCNOT {
-    /// The qubits involved in the MultiCNOT gate.
+pub struct MultiQubitCNOT {
+    /// The qubits involved in the MultiQubitCNOT gate.
     qubits: Vec<usize>,
 }
 

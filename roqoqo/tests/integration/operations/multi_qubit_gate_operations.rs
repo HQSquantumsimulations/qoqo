@@ -303,11 +303,11 @@ fn test_rotatex_powercf_multi_ms(theta: CalculatorFloat, power: CalculatorFloat)
     assert_eq!(power_gate.theta(), test_gate.theta());
 }
 
-/// Test circuit function of MultiCNOT
+/// Test circuit function of MultiQubitCNOT
 #[test_case(vec![0,1]; "two_qubit")]
 #[test_case(vec![0,1,2]; "three_qubit")]
 fn test_circuit_multi_cnot(qubits: Vec<usize>) {
-    let gate = MultiCNOT::new(qubits.clone());
+    let gate = MultiQubitCNOT::new(qubits.clone());
     let c = gate.circuit();
     if qubits.len() == 2 {
         let mut comparison_circuit = Circuit::new();
@@ -339,7 +339,7 @@ fn test_circuit_multi_cnot(qubits: Vec<usize>) {
 #[test_case(3; "three_qubit")]
 #[test_case(4; "four_qubit")]
 fn test_matrix_output_multi_cnot(num_qubits: usize) {
-    let gate = MultiCNOT::new((0..num_qubits).collect());
+    let gate = MultiQubitCNOT::new((0..num_qubits).collect());
     let unit = gate.unitary_matrix().unwrap();
     let n = 2_usize.pow(num_qubits as u32);
     for i in 0..n - 2 {
@@ -362,15 +362,15 @@ fn test_matrix_output_multi_cnot(num_qubits: usize) {
 fn test_clone_partial_eq_multi_cnot() {
     let qubits = vec![0, 1, 2];
 
-    let gate = MultiCNOT::new(qubits);
-    assert_eq!(gate.hqslang(), "MultiCNOT");
+    let gate = MultiQubitCNOT::new(qubits);
+    assert_eq!(gate.hqslang(), "MultiQubitCNOT");
     assert_eq!(
         gate.tags(),
         &[
             "Operation",
             "GateOperation",
             "MultiQubitGateOperation",
-            "MultiCNOT",
+            "MultiQubitCNOT",
         ]
     );
     assert!(!gate.is_parametrized());
@@ -381,7 +381,7 @@ fn test_clone_partial_eq_multi_cnot() {
 #[test]
 fn test_substitute_multi_cnot() {
     let qubits = vec![0, 1, 2];
-    let gate = MultiCNOT::new(qubits);
+    let gate = MultiQubitCNOT::new(qubits);
     let mut mapping: HashMap<usize, usize> = std::collections::HashMap::new();
     let _ = mapping.insert(0, 1);
     let _ = mapping.insert(1, 2);
@@ -394,7 +394,7 @@ fn test_substitute_multi_cnot() {
 #[test]
 fn test_substitute_error_multi_cnot() {
     let qubits = vec![0, 1, 2];
-    let gate = MultiCNOT::new(qubits);
+    let gate = MultiQubitCNOT::new(qubits);
     let mut mapping: HashMap<usize, usize> = std::collections::HashMap::new();
     let _ = mapping.insert(1, 2);
     let _ = mapping.insert(2, 0);
@@ -405,15 +405,15 @@ fn test_substitute_error_multi_cnot() {
 #[test]
 fn test_format_multi_cnot() {
     let qubits = vec![0, 1, 2];
-    let gate = MultiCNOT::new(qubits);
+    let gate = MultiQubitCNOT::new(qubits);
     let string = format!("{:?}", gate);
-    assert!(string.contains("MultiCNOT"));
+    assert!(string.contains("MultiQubitCNOT"));
 }
 
 #[test]
 fn test_involved_qubits_multi_cnot() {
     let qubits = vec![0, 1, 2];
-    let gate = MultiCNOT::new(qubits);
+    let gate = MultiQubitCNOT::new(qubits);
     let involved_qubits = gate.involved_qubits();
     let mut comp_set: HashSet<usize> = HashSet::new();
     let _ = comp_set.insert(0);

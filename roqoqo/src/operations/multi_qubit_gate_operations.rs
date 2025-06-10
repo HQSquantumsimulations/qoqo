@@ -104,27 +104,27 @@ impl OperateMultiQubitGate for MultiQubitMS {
 #[cfg_attr(feature = "serialize", derive(Serialize, Deserialize))]
 #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 /// The CNOT gate with multiple controls
-pub struct MultiCNOT {
+pub struct MultiQubitCNOT {
     qubits: Vec<usize>,
 }
 
 #[allow(non_upper_case_globals)]
-const TAGS_MultiCNOT: &[&str; 4] = &[
+const TAGS_MultiQubitCNOT: &[&str; 4] = &[
     "Operation",
     "GateOperation",
     "MultiQubitGateOperation",
-    "MultiCNOT",
+    "MultiQubitCNOT",
 ];
 
-impl operations::ImplementedIn1point19 for MultiCNOT {}
+impl operations::ImplementedIn1point19 for MultiQubitCNOT {}
 
-impl SupportedVersion for MultiCNOT {
+impl SupportedVersion for MultiQubitCNOT {
     fn minimum_supported_roqoqo_version(&self) -> (u32, u32, u32) {
         (1, 19, 0)
     }
 }
 
-impl OperateGate for MultiCNOT {
+impl OperateGate for MultiQubitCNOT {
     fn unitary_matrix(&self) -> Result<Array2<Complex64>, RoqoqoError> {
         let dim = 2_usize.pow(self.qubits.len() as u32);
         let mut array = Array2::eye(dim);
@@ -135,7 +135,7 @@ impl OperateGate for MultiCNOT {
     }
 }
 
-impl OperateMultiQubitGate for MultiCNOT {
+impl OperateMultiQubitGate for MultiQubitCNOT {
     // https://en.wikipedia.org/wiki/Toffoli_gate#/media/File:Qcircuit_ToffolifromCNOT.svg
     fn circuit(&self) -> Circuit {
         let mut circuit = Circuit::new();
@@ -163,7 +163,7 @@ impl OperateMultiQubitGate for MultiCNOT {
                     operations::PhaseShiftState1::new(self.qubits[1], -CalculatorFloat::FRAC_PI_4);
                 circuit += operations::CNOT::new(self.qubits[0], self.qubits[1]);
             }
-            _ => panic!("Only MultiCNOT gates with 2 or 3 controls can be turned into a circuit."),
+            _ => panic!("Only MultiQubitCNOT gates with 2 or 3 controls can be turned into a circuit."),
         }
         circuit
     }

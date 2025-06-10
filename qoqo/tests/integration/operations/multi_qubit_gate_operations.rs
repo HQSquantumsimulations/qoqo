@@ -18,7 +18,7 @@ use pyo3::Python;
 use qoqo::operations::convert_operation_to_pyobject;
 #[cfg(feature = "unstable_operation_definition")]
 use qoqo::operations::CallDefinedGateWrapper;
-use qoqo::operations::{MultiCNOTWrapper, MultiQubitMSWrapper, MultiQubitZZWrapper};
+use qoqo::operations::{MultiQubitCNOTWrapper, MultiQubitMSWrapper, MultiQubitZZWrapper};
 use qoqo::CircuitWrapper;
 use qoqo_calculator::Calculator;
 use qoqo_calculator::CalculatorFloat;
@@ -148,16 +148,16 @@ fn test_new_call_defined_gate(
         );
     })
 }
-#[test_case(Operation::from(MultiCNOT::new(vec![0, 1])), vec![0, 1], "__eq__"; "MultiCNOT_eq")]
-#[test_case(Operation::from(MultiCNOT::new(vec![2, 3])), vec![0, 1], "__ne__"; "MultiCNOT_ne")]
+#[test_case(Operation::from(MultiQubitCNOT::new(vec![0, 1])), vec![0, 1], "__eq__"; "MultiQubitCNOT_eq")]
+#[test_case(Operation::from(MultiQubitCNOT::new(vec![2, 3])), vec![0, 1], "__ne__"; "MultiQubitCNOT_ne")]
 fn test_new_multi_cnot(input_operation: Operation, arguments: Vec<u32>, method: &str) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
         // Basic initialisation, no errors
-        let operation_type = py.get_type::<MultiCNOTWrapper>();
+        let operation_type = py.get_type::<MultiQubitCNOTWrapper>();
         let binding = operation_type.call1((arguments,)).unwrap();
-        let operation_py = binding.downcast::<MultiCNOTWrapper>().unwrap();
+        let operation_py = binding.downcast::<MultiQubitCNOTWrapper>().unwrap();
         let comparison =
             bool::extract_bound(&operation.call_method1(method, (operation_py,)).unwrap()).unwrap();
         assert!(comparison);
@@ -168,10 +168,10 @@ fn test_new_multi_cnot(input_operation: Operation, arguments: Vec<u32>, method: 
         assert!(result_ref.is_err());
 
         // Testing PartialEq, Clone and Debug
-        let def_wrapper = operation_py.extract::<MultiCNOTWrapper>().unwrap();
+        let def_wrapper = operation_py.extract::<MultiQubitCNOTWrapper>().unwrap();
         let binding = operation_type.call1((vec![1, 2],)).unwrap();
-        let new_op_diff = binding.downcast::<MultiCNOTWrapper>().unwrap();
-        let def_wrapper_diff = new_op_diff.extract::<MultiCNOTWrapper>().unwrap();
+        let new_op_diff = binding.downcast::<MultiQubitCNOTWrapper>().unwrap();
+        let def_wrapper_diff = new_op_diff.extract::<MultiQubitCNOTWrapper>().unwrap();
         let helper_ne: bool = def_wrapper_diff != def_wrapper;
         assert!(helper_ne);
         let helper_eq: bool = def_wrapper == def_wrapper.clone();
@@ -179,7 +179,7 @@ fn test_new_multi_cnot(input_operation: Operation, arguments: Vec<u32>, method: 
 
         assert_eq!(
             format!("{:?}", def_wrapper_diff),
-            "MultiCNOTWrapper { internal: MultiCNOT { qubits: [1, 2] } }"
+            "MultiQubitCNOTWrapper { internal: MultiQubitCNOT { qubits: [1, 2] } }"
         );
     })
 }
@@ -202,9 +202,9 @@ fn test_pyo3_is_parametrized(input_operation: Operation) {
 /// Test is_parametrized = false for MultiQubitGate Operations
 #[test_case(Operation::from(MultiQubitMS::new(vec![0, 1], CalculatorFloat::PI)); "MultiQubitMS")]
 #[test_case(Operation::from(MultiQubitZZ::new(vec![0, 1], CalculatorFloat::PI)); "MultiQubitZZ")]
-#[test_case(Operation::from(MultiCNOT::new(vec![0])); "MultiCNOT one")]
-#[test_case(Operation::from(MultiCNOT::new(vec![0, 1])); "MultiCNOT two")]
-#[test_case(Operation::from(MultiCNOT::new(vec![0, 1, 2])); "MultiCNOT three")]
+#[test_case(Operation::from(MultiQubitCNOT::new(vec![0])); "MultiQubitCNOT one")]
+#[test_case(Operation::from(MultiQubitCNOT::new(vec![0, 1])); "MultiQubitCNOT two")]
+#[test_case(Operation::from(MultiQubitCNOT::new(vec![0, 1, 2])); "MultiQubitCNOT three")]
 fn test_pyo3_is_not_parametrized(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -239,9 +239,9 @@ fn test_pyo3_theta(theta: CalculatorFloat, input_operation: Operation) {
 #[test_case(vec![0, 1, 2], Operation::from(MultiQubitMS::new(vec![0, 1, 2], CalculatorFloat::from(0))); "MultiQubitMS three")]
 #[test_case(vec![0, 1], Operation::from(MultiQubitZZ::new(vec![0, 1], CalculatorFloat::from(0))); "MultiQubitZZ two")]
 #[test_case(vec![0, 1, 2], Operation::from(MultiQubitZZ::new(vec![0, 1, 2], CalculatorFloat::from(0))); "MultiQubitZZ three")]
-#[test_case(vec![0], Operation::from(MultiCNOT::new(vec![0])); "MultiCNOT one")]
-#[test_case(vec![0, 1], Operation::from(MultiCNOT::new(vec![0, 1])); "MultiCNOT two")]
-#[test_case(vec![0, 1, 2], Operation::from(MultiCNOT::new(vec![0, 1, 2])); "MultiCNOT three")]
+#[test_case(vec![0], Operation::from(MultiQubitCNOT::new(vec![0])); "MultiQubitCNOT one")]
+#[test_case(vec![0, 1], Operation::from(MultiQubitCNOT::new(vec![0, 1])); "MultiQubitCNOT two")]
+#[test_case(vec![0, 1, 2], Operation::from(MultiQubitCNOT::new(vec![0, 1, 2])); "MultiQubitCNOT three")]
 fn test_pyo3_qubits(qubit: Vec<usize>, input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -254,7 +254,7 @@ fn test_pyo3_qubits(qubit: Vec<usize>, input_operation: Operation) {
 /// Test hqslang() function for MultiQubitGate Operations
 #[test_case("MultiQubitMS", Operation::from(MultiQubitMS::new(vec![0, 1], CalculatorFloat::from(0))); "MultiQubitMS")]
 #[test_case("MultiQubitZZ", Operation::from(MultiQubitZZ::new(vec![0, 1], CalculatorFloat::from(0))); "MultiQubitZZ")]
-#[test_case("MultiCNOT", Operation::from(MultiCNOT::new(vec![0, 1])); "MultiCNOT")]
+#[test_case("MultiQubitCNOT", Operation::from(MultiQubitCNOT::new(vec![0, 1])); "MultiQubitCNOT")]
 fn test_pyo3_hqslang(name: &'static str, input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -290,14 +290,14 @@ fn test_pyo3_hqslang(name: &'static str, input_operation: Operation) {
         ];
     "MultiQubitZZ")]
 #[test_case(
-    Operation::from(MultiCNOT::new(vec![0, 1, 2])),
+    Operation::from(MultiQubitCNOT::new(vec![0, 1, 2])),
     vec![
         "Operation",
         "GateOperation",
         "MultiQubitGateOperation",
-        "MultiCNOT",
+        "MultiQubitCNOT",
         ];
-    "MultiCNOT")]
+    "MultiQubitCNOT")]
 fn test_pyo3_tags(input_operation: Operation, tags: Vec<&str>) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -383,7 +383,7 @@ fn test_pyo3_call_defined_gate_inputs() {
 /// Test remap_qubits() function for MultiQubitGate Operations
 #[test_case(Operation::from(MultiQubitMS::new(vec![0, 1, 2], CalculatorFloat::from(1.3))); "MultiQubitMS")]
 #[test_case(Operation::from(MultiQubitZZ::new(vec![0, 1, 2], CalculatorFloat::from(1.3))); "MultiQubitZZ")]
-#[test_case(Operation::from(MultiCNOT::new(vec![0, 1, 2])); "MultiCNOT")]
+#[test_case(Operation::from(MultiQubitCNOT::new(vec![0, 1, 2])); "MultiQubitCNOT")]
 fn test_pyo3_remapqubits(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -444,7 +444,7 @@ fn test_pyo3_remapqubits_call_defined_gate() {
 // test remap_qubits() function returning an error.
 #[test_case(Operation::from(MultiQubitMS::new(vec![0, 1, 2], CalculatorFloat::from(1.3))); "MultiQubitMS")]
 #[test_case(Operation::from(MultiQubitZZ::new(vec![0, 1, 2], CalculatorFloat::from(1.3))); "MultiQubitZZ")]
-#[test_case(Operation::from(MultiCNOT::new(vec![0, 1, 2])); "MultiCNOT")]
+#[test_case(Operation::from(MultiQubitCNOT::new(vec![0, 1, 2])); "MultiQubitCNOT")]
 fn test_pyo3_remapqubits_error(input_operation: Operation) {
     // preparation
     pyo3::prepare_freethreaded_python();
@@ -485,7 +485,7 @@ fn test_pyo3_remapqubits_error_call_defined_gate() {
 /// Test unitary_matrix() function for MultiQubitGate Operations
 #[test_case(Operation::from(MultiQubitMS::new(vec![0, 1, 2], CalculatorFloat::from(1.3))); "MultiQubitMS")]
 #[test_case(Operation::from(MultiQubitZZ::new(vec![0, 1, 2], CalculatorFloat::from(1.3))); "MultiQubitZZ")]
-#[test_case(Operation::from(MultiCNOT::new(vec![0, 1, 2])); "MultiCNOT")]
+#[test_case(Operation::from(MultiQubitCNOT::new(vec![0, 1, 2])); "MultiQubitCNOT")]
 fn test_pyo3_unitarymatrix(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -567,12 +567,12 @@ fn test_pyo3_circuit_zz() {
         assert_eq!(result_circuit.internal, circuit);
     })
 }
-/// Test circuit() function for MultiCNOT
+/// Test circuit() function for MultiQubitCNOT
 #[test]
 fn test_pyo3_circuit_multi_cnot() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let input_operation = Operation::from(MultiCNOT::new(vec![0, 1, 2]));
+        let input_operation = Operation::from(MultiQubitCNOT::new(vec![0, 1, 2]));
         let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
         let py_result = operation.call_method0("circuit").unwrap();
         let result_circuit: CircuitWrapper = py_result.extract().unwrap();
@@ -601,7 +601,7 @@ fn test_pyo3_circuit_multi_cnot() {
 /// Test copy and deepcopy functions
 #[test_case(Operation::from(MultiQubitMS::new(vec![0, 1, 2], CalculatorFloat::from(1.3))); "MultiQubitMS")]
 #[test_case(Operation::from(MultiQubitZZ::new(vec![0, 1, 2], CalculatorFloat::from(1.3))); "MultiQubitZZ")]
-#[test_case(Operation::from(MultiCNOT::new(vec![0, 1, 2])); "MultiCNOT")]
+#[test_case(Operation::from(MultiQubitCNOT::new(vec![0, 1, 2])); "MultiQubitCNOT")]
 fn test_pyo3_copy_deepcopy(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -673,9 +673,9 @@ fn test_pyo3_copy_deepcopy_call_defined_gate() {
     Operation::from(MultiQubitZZ::new(vec![0, 1, 2], CalculatorFloat::ZERO));
     "MultiQubitZZ")]
 #[test_case(
-    "MultiCNOT { qubits: [0, 1, 2] }",
-    Operation::from(MultiCNOT::new(vec![0, 1, 2]));
-    "MultiCNOT")]
+    "MultiQubitCNOT { qubits: [0, 1, 2] }",
+    Operation::from(MultiQubitCNOT::new(vec![0, 1, 2]));
+    "MultiQubitCNOT")]
 fn test_pyo3_format_repr(format_repr: &str, input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -855,8 +855,8 @@ fn test_pyo3_rotate_powercf(first_op: Operation, second_op: Operation) {
     Operation::from(MultiQubitZZ::new(vec![0, 1, 2], CalculatorFloat::from(0))),
     Operation::from(MultiQubitZZ::new(vec![1, 2], CalculatorFloat::from(0))); "MultiQubitZZ")]
 #[test_case(
-    Operation::from(MultiCNOT::new(vec![0, 1, 2])),
-    Operation::from(MultiCNOT::new(vec![1, 2])); "MultiCNOT")]
+    Operation::from(MultiQubitCNOT::new(vec![0, 1, 2])),
+    Operation::from(MultiQubitCNOT::new(vec![1, 2])); "MultiQubitCNOT")]
 fn test_pyo3_richcmp(definition_1: Operation, definition_2: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
