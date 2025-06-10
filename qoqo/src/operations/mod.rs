@@ -129,6 +129,7 @@ pub fn operations(_py: Python, m: &Bound<PyModule>) -> PyResult<()> {
     m.add_class::<PhaseShiftState0Wrapper>()?;
     m.add_class::<PhaseShiftState1Wrapper>()?;
     m.add_class::<MultiQubitMSWrapper>()?;
+    m.add_class::<MultiCNOTWrapper>()?;
     m.add_class::<MultiQubitZZWrapper>()?;
     // 1.1 and 1.2
     m.add_class::<InputBitWrapper>()?;

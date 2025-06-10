@@ -54,6 +54,21 @@ pub struct MultiQubitMS {
     OperateMultiQubitGate,
     JsonSchema
 )]
+#[wrap(Operate, OperateMultiQubit, OperateGate, OperateMultiQubitGate)]
+/// The CNOT gate with multiple controls
+pub struct MultiCNOT {
+    /// The qubits involved in the MultiCNOT gate.
+    qubits: Vec<usize>,
+}
+
+#[wrap(
+    Operate,
+    Rotate,
+    OperateMultiQubit,
+    OperateGate,
+    OperateMultiQubitGate,
+    JsonSchema
+)]
 /// The multi qubit Pauli-Z-Product gate.
 ///
 /// The gate applies the rotation under the product of Pauli Z operators on multiple qubits.
