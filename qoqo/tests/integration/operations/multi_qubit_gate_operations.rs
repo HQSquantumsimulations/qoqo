@@ -935,7 +935,7 @@ fn test_pyo3_richcmp_call_defined_gate() {
 #[cfg(feature = "json_schema")]
 #[test_case(Operation::from(MultiQubitMS::new(vec![0, 1, 2], CalculatorFloat::from(0))), "1.0.0"; "MultiQubitMS")]
 #[test_case(Operation::from(MultiQubitZZ::new(vec![0, 1, 2], CalculatorFloat::from(0))), "1.0.0"; "MultiQubitZZ")]
-#[test_case(Operation::from(MultiQubitCNOT::new(vec![0, 1, 2])), "1.19.0"; "MultiQubitCNOT")]
+#[test_case(Operation::from(MultiQubitCNOT::new(vec![0, 1, 2])), "1.20.0"; "MultiQubitCNOT")]
 fn test_pyo3_json_schema(operation: Operation, version_string: &str) {
     let rust_schema = match operation {
         Operation::MultiQubitMS(_) => {
