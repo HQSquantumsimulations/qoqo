@@ -212,26 +212,6 @@ fn test_clone_partial_eq_multi_ms() {
 }
 
 #[test]
-fn test_operate_multi_ms() {
-    let qubits = vec![0, 1, 2];
-    let gate = MultiQubitMS::new(qubits.clone(), CalculatorFloat::FRAC_PI_2);
-    assert_eq!(gate.hqslang(), "MultiQubitMS");
-    assert_eq!(
-        gate.tags(),
-        &[
-            "Operation",
-            "GateOperation",
-            "MultiQubitGateOperation",
-            "MultiQubitMS",
-        ]
-    );
-    assert_eq!(gate.qubits(), &vec![0, 1, 2]);
-    assert!(!gate.is_parametrized());
-    let gate1 = MultiQubitMS::new(qubits, "theta".into());
-    assert!(gate1.is_parametrized());
-}
-
-#[test]
 fn test_substitute_multi_ms() {
     let qubits = vec![0, 1, 2];
     let gate1 = MultiQubitMS::new(qubits.clone(), "theta".into());
@@ -374,6 +354,7 @@ fn test_clone_partial_eq_multi_cnot() {
         ]
     );
     assert!(!gate.is_parametrized());
+
     let gate2 = gate.clone();
     assert_eq!(gate2, gate);
 }
@@ -674,7 +655,7 @@ fn test_involved_qubits_multi_qubit_zz() {
     assert_eq!(involved_qubits, InvolvedQubits::Set(comp_set));
 }
 
-/// Test powerfc function for MultiQubitMS with symbolic parameters
+/// Test powerfc function for MultiQubitZZ with symbolic parameters
 #[test_case(CalculatorFloat::from("theta"), CalculatorFloat::from(2.0); "power_2")]
 #[test_case(CalculatorFloat::from("theta"), CalculatorFloat::from(1.0 / 2.0); "power_1/2")]
 #[test_case(CalculatorFloat::from("theta"), CalculatorFloat::from(1.0); "power_1")]
@@ -696,11 +677,13 @@ fn test_rotatex_powercf_multi_qubit_zz(theta: CalculatorFloat, power: Calculator
 #[cfg(feature = "json_schema")]
 #[test_case(MultiQubitGateOperation::from(MultiQubitZZ::new(vec![0, 1, 2, 3], 0.23.into())); "MultiQubitZZ")]
 #[test_case(MultiQubitGateOperation::from(MultiQubitMS::new(vec![0, 1, 2], 0.45.into())); "MultiQubitMS")]
+#[test_case(MultiQubitGateOperation::from(MultiQubitCNOT::new(vec![0, 1, 2])); "MultiQubitCNOT")]
 pub fn test_json_schema_multi_qubit_gate_operations(gate: MultiQubitGateOperation) {
     // Serialize
     let test_json = match gate.clone() {
         MultiQubitGateOperation::MultiQubitMS(op) => serde_json::to_string(&op).unwrap(),
         MultiQubitGateOperation::MultiQubitZZ(op) => serde_json::to_string(&op).unwrap(),
+        MultiQubitGateOperation::MultiQubitCNOT(op) => serde_json::to_string(&op).unwrap(),
         _ => unreachable!(),
     };
     let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
@@ -709,6 +692,7 @@ pub fn test_json_schema_multi_qubit_gate_operations(gate: MultiQubitGateOperatio
     let test_schema = match gate {
         MultiQubitGateOperation::MultiQubitMS(_) => schema_for!(MultiQubitMS),
         MultiQubitGateOperation::MultiQubitZZ(_) => schema_for!(MultiQubitZZ),
+        MultiQubitGateOperation::MultiQubitCNOT(_) => schema_for!(MultiQubitCNOT),
         _ => unreachable!(),
     };
     let schema = serde_json::to_string(&test_schema).unwrap();

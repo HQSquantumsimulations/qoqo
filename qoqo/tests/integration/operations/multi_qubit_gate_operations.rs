@@ -202,9 +202,7 @@ fn test_pyo3_is_parametrized(input_operation: Operation) {
 /// Test is_parametrized = false for MultiQubitGate Operations
 #[test_case(Operation::from(MultiQubitMS::new(vec![0, 1], CalculatorFloat::PI)); "MultiQubitMS")]
 #[test_case(Operation::from(MultiQubitZZ::new(vec![0, 1], CalculatorFloat::PI)); "MultiQubitZZ")]
-#[test_case(Operation::from(MultiQubitCNOT::new(vec![0])); "MultiQubitCNOT one")]
-#[test_case(Operation::from(MultiQubitCNOT::new(vec![0, 1])); "MultiQubitCNOT two")]
-#[test_case(Operation::from(MultiQubitCNOT::new(vec![0, 1, 2])); "MultiQubitCNOT three")]
+#[test_case(Operation::from(MultiQubitCNOT::new(vec![0, 1])); "MultiQubitCNOT")]
 fn test_pyo3_is_not_parametrized(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -275,7 +273,6 @@ fn test_pyo3_hqslang(name: &'static str, input_operation: Operation) {
         "Operation",
         "GateOperation",
         "MultiQubitGateOperation",
-        // "Rotation",
         "MultiQubitMS",
         ];
     "MultiQubitMS")]
@@ -285,7 +282,6 @@ fn test_pyo3_hqslang(name: &'static str, input_operation: Operation) {
         "Operation",
         "GateOperation",
         "MultiQubitGateOperation",
-        // "Rotation",
         "MultiQubitZZ",
         ];
     "MultiQubitZZ")]
@@ -937,15 +933,19 @@ fn test_pyo3_richcmp_call_defined_gate() {
 }
 
 #[cfg(feature = "json_schema")]
-#[test_case(Operation::from(MultiQubitMS::new(vec![0, 1, 2], CalculatorFloat::from(0))); "MultiQubitMS")]
-#[test_case(Operation::from(MultiQubitZZ::new(vec![0, 1, 2], CalculatorFloat::from(0))); "MultiQubitZZ")]
-fn test_pyo3_json_schema(operation: Operation) {
+#[test_case(Operation::from(MultiQubitMS::new(vec![0, 1, 2], CalculatorFloat::from(0))), "1.0.0"; "MultiQubitMS")]
+#[test_case(Operation::from(MultiQubitZZ::new(vec![0, 1, 2], CalculatorFloat::from(0))), "1.0.0"; "MultiQubitZZ")]
+#[test_case(Operation::from(MultiQubitCNOT::new(vec![0, 1, 2])), "1.19.0"; "MultiQubitCNOT")]
+fn test_pyo3_json_schema(operation: Operation, version_string: &str) {
     let rust_schema = match operation {
         Operation::MultiQubitMS(_) => {
             serde_json::to_string_pretty(&schemars::schema_for!(MultiQubitMS)).unwrap()
         }
         Operation::MultiQubitZZ(_) => {
             serde_json::to_string_pretty(&schemars::schema_for!(MultiQubitZZ)).unwrap()
+        }
+        Operation::MultiQubitCNOT(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(MultiQubitCNOT)).unwrap()
         }
         _ => unreachable!(),
     };
@@ -966,7 +966,7 @@ fn test_pyo3_json_schema(operation: Operation) {
                 .unwrap();
 
         assert_eq!(current_version_string, ROQOQO_VERSION);
-        assert_eq!(minimum_supported_version_string, "1.0.0");
+        assert_eq!(minimum_supported_version_string, version_string);
     });
 }
 

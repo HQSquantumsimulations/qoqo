@@ -91,6 +91,9 @@ impl OperateMultiQubitGate for MultiQubitMS {
     }
 }
 
+/// The multi qubit CNOT-Product gate: applies the CNOT gate with multiple controls.
+///
+/// This corresponds to a generalised Toffoli gate.
 #[allow(clippy::upper_case_acronyms)]
 #[derive(
     Debug,
@@ -103,7 +106,6 @@ impl OperateMultiQubitGate for MultiQubitMS {
 )]
 #[cfg_attr(feature = "serialize", derive(Serialize, Deserialize))]
 #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
-/// The CNOT gate with multiple controls
 pub struct MultiQubitCNOT {
     qubits: Vec<usize>,
 }
@@ -163,7 +165,9 @@ impl OperateMultiQubitGate for MultiQubitCNOT {
                     operations::PhaseShiftState1::new(self.qubits[1], -CalculatorFloat::FRAC_PI_4);
                 circuit += operations::CNOT::new(self.qubits[0], self.qubits[1]);
             }
-            _ => panic!("Only MultiQubitCNOT gates with 2 or 3 controls can be turned into a circuit."),
+            _ => panic!(
+                "Only MultiQubitCNOT gates with 2 or 3 controls can be turned into a circuit."
+            ),
         }
         circuit
     }

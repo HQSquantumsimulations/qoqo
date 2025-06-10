@@ -53,7 +53,9 @@ pub struct MultiQubitMS {
     OperateMultiQubitGate,
     JsonSchema
 )]
-/// The CNOT gate with multiple controls
+/// The multi qubit CNOT-Product gate: applies the CNOT gate with multiple controls.
+///
+/// This corresponds to a generalised Toffoli gate.
 pub struct MultiQubitCNOT {
     /// The qubits involved in the MultiQubitCNOT gate.
     qubits: Vec<usize>,
