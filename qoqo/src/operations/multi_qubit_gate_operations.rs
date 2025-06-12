@@ -48,6 +48,21 @@ pub struct MultiQubitMS {
 #[allow(clippy::upper_case_acronyms)]
 #[wrap(
     Operate,
+    OperateMultiQubit,
+    OperateGate,
+    OperateMultiQubitGate,
+    JsonSchema
+)]
+/// The multi qubit CNOT-Product gate: applies the CNOT gate with multiple controls.
+///
+/// This corresponds to a generalised Toffoli gate.
+pub struct MultiQubitCNOT {
+    /// The qubits involved in the MultiQubitCNOT gate.
+    qubits: Vec<usize>,
+}
+
+#[wrap(
+    Operate,
     Rotate,
     OperateMultiQubit,
     OperateGate,

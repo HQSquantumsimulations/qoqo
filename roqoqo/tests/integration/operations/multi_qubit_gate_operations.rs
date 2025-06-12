@@ -15,6 +15,7 @@
 #[cfg(feature = "json_schema")]
 use jsonschema::{Draft, Validator};
 use ndarray::array;
+use ndarray::prelude::*;
 use num_complex::Complex64;
 use qoqo_calculator::Calculator;
 use qoqo_calculator::CalculatorFloat;
@@ -211,26 +212,6 @@ fn test_clone_partial_eq_multi_ms() {
 }
 
 #[test]
-fn test_operate_multi_ms() {
-    let qubits = vec![0, 1, 2];
-    let gate = MultiQubitMS::new(qubits.clone(), CalculatorFloat::FRAC_PI_2);
-    assert_eq!(gate.hqslang(), "MultiQubitMS");
-    assert_eq!(
-        gate.tags(),
-        &[
-            "Operation",
-            "GateOperation",
-            "MultiQubitGateOperation",
-            "MultiQubitMS",
-        ]
-    );
-    assert_eq!(gate.qubits(), &vec![0, 1, 2]);
-    assert!(!gate.is_parametrized());
-    let gate1 = MultiQubitMS::new(qubits, "theta".into());
-    assert!(gate1.is_parametrized());
-}
-
-#[test]
 fn test_substitute_multi_ms() {
     let qubits = vec![0, 1, 2];
     let gate1 = MultiQubitMS::new(qubits.clone(), "theta".into());
@@ -300,6 +281,126 @@ fn test_rotatex_powercf_multi_ms(theta: CalculatorFloat, power: CalculatorFloat)
     let test_gate = MultiQubitMS::new(qubits, test_theta);
     assert_eq!(power_gate, test_gate);
     assert_eq!(power_gate.theta(), test_gate.theta());
+}
+
+/// Test circuit function of MultiQubitCNOT
+#[test_case(vec![0,1]; "two_qubit")]
+#[test_case(vec![0,1,2]; "three_qubit")]
+fn test_circuit_multi_cnot(qubits: Vec<usize>) {
+    let gate = MultiQubitCNOT::new(qubits.clone());
+    let c = gate.circuit();
+    if qubits.len() == 2 {
+        let mut comparison_circuit = Circuit::new();
+        comparison_circuit += CNOT::new(0, 1);
+        assert!(c == comparison_circuit);
+    }
+    if qubits.len() == 3 {
+        let mut comparison_circuit = Circuit::new();
+        comparison_circuit += Hadamard::new(2);
+        comparison_circuit += CNOT::new(1, 2);
+        comparison_circuit += PhaseShiftState1::new(2, -CalculatorFloat::FRAC_PI_4);
+        comparison_circuit += CNOT::new(0, 2);
+        comparison_circuit += TGate::new(2);
+        comparison_circuit += CNOT::new(1, 2);
+        comparison_circuit += PhaseShiftState1::new(2, -CalculatorFloat::FRAC_PI_4);
+        comparison_circuit += CNOT::new(0, 2);
+        comparison_circuit += TGate::new(1);
+        comparison_circuit += TGate::new(2);
+        comparison_circuit += Hadamard::new(2);
+        comparison_circuit += CNOT::new(0, 1);
+        comparison_circuit += TGate::new(0);
+        comparison_circuit += PhaseShiftState1::new(1, -CalculatorFloat::FRAC_PI_4);
+        comparison_circuit += CNOT::new(0, 1);
+        assert!(c == comparison_circuit);
+    }
+}
+
+#[test_case(2; "two_qubit")]
+#[test_case(3; "three_qubit")]
+#[test_case(4; "four_qubit")]
+fn test_matrix_output_multi_cnot(num_qubits: usize) {
+    let gate = MultiQubitCNOT::new((0..num_qubits).collect());
+    let unit = gate.unitary_matrix().unwrap();
+    let n = 2_usize.pow(num_qubits as u32);
+    for i in 0..n - 2 {
+        let mut v = Array1::zeros(n);
+        v[i] = Complex64::new(1., 0.);
+        let u = unit.dot(&v);
+        assert_eq!(v, u);
+    }
+    let mut v0 = Array1::zeros(n);
+    let mut v1 = Array1::zeros(n);
+    v0[n - 2] = Complex64::new(1., 0.);
+    v1[n - 1] = Complex64::new(1., 0.);
+    let u0 = unit.dot(&v0);
+    let u1 = unit.dot(&v1);
+    assert_eq!(u0, v1);
+    assert_eq!(u1, v0);
+}
+
+#[test]
+fn test_clone_partial_eq_multi_cnot() {
+    let qubits = vec![0, 1, 2];
+
+    let gate = MultiQubitCNOT::new(qubits);
+    assert_eq!(gate.hqslang(), "MultiQubitCNOT");
+    assert_eq!(
+        gate.tags(),
+        &[
+            "Operation",
+            "GateOperation",
+            "MultiQubitGateOperation",
+            "MultiQubitCNOT",
+        ]
+    );
+    assert!(!gate.is_parametrized());
+
+    let gate2 = gate.clone();
+    assert_eq!(gate2, gate);
+}
+
+#[test]
+fn test_substitute_multi_cnot() {
+    let qubits = vec![0, 1, 2];
+    let gate = MultiQubitCNOT::new(qubits);
+    let mut mapping: HashMap<usize, usize> = std::collections::HashMap::new();
+    let _ = mapping.insert(0, 1);
+    let _ = mapping.insert(1, 2);
+    let _ = mapping.insert(2, 0);
+    let remapped = gate.remap_qubits(&mapping).unwrap();
+    let qubits = remapped.qubits();
+    assert_eq!(qubits, &vec![1, 2, 0]);
+}
+
+#[test]
+fn test_substitute_error_multi_cnot() {
+    let qubits = vec![0, 1, 2];
+    let gate = MultiQubitCNOT::new(qubits);
+    let mut mapping: HashMap<usize, usize> = std::collections::HashMap::new();
+    let _ = mapping.insert(1, 2);
+    let _ = mapping.insert(2, 0);
+    let remapped = gate.remap_qubits(&mapping);
+    assert!(remapped.is_err());
+}
+
+#[test]
+fn test_format_multi_cnot() {
+    let qubits = vec![0, 1, 2];
+    let gate = MultiQubitCNOT::new(qubits);
+    let string = format!("{:?}", gate);
+    assert!(string.contains("MultiQubitCNOT"));
+}
+
+#[test]
+fn test_involved_qubits_multi_cnot() {
+    let qubits = vec![0, 1, 2];
+    let gate = MultiQubitCNOT::new(qubits);
+    let involved_qubits = gate.involved_qubits();
+    let mut comp_set: HashSet<usize> = HashSet::new();
+    let _ = comp_set.insert(0);
+    let _ = comp_set.insert(1);
+    let _ = comp_set.insert(2);
+    assert_eq!(involved_qubits, InvolvedQubits::Set(comp_set));
 }
 
 #[test_case(vec![0,1]; "two_qubit")]
@@ -554,7 +655,7 @@ fn test_involved_qubits_multi_qubit_zz() {
     assert_eq!(involved_qubits, InvolvedQubits::Set(comp_set));
 }
 
-/// Test powerfc function for MultiQubitMS with symbolic parameters
+/// Test powerfc function for MultiQubitZZ with symbolic parameters
 #[test_case(CalculatorFloat::from("theta"), CalculatorFloat::from(2.0); "power_2")]
 #[test_case(CalculatorFloat::from("theta"), CalculatorFloat::from(1.0 / 2.0); "power_1/2")]
 #[test_case(CalculatorFloat::from("theta"), CalculatorFloat::from(1.0); "power_1")]
@@ -576,11 +677,13 @@ fn test_rotatex_powercf_multi_qubit_zz(theta: CalculatorFloat, power: Calculator
 #[cfg(feature = "json_schema")]
 #[test_case(MultiQubitGateOperation::from(MultiQubitZZ::new(vec![0, 1, 2, 3], 0.23.into())); "MultiQubitZZ")]
 #[test_case(MultiQubitGateOperation::from(MultiQubitMS::new(vec![0, 1, 2], 0.45.into())); "MultiQubitMS")]
+#[test_case(MultiQubitGateOperation::from(MultiQubitCNOT::new(vec![0, 1, 2])); "MultiQubitCNOT")]
 pub fn test_json_schema_multi_qubit_gate_operations(gate: MultiQubitGateOperation) {
     // Serialize
     let test_json = match gate.clone() {
         MultiQubitGateOperation::MultiQubitMS(op) => serde_json::to_string(&op).unwrap(),
         MultiQubitGateOperation::MultiQubitZZ(op) => serde_json::to_string(&op).unwrap(),
+        MultiQubitGateOperation::MultiQubitCNOT(op) => serde_json::to_string(&op).unwrap(),
         _ => unreachable!(),
     };
     let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
@@ -589,6 +692,7 @@ pub fn test_json_schema_multi_qubit_gate_operations(gate: MultiQubitGateOperatio
     let test_schema = match gate {
         MultiQubitGateOperation::MultiQubitMS(_) => schema_for!(MultiQubitMS),
         MultiQubitGateOperation::MultiQubitZZ(_) => schema_for!(MultiQubitZZ),
+        MultiQubitGateOperation::MultiQubitCNOT(_) => schema_for!(MultiQubitCNOT),
         _ => unreachable!(),
     };
     let schema = serde_json::to_string(&test_schema).unwrap();

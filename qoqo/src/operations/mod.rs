@@ -207,5 +207,8 @@ pub fn operations(_py: Python, m: &Bound<PyModule>) -> PyResult<()> {
 
     // 1.19
 
+    // 1.20
+    m.add_class::<MultiQubitCNOTWrapper>()?;
+
     Ok(())
 }
