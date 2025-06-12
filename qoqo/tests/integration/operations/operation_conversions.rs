@@ -155,6 +155,9 @@ use test_case::test_case;
 #[test_case(
     Operation::from(TripleControlledPhaseShift::new(0, 1, 2, 3, CalculatorFloat::PI)); "TripleControlledPhaseShift"
 )]
+#[test_case(
+    Operation::from(MultiQubitCNOT::new(vec![0, 1, 2, 3])); "MultiQubitCNOT"
+)]
 fn test_conversion(input: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {

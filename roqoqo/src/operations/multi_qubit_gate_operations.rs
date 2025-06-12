@@ -118,11 +118,11 @@ const TAGS_MultiQubitCNOT: &[&str; 4] = &[
     "MultiQubitCNOT",
 ];
 
-impl operations::ImplementedIn1point19 for MultiQubitCNOT {}
+impl operations::ImplementedIn1point20 for MultiQubitCNOT {}
 
 impl SupportedVersion for MultiQubitCNOT {
     fn minimum_supported_roqoqo_version(&self) -> (u32, u32, u32) {
-        (1, 19, 0)
+        (1, 20, 0)
     }
 }
 

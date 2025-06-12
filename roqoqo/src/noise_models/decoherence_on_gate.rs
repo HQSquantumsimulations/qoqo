@@ -10,10 +10,10 @@
 // express or implied. See the License for the specific language governing permissions and
 // limitations under the License.
 
-use struqture::spins::PlusMinusLindbladNoiseOperator;
-
 use super::SupportedVersion;
 use std::collections::HashMap;
+#[cfg(feature = "serialize")]
+use struqture::spins::PlusMinusLindbladNoiseOperator;
 
 /// Error model for noise that is only present on gate executions.
 ///

@@ -397,3 +397,10 @@ fn test_version_1_16_0_four_qubit_gate(operation: operations::FourQubitGateOpera
 fn test_version_1_17_0_pragmas(operation: operations::Operation) {
     assert_eq!(operation.minimum_supported_roqoqo_version(), (1, 17, 0));
 }
+
+#[test_case(
+    operations::MultiQubitGateOperation::from(operations::MultiQubitCNOT::new(vec![0, 1, 2, 3])); "MultiQubitCNOT"
+)]
+fn test_version_1_20_0_multi_qubit_gate(operation: operations::MultiQubitGateOperation) {
+    assert_eq!(operation.minimum_supported_roqoqo_version(), (1, 20, 0));
+}
