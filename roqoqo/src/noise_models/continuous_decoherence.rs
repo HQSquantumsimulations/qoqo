@@ -11,6 +11,7 @@
 // limitations under the License.
 
 use super::SupportedVersion;
+#[cfg(feature = "serialize")]
 use crate::RoqoqoError;
 use struqture::{
     spins::PlusMinusLindbladNoiseOperator, spins::PlusMinusProduct, OperateOnDensityMatrix,
