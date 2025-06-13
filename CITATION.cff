@@ -1,0 +1,26 @@
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: qoqo
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - name: HQS Quantum Simulations GmbH
+    address: Rintheimer Str.
+    city: Karlsruhe
+    country: DE
+    post-code: '76131'
+    email: info@quantumsimulations.de
+    website: 'https://quantumsimulations.de/'
+repository-code: 'https://github.com/HQSquantumsimulations/qoqo'
+url: 'https://hqsquantumsimulations.github.io/qoqo/'
+keywords:
+  - quantum computing
+  - quantum
+license: Apache-2.0
+commit: f7f27a3
+version: v1.19.6
+date-released: '2025-05-09'
