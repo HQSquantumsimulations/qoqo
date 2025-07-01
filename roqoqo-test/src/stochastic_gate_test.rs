@@ -126,11 +126,8 @@ pub fn prepare_monte_carlo_gate_test(
                 measurement_matrix = id_matrix.kronecker(&measurement_matrix);
             }
         }
-        meas_circuit += PragmaRepeatedMeasurement::new(
-            format!("ro_{i}"),
-            number_projective_measurement,
-            None,
-        );
+        meas_circuit +=
+            PragmaRepeatedMeasurement::new(format!("ro_{i}"), number_projective_measurement, None);
 
         let j = measurement_input
             .add_pauliz_product(format!("ro_{i}"), pauli_product_mask)

@@ -177,9 +177,7 @@ impl MeasureExpectationValues for PauliZProduct {
                 for i in 0..self.input.number_pauli_products {
                     pauli_products_tmp[i] = single_shot_pauli_products.column(i).mean().ok_or(
                         RoqoqoError::PauliZProductMeasurementError {
-                            msg: format!(
-                                "Column {i} out of index for sinlge_shot_pauli_products"
-                            ),
+                            msg: format!("Column {i} out of index for sinlge_shot_pauli_products"),
                         },
                     )?;
                 }

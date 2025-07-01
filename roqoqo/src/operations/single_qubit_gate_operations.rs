@@ -1396,14 +1396,8 @@ impl OperateGate for RotateAroundSphericalAxis {
             * ((f64::try_from(self.spherical_phi.clone())?).sin());
         let vz: f64 = (f64::try_from(self.spherical_theta.clone())?).cos();
         Ok(array![
-            [
-                Complex64::new(c, -s * vz),
-                Complex64::new(-s * vy, -s * vx)
-            ],
-            [
-                Complex64::new(s * vy, -s * vx),
-                Complex64::new(c, s * vz)
-            ]
+            [Complex64::new(c, -s * vz), Complex64::new(-s * vy, -s * vx)],
+            [Complex64::new(s * vy, -s * vx), Complex64::new(c, s * vz)]
         ])
     }
 }
@@ -1507,14 +1501,8 @@ impl OperateGate for RotateXY {
         let vx: f64 = (f64::try_from(self.phi.clone())?).cos();
         let vy: f64 = (f64::try_from(self.phi.clone())?).sin();
         Ok(array![
-            [
-                Complex64::new(c, 0.0),
-                Complex64::new(-s * vy, -s * vx)
-            ],
-            [
-                Complex64::new(s * vy, -s * vx),
-                Complex64::new(c, 0.0)
-            ]
+            [Complex64::new(c, 0.0), Complex64::new(-s * vy, -s * vx)],
+            [Complex64::new(s * vy, -s * vx), Complex64::new(c, 0.0)]
         ])
     }
 }
@@ -2299,14 +2287,8 @@ impl OperateGate for SXGate {
         let s: f64 = (theta / 2.0).sin();
         let gp = Complex64::new(0.0, PI / 4.0).exp();
         Ok(array![
-            [
-                gp * Complex64::new(c, 0.0),
-                gp * Complex64::new(0.0, -s)
-            ],
-            [
-                gp * Complex64::new(0.0, -s),
-                gp * Complex64::new(c, 0.0)
-            ]
+            [gp * Complex64::new(c, 0.0), gp * Complex64::new(0.0, -s)],
+            [gp * Complex64::new(0.0, -s), gp * Complex64::new(c, 0.0)]
         ])
     }
 }

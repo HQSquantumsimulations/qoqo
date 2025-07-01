@@ -199,9 +199,7 @@ impl PauliZProductWrapper {
                 .internal
                 .substitute_parameters(substituted_parameters)
                 .map_err(|x| {
-                    PyRuntimeError::new_err(format!(
-                        "Error substituting symbolic parameters {x:?}"
-                    ))
+                    PyRuntimeError::new_err(format!("Error substituting symbolic parameters {x:?}"))
                 })?,
         })
     }
