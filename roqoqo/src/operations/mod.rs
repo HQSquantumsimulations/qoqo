@@ -528,7 +528,7 @@ pub trait Rotate:
     ///
     /// let gate = RotateZ::new(0, 1.0.into());
     /// let overrotated_gate = gate.overrotate(&1.0, &0.5);
-    /// println!("{:?}", gate);
+    /// println!("{gate:?}");
     /// println!("{:?}", overrotated_gate);
     /// let gate_symbolic = RotateZ::new(0, "theta_var".into());
     /// let overrotated_symbolic = gate_symbolic.overrotate(&1.0, &0.5);

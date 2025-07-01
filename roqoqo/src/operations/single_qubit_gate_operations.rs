@@ -100,11 +100,11 @@ impl OperateGate for SingleQubitGate {
             Ok(array![
                 [
                     pref * Complex64::new(alpha_r, alpha_i),
-                    pref * Complex64::new(-1.0 * beta_r, beta_i)
+                    pref * Complex64::new(-beta_r, beta_i)
                 ],
                 [
                     pref * Complex64::new(beta_r, beta_i),
-                    pref * Complex64::new(alpha_r, -1.0 * alpha_i)
+                    pref * Complex64::new(alpha_r, -alpha_i)
                 ]
             ])
         }
@@ -198,7 +198,7 @@ impl OperateGate for RotateZ {
         let c: f64 = (f64::try_from(self.theta.clone())? / 2.0).cos();
         let s: f64 = (f64::try_from(self.theta.clone())? / 2.0).sin();
         Ok(array![
-            [Complex64::new(c, -1.0 * s), Complex64::new(0.0, 0.0)],
+            [Complex64::new(c, -s), Complex64::new(0.0, 0.0)],
             [Complex64::new(0.0, 0.0), Complex64::new(c, s)]
         ])
     }
@@ -294,8 +294,8 @@ impl OperateGate for RotateX {
         let c: f64 = (f64::try_from(self.theta.clone())? / 2.0).cos();
         let s: f64 = (f64::try_from(self.theta.clone())? / 2.0).sin();
         Ok(array![
-            [Complex64::new(c, 0.0), Complex64::new(0.0, -1.0 * s)],
-            [Complex64::new(0.0, -1.0 * s), Complex64::new(c, 0.0)]
+            [Complex64::new(c, 0.0), Complex64::new(0.0, -s)],
+            [Complex64::new(0.0, -s), Complex64::new(c, 0.0)]
         ])
     }
 }
@@ -386,7 +386,7 @@ impl OperateGate for RotateY {
         let c: f64 = (f64::try_from(self.theta.clone())? / 2.0).cos();
         let s: f64 = (f64::try_from(self.theta.clone())? / 2.0).sin();
         Ok(array![
-            [Complex64::new(c, 0.0), Complex64::new(-1.0 * s, 0.0)],
+            [Complex64::new(c, 0.0), Complex64::new(-s, 0.0)],
             [Complex64::new(s, 0.0), Complex64::new(c, 0.0)]
         ])
     }
@@ -741,8 +741,8 @@ impl OperateGate for SqrtPauliX {
         let c: f64 = (theta / 2.0).cos();
         let s: f64 = (theta / 2.0).sin();
         Ok(array![
-            [Complex64::new(c, 0.0), Complex64::new(0.0, -1.0 * s)],
-            [Complex64::new(0.0, -1.0 * s), Complex64::new(c, 0.0)]
+            [Complex64::new(c, 0.0), Complex64::new(0.0, -s)],
+            [Complex64::new(0.0, -s), Complex64::new(c, 0.0)]
         ])
     }
 }
@@ -779,7 +779,7 @@ impl OperateSingleQubitGate for SqrtPauliX {
     ///
     /// * `beta_i` - The imaginary part Im(β) of the off-diagonal elements of the single-qubit unitary matrix.
     fn beta_i(&self) -> CalculatorFloat {
-        CalculatorFloat::from((PI / 4.0).sin() * (-1.0))
+        CalculatorFloat::from(-(PI / 4.0).sin())
     }
     /// Returns global_phase parameter of the operation.
     ///
@@ -922,7 +922,7 @@ impl OperateGate for Hadamard {
         let f: f64 = 1.0 / ((2.0_f64).sqrt());
         Ok(array![
             [Complex64::new(f, 0.0), Complex64::new(f, 0.0)],
-            [Complex64::new(f, 0.0), Complex64::new(-1.0 * f, 0.0)]
+            [Complex64::new(f, 0.0), Complex64::new(-f, 0.0)]
         ])
     }
 }
@@ -1122,7 +1122,7 @@ impl OperateSingleQubitGate for TGate {
     ///
     /// * `alpha_i` - The imaginary part Im(α) of the on-diagonal elements of the single-qubit unitary matrix.
     fn alpha_i(&self) -> CalculatorFloat {
-        CalculatorFloat::from((-1.0) * (PI / 8.0).sin())
+        CalculatorFloat::from(-(PI / 8.0).sin())
     }
     /// Returns the beta_r parameter of the operation.
     ///
@@ -1397,11 +1397,11 @@ impl OperateGate for RotateAroundSphericalAxis {
         let vz: f64 = (f64::try_from(self.spherical_theta.clone())?).cos();
         Ok(array![
             [
-                Complex64::new(c, -1.0 * s * vz),
-                Complex64::new(-1.0 * s * vy, -1.0 * s * vx)
+                Complex64::new(c, -s * vz),
+                Complex64::new(-s * vy, -s * vx)
             ],
             [
-                Complex64::new(s * vy, -1.0 * s * vx),
+                Complex64::new(s * vy, -s * vx),
                 Complex64::new(c, s * vz)
             ]
         ])
@@ -1509,10 +1509,10 @@ impl OperateGate for RotateXY {
         Ok(array![
             [
                 Complex64::new(c, 0.0),
-                Complex64::new(-1.0 * s * vy, -1.0 * s * vx)
+                Complex64::new(-s * vy, -s * vx)
             ],
             [
-                Complex64::new(s * vy, -1.0 * s * vx),
+                Complex64::new(s * vy, -s * vx),
                 Complex64::new(c, 0.0)
             ]
         ])
@@ -1617,7 +1617,7 @@ impl OperateGate for GPi {
         let c: f64 = (f64::try_from(self.theta.clone())?).cos();
         let s: f64 = (f64::try_from(self.theta.clone())?).sin();
         Ok(array![
-            [Complex64::new(0.0, 0.0), Complex64::new(c, -1.0 * s)],
+            [Complex64::new(0.0, 0.0), Complex64::new(c, -s)],
             [Complex64::new(c, s), Complex64::new(0.0, 0.0)]
         ])
     }
@@ -1716,8 +1716,8 @@ impl OperateGate for GPi2 {
         let c: f64 = (f64::try_from(self.theta.clone())?).cos();
         let s: f64 = (f64::try_from(self.theta.clone())?).sin();
         Ok(array![
-            [Complex64::new(1.0, 0.0), Complex64::new(-1.0 * s, -1.0 * c)],
-            [Complex64::new(s, -1.0 * c), Complex64::new(1.0, 0.0)]
+            [Complex64::new(1.0, 0.0), Complex64::new(-s, -c)],
+            [Complex64::new(s, -c), Complex64::new(1.0, 0.0)]
         ] / 2.0_f64.sqrt())
     }
 }
@@ -1909,7 +1909,7 @@ impl OperateGate for SqrtPauliY {
         let c: f64 = (theta / 2.0).cos();
         let s: f64 = (theta / 2.0).sin();
         Ok(array![
-            [Complex64::new(c, 0.0), Complex64::new(-1.0 * s, 0.0)],
+            [Complex64::new(c, 0.0), Complex64::new(-s, 0.0)],
             [Complex64::new(s, 0.0), Complex64::new(c, 0.0)]
         ])
     }
@@ -2007,7 +2007,7 @@ impl OperateGate for InvSqrtPauliY {
         let c: f64 = (theta / 2.0).cos();
         let s: f64 = (theta / 2.0).sin();
         Ok(array![
-            [Complex64::new(c, 0.0), Complex64::new(-1.0 * s, 0.0)],
+            [Complex64::new(c, 0.0), Complex64::new(-s, 0.0)],
             [Complex64::new(s, 0.0), Complex64::new(c, 0.0)]
         ])
     }
@@ -2037,7 +2037,7 @@ impl OperateSingleQubitGate for InvSqrtPauliY {
     ///
     /// * `beta_r` - The real part Re(β) of the off-diagonal elements of the single-qubit unitary matrix.
     fn beta_r(&self) -> CalculatorFloat {
-        CalculatorFloat::from((PI / 4.0).sin() * -1.0)
+        CalculatorFloat::from(-(PI / 4.0).sin())
     }
     /// Returns the beta_i parameter of the operation.
     ///
@@ -2301,10 +2301,10 @@ impl OperateGate for SXGate {
         Ok(array![
             [
                 gp * Complex64::new(c, 0.0),
-                gp * Complex64::new(0.0, -1.0 * s)
+                gp * Complex64::new(0.0, -s)
             ],
             [
-                gp * Complex64::new(0.0, -1.0 * s),
+                gp * Complex64::new(0.0, -s),
                 gp * Complex64::new(c, 0.0)
             ]
         ])
@@ -2343,7 +2343,7 @@ impl OperateSingleQubitGate for SXGate {
     ///
     /// * `beta_i` - The imaginary part Im(β) of the off-diagonal elements of the single-qubit unitary matrix.
     fn beta_i(&self) -> CalculatorFloat {
-        CalculatorFloat::from((PI / 4.0).sin() * (-1.0))
+        CalculatorFloat::from(-(PI / 4.0).sin())
     }
     /// Returns global_phase parameter of the operation.
     ///

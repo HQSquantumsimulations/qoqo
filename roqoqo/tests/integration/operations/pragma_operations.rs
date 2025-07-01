@@ -49,7 +49,7 @@ fn pragma_loop_simple_traits() {
     let pragma = PragmaLoop::new(CalculatorFloat::from("number_t"), Circuit::new());
     // Test Debug trait
     assert_eq!(
-        format!("{:?}", pragma),
+        format!("{pragma:?}"),
         "PragmaLoop { repetitions: Str(\"number_t\"), circuit: Circuit { definitions: [], operations: [], _roqoqo_version: RoqoqoVersion } }"
     );
 
@@ -238,7 +238,7 @@ fn pragma_set_number_of_measurements_simple_traits() {
     let pragma = PragmaSetNumberOfMeasurements::new(1, String::from("ro"));
     // Test Debug trait
     assert_eq!(
-        format!("{:?}", pragma),
+        format!("{pragma:?}"),
         "PragmaSetNumberOfMeasurements { number_measurements: 1, readout: \"ro\" }"
     );
 
@@ -394,7 +394,7 @@ fn pragma_set_statevector_simple_traits() {
 
     // Test Debug trait
     assert_eq!(
-        format!("{:?}", pragma),
+        format!("{pragma:?}"),
         "PragmaSetStateVector { statevector: [Complex { re: 1.0, im: 0.0 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.0 }], shape=[4], strides=[1], layout=CFcf (0xf), const ndim=1 }"
     );
 
@@ -623,7 +623,7 @@ fn pragma_set_density_matrix_simple_traits() {
 
     // Test Debug trait
     assert_eq!(
-        format!("{:?}", pragma),
+        format!("{pragma:?}"),
         "PragmaSetDensityMatrix { density_matrix: [[Complex { re: 1.0, im: 0.0 }, Complex { re: 0.0, im: 0.0 }],
  [Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.0 }]], shape=[2, 2], strides=[2, 1], layout=Cc (0x5), const ndim=2 }"
     );
@@ -837,7 +837,7 @@ fn pragma_repeat_gate_simple_inputs() {
 
     // Test Debug trait
     assert_eq!(
-        format!("{:?}", pragma),
+        format!("{pragma:?}"),
         "PragmaRepeatGate { repetition_coefficient: 3 }"
     );
 
@@ -976,7 +976,7 @@ fn pragma_overrotation_simple_inputs() {
 
     // Test Debug trait
     assert_eq!(
-        format!("{:?}", pragma),
+        format!("{pragma:?}"),
         "PragmaOverrotation { gate_hqslang: \"RotateX\", qubits: [0], amplitude: 0.03, variance: 0.001 }"
     );
 
@@ -1132,7 +1132,7 @@ fn pragma_boost_noise_simple_traits() {
 
     // Test Debug trait
     assert_eq!(
-        format!("{:?}", pragma),
+        format!("{pragma:?}"),
         "PragmaBoostNoise { noise_coefficient: Float(0.003) }"
     );
 
@@ -1273,9 +1273,9 @@ fn pragma_stop_simple_traits() {
     let pragma = PragmaStopParallelBlock::new(vec![0, 1], CalculatorFloat::from(0.0000001));
 
     // Test Debug trait
-    let string_comparison = (format!("{:?}", pragma)
+    let string_comparison = (format!("{pragma:?}")
         == "PragmaStopParallelBlock { qubits: [0, 1], execution_time: Float(0.0000001) }")
-        || (format!("{:?}", pragma)
+        || (format!("{pragma:?}")
             == "PragmaStopParallelBlock { qubits: [0, 1], execution_time: Float(1e-7) }");
 
     assert!(string_comparison);
@@ -1438,7 +1438,7 @@ fn pragma_global_phase_simple_traits() {
 
     // Test Debug trait
     assert_eq!(
-        format!("{:?}", pragma),
+        format!("{pragma:?}"),
         "PragmaGlobalPhase { phase: Float(0.05) }"
     );
 
@@ -1579,9 +1579,9 @@ fn pragma_sleep_simple_traits() {
     let pragma = PragmaSleep::new(vec![0, 1], CalculatorFloat::from(0.0000001));
 
     // Test Debug trait
-    let string_comparison = (format!("{:?}", pragma)
+    let string_comparison = (format!("{pragma:?}")
         == "PragmaSleep { qubits: [0, 1], sleep_time: Float(0.0000001) }")
-        || (format!("{:?}", pragma) == "PragmaSleep { qubits: [0, 1], sleep_time: Float(1e-7) }");
+        || (format!("{pragma:?}") == "PragmaSleep { qubits: [0, 1], sleep_time: Float(1e-7) }");
 
     assert!(string_comparison);
 
@@ -1742,7 +1742,7 @@ fn pragma_active_reset_simple_traits() {
     let pragma = PragmaActiveReset::new(0);
 
     // Test Debug trait
-    assert_eq!(format!("{:?}", pragma), "PragmaActiveReset { qubit: 0 }");
+    assert_eq!(format!("{pragma:?}"), "PragmaActiveReset { qubit: 0 }");
 
     // Test Clone trait
     assert_eq!(pragma.clone(), pragma);
@@ -1889,7 +1889,7 @@ fn pragma_start_decomp_block_simple_traits() {
 
     // Test Debug trait
     assert_eq!(
-        format!("{:?}", pragma),
+        format!("{pragma:?}"),
         "PragmaStartDecompositionBlock { qubits: [0, 1], reordering_dictionary: {0: 1} }"
     );
 
@@ -2065,7 +2065,7 @@ fn pragma_stop_decomp_block_simple_traits() {
 
     // Test Debug trait
     assert_eq!(
-        format!("{:?}", pragma),
+        format!("{pragma:?}"),
         "PragmaStopDecompositionBlock { qubits: [0, 1] }"
     );
 
@@ -2228,7 +2228,7 @@ fn pragma_damping_simple_traits() {
 
     // Test Debug trait
     assert_eq!(
-        format!("{:?}", pragma),
+        format!("{pragma:?}"),
         "PragmaDamping { qubit: 0, gate_time: Float(0.005), rate: Float(0.02) }"
     );
 
@@ -2429,7 +2429,7 @@ fn pragma_depolarising_simple_traits() {
 
     // Test Debug trait
     assert_eq!(
-        format!("{:?}", pragma),
+        format!("{pragma:?}"),
         "PragmaDepolarising { qubit: 0, gate_time: Float(0.005), rate: Float(0.02) }"
     );
 
@@ -2636,7 +2636,7 @@ fn pragma_dephasing_simple_traits() {
 
     // Test Debug trait
     assert_eq!(
-        format!("{:?}", pragma),
+        format!("{pragma:?}"),
         "PragmaDephasing { qubit: 0, gate_time: Float(0.005), rate: Float(0.02) }"
     );
 
@@ -2849,7 +2849,7 @@ fn pragma_random_noise_simple_traits() {
 
     // Test Debug trait
     assert_eq!(
-        format!("{:?}", pragma),
+        format!("{pragma:?}"),
         "PragmaRandomNoise { qubit: 0, gate_time: Float(0.005), depolarising_rate: Float(0.02), dephasing_rate: Float(0.01) }"
     );
 
@@ -3103,7 +3103,7 @@ fn pragma_general_noise_simple_traits() {
 
     // Test Debug trait
     assert_eq!(
-        format!("{:?}", pragma),
+        format!("{pragma:?}"),
         "PragmaGeneralNoise { qubit: 0, gate_time: Float(0.005), rates: [[1.0, 0.0, 0.0],\n [0.0, 0.0, 0.0],\n [0.0, 0.0, 1.0]], shape=[3, 3], strides=[3, 1], layout=Cc (0x5), const ndim=2 }"
     );
 
@@ -3351,7 +3351,7 @@ fn pragma_conditional_simple_traits() {
 
     // Test Debug trait
     assert_eq!(
-        format!("{:?}", pragma),
+        format!("{pragma:?}"),
         "PragmaConditional { condition_register: \"ro\", condition_index: 1, circuit: Circuit { definitions: [], operations: [], _roqoqo_version: RoqoqoVersion } }"
     );
 
@@ -3668,7 +3668,7 @@ fn pragma_controlled_circuit_simple_traits() {
 
     // Test Debug trait
     assert_eq!(
-        format!("{:?}", pragma),
+        format!("{pragma:?}"),
         "PragmaControlledCircuit { controlling_qubit: 1, circuit: Circuit { definitions: [], operations: [], _roqoqo_version: RoqoqoVersion } }"
     );
 
@@ -3864,7 +3864,7 @@ fn pragma_annotated_op_simple_traits() {
 
     // Test Debug trait
     assert_eq!(
-        format!("{:?}", pragma),
+        format!("{pragma:?}"),
         "PragmaAnnotatedOp { operation: PauliX(PauliX { qubit: 0 }), annotation: \"test\" }"
     );
 
@@ -4041,7 +4041,7 @@ fn pragma_simulation_repetitions_simple_traits() {
 
     // Test Debug trait
     assert_eq!(
-        format!("{:?}", pragma),
+        format!("{pragma:?}"),
         "PragmaSimulationRepetitions { repetitions: 100 }"
     );
 

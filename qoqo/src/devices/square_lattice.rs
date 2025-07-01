@@ -238,8 +238,7 @@ impl SquareLatticeDeviceWrapper {
             let bytes = get_bytes.extract::<Vec<u8>>()?;
             deserialize(&bytes[..]).map_err(|err| {
                 PyValueError::new_err(format!(
-                    "Cannot treat input as SquareLatticeDevice: {}",
-                    err
+                    "Cannot treat input as SquareLatticeDevice: {err}"
                 ))
             })
         }

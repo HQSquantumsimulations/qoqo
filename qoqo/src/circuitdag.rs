@@ -72,8 +72,7 @@ impl CircuitDagWrapper {
             })?;
             deserialize(&bytes[..]).map_err(|err| {
                 PyTypeError::new_err(format!(
-                    "Python object cannot be converted to qoqo CircuitDag: Deserialization failed: {}",
-                    err
+                    "Python object cannot be converted to qoqo CircuitDag: Deserialization failed: {err}"
                 ))}
             )
         }
@@ -132,7 +131,7 @@ impl CircuitDagWrapper {
     #[pyo3(text_signature = "($self, op)")]
     pub fn add_to_back(&mut self, op: &Bound<PyAny>) -> PyResult<Option<usize>> {
         let operation = convert_pyany_to_operation(op).map_err(|x| {
-            PyTypeError::new_err(format!("Cannot convert python object to Operation {:?}", x))
+            PyTypeError::new_err(format!("Cannot convert python object to Operation {x:?}"))
         })?;
         Ok(self.internal.add_to_back(operation))
     }
@@ -147,7 +146,7 @@ impl CircuitDagWrapper {
     #[pyo3(text_signature = "($self, op)")]
     pub fn add_to_front(&mut self, op: &Bound<PyAny>) -> PyResult<Option<usize>> {
         let operation = convert_pyany_to_operation(op).map_err(|x| {
-            PyTypeError::new_err(format!("Cannot convert python object to Operation {:?}", x))
+            PyTypeError::new_err(format!("Cannot convert python object to Operation {x:?}"))
         })?;
         Ok(self.internal.add_to_front(operation))
     }
@@ -252,7 +251,7 @@ impl CircuitDagWrapper {
         let operation = self
             .internal
             .get(index)
-            .ok_or_else(|| PyIndexError::new_err(format!("Index {} out of range", index)))?
+            .ok_or_else(|| PyIndexError::new_err(format!("Index {index} out of range")))?
             .clone();
         convert_operation_to_pyobject(operation, py)
     }

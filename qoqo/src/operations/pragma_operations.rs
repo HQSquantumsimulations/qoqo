@@ -217,8 +217,7 @@ impl PragmaSetStateVectorWrapper {
                 .substitute_parameters(&calculator)
                 .map_err(|x| {
                     pyo3::exceptions::PyRuntimeError::new_err(format!(
-                        "Parameter Substitution failed: {:?}",
-                        x
+                        "Parameter Substitution failed: {x:?}"
                     ))
                 })?,
         })
@@ -502,8 +501,7 @@ impl PragmaSetDensityMatrixWrapper {
                 .substitute_parameters(&calculator)
                 .map_err(|x| {
                     pyo3::exceptions::PyRuntimeError::new_err(format!(
-                        "Parameter Substitution failed: {:?}",
-                        x
+                        "Parameter Substitution failed: {x:?}"
                     ))
                 })?,
         })
@@ -1138,7 +1136,7 @@ impl PragmaGeneralNoiseWrapper {
         Python::with_gil(|py| -> PyResult<Py<PyArray2<f64>>> {
             match self.internal.superoperator() {
                 Ok(x) => Ok(x.to_pyarray(py).unbind()),
-                Err(err) => Err(PyRuntimeError::new_err(format!("{:?}", err))),
+                Err(err) => Err(PyRuntimeError::new_err(format!("{err:?}"))),
             }
         })
     }
@@ -1203,8 +1201,7 @@ impl PragmaGeneralNoiseWrapper {
                 .substitute_parameters(&calculator)
                 .map_err(|x| {
                     pyo3::exceptions::PyRuntimeError::new_err(format!(
-                        "Parameter Substitution failed: {:?}",
-                        x
+                        "Parameter Substitution failed: {x:?}"
                     ))
                 })?,
         })
@@ -1496,8 +1493,7 @@ impl PragmaChangeDeviceWrapper {
                 .substitute_parameters(&calculator)
                 .map_err(|x| {
                     pyo3::exceptions::PyRuntimeError::new_err(format!(
-                        "Parameter Substitution failed: {:?}",
-                        x
+                        "Parameter Substitution failed: {x:?}"
                     ))
                 })?,
         })
@@ -1766,8 +1762,7 @@ impl PragmaAnnotatedOpWrapper {
                 .substitute_parameters(&calculator)
                 .map_err(|x| {
                     pyo3::exceptions::PyRuntimeError::new_err(format!(
-                        "Parameter Substitution failed: {:?}",
-                        x
+                        "Parameter Substitution failed: {x:?}"
                     ))
                 })?,
         })

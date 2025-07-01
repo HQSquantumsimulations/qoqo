@@ -140,7 +140,7 @@ fn operate_struct(ds: DataStruct, ident: Ident) -> TokenStream {
         .map(|(id, type_string, ty)| match type_string {
             Some(s) => match s.as_str() {
                 "CalculatorFloat" => {
-                    let msg = format!("Returns value of attribute {}", id);
+                    let msg = format!("Returns value of attribute {id}");
                     quote! {
                         #[doc = #msg]
                         pub fn #id(&self) -> CalculatorFloatWrapper{
@@ -149,7 +149,7 @@ fn operate_struct(ds: DataStruct, ident: Ident) -> TokenStream {
                     }
                 }
                 "Circuit" => {
-                    let msg = format!("Get value of struct field {}", id);
+                    let msg = format!("Get value of struct field {id}");
                     quote! {
                         #[doc = #msg]
                         pub fn #id(&self) -> CircuitWrapper{
@@ -158,7 +158,7 @@ fn operate_struct(ds: DataStruct, ident: Ident) -> TokenStream {
                     }
                 }
                 "Option<Circuit>" => {
-                    let msg = format!("Get value of struct field {}", id);
+                    let msg = format!("Get value of struct field {id}");
                     quote! {
                             #[doc = #msg]
                             pub fn #id(&self) -> Option<CircuitWrapper>{
@@ -170,7 +170,7 @@ fn operate_struct(ds: DataStruct, ident: Ident) -> TokenStream {
                     }
                 }
                 "PauliHamiltonian" => {
-                    let msg = format!("Get value of struct field {}", id);
+                    let msg = format!("Get value of struct field {id}");
                     quote! {
                         #[doc = #msg]
                         pub fn #id(&self) -> PauliHamiltonianWrapper{
@@ -179,7 +179,7 @@ fn operate_struct(ds: DataStruct, ident: Ident) -> TokenStream {
                     }
                 }
                 _ => {
-                    let msg = format!("Get value of struct field {}", id);
+                    let msg = format!("Get value of struct field {id}");
                     quote! {
                         #[doc = #msg]
                         pub fn #id(&self) -> #ty{
@@ -189,7 +189,7 @@ fn operate_struct(ds: DataStruct, ident: Ident) -> TokenStream {
                 }
             },
             _ => {
-                let msg = format!("Get value of struct field {}", id);
+                let msg = format!("Get value of struct field {id}");
                 quote! {
                     #[doc=#msg]
                     pub fn #id(&self) -> #ty{
@@ -199,7 +199,7 @@ fn operate_struct(ds: DataStruct, ident: Ident) -> TokenStream {
             }
         });
 
-    let new_msg = format!("Creates new instance of Operations {}", ident);
+    let new_msg = format!("Creates new instance of Operations {ident}");
     quote! {
 
         #(#getter_fields)*

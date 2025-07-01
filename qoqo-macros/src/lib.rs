@@ -629,7 +629,7 @@ pub fn wrap(
         TokenStream::new()
     };
 
-    let msg = format!("Internal storage of {} object", ident);
+    let msg = format!("Internal storage of {ident} object");
     let q = quote! {
         #[automatically_derived]
         #[pyclass(name=#str_ident)]

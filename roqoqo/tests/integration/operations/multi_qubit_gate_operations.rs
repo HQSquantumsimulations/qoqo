@@ -248,7 +248,7 @@ fn test_substitute_error_multi_ms() {
 fn test_format_multi_ms() {
     let qubits = vec![0, 1, 2];
     let gate = MultiQubitMS::new(qubits, "theta".into());
-    let string = format!("{:?}", gate);
+    let string = format!("{gate:?}");
     assert!(string.contains("theta"));
     assert!(string.contains("MultiQubitMS"));
 }
@@ -387,7 +387,7 @@ fn test_substitute_error_multi_cnot() {
 fn test_format_multi_cnot() {
     let qubits = vec![0, 1, 2];
     let gate = MultiQubitCNOT::new(qubits);
-    let string = format!("{:?}", gate);
+    let string = format!("{gate:?}");
     assert!(string.contains("MultiQubitCNOT"));
 }
 
@@ -638,7 +638,7 @@ fn test_substitute_error_multi_qubit_zz() {
 fn test_format_error_multi_qubit_zz() {
     let qubits = vec![0, 1, 2];
     let gate = MultiQubitZZ::new(qubits, "theta".into());
-    let string = format!("{:?}", gate);
+    let string = format!("{gate:?}");
     assert!(string.contains("theta"));
     assert!(string.contains("MultiQubitZZ"));
 }
@@ -775,7 +775,7 @@ fn test_format_call_defined_gate() {
         qubits.clone(),
         vec![CalculatorFloat::from(0.6)],
     );
-    let string = format!("{:?}", gate);
+    let string = format!("{gate:?}");
     assert!(
         string
             == "CallDefinedGate { gate_name: \"name\", qubits: [0, 1, 2], free_parameters: [Float(0.6)] }"

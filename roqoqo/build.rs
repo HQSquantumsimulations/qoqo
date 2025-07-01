@@ -920,7 +920,7 @@ fn main() {
         }
 
     };
-    let final_str = format!("{}", final_quote);
+    let final_str = format!("{final_quote}");
     let out_dir = PathBuf::from(
         std::env::var("OUT_DIR").expect("Cannot find a valid output directory for code generation"),
     )
@@ -937,7 +937,7 @@ fn build_quotes(vis: &Visitor, i: usize, idents: Vec<Ident>) -> Vec<proc_macro2:
         .into_iter()
         .filter(|v| vis.filter_for_version(v, i))
         .map(|v| {
-            let msg = format!("Variant for {}", v);
+            let msg = format!("Variant for {v}");
             quote! {
             #[allow(clippy::upper_case_acronyms)]
             #[doc = #msg]

@@ -80,8 +80,7 @@ impl CircuitWrapper {
             })?;
             deserialize(&bytes[..]).map_err(|err| {
                 PyTypeError::new_err(format!(
-                    "Python object cannot be converted to qoqo Circuit: Deserialization failed: {}",
-                    err
+                    "Python object cannot be converted to qoqo Circuit: Deserialization failed: {err}"
                 ))
             })
         }
@@ -125,8 +124,7 @@ impl CircuitWrapper {
                 .substitute_parameters(&calculator)
                 .map_err(|x| {
                     pyo3::exceptions::PyRuntimeError::new_err(format!(
-                        "Parameter Substitution failed: {:?}",
-                        x
+                        "Parameter Substitution failed: {x:?}"
                     ))
                 })?,
         })
@@ -144,7 +142,7 @@ impl CircuitWrapper {
     ///     RuntimeError: The qubit remapping failed.
     pub fn remap_qubits(&self, mapping: std::collections::HashMap<usize, usize>) -> PyResult<Self> {
         let new_internal = self.internal.remap_qubits(&mapping).map_err(|err| {
-            pyo3::exceptions::PyRuntimeError::new_err(format!("Qubit remapping failed: {:?}", err))
+            pyo3::exceptions::PyRuntimeError::new_err(format!("Qubit remapping failed: {err:?}"))
         })?;
         Ok(Self {
             internal: new_internal,
@@ -361,7 +359,7 @@ impl CircuitWrapper {
         let operation = self
             .internal
             .get(index)
-            .ok_or_else(|| PyIndexError::new_err(format!("Index {} out of range", index)))?
+            .ok_or_else(|| PyIndexError::new_err(format!("Index {index} out of range")))?
             .clone();
         convert_operation_to_pyobject(operation, py)
     }
@@ -388,20 +386,17 @@ impl CircuitWrapper {
         };
         if start >= stop {
             return Err(PyIndexError::new_err(format!(
-                "Stop index {} smaller than start index {}",
-                stop, start
+                "Stop index {stop} smaller than start index {start}"
             )));
         }
         if start >= self.internal.len() {
             return Err(PyIndexError::new_err(format!(
-                "Start index {} out of range",
-                start
+                "Start index {start} out of range"
             )));
         }
         if stop > self.internal.len() {
             return Err(PyIndexError::new_err(format!(
-                "Stop index {} out of range",
-                stop
+                "Stop index {stop} out of range"
             )));
         }
 
@@ -487,7 +482,7 @@ impl CircuitWrapper {
     ///     op (Operation): The Operation to add to the Circuit.
     pub fn add(&mut self, op: &Bound<PyAny>) -> PyResult<()> {
         let operation = convert_pyany_to_operation(op).map_err(|x| {
-            PyTypeError::new_err(format!("Cannot convert python object to Operation {:?}", x))
+            PyTypeError::new_err(format!("Cannot convert python object to Operation {x:?}"))
         })?;
         self.internal.add_operation(operation);
         Ok(())
@@ -574,7 +569,7 @@ impl CircuitWrapper {
         let operation = self
             .internal
             .get(index)
-            .ok_or_else(|| PyIndexError::new_err(format!("Index {} out of range", index)))?
+            .ok_or_else(|| PyIndexError::new_err(format!("Index {index} out of range")))?
             .clone();
         convert_operation_to_pyobject(operation, py)
     }
@@ -594,7 +589,7 @@ impl CircuitWrapper {
         let mut_reference = self
             .internal
             .get_mut(index)
-            .ok_or_else(|| PyIndexError::new_err(format!("Index {} out of range", index)))?;
+            .ok_or_else(|| PyIndexError::new_err(format!("Index {index} out of range")))?;
         *mut_reference = operation;
         Ok(())
     }
@@ -615,8 +610,7 @@ impl CircuitWrapper {
             Err(_) => {
                 let other = convert_into_circuit(other).map_err(|x| {
                     pyo3::exceptions::PyTypeError::new_err(format!(
-                        "Right hand side cannot be converted to Operation or Circuit {:?}",
-                        x
+                        "Right hand side cannot be converted to Operation or Circuit {x:?}"
                     ))
                 });
                 match other {
@@ -650,8 +644,7 @@ impl CircuitWrapper {
             Err(_) => {
                 let other = convert_into_circuit(other).map_err(|x| {
                     pyo3::exceptions::PyTypeError::new_err(format!(
-                        "Right hand side cannot be converted to Operation or Circuit {:?}",
-                        x
+                        "Right hand side cannot be converted to Operation or Circuit {x:?}"
                     ))
                 });
                 match other {
@@ -662,6 +655,14 @@ impl CircuitWrapper {
                 }
             }
         }
+    }
+
+    /// Return the number of qubits in the Circuit.
+    ///
+    /// Returns:
+    ///    int: The number of qubits in the Circuit.
+    fn number_of_qubits(&self) -> usize {
+        self.internal.number_of_qubits()
     }
 }
 

@@ -162,7 +162,7 @@ fn test_singlequbitgate_unitarity_err0() {
         })
     );
     // test debugging
-    assert_eq!(format!("{:?}", result), "Err(UnitaryMatrixErrror { alpha_r: 0.0, alpha_i: 0.0, beta_r: 0.0, beta_i: 0.0, norm: 0.0 })");
+    assert_eq!(format!("{result:?}"), "Err(UnitaryMatrixErrror { alpha_r: 0.0, alpha_i: 0.0, beta_r: 0.0, beta_i: 0.0, norm: 0.0 })");
 }
 
 /// Test unitary matrix for SingleQubitGate if result is an Error since matrix is not normalized
@@ -190,7 +190,7 @@ fn test_singlequbitgate_unitarity_err2() {
         })
     );
     // test debugging
-    assert_eq!(format!("{:?}", result), "Err(UnitaryMatrixErrror { alpha_r: 0.0, alpha_i: -1.0, beta_r: 1.0, beta_i: 0.0, norm: 2.0 })");
+    assert_eq!(format!("{result:?}"), "Err(UnitaryMatrixErrror { alpha_r: 0.0, alpha_i: -1.0, beta_r: 1.0, beta_i: 0.0, norm: 2.0 })");
 }
 
 /// Test unitary matrix for SingleQubitGate if result is an CalculatorError
@@ -215,7 +215,7 @@ fn test_singlequbitgate_unitarity_err() {
     );
     // test debugging
     assert_eq!(
-        format!("{:?}", result),
+        format!("{result:?}"),
         "Err(CalculatorError(FloatSymbolicNotConvertable { val: \"alpha_r\" }))"
     );
 }
@@ -502,7 +502,7 @@ fn test_singlequbitgate_debug() {
         CalculatorFloat::from(PI),
     );
     let name =  "SingleQubitGate { qubit: 0, alpha_r: Float(1.0), alpha_i: Float(0.0), beta_r: Float(0.0), beta_i: Float(0.0), global_phase: Float(3.141592653589793) }";
-    assert_eq!(format!("{:?}", gate), name);
+    assert_eq!(format!("{gate:?}"), name);
 }
 
 //
@@ -1727,7 +1727,7 @@ fn remap_qubits_error(gate: SingleQubitGateOperation) {
     SingleQubitGateOperation::from(InvSXGate::new(0));
     "InvSXGate")]
 fn test_singlequbitgates_debug(name: &'static str, gate: SingleQubitGateOperation) {
-    assert_eq!(format!("{:?}", gate), name);
+    assert_eq!(format!("{gate:?}"), name);
 }
 
 /// Test PartialEq for SingleQubitGate Operations

@@ -269,8 +269,7 @@ impl SingleQubitOverrotationDescriptionWrapper {
             let bytes = get_bytes.extract::<Vec<u8>>()?;
             bincode::deserialize(&bytes[..]).map_err(|err| {
                 pyo3::exceptions::PyValueError::new_err(format!(
-                    "Cannot treat input as Overrotation Description: {}",
-                    err
+                    "Cannot treat input as Overrotation Description: {err}"
                 ))
             })
         }

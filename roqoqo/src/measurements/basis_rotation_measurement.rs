@@ -178,8 +178,7 @@ impl MeasureExpectationValues for PauliZProduct {
                     pauli_products_tmp[i] = single_shot_pauli_products.column(i).mean().ok_or(
                         RoqoqoError::PauliZProductMeasurementError {
                             msg: format!(
-                                "Column {} out of index for sinlge_shot_pauli_products",
-                                i
+                                "Column {i} out of index for sinlge_shot_pauli_products"
                             ),
                         },
                     )?;
@@ -200,13 +199,13 @@ impl MeasureExpectationValues for PauliZProduct {
                     let tmp_pauli_products = (&pauli_product_dict
                         .get(register_name.as_str())
                         .ok_or(RoqoqoError::PauliZProductMeasurementError {
-                            msg: format!("Register name {} not fount", register_name),
+                            msg: format!("Register name {register_name} not fount"),
                         })?
                         .view()
                         + &pauli_product_dict
-                            .get(format!("{}_flipped", register_name).as_str())
+                            .get(format!("{register_name}_flipped").as_str())
                             .ok_or(RoqoqoError::PauliZProductMeasurementError {
-                                msg: format!("Register name {}_flipped not fount", register_name),
+                                msg: format!("Register name {register_name}_flipped not fount"),
                             })?
                             .view())
                         / 2.0;
@@ -216,7 +215,7 @@ impl MeasureExpectationValues for PauliZProduct {
                     pauli_products += &pauli_product_dict
                         .get(register_name.as_str())
                         .ok_or(RoqoqoError::PauliZProductMeasurementError {
-                            msg: format!("Register name {} not fount", register_name),
+                            msg: format!("Register name {register_name} not fount"),
                         })?
                         .view()
                 }
@@ -239,7 +238,7 @@ impl MeasureExpectationValues for PauliZProduct {
                     PauliProductsToExpVal::Symbolic(x) => {
                         let mut calculator = qoqo_calculator::Calculator::new();
                         for (ind, p) in pauli_products.iter().enumerate() {
-                            calculator.set_variable(format!("pauli_product_{}", ind).as_str(), *p);
+                            calculator.set_variable(format!("pauli_product_{ind}").as_str(), *p);
                         }
                         calculator.parse_get(x.clone())?
                     }

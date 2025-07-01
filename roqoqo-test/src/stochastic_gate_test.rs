@@ -81,7 +81,7 @@ pub fn prepare_monte_carlo_gate_test(
     for i in 0..number_stochastic_tests {
         let mut init_circuit = Circuit::new();
         let mut meas_circuit = Circuit::new();
-        meas_circuit += DefinitionBit::new(format!("ro_{}", i), number_qubits, true);
+        meas_circuit += DefinitionBit::new(format!("ro_{i}"), number_qubits, true);
 
         let mut pauli_product_mask: Vec<usize> = Vec::new();
         // randomly choose one of the provided preparation_gates for the initial state preparation.
@@ -127,18 +127,18 @@ pub fn prepare_monte_carlo_gate_test(
             }
         }
         meas_circuit += PragmaRepeatedMeasurement::new(
-            format!("ro_{}", i),
+            format!("ro_{i}"),
             number_projective_measurement,
             None,
         );
 
         let j = measurement_input
-            .add_pauliz_product(format!("ro_{}", i), pauli_product_mask)
+            .add_pauliz_product(format!("ro_{i}"), pauli_product_mask)
             .unwrap();
         let mut linear_map: HashMap<usize, f64> = HashMap::new();
         linear_map.insert(j, 1.0);
         measurement_input
-            .add_linear_exp_val(format!("exp_val_{}", i), linear_map)
+            .add_linear_exp_val(format!("exp_val_{i}"), linear_map)
             .unwrap();
         let circuit = init_circuit + gate.clone() + meas_circuit;
         measurement_circuits.push(circuit);
@@ -151,7 +151,7 @@ pub fn prepare_monte_carlo_gate_test(
             * basis_rot_matrix
             * gate_matrix.clone()
             * init_matrix)[(0, 0)];
-        let _ = expected_values.insert(format!("exp_val_{}", i), expected_value.re);
+        let _ = expected_values.insert(format!("exp_val_{i}"), expected_value.re);
     }
     let measurement = PauliZProduct {
         circuits: measurement_circuits,
