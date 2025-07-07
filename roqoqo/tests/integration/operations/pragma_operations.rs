@@ -2312,7 +2312,7 @@ fn pragma_damping_pragmanoise_trait() {
     assert_eq!(superop, pragma.superoperator().unwrap());
 
     // (2) Probability function
-    let proba_pre_exp: f64 = -1.0 * 0.005 * 0.02;
+    let proba_pre_exp: f64 = -0.005 * 0.02;
     let proba = CalculatorFloat::from(1.0 - proba_pre_exp.exp());
     assert_eq!(proba, pragma.probability());
 
@@ -2507,7 +2507,7 @@ fn pragma_depolarising_pragmanoise_trait() {
         PragmaDepolarising::new(0, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02));
 
     // (1) Superoperator function
-    let superop_pre_exp: f64 = -1.0 * 0.005 * 0.02;
+    let superop_pre_exp: f64 = -0.005 * 0.02;
     let superop_prob: f64 = 0.75 * (1.0 - superop_pre_exp.exp());
     let superop_proba1: f64 = 1.0 - (2.0 / 3.0) * superop_prob;
     let superop_proba2: f64 = 1.0 - (4.0 / 3.0) * superop_prob;
@@ -2521,7 +2521,7 @@ fn pragma_depolarising_pragmanoise_trait() {
     assert_eq!(superop, pragma.superoperator().unwrap());
 
     // (2) Probability function
-    let proba_pre_exp: f64 = -1.0 * 0.005 * 0.02;
+    let proba_pre_exp: f64 = -0.005 * 0.02;
     let proba = CalculatorFloat::from(0.75 * (1.0 - proba_pre_exp.exp()));
     assert_eq!(proba, pragma.probability());
 

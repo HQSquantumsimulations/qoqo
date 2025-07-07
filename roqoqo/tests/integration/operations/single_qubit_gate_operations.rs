@@ -932,7 +932,7 @@ fn ser_de_singlequbitgates_others(name: &'static str, gate: SingleQubitGateOpera
 
 /// Test RotateZ alpha, beta, global phase
 #[test_case(0.0, 1.0, 0.0; "theta = 0")]
-#[test_case(PI/2.0, (2.0_f64).sqrt() / 2.0, (2.0_f64).sqrt() / 2.0 * (-1.0); "theta = pi/2")]
+#[test_case(PI/2.0, (2.0_f64).sqrt() / 2.0, -((2.0_f64).sqrt() / 2.0); "theta = pi/2")]
 #[test_case(PI, 0.0, -1.0; "theta = pi")]
 fn test_rotatez_abp(theta: f64, cos: f64, sin: f64) {
     let gate: RotateZ = RotateZ::new(0, CalculatorFloat::from(theta));
@@ -949,7 +949,7 @@ fn test_rotatez_abp(theta: f64, cos: f64, sin: f64) {
 
 /// Test RotateX alpha, beta, global phase
 #[test_case(0.0, 1.0, 0.0; "theta = 0")]
-#[test_case(PI/2.0, (2.0_f64).sqrt() / 2.0, (2.0_f64).sqrt() / 2.0 * (-1.0); "theta = pi/2")]
+#[test_case(PI/2.0, (2.0_f64).sqrt() / 2.0, -((2.0_f64).sqrt() / 2.0); "theta = pi/2")]
 #[test_case(PI, 0.0, -1.0; "theta = pi")]
 fn test_rotatex_abp(theta: f64, cos: f64, sin: f64) {
     let gate: RotateX = RotateX::new(0, CalculatorFloat::from(theta));
@@ -1064,13 +1064,13 @@ fn test_gpi2_abp(theta: CalculatorFloat, alpha: (f64, f64), beta: (f64, f64), gl
     0.0, -1.0, 0.0, 0.0, PI / 2.0,
     SingleQubitGateOperation::from(PauliZ::new(0)); "PauliZ")]
 #[test_case(
-    (PI / 4.0).cos(), 0.0, 0.0, (-1.0) * (PI / 4.0).cos(), 0.0,
+    (PI / 4.0).cos(), 0.0, 0.0, -(PI / 4.0).cos(), 0.0,
     SingleQubitGateOperation::from(SqrtPauliX::new(0)); "SqrtPauliX")]
 #[test_case(
     (PI / 4.0).cos(), 0.0, 0.0, (PI / 4.0).cos(), 0.0,
     SingleQubitGateOperation::from(InvSqrtPauliX::new(0)); "InvSqrtPauliX")]
 #[test_case(
-    (PI / 8.0).cos(), (-1.0) * (PI / 8.0).sin(), 0.0, 0.0, PI / 8.0,
+    (PI / 8.0).cos(), -(PI / 8.0).sin(), 0.0, 0.0, PI / 8.0,
     SingleQubitGateOperation::from(TGate::new(0)); "TGate")]
 #[test_case(
     (PI / 8.0).cos(), (PI / 8.0).sin(), 0.0, 0.0, - PI / 8.0,
@@ -1089,10 +1089,10 @@ fn test_gpi2_abp(theta: CalculatorFloat, alpha: (f64, f64), beta: (f64, f64), gl
     (PI / 4.0).cos(), 0.0, (PI / 4.0).cos(), 0.0, 0.0,
     SingleQubitGateOperation::from(SqrtPauliY::new(0)); "SqrtPauliY")]
 #[test_case(
-    (PI / 4.0).cos(), 0.0, (-1.0) * (PI / 4.0).cos(), 0.0, 0.0,
+    (PI / 4.0).cos(), 0.0, -(PI / 4.0).cos(), 0.0, 0.0,
     SingleQubitGateOperation::from(InvSqrtPauliY::new(0)); "InvSqrtPauliY")]
 #[test_case(
-    (PI / 4.0).cos(), 0.0, 0.0, (-1.0) * (PI / 4.0).cos(), PI / 4.0,
+    (PI / 4.0).cos(), 0.0, 0.0, -(PI / 4.0).cos(), PI / 4.0,
     SingleQubitGateOperation::from(SXGate::new(0)); "SXGate")]
 #[test_case(
     (PI / 4.0).cos(), 0.0, 0.0, (PI / 4.0).cos(), PI / 4.0,

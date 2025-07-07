@@ -69,22 +69,22 @@ fn test_matrix_output_multi_ms(qubits: Vec<usize>) {
             Complex64::new(f, 0.0),
             Complex64::new(0.0, 0.0),
             Complex64::new(0.0, 0.0),
-            Complex64::new(0.0, (-1.0) * f)
+            Complex64::new(0.0, -f)
         ],
         [
             Complex64::new(0.0, 0.0),
             Complex64::new(f, 0.0),
-            Complex64::new(0.0, (-1.0) * f),
+            Complex64::new(0.0, -f),
             Complex64::new(0.0, 0.0)
         ],
         [
             Complex64::new(0.0, 0.0),
-            Complex64::new(0.0, (-1.0) * f),
+            Complex64::new(0.0, -f),
             Complex64::new(f, 0.0),
             Complex64::new(0.0, 0.0)
         ],
         [
-            Complex64::new(0.0, (-1.0) * f),
+            Complex64::new(0.0, -f),
             Complex64::new(0.0, 0.0),
             Complex64::new(0.0, 0.0),
             Complex64::new(f, 0.0)
@@ -108,7 +108,7 @@ fn test_matrix_output_three_multi_ms(qubits: Vec<usize>) {
             Complex64::new(0.0, 0.0),
             Complex64::new(0.0, 0.0),
             Complex64::new(0.0, 0.0),
-            Complex64::new(0.0, (-1.0) * f)
+            Complex64::new(0.0, -f)
         ],
         [
             Complex64::new(0.0, 0.0),
@@ -117,7 +117,7 @@ fn test_matrix_output_three_multi_ms(qubits: Vec<usize>) {
             Complex64::new(0.0, 0.0),
             Complex64::new(0.0, 0.0),
             Complex64::new(0.0, 0.0),
-            Complex64::new(0.0, (-1.0) * f),
+            Complex64::new(0.0, -f),
             Complex64::new(0.0, 0.0)
         ],
         [
@@ -126,7 +126,7 @@ fn test_matrix_output_three_multi_ms(qubits: Vec<usize>) {
             Complex64::new(f, 0.0),
             Complex64::new(0.0, 0.0),
             Complex64::new(0.0, 0.0),
-            Complex64::new(0.0, (-1.0) * f),
+            Complex64::new(0.0, -f),
             Complex64::new(0.0, 0.0),
             Complex64::new(0.0, 0.0)
         ],
@@ -135,7 +135,7 @@ fn test_matrix_output_three_multi_ms(qubits: Vec<usize>) {
             Complex64::new(0.0, 0.0),
             Complex64::new(0.0, 0.0),
             Complex64::new(f, 0.0),
-            Complex64::new(0.0, (-1.0) * f),
+            Complex64::new(0.0, -f),
             Complex64::new(0.0, 0.0),
             Complex64::new(0.0, 0.0),
             Complex64::new(0.0, 0.0)
@@ -144,7 +144,7 @@ fn test_matrix_output_three_multi_ms(qubits: Vec<usize>) {
             Complex64::new(0.0, 0.0),
             Complex64::new(0.0, 0.0),
             Complex64::new(0.0, 0.0),
-            Complex64::new(0.0, (-1.0) * f),
+            Complex64::new(0.0, -f),
             Complex64::new(f, 0.0),
             Complex64::new(0.0, 0.0),
             Complex64::new(0.0, 0.0),
@@ -153,7 +153,7 @@ fn test_matrix_output_three_multi_ms(qubits: Vec<usize>) {
         [
             Complex64::new(0.0, 0.0),
             Complex64::new(0.0, 0.0),
-            Complex64::new(0.0, (-1.0) * f),
+            Complex64::new(0.0, -f),
             Complex64::new(0.0, 0.0),
             Complex64::new(0.0, 0.0),
             Complex64::new(f, 0.0),
@@ -162,7 +162,7 @@ fn test_matrix_output_three_multi_ms(qubits: Vec<usize>) {
         ],
         [
             Complex64::new(0.0, 0.0),
-            Complex64::new(0.0, (-1.0) * f),
+            Complex64::new(0.0, -f),
             Complex64::new(0.0, 0.0),
             Complex64::new(0.0, 0.0),
             Complex64::new(0.0, 0.0),
@@ -171,7 +171,7 @@ fn test_matrix_output_three_multi_ms(qubits: Vec<usize>) {
             Complex64::new(0.0, 0.0)
         ],
         [
-            Complex64::new(0.0, (-1.0) * f),
+            Complex64::new(0.0, -f),
             Complex64::new(0.0, 0.0),
             Complex64::new(0.0, 0.0),
             Complex64::new(0.0, 0.0),
