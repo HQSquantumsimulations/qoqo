@@ -30,7 +30,7 @@ crate-type = ["cdylib", "rlib"]
 
 [dependencies.pyo3]
 version = "0.24"
-features = ["num-complex", "multiple-pymethods"]
+features = ["num-complex", "multiple-pymethods", "extension-module"]
 
 [dependencies]
 qoqo-macros = { version = "~1.19", path = "../qoqo-macros" }
