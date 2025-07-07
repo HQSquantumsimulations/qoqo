@@ -137,7 +137,7 @@ pub fn device_wrapper_def(
             #[pyo3(text_signature = "(gate, qubit, gate_time)")]
             pub fn set_single_qubit_gate_time(&mut self, gate: &str, qubit: usize, gate_time: f64) -> PyResult<()> {
                 self.internal.set_single_qubit_gate_time(gate, qubit, gate_time).map_err(|err|
-                PyValueError::new_err(format!("{:?}", err)))
+                PyValueError::new_err(format!("{err:?}")))
             }
 
             /// Set the gate time of a two qubit gate.
@@ -153,7 +153,7 @@ pub fn device_wrapper_def(
             #[pyo3(text_signature = "(gate, control, target, gate_time)")]
             pub fn set_two_qubit_gate_time(&mut self, gate: &str, control: usize, target: usize, gate_time: f64) -> PyResult<()> {
                 self.internal.set_two_qubit_gate_time(gate, control, target, gate_time).map_err(|err|
-                    PyValueError::new_err(format!("{:?}", err)))
+                    PyValueError::new_err(format!("{err:?}")))
             }
 
             /// Set the gate time of a three qubit gate.
@@ -170,7 +170,7 @@ pub fn device_wrapper_def(
             #[pyo3(text_signature = "(gate, control_0, control_1, target, gate_time)")]
             pub fn set_three_qubit_gate_time(&mut self, gate: &str, control_0: usize, control_1: usize, target: usize, gate_time: f64) -> PyResult<()> {
                 self.internal.set_three_qubit_gate_time(gate, control_0, control_1, target, gate_time).map_err(|err|
-                    PyValueError::new_err(format!("{:?}", err)))
+                    PyValueError::new_err(format!("{err:?}")))
             }
 
 
@@ -205,7 +205,7 @@ pub fn device_wrapper_def(
             #[pyo3(text_signature = "(gate, qubits, gate_time)")]
             pub fn set_multi_qubit_gate_time(&self, gate: &str, qubits: Vec<usize>, gate_time: f64) -> PyResult<()> {
                 self.internal.clone().set_multi_qubit_gate_time(gate, qubits, gate_time).map_err(|err|
-                    PyValueError::new_err(format!("{:?}", err)))
+                    PyValueError::new_err(format!("{err:?}")))
             }
 
             /// Return the matrix of the decoherence rates of the Lindblad equation.
