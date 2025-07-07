@@ -22,7 +22,7 @@ jobs:
       pip_install: "numpy struqture-py"
 
   build_tests:
-    uses: HQSquantumsimulations/reusable_workflows/.github/workflows/reusable_build_tests_rust_pyo3.yml@main
+    uses: dberthault/reusable_workflows.git/.github/workflows/reusable_build_tests_rust_pyo3.yml@main
     with: 
       # Run tests also on windows runners
       windows: true
