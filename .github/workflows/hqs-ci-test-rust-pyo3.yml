@@ -25,7 +25,7 @@ jobs:
     uses: dberthault/reusable_workflows/.github/workflows/reusable_build_tests_rust_pyo3.yml@main
     with: 
       # Run tests also on windows runners
-      windows: false
+      windows: true
       # Run tests also on macos runners
       macos: true
       py_interface_folder: "qoqo"
