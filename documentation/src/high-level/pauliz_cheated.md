@@ -126,6 +126,6 @@ let program = QuantumProgram::CheatedPauliZProduct {
 let backend = Backend::new(3);
 
 let res = program.run(backend, &[]);
-println!("{:?}", res);
+println!("{res:?}");
 
 ```

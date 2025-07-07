@@ -51,7 +51,7 @@ use std::{
 /// let operation_vector: Vec<&Operation>= circuit.iter().collect();
 /// // iterating over circuit II
 /// for op in circuit{
-///    println!("{:?}", op);
+///    println!("{op:?}");
 /// }
 /// // collecting operations into circuit
 /// let vector = vec![Operation::from(RotateX::new(0,CalculatorFloat::from(0))), Operation::from(RotateX::new(0,CalculatorFloat::from(0)))];
