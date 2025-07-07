@@ -30,7 +30,7 @@ crate-type = ["cdylib", "rlib"]
 
 [dependencies.pyo3]
 version = "0.24"
-features = ["num-complex", "multiple-pymethods", "extension-module"]
+features = ["num-complex", "multiple-pymethods"]
 
 [dependencies]
 qoqo-macros = { version = "~1.19", path = "../qoqo-macros" }
@@ -40,10 +40,10 @@ roqoqo = { version = "~1.19", path = "../roqoqo", features = [
 ] }
 
 qoqo_calculator = "~1.6"
-qoqo_calculator_pyo3 = { version = "~1.6", default-features = false }
+qoqo_calculator_pyo3 = { version = "~1.6", default-features = false, features = ["extension-module"]  }
 struqture = "~2.0"
 struqture-py = { version = "~2.0", default-features = false, features = [
-    "struqture_1_import",
+    "struqture_1_import", "extension-module"
 ] }
 
 bincode = "1.3"
