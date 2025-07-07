@@ -457,7 +457,7 @@ fn test_matrix_output_multi_qubit_zz(qubits: Vec<usize>) {
             Complex64::new(0.0, 0.0),
             Complex64::new(0.0, 0.0),
             Complex64::new(0.0, 0.0),
-            Complex64::new(f, (-1.0) * f)
+            Complex64::new(f, -f)
         ],
     ];
     let unit = gate.unitary_matrix().unwrap();
@@ -471,7 +471,7 @@ fn test_matrix_output_three_multi_qubit_zz(qubits: Vec<usize>) {
     let f: f64 = 1.0 / ((2.0_f64).sqrt());
     let test_array = array![
         [
-            Complex64::new(f, (-1.0) * f),
+            Complex64::new(f, -f),
             Complex64::new(0.0, 0.0),
             Complex64::new(0.0, 0.0),
             Complex64::new(0.0, 0.0),
@@ -504,7 +504,7 @@ fn test_matrix_output_three_multi_qubit_zz(qubits: Vec<usize>) {
             Complex64::new(0.0, 0.0),
             Complex64::new(0.0, 0.0),
             Complex64::new(0.0, 0.0),
-            Complex64::new(f, (-1.0) * f),
+            Complex64::new(f, -f),
             Complex64::new(0.0, 0.0),
             Complex64::new(0.0, 0.0),
             Complex64::new(0.0, 0.0),
@@ -526,7 +526,7 @@ fn test_matrix_output_three_multi_qubit_zz(qubits: Vec<usize>) {
             Complex64::new(0.0, 0.0),
             Complex64::new(0.0, 0.0),
             Complex64::new(0.0, 0.0),
-            Complex64::new(f, (-1.0) * f),
+            Complex64::new(f, -f),
             Complex64::new(0.0, 0.0),
             Complex64::new(0.0, 0.0)
         ],
@@ -537,7 +537,7 @@ fn test_matrix_output_three_multi_qubit_zz(qubits: Vec<usize>) {
             Complex64::new(0.0, 0.0),
             Complex64::new(0.0, 0.0),
             Complex64::new(0.0, 0.0),
-            Complex64::new(f, (-1.0) * f),
+            Complex64::new(f, -f),
             Complex64::new(0.0, 0.0)
         ],
         [
