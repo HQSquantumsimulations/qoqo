@@ -21,7 +21,7 @@ use qoqo_calculator::CalculatorFloat;
 use rand_distr::{Distribution, Normal};
 #[cfg(feature = "serialize")]
 use serde::{Deserialize, Serialize};
-use std::panic;
+use std::{f64::consts::PI, panic};
 
 /// The Molmer-Sorensen gate between multiple qubits.
 ///
@@ -326,3 +326,97 @@ impl SupportedVersion for CallDefinedGate {
 #[allow(non_upper_case_globals)]
 const TAGS_CallDefinedGate: &[&str; 3] =
     &["Operation", "MultiQubitGateOperation", "CallDefinedGate"];
+
+/// The quantum Fourier transformation.
+#[allow(clippy::upper_case_acronyms)]
+#[derive(
+    Debug,
+    Clone,
+    PartialEq,
+    roqoqo_derive::InvolveQubits,
+    roqoqo_derive::Operate,
+    roqoqo_derive::Substitute,
+    roqoqo_derive::OperateMultiQubit,
+)]
+#[cfg_attr(feature = "serialize", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+#[allow(clippy::upper_case_acronyms)]
+pub struct QFT {
+    /// The qubits involved in the QFT.
+    qubits: Vec<usize>,
+    /// Include qubit swaps at the end.
+    swaps: bool,
+    /// Do inverse QFT.
+    inverse: bool,
+}
+
+const TAGS_QFT: &[&str; 4] = &[
+    "Operation",
+    "GateOperation",
+    "MultiQubitGateOperation",
+    "QFT",
+];
+
+impl operations::ImplementedIn1point20 for QFT {}
+
+impl SupportedVersion for QFT {
+    fn minimum_supported_roqoqo_version(&self) -> (u32, u32, u32) {
+        (1, 20, 0)
+    }
+}
+
+impl OperateGate for QFT {
+    fn unitary_matrix(&self) -> Result<Array2<Complex64>, RoqoqoError> {
+        let dim = self.qubits.len();
+        if !self.swaps && dim > 1 {
+            return Err(RoqoqoError::GenericError {
+                msg: "Unitary matrix output is only supported for QFT with swapping.".into(),
+            });
+        }
+        let n = 2_usize.pow(dim as u32);
+        let mut array = Array2::zeros((n, n));
+        for i in 0..n {
+            for j in 0..n {
+                let mut theta = 2. * PI * (i as f64 * j as f64) / (n as f64);
+                if self.inverse {
+                    theta *= -1.;
+                }
+                array[[i, j]] = Complex64::from_polar(1. / (n as f64).sqrt(), theta);
+            }
+        }
+        Ok(array)
+    }
+}
+
+impl OperateMultiQubitGate for QFT {
+    fn circuit(&self) -> Circuit {
+        let dim = self.qubits.len();
+        let mut circuit = Circuit::new();
+
+        if self.swaps && self.inverse {
+            for i in 0..dim / 2 {
+                circuit += operations::SWAP::new(self.qubits[i], self.qubits[dim - i - 1]);
+            }
+        }
+        for i in 0..dim {
+            circuit += operations::Hadamard::new(self.qubits[i]);
+            for j in i + 1..dim {
+                let mut theta = PI / 2.0_f64.powi((j - i) as i32);
+                if self.inverse {
+                    theta *= -1.;
+                }
+                circuit += operations::ControlledPhaseShift::new(
+                    self.qubits[j],
+                    self.qubits[i],
+                    theta.into(),
+                );
+            }
+        }
+        if self.swaps && !self.inverse {
+            for i in 0..dim / 2 {
+                circuit += operations::SWAP::new(self.qubits[i], self.qubits[dim - i - 1]);
+            }
+        }
+        circuit
+    }
+}
