@@ -63,7 +63,7 @@ fn test_new_multi_qubit_ms(input_operation: Operation, arguments: (Vec<u32>, f64
         assert!(helper_eq);
 
         assert_eq!(
-            format!("{:?}", def_wrapper_diff),
+            format!("{def_wrapper_diff:?}"),
             "MultiQubitMSWrapper { internal: MultiQubitMS { qubits: [1, 2], theta: Float(0.0) } }"
         );
     })
@@ -98,7 +98,7 @@ fn test_new_multi_qubit_zz(input_operation: Operation, arguments: (Vec<u32>, f64
         assert!(helper_eq);
 
         assert_eq!(
-            format!("{:?}", def_wrapper_diff),
+            format!("{def_wrapper_diff:?}"),
             "MultiQubitZZWrapper { internal: MultiQubitZZ { qubits: [1, 2], theta: Float(0.0) } }"
         );
     })
@@ -143,7 +143,7 @@ fn test_new_call_defined_gate(
         assert!(helper_eq);
 
         assert_eq!(
-            format!("{:?}", def_wrapper_diff),
+            format!("{def_wrapper_diff:?}"),
             "CallDefinedGateWrapper { internal: CallDefinedGate { gate_name: \"name\", qubits: [1, 2], free_parameters: [Float(0.0)] } }"
         );
     })
@@ -178,7 +178,7 @@ fn test_new_multi_cnot(input_operation: Operation, arguments: Vec<u32>, method: 
         assert!(helper_eq);
 
         assert_eq!(
-            format!("{:?}", def_wrapper_diff),
+            format!("{def_wrapper_diff:?}"),
             "MultiQubitCNOTWrapper { internal: MultiQubitCNOT { qubits: [1, 2] } }"
         );
     })

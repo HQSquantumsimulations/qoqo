@@ -60,8 +60,7 @@ impl ClassicalRegisterWrapper {
             for c in circuits.into_iter() {
                 let tmp_c = CircuitWrapper::from_pyany(c.bind(py)).map_err(|err| {
                     PyTypeError::new_err(format!(
-                        "`circuits` argument is not a list of qoqo Circuits: {}",
-                        err
+                        "`circuits` argument is not a list of qoqo Circuits: {err}"
                     ))
                 })?;
                 new_circuits.push(tmp_c)
@@ -71,8 +70,7 @@ impl ClassicalRegisterWrapper {
                 Some(c) => {
                     let tmp_c = CircuitWrapper::from_pyany(c).map_err(|err| {
                         PyTypeError::new_err(format!(
-                            "`constant_circuit` argument is not None or a qoqo Circuit: {}",
-                            err
+                            "`constant_circuit` argument is not None or a qoqo Circuit: {err}"
                         ))
                     })?;
                     Some(tmp_c)
@@ -135,10 +133,7 @@ impl ClassicalRegisterWrapper {
                 .internal
                 .substitute_parameters(substituted_parameters)
                 .map_err(|x| {
-                    PyRuntimeError::new_err(format!(
-                        "Error substituting symbolic parameters {:?}",
-                        x
-                    ))
+                    PyRuntimeError::new_err(format!("Error substituting symbolic parameters {x:?}"))
                 })?,
         })
     }
@@ -322,8 +317,7 @@ impl ClassicalRegisterWrapper {
             })?;
             deserialize(&bytes[..]).map_err(|err| {
                     PyTypeError::new_err(format!(
-                    "Python object cannot be converted to qoqo ClassicalRegister: Deserialization failed: {}",
-                    err
+                    "Python object cannot be converted to qoqo ClassicalRegister: Deserialization failed: {err}"
                 ))
                 })
         }

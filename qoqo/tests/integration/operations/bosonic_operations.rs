@@ -53,7 +53,7 @@ fn test_new_squeezing(input_operation: Operation, arguments: (u32, f64, f64), me
         assert!(helper_eq);
 
         assert_eq!(
-            format!("{:?}", def_wrapper_diff),
+            format!("{def_wrapper_diff:?}"),
             "SqueezingWrapper { internal: Squeezing { mode: 2, squeezing: Float(0.1), phase: Float(0.0) } }"
         );
 
@@ -114,7 +114,7 @@ fn test_new_phasedisplacement(
         assert!(helper_eq);
 
         assert_eq!(
-            format!("{:?}", def_wrapper_diff),
+            format!("{def_wrapper_diff:?}"),
             "PhaseDisplacementWrapper { internal: PhaseDisplacement { mode: 2, displacement: Float(0.1), phase: Float(0.1) } }"
         );
 
@@ -170,7 +170,7 @@ fn test_new_phaseshift(input_operation: Operation, arguments: (u32, f64), method
         assert!(helper_eq);
 
         assert_eq!(
-            format!("{:?}", def_wrapper_diff),
+            format!("{def_wrapper_diff:?}"),
             "PhaseShiftWrapper { internal: PhaseShift { mode: 2, phase: Float(0.1) } }"
         );
 
@@ -218,7 +218,7 @@ fn test_new_beamsplitter(
         assert!(helper_eq);
 
         assert_eq!(
-            format!("{:?}", def_wrapper_diff),
+            format!("{def_wrapper_diff:?}"),
             "BeamSplitterWrapper { internal: BeamSplitter { mode_0: 2, mode_1: 1, theta: Float(0.1), phi: Float(0.1) } }"
         );
 
@@ -278,7 +278,7 @@ fn test_new_photondetection(
         assert!(helper_eq);
 
         assert_eq!(
-            format!("{:?}", def_wrapper_diff),
+            format!("{def_wrapper_diff:?}"),
             "PhotonDetectionWrapper { internal: PhotonDetection { mode: 2, readout: \"ro\", readout_index: 0 } }"
         );
 

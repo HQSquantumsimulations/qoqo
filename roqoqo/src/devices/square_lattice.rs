@@ -240,7 +240,7 @@ impl SquareLatticeDevice {
             self.generic_device
                 .set_two_qubit_gate_time(gate, control, target, gate_time)
         } else {
-            Err(RoqoqoError::GenericError{msg: format!("Two qubit gate between psotions ({}, {}, qubit: {}) and ({}, {}, qubit:{}) not possible on SquareLattice", row_control, column_control, control, row_target, column_target, target)})
+            Err(RoqoqoError::GenericError{msg: format!("Two qubit gate between psotions ({row_control}, {column_control}, qubit: {control}) and ({row_target}, {column_target}, qubit:{target}) not possible on SquareLattice")})
         }
     }
 

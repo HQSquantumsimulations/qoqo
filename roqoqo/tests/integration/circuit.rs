@@ -275,7 +275,7 @@ fn into_iter_from_iter() {
     assert!(*circuit.get(1).unwrap() == circuit_to.clone().nth(1).unwrap());
 
     assert_eq!(
-        format!("{:?}", circuit_to),
+        format!("{circuit_to:?}"),
         "OperationIterator { definition_iter: IntoIter([]), operation_iter: IntoIter([PauliX(PauliX { qubit: 0 }), PauliZ(PauliZ { qubit: 1 })]) }"
     );
 
@@ -401,13 +401,13 @@ fn simple_traits() {
 
     // Test Debug trait
     assert_eq!(
-        format!("{:?}", circuit),
+        format!("{circuit:?}"),
         "Circuit { definitions: [DefinitionFloat(DefinitionFloat { name: \"ro\", length: 1, is_output: false })], operations: [PauliZ(PauliZ { qubit: 0 })], _roqoqo_version: RoqoqoVersion }"
     );
 
     // Test Display trait
     assert_eq!(
-        format!("{}", circuit),
+        format!("{circuit}"),
         "DefinitionFloat(DefinitionFloat { name: \"ro\", length: 1, is_output: false })\nPauliZ(PauliZ { qubit: 0 })\n"
     );
 
@@ -425,6 +425,28 @@ fn simple_traits() {
     assert!(circuit == circuit_0);
     assert!(circuit_1 != circuit);
     assert!(circuit != circuit_1);
+}
+
+// Test number_of_qubits method
+#[test]
+fn test_number_of_qubits() {
+    let mut circuit = Circuit::new();
+
+    assert_eq!(circuit.number_of_qubits(), 0);
+
+    circuit.add_operation(RotateX::new(0, CalculatorFloat::from(0.0)));
+    circuit.add_operation(RotateY::new(1, CalculatorFloat::from(1.0)));
+    circuit.add_operation(RotateZ::new(2, CalculatorFloat::from(2.0)));
+    circuit.add_operation(PauliX::new(3));
+
+    assert_eq!(circuit.number_of_qubits(), 4);
+
+    circuit.add_operation(CNOT::new(3, 6));
+    assert_eq!(circuit.number_of_qubits(), 7);
+
+    circuit.add_operation(DefinitionComplex::new("ro".to_string(), 7, false));
+    circuit.add_operation(PragmaGetStateVector::new("ro".to_string(), None));
+    assert_eq!(circuit.number_of_qubits(), 7);
 }
 
 /// Test overrotate circuit

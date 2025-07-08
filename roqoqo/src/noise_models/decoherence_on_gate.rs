@@ -10,6 +10,7 @@
 // express or implied. See the License for the specific language governing permissions and
 // limitations under the License.
 
+#[cfg(feature = "serialize")]
 use struqture::spins::PlusMinusLindbladNoiseOperator;
 
 use super::SupportedVersion;

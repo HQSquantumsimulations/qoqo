@@ -83,7 +83,7 @@ fn clone(op: Operation) {
 #[test_case(Operation::from(BeamSplitter::new(0, 1, 0.1.into(), 0.5.into())), "BeamSplitter(BeamSplitter { mode_0: 0, mode_1: 1, theta: Float(0.1), phi: Float(0.5) })")]
 #[test_case(Operation::from(PhotonDetection::new(0, "ro".into(), 0)), "PhotonDetection(PhotonDetection { mode: 0, readout: \"ro\", readout_index: 0 })")]
 fn debug(op: Operation, string: &str) {
-    assert_eq!(format!("{:?}", op), string);
+    assert_eq!(format!("{op:?}"), string);
 }
 
 #[test_case(Operation::from(Squeezing::new(0, 0.5.into(), 0.0.into())), Operation::from(Squeezing::new(0, 0.5.into(), 0.0.into())), Operation::from(Squeezing::new(1, 0.5.into(), 0.0.into())))]

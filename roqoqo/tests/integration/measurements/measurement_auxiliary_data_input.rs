@@ -32,7 +32,7 @@ fn test_pp_to_exp_val() {
     let lin2 = lin.clone();
     let helper = lin == lin2;
     assert!(helper);
-    let string = format!("{:?}", lin);
+    let string = format!("{lin:?}");
     assert!(string.contains("3.0"));
     let sym = PauliProductsToExpVal::Symbolic("theta".into());
     let helper = sym != lin;
@@ -77,7 +77,7 @@ fn test_clone_cheated() {
 #[test]
 fn test_format_br() {
     let bri = PauliZProductInput::new(3, false);
-    let string = format!("{:?}", bri);
+    let string = format!("{bri:?}");
     assert!(string.contains('3'));
     assert!(string.contains("false"));
 }
@@ -86,7 +86,7 @@ fn test_format_br() {
 fn test_format_cbr() {
     let mut bri = CheatedPauliZProductInput::new();
     let _ = bri.add_pauliz_product("test".to_string());
-    let string = format!("{:?}", bri);
+    let string = format!("{bri:?}");
     assert!(string.contains("test"));
     assert!(string.contains('0'));
 }
@@ -97,7 +97,7 @@ fn test_format_cheated() {
     let test_matrix = vec![(0, 0, Complex64::new(1.0, 0.0))];
     bri.add_operator_exp_val("test".to_string(), test_matrix, "ro".to_string())
         .unwrap();
-    let string = format!("{:?}", bri);
+    let string = format!("{bri:?}");
     assert!(string.contains("test"));
     assert!(string.contains("1.0"));
 }

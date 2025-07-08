@@ -162,7 +162,7 @@ fn test_singlequbitgate_unitarity_err0() {
         })
     );
     // test debugging
-    assert_eq!(format!("{:?}", result), "Err(UnitaryMatrixErrror { alpha_r: 0.0, alpha_i: 0.0, beta_r: 0.0, beta_i: 0.0, norm: 0.0 })");
+    assert_eq!(format!("{result:?}"), "Err(UnitaryMatrixErrror { alpha_r: 0.0, alpha_i: 0.0, beta_r: 0.0, beta_i: 0.0, norm: 0.0 })");
 }
 
 /// Test unitary matrix for SingleQubitGate if result is an Error since matrix is not normalized
@@ -190,7 +190,7 @@ fn test_singlequbitgate_unitarity_err2() {
         })
     );
     // test debugging
-    assert_eq!(format!("{:?}", result), "Err(UnitaryMatrixErrror { alpha_r: 0.0, alpha_i: -1.0, beta_r: 1.0, beta_i: 0.0, norm: 2.0 })");
+    assert_eq!(format!("{result:?}"), "Err(UnitaryMatrixErrror { alpha_r: 0.0, alpha_i: -1.0, beta_r: 1.0, beta_i: 0.0, norm: 2.0 })");
 }
 
 /// Test unitary matrix for SingleQubitGate if result is an CalculatorError
@@ -215,7 +215,7 @@ fn test_singlequbitgate_unitarity_err() {
     );
     // test debugging
     assert_eq!(
-        format!("{:?}", result),
+        format!("{result:?}"),
         "Err(CalculatorError(FloatSymbolicNotConvertable { val: \"alpha_r\" }))"
     );
 }
@@ -502,7 +502,7 @@ fn test_singlequbitgate_debug() {
         CalculatorFloat::from(PI),
     );
     let name =  "SingleQubitGate { qubit: 0, alpha_r: Float(1.0), alpha_i: Float(0.0), beta_r: Float(0.0), beta_i: Float(0.0), global_phase: Float(3.141592653589793) }";
-    assert_eq!(format!("{:?}", gate), name);
+    assert_eq!(format!("{gate:?}"), name);
 }
 
 //
@@ -932,7 +932,7 @@ fn ser_de_singlequbitgates_others(name: &'static str, gate: SingleQubitGateOpera
 
 /// Test RotateZ alpha, beta, global phase
 #[test_case(0.0, 1.0, 0.0; "theta = 0")]
-#[test_case(PI/2.0, (2.0_f64).sqrt() / 2.0, (2.0_f64).sqrt() / 2.0 * (-1.0); "theta = pi/2")]
+#[test_case(PI/2.0, (2.0_f64).sqrt() / 2.0, -((2.0_f64).sqrt() / 2.0); "theta = pi/2")]
 #[test_case(PI, 0.0, -1.0; "theta = pi")]
 fn test_rotatez_abp(theta: f64, cos: f64, sin: f64) {
     let gate: RotateZ = RotateZ::new(0, CalculatorFloat::from(theta));
@@ -949,7 +949,7 @@ fn test_rotatez_abp(theta: f64, cos: f64, sin: f64) {
 
 /// Test RotateX alpha, beta, global phase
 #[test_case(0.0, 1.0, 0.0; "theta = 0")]
-#[test_case(PI/2.0, (2.0_f64).sqrt() / 2.0, (2.0_f64).sqrt() / 2.0 * (-1.0); "theta = pi/2")]
+#[test_case(PI/2.0, (2.0_f64).sqrt() / 2.0, -((2.0_f64).sqrt() / 2.0); "theta = pi/2")]
 #[test_case(PI, 0.0, -1.0; "theta = pi")]
 fn test_rotatex_abp(theta: f64, cos: f64, sin: f64) {
     let gate: RotateX = RotateX::new(0, CalculatorFloat::from(theta));
@@ -1064,13 +1064,13 @@ fn test_gpi2_abp(theta: CalculatorFloat, alpha: (f64, f64), beta: (f64, f64), gl
     0.0, -1.0, 0.0, 0.0, PI / 2.0,
     SingleQubitGateOperation::from(PauliZ::new(0)); "PauliZ")]
 #[test_case(
-    (PI / 4.0).cos(), 0.0, 0.0, (-1.0) * (PI / 4.0).cos(), 0.0,
+    (PI / 4.0).cos(), 0.0, 0.0, -(PI / 4.0).cos(), 0.0,
     SingleQubitGateOperation::from(SqrtPauliX::new(0)); "SqrtPauliX")]
 #[test_case(
     (PI / 4.0).cos(), 0.0, 0.0, (PI / 4.0).cos(), 0.0,
     SingleQubitGateOperation::from(InvSqrtPauliX::new(0)); "InvSqrtPauliX")]
 #[test_case(
-    (PI / 8.0).cos(), (-1.0) * (PI / 8.0).sin(), 0.0, 0.0, PI / 8.0,
+    (PI / 8.0).cos(), -(PI / 8.0).sin(), 0.0, 0.0, PI / 8.0,
     SingleQubitGateOperation::from(TGate::new(0)); "TGate")]
 #[test_case(
     (PI / 8.0).cos(), (PI / 8.0).sin(), 0.0, 0.0, - PI / 8.0,
@@ -1089,10 +1089,10 @@ fn test_gpi2_abp(theta: CalculatorFloat, alpha: (f64, f64), beta: (f64, f64), gl
     (PI / 4.0).cos(), 0.0, (PI / 4.0).cos(), 0.0, 0.0,
     SingleQubitGateOperation::from(SqrtPauliY::new(0)); "SqrtPauliY")]
 #[test_case(
-    (PI / 4.0).cos(), 0.0, (-1.0) * (PI / 4.0).cos(), 0.0, 0.0,
+    (PI / 4.0).cos(), 0.0, -(PI / 4.0).cos(), 0.0, 0.0,
     SingleQubitGateOperation::from(InvSqrtPauliY::new(0)); "InvSqrtPauliY")]
 #[test_case(
-    (PI / 4.0).cos(), 0.0, 0.0, (-1.0) * (PI / 4.0).cos(), PI / 4.0,
+    (PI / 4.0).cos(), 0.0, 0.0, -(PI / 4.0).cos(), PI / 4.0,
     SingleQubitGateOperation::from(SXGate::new(0)); "SXGate")]
 #[test_case(
     (PI / 4.0).cos(), 0.0, 0.0, (PI / 4.0).cos(), PI / 4.0,
@@ -1727,7 +1727,7 @@ fn remap_qubits_error(gate: SingleQubitGateOperation) {
     SingleQubitGateOperation::from(InvSXGate::new(0));
     "InvSXGate")]
 fn test_singlequbitgates_debug(name: &'static str, gate: SingleQubitGateOperation) {
-    assert_eq!(format!("{:?}", gate), name);
+    assert_eq!(format!("{gate:?}"), name);
 }
 
 /// Test PartialEq for SingleQubitGate Operations

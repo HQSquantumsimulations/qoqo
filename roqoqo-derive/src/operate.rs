@@ -195,7 +195,7 @@ fn operate_qubits_struct(ds: DataStruct, ident: Ident) -> TokenStream {
             !reserved_fields.contains(id.to_string().as_str())
         })
         .map(|(id, _, ty)| {
-            let msg = format!("Returns the value of the field `{}`.", id);
+            let msg = format!("Returns the value of the field `{id}`.");
             quote! {
                 #[doc = #msg]
                 #[inline]
@@ -205,8 +205,8 @@ fn operate_qubits_struct(ds: DataStruct, ident: Ident) -> TokenStream {
             }
         });
     let formated_tags = format_ident!("TAGS_{}", ident);
-    let formated_hqslang = format!("{}", ident);
-    let msg = format!("Creates a new instance of `{}`.\n\n", ident);
+    let formated_hqslang = format!("{ident}");
+    let msg = format!("Creates a new instance of `{ident}`.\n\n");
     quote! {
         #[automatically_derived]
         impl #ident{
