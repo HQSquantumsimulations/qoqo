@@ -923,45 +923,14 @@ fn test_matrix_output_qft(qubits: Vec<usize>, inverse: bool) {
     let dim = qubits.len();
     let r = 1. / 2_f64.powi(dim as i32).sqrt();
     let gate = QFT::new(qubits.clone(), true, inverse);
-    let mut test_array = match qubits.len() {
-        1 => array![
-            [Complex64::from_polar(r, 0.), Complex64::from_polar(r, 0.)],
-            [Complex64::from_polar(r, 0.), Complex64::from_polar(r, PI)],
-        ],
-        2 => array![
-            [
-                Complex64::from_polar(r, 0.),
-                Complex64::from_polar(r, 0.),
-                Complex64::from_polar(r, 0.),
-                Complex64::from_polar(r, 0.)
-            ],
-            [
-                Complex64::from_polar(r, 0.),
-                Complex64::from_polar(r, FRAC_PI_2),
-                Complex64::from_polar(r, PI),
-                Complex64::from_polar(r, 3. * FRAC_PI_2)
-            ],
-            [
-                Complex64::from_polar(r, 0.),
-                Complex64::from_polar(r, PI),
-                Complex64::from_polar(r, 0.),
-                Complex64::from_polar(r, PI)
-            ],
-            [
-                Complex64::from_polar(r, 0.),
-                Complex64::from_polar(r, 3. * FRAC_PI_2),
-                Complex64::from_polar(r, PI),
-                Complex64::from_polar(r, FRAC_PI_2)
-            ],
-        ],
-        _ => unreachable!(),
-    };
+    let mut test_array = array![
+        [Complex64::from_polar(r, 0.), Complex64::from_polar(r, 0.)],
+        [Complex64::from_polar(r, 0.), Complex64::from_polar(r, PI)],
+    ];
     if inverse {
         test_array.iter_mut().for_each(|x| *x = x.conj());
     }
     let unit = gate.unitary_matrix().unwrap();
-    println!("{:.2}", test_array);
-    println!("{:.2}", unit);
     let should_be_zero = unit - test_array;
     assert!(should_be_zero.iter().all(|x| x.norm() < f64::EPSILON));
 }

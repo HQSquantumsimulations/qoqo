@@ -146,8 +146,9 @@ use test_roqoqo_1_19;
 // #[test_case(test_roqoqo_1_19::operations::PragmaSimulationRepetitions::new(0).into(); "PragmaSimulationRepetitions")]
 // Operations from 1.18
 // Operations from 1.19
-// #[test_case(test_roqoqo_1_19::operations::MultiQubitCNOT::new(vec![0, 1, 2]).into(); "MultiQubitCNOT")]
 // Operations from 1.20
+// #[test_case(test_roqoqo_1_19::operations::MultiQubitCNOT::new(vec![0, 1, 2]).into(); "MultiQubitCNOT")]
+// #[test_case(test_roqoqo_1_19::operations::QFT::new(vec![0, 1, 2], false, false).into(); "QFT")]
 fn test_bincode_compatibility_1_16(operation: test_roqoqo_1_19::operations::Operation) {
     let mut test_circuit = test_roqoqo_1_19::Circuit::new();
     test_circuit += operation;
