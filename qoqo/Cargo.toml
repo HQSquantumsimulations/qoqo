@@ -1,5 +1,5 @@
 [package]
-version = "1.19.6"
+version = "1.20.0"
 name = "qoqo"
 authors = ["HQS Quantum Simulations <info@quantumsimulations.de>"]
 license = "Apache-2.0"
@@ -33,8 +33,8 @@ version = "0.24"
 features = ["num-complex", "multiple-pymethods"]
 
 [dependencies]
-qoqo-macros = { version = "~1.19", path = "../qoqo-macros" }
-roqoqo = { version = "~1.19", path = "../roqoqo", features = [
+qoqo-macros = { version = "~1.20", path = "../qoqo-macros" }
+roqoqo = { version = "~1.20", path = "../roqoqo", features = [
     "serialize",
     "overrotate",
 ] }
@@ -43,7 +43,7 @@ qoqo_calculator = "~1.6"
 qoqo_calculator_pyo3 = { version = "~1.6", default-features = false }
 struqture = "~2.0"
 struqture-py = { version = "~2.0", default-features = false, features = [
-    "struqture_1_import",
+    "struqture_1_import"
 ] }
 
 bincode = "1.3"

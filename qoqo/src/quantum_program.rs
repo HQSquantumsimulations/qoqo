@@ -68,8 +68,7 @@ impl QuantumProgramWrapper {
             })?;
             deserialize(&bytes[..]).map_err(|err| {
                     PyTypeError::new_err(format!(
-                    "Python object cannot be converted to qoqo QuantumProgram: Deserialization failed: {}",
-                    err
+                    "Python object cannot be converted to qoqo QuantumProgram: Deserialization failed: {err}"
                 ))
                 })
         }
@@ -241,7 +240,7 @@ impl QuantumProgramWrapper {
                 let substituted_parameters: HashMap<String, f64> = input_parameter_names.iter().zip(parameters.iter()).map(|(key, value)| (key.clone(), *value)).collect();
                 let substituted_measurement = measurement.substitute_parameters(
                     substituted_parameters
-                ).map_err(|err| PyRuntimeError::new_err(format!("Applying parameters failed {:?}", err)))?;
+                ).map_err(|err| PyRuntimeError::new_err(format!("Applying parameters failed {err:?}")))?;
                     backend.call_method1("run_measurement", (PauliZProductWrapper{internal: substituted_measurement}, )).map(|bound| bound.into())
             }
             QuantumProgram::CheatedPauliZProduct{measurement, input_parameter_names } => {
@@ -249,7 +248,7 @@ impl QuantumProgramWrapper {
                 let substituted_parameters: HashMap<String, f64> = input_parameter_names.iter().zip(parameters.iter()).map(|(key, value)| (key.clone(), *value)).collect();
                 let substituted_measurement = measurement.substitute_parameters(
                     substituted_parameters
-                ).map_err(|err| PyRuntimeError::new_err(format!("Applying parameters failed {:?}", err)))?;
+                ).map_err(|err| PyRuntimeError::new_err(format!("Applying parameters failed {err:?}")))?;
                     backend.call_method1("run_measurement", (CheatedPauliZProductWrapper{internal: substituted_measurement}, )).map(|bound| bound.into())
             }
             QuantumProgram::Cheated{measurement, input_parameter_names } => {
@@ -257,7 +256,7 @@ impl QuantumProgramWrapper {
                 let substituted_parameters: HashMap<String, f64> = input_parameter_names.iter().zip(parameters.iter()).map(|(key, value)| (key.clone(), *value)).collect();
                 let substituted_measurement = measurement.substitute_parameters(
                     substituted_parameters
-                ).map_err(|err| PyRuntimeError::new_err(format!("Applying parameters failed {:?}", err)))?;
+                ).map_err(|err| PyRuntimeError::new_err(format!("Applying parameters failed {err:?}")))?;
                     backend.call_method1("run_measurement", (CheatedWrapper{internal: substituted_measurement}, )).map(|bound| bound.into())
               }
             _ => Err(PyTypeError::new_err("A quantum programm returning classical registeres cannot be executed by `run` use `run_registers` instead".to_string()))
@@ -288,7 +287,7 @@ impl QuantumProgramWrapper {
                 let substituted_parameters: HashMap<String, f64> = input_parameter_names.iter().zip(parameters.iter()).map(|(key, value)| (key.clone(), *value)).collect();
                 let substituted_measurement = measurement.substitute_parameters(
                     substituted_parameters
-                ).map_err(|err| PyRuntimeError::new_err(format!("Applying parameters failed {:?}", err)))?;
+                ).map_err(|err| PyRuntimeError::new_err(format!("Applying parameters failed {err:?}")))?;
                     backend.call_method1("run_measurement_registers", (ClassicalRegisterWrapper{internal: substituted_measurement}, )).map(|bound| bound.into())
              },
             _ => Err(PyTypeError::new_err("A quantum programm returning expectation values cannot be executed by `run_registers` use `run` instead".to_string()))

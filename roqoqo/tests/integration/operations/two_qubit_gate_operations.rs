@@ -71,28 +71,28 @@ fn kak_sigma_matrix(
 
     let array: Array2<Complex64> = array![
         [
-            Complex64::new(cm * cz, (-1.0) * cm * sz),
+            Complex64::new(cm * cz, -cm * sz),
             Complex64::new(0.0, 0.0),
             Complex64::new(0.0, 0.0),
-            Complex64::new((-1.0) * sm * sz, (-1.0) * sm * cz)
+            Complex64::new(-sm * sz, -sm * cz)
         ],
         [
             Complex64::new(0.0, 0.0),
             Complex64::new(cp * cz, cp * sz),
-            Complex64::new(sp * sz, (-1.0) * sp * cz),
+            Complex64::new(sp * sz, -sp * cz),
             Complex64::new(0.0, 0.0)
         ],
         [
             Complex64::new(0.0, 0.0),
-            Complex64::new(sp * sz, (-1.0) * sp * cz),
+            Complex64::new(sp * sz, -sp * cz),
             Complex64::new(cp * cz, cp * sz),
             Complex64::new(0.0, 0.0)
         ],
         [
-            Complex64::new((-1.0) * sm * sz, (-1.0) * sm * cz),
+            Complex64::new(-sm * sz, -sm * cz),
             Complex64::new(0.0, 0.0),
             Complex64::new(0.0, 0.0),
-            Complex64::new(cm * cz, (-1.0) * cm * sz)
+            Complex64::new(cm * cz, -cm * sz)
         ],
     ];
     array
@@ -886,7 +886,7 @@ pub fn test_tags(tags: Vec<&str>, gate: Operation) {
     "EchoCrossResonance(EchoCrossResonance { control: 1, target: 0 })",
     Operation::from(EchoCrossResonance::new(1, 0)); "EchoCrossResonance")]
 fn test_two_qubitgates_debug(message: &'static str, gate: Operation) {
-    assert_eq!(format!("{:?}", gate), message);
+    assert_eq!(format!("{gate:?}"), message);
 }
 
 /// Test PartialEq for TwoQubitGate Operations
@@ -1209,7 +1209,7 @@ fn test_kakdecomposition_partialeq() {
 
     // SWAP-like KakDecomposition
     let gate2 = KakDecomposition {
-        global_phase: CalculatorFloat::from((-1.0) * PI / 4.0),
+        global_phase: CalculatorFloat::from(-PI / 4.0),
         k_vector: [
             CalculatorFloat::FRAC_PI_4,
             CalculatorFloat::FRAC_PI_4,
@@ -1239,7 +1239,7 @@ fn test_kakdecomposition_debug() {
         circuit_after: None,
     };
     let message = "KakDecomposition { global_phase: Float(1.0), k_vector: [Float(0.0), Float(0.0), Float(0.0)], circuit_before: None, circuit_after: None }";
-    assert_eq!(format!("{:?}", gate), message);
+    assert_eq!(format!("{gate:?}"), message);
 }
 
 /// Test JsonSchema trait

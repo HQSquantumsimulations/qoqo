@@ -131,7 +131,7 @@ fn clone(op: Operation) {
 #[test_case(Operation::from(create_apply_constant_spin_hamiltonian(1.0)), "ApplyConstantPauliHamiltonian(ApplyConstantPauliHamiltonian { hamiltonian: PauliHamiltonian { internal_map: {PauliProduct { items: [(0, Z)] }: Float(1.0)} }, time: Float(1.0) })")]
 #[test_case(Operation::from(create_apply_timedependent_spin_hamiltonian("omega")), "ApplyTimeDependentPauliHamiltonian(ApplyTimeDependentPauliHamiltonian { hamiltonian: PauliHamiltonian { internal_map: {PauliProduct { items: [(0, Z)] }: Str(\"omega\")} }, time: [1.0], values: {\"omega\": [1.0]} })")]
 fn debug(op: Operation, string: &str) {
-    assert_eq!(format!("{:?}", op), string);
+    assert_eq!(format!("{op:?}"), string);
 }
 
 #[test_case(

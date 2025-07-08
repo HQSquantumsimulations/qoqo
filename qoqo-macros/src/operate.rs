@@ -88,7 +88,7 @@ fn operate_struct(ds: DataStruct, ident: Ident) -> TokenStream {
                 let id_extracted = format_ident!("{}_extracted", id);
                 quote! {
                     let #id_extracted: #ty = convert_into_calculator_float(#id).map_err(|x| {
-                        pyo3::exceptions::PyTypeError::new_err(format!("Argument cannot be converted to CalculatorFloat: {:?}",x))
+                        pyo3::exceptions::PyTypeError::new_err(format!("Argument cannot be converted to CalculatorFloat: {x:?}"))
                     })?;
                 }
             },
@@ -96,7 +96,7 @@ fn operate_struct(ds: DataStruct, ident: Ident) -> TokenStream {
                 let id_extracted = format_ident!("{}_extracted", id);
                 quote! {
                     let #id_extracted: #ty = convert_into_circuit(#id).map_err(|x| {
-                        pyo3::exceptions::PyTypeError::new_err(format!("Argument cannot be converted to Circuit: {:?}",x))
+                        pyo3::exceptions::PyTypeError::new_err(format!("Argument cannot be converted to Circuit: {x:?}"))
                     })?;
                 }
             },
@@ -104,7 +104,7 @@ fn operate_struct(ds: DataStruct, ident: Ident) -> TokenStream {
                 let id_extracted = format_ident!("{}_extracted", id);
                 quote! {
                     let tmp: Option<&Bound<PyAny>> = #id.try_into().map_err(|x| {
-                        pyo3::exceptions::PyTypeError::new_err(format!("Argument cannot be converted to PyAny: {:?}",x))
+                        pyo3::exceptions::PyTypeError::new_err(format!("Argument cannot be converted to PyAny: {x:?}"))
                     })?;
                     let #id_extracted: Option<Circuit> = match tmp {
                         Some(cw) => {
@@ -112,7 +112,7 @@ fn operate_struct(ds: DataStruct, ident: Ident) -> TokenStream {
                                 None
                             } else {
                                 Some(convert_into_circuit(cw).map_err(|x| {
-                                    pyo3::exceptions::PyTypeError::new_err(format!("Argument cannot be converted to Some(Circuit): {:?}",x))
+                                    pyo3::exceptions::PyTypeError::new_err(format!("Argument cannot be converted to Some(Circuit): {x:?}"))
                                 })?)
                             }
                         },
@@ -122,7 +122,7 @@ fn operate_struct(ds: DataStruct, ident: Ident) -> TokenStream {
                 let id_extracted = format_ident!("{}_extracted", id);
                 quote! {
                     let temp_op: struqture::spins::PauliHamiltonian = PauliHamiltonianWrapper::from_pyany(#id).map_err(|x| {
-                        pyo3::exceptions::PyTypeError::new_err(format!("Argument cannot be converted to PauliHamiltonian: {:?}",x))
+                        pyo3::exceptions::PyTypeError::new_err(format!("Argument cannot be converted to PauliHamiltonian: {x:?}"))
                     })?;
                     let #id_extracted: #ty = temp_op.clone();
                 }
@@ -140,7 +140,7 @@ fn operate_struct(ds: DataStruct, ident: Ident) -> TokenStream {
         .map(|(id, type_string, ty)| match type_string {
             Some(s) => match s.as_str() {
                 "CalculatorFloat" => {
-                    let msg = format!("Returns value of attribute {}", id);
+                    let msg = format!("Returns value of attribute {id}");
                     quote! {
                         #[doc = #msg]
                         pub fn #id(&self) -> CalculatorFloatWrapper{
@@ -149,7 +149,7 @@ fn operate_struct(ds: DataStruct, ident: Ident) -> TokenStream {
                     }
                 }
                 "Circuit" => {
-                    let msg = format!("Get value of struct field {}", id);
+                    let msg = format!("Get value of struct field {id}");
                     quote! {
                         #[doc = #msg]
                         pub fn #id(&self) -> CircuitWrapper{
@@ -158,7 +158,7 @@ fn operate_struct(ds: DataStruct, ident: Ident) -> TokenStream {
                     }
                 }
                 "Option<Circuit>" => {
-                    let msg = format!("Get value of struct field {}", id);
+                    let msg = format!("Get value of struct field {id}");
                     quote! {
                             #[doc = #msg]
                             pub fn #id(&self) -> Option<CircuitWrapper>{
@@ -170,7 +170,7 @@ fn operate_struct(ds: DataStruct, ident: Ident) -> TokenStream {
                     }
                 }
                 "PauliHamiltonian" => {
-                    let msg = format!("Get value of struct field {}", id);
+                    let msg = format!("Get value of struct field {id}");
                     quote! {
                         #[doc = #msg]
                         pub fn #id(&self) -> PauliHamiltonianWrapper{
@@ -179,7 +179,7 @@ fn operate_struct(ds: DataStruct, ident: Ident) -> TokenStream {
                     }
                 }
                 _ => {
-                    let msg = format!("Get value of struct field {}", id);
+                    let msg = format!("Get value of struct field {id}");
                     quote! {
                         #[doc = #msg]
                         pub fn #id(&self) -> #ty{
@@ -189,7 +189,7 @@ fn operate_struct(ds: DataStruct, ident: Ident) -> TokenStream {
                 }
             },
             _ => {
-                let msg = format!("Get value of struct field {}", id);
+                let msg = format!("Get value of struct field {id}");
                 quote! {
                     #[doc=#msg]
                     pub fn #id(&self) -> #ty{
@@ -199,7 +199,7 @@ fn operate_struct(ds: DataStruct, ident: Ident) -> TokenStream {
             }
         });
 
-    let new_msg = format!("Creates new instance of Operations {}", ident);
+    let new_msg = format!("Creates new instance of Operations {ident}");
     quote! {
 
         #(#getter_fields)*
@@ -271,7 +271,7 @@ fn operate_struct(ds: DataStruct, ident: Ident) -> TokenStream {
         ///     RuntimeError: Qubit remapping failed
         fn remap_qubits(&self, mapping: HashMap<usize, usize>) -> PyResult<Self>{
             let new_internal = self.internal.remap_qubits(&mapping).map_err(|x|
-                PyRuntimeError::new_err(format!("Qubit remapping failed: {:?}",x))
+                PyRuntimeError::new_err(format!("Qubit remapping failed: {x:?}"))
             )?;
             Ok(Self{internal: new_internal})
         }

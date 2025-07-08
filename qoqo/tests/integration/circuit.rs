@@ -927,6 +927,50 @@ fn test_convert_into_circuit() {
     })
 }
 
+// Test number_of_qubits method
+#[test]
+fn test_number_of_qubits() {
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+        let circuit = new_circuit(py);
+
+        let number_of_qubits: usize =
+            usize::extract_bound(&circuit.call_method0("number_of_qubits").unwrap()).unwrap();
+        assert_eq!(number_of_qubits, 0_usize);
+
+        populate_circuit_rotatex(py, &circuit, 0, 4);
+
+        let number_of_qubits: usize =
+            usize::extract_bound(&circuit.call_method0("number_of_qubits").unwrap()).unwrap();
+        assert_eq!(number_of_qubits, 4_usize);
+
+        let cnot = convert_operation_to_pyobject(Operation::from(CNOT::new(3, 6)), py).unwrap();
+        circuit.call_method1("add", (cnot,)).unwrap();
+
+        let number_of_qubits: usize =
+            usize::extract_bound(&circuit.call_method0("number_of_qubits").unwrap()).unwrap();
+        assert_eq!(number_of_qubits, 7_usize);
+
+        let definition = convert_operation_to_pyobject(
+            Operation::from(DefinitionComplex::new("ro".to_string(), 7, false)),
+            py,
+        )
+        .unwrap();
+        circuit.call_method1("add", (definition,)).unwrap();
+
+        let get_statevector = convert_operation_to_pyobject(
+            Operation::from(PragmaGetStateVector::new("ro".to_string(), None)),
+            py,
+        )
+        .unwrap();
+        circuit.call_method1("add", (get_statevector,)).unwrap();
+
+        let number_of_qubits: usize =
+            usize::extract_bound(&circuit.call_method0("number_of_qubits").unwrap()).unwrap();
+        assert_eq!(number_of_qubits, 7_usize);
+    })
+}
+
 /// Test function overrotate() for Circuit
 #[test]
 #[cfg(feature = "overrotate")]

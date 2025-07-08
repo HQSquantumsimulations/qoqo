@@ -22,7 +22,7 @@ use syn::punctuated::Punctuated;
 use syn::visit::{self, Visit};
 use syn::{AttrStyle, File, Ident, ItemImpl, ItemStruct, LitStr, Path, Token, Type, TypePath};
 
-const NUMBER_OF_MINOR_VERSIONS: usize = 20;
+const NUMBER_OF_MINOR_VERSIONS: usize = 21;
 
 static AVAILABLE_GATES: OnceLock<Mutex<Vec<String>>> = OnceLock::new();
 
@@ -431,6 +431,9 @@ impl<'ast> Visit<'ast> for Visitor {
                 }
                 if trait_name.as_str() == "ImplementedIn1point19" {
                     self.roqoqo_version_register.insert(id.clone(), 19);
+                }
+                if trait_name.as_str() == "ImplementedIn1point20" {
+                    self.roqoqo_version_register.insert(id.clone(), 20);
                 }
                 if trait_name.as_str() == "OperateSingleQubitGate" {
                     self.single_qubit_gate_operations.push(id.clone());
@@ -920,7 +923,7 @@ fn main() {
         }
 
     };
-    let final_str = format!("{}", final_quote);
+    let final_str = format!("{final_quote}");
     let out_dir = PathBuf::from(
         std::env::var("OUT_DIR").expect("Cannot find a valid output directory for code generation"),
     )
@@ -937,7 +940,7 @@ fn build_quotes(vis: &Visitor, i: usize, idents: Vec<Ident>) -> Vec<proc_macro2:
         .into_iter()
         .filter(|v| vis.filter_for_version(v, i))
         .map(|v| {
-            let msg = format!("Variant for {}", v);
+            let msg = format!("Variant for {v}");
             quote! {
             #[allow(clippy::upper_case_acronyms)]
             #[doc = #msg]

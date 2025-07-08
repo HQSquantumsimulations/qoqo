@@ -63,7 +63,7 @@ fn test_new_multi_qubit_ms(input_operation: Operation, arguments: (Vec<u32>, f64
         assert!(helper_eq);
 
         assert_eq!(
-            format!("{:?}", def_wrapper_diff),
+            format!("{def_wrapper_diff:?}"),
             "MultiQubitMSWrapper { internal: MultiQubitMS { qubits: [1, 2], theta: Float(0.0) } }"
         );
     })
@@ -98,7 +98,7 @@ fn test_new_multi_qubit_zz(input_operation: Operation, arguments: (Vec<u32>, f64
         assert!(helper_eq);
 
         assert_eq!(
-            format!("{:?}", def_wrapper_diff),
+            format!("{def_wrapper_diff:?}"),
             "MultiQubitZZWrapper { internal: MultiQubitZZ { qubits: [1, 2], theta: Float(0.0) } }"
         );
     })
@@ -143,7 +143,7 @@ fn test_new_call_defined_gate(
         assert!(helper_eq);
 
         assert_eq!(
-            format!("{:?}", def_wrapper_diff),
+            format!("{def_wrapper_diff:?}"),
             "CallDefinedGateWrapper { internal: CallDefinedGate { gate_name: \"name\", qubits: [1, 2], free_parameters: [Float(0.0)] } }"
         );
     })
@@ -178,7 +178,7 @@ fn test_new_multi_cnot(input_operation: Operation, arguments: Vec<u32>, method: 
         assert!(helper_eq);
 
         assert_eq!(
-            format!("{:?}", def_wrapper_diff),
+            format!("{def_wrapper_diff:?}"),
             "MultiQubitCNOTWrapper { internal: MultiQubitCNOT { qubits: [1, 2] } }"
         );
     })
@@ -935,7 +935,7 @@ fn test_pyo3_richcmp_call_defined_gate() {
 #[cfg(feature = "json_schema")]
 #[test_case(Operation::from(MultiQubitMS::new(vec![0, 1, 2], CalculatorFloat::from(0))), "1.0.0"; "MultiQubitMS")]
 #[test_case(Operation::from(MultiQubitZZ::new(vec![0, 1, 2], CalculatorFloat::from(0))), "1.0.0"; "MultiQubitZZ")]
-#[test_case(Operation::from(MultiQubitCNOT::new(vec![0, 1, 2])), "1.19.0"; "MultiQubitCNOT")]
+#[test_case(Operation::from(MultiQubitCNOT::new(vec![0, 1, 2])), "1.20.0"; "MultiQubitCNOT")]
 fn test_pyo3_json_schema(operation: Operation, version_string: &str) {
     let rust_schema = match operation {
         Operation::MultiQubitMS(_) => {

@@ -128,7 +128,7 @@ fn test_new_constantspinhamiltionian() {
         assert!(helper_eq);
 
         assert_eq!(
-            format!("{:?}", def_wrapper_diff),
+            format!("{def_wrapper_diff:?}"),
             "ApplyConstantPauliHamiltonianWrapper { internal: ApplyConstantPauliHamiltonian { hamiltonian: PauliHamiltonian { internal_map: {PauliProduct { items: [(0, Z)] }: Float(1.0)} }, time: Float(0.0) } }"
         );
     })
@@ -184,7 +184,7 @@ fn test_new_timedependentspinhamiltionian() {
         assert!(helper_eq);
 
         assert_eq!(
-            format!("{:?}", def_wrapper_diff),
+            format!("{def_wrapper_diff:?}"),
             "ApplyTimeDependentPauliHamiltonianWrapper { internal: ApplyTimeDependentPauliHamiltonian { hamiltonian: PauliHamiltonian { internal_map: {PauliProduct { items: [(0, Z)] }: Float(1.0)} }, time: [0.1], values: {\"omega\": [0.1]} } }"
         );
     })

@@ -528,12 +528,12 @@ pub trait Rotate:
     ///
     /// let gate = RotateZ::new(0, 1.0.into());
     /// let overrotated_gate = gate.overrotate(&1.0, &0.5);
-    /// println!("{:?}", gate);
-    /// println!("{:?}", overrotated_gate);
+    /// println!("{gate:?}");
+    /// println!("{overrotated_gate:?}");
     /// let gate_symbolic = RotateZ::new(0, "theta_var".into());
     /// let overrotated_symbolic = gate_symbolic.overrotate(&1.0, &0.5);
-    /// println!("{:?}", gate_symbolic);
-    /// println!("{:?}", overrotated_symbolic);
+    /// println!("{gate_symbolic:?}");
+    /// println!("{overrotated_symbolic:?}");
     /// ```
     fn overrotate(&self, amplitude: &f64, variance: &f64) -> Self;
 }
@@ -931,6 +931,9 @@ pub trait ImplementedIn1point18: Operate {}
 
 /// Marker trait to show that some operation has been implemented in roqoqo 1.19.0
 pub trait ImplementedIn1point19: Operate {}
+
+/// Marker trait to show that some operation has been implemented in roqoqo 1.20.0
+pub trait ImplementedIn1point20: Operate {}
 
 #[cfg(feature = "dynamic")]
 /// A wrapper for Operate trait objects.

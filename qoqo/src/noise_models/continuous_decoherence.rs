@@ -63,7 +63,7 @@ impl ContinuousDecoherenceModelWrapper {
                     Ok(x) => x,
                     Err(_) => match struqture_py::spins::PlusMinusLindbladNoiseOperatorWrapper::from_pyany_struqture_1(lindblad_operator) {
                         Ok(x) => x,
-                        Err(err) => return Err(PyValueError::new_err(format!("Could not convert input noise_operator from either struqture 1.x or struqture 2.x: {:?}", err))),
+                        Err(err) => return Err(PyValueError::new_err(format!("Could not convert input noise_operator from either struqture 1.x or struqture 2.x: {err:?}"))),
                     }
                 };
             Ok(Self {

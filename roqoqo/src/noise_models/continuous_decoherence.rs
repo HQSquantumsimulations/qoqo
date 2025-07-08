@@ -11,6 +11,7 @@
 // limitations under the License.
 
 use super::SupportedVersion;
+#[cfg(feature = "serialize")]
 use crate::RoqoqoError;
 use struqture::{
     spins::PlusMinusLindbladNoiseOperator, spins::PlusMinusProduct, OperateOnDensityMatrix,
@@ -409,7 +410,7 @@ mod tests {
         let schema_checker =
             Validator::new(&serde_json::to_value(&schema).unwrap()).expect("schema is valid");
         let value = serde_json::to_value(&model).unwrap();
-        println!("{:?}", value);
+        println!("{value:?}");
         let val = match value {
             serde_json::Value::Object(ob) => ob,
             _ => {
