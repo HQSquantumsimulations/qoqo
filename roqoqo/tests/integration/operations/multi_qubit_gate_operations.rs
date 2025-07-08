@@ -919,6 +919,8 @@ fn test_circuit_qft(qubits: Vec<usize>, swap: bool, inverse: bool) {
 
 #[test_case(vec![0], false; "one_qubit")]
 #[test_case(vec![0], true; "one_qubit_inv")]
+#[test_case(vec![0, 1], false; "two_qubits")]
+#[test_case(vec![0, 1], true; "twp_qubits_inv")]
 fn test_matrix_output_qft(qubits: Vec<usize>, inverse: bool) {
     let dim = qubits.len();
     let r = 1. / 2_f64.powi(dim as i32).sqrt();
@@ -960,8 +962,6 @@ fn test_matrix_output_qft(qubits: Vec<usize>, inverse: bool) {
         test_array.iter_mut().for_each(|x| *x = x.conj());
     }
     let unit = gate.unitary_matrix().unwrap();
-    println!("{:.2}", test_array);
-    println!("{:.2}", unit);
     let should_be_zero = unit - test_array;
     assert!(should_be_zero.iter().all(|x| x.norm() < f64::EPSILON));
 }
