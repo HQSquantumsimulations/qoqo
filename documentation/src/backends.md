@@ -164,7 +164,7 @@ let (_bit_registers, _float_registers, _complex_registers) = backend.run_circuit
 // b) To run a measurement we need to replace the free parameter by hand
 let executable_measurement = measurement.substitute_parameters(HashMap::from([("angle".to_string(), 0.2)])).unwrap();
 let expectation_values = backend.run_measurement(&executable_measurement).unwrap();
-println!("{:?}", expectation_values);
+println!("{expectation_values:?}");
 
 // c) Run a quantum program
 // The QuantumProgram now has one free parameter that must be set when executing it.
@@ -173,7 +173,7 @@ println!("{:?}", expectation_values);
 let program = QuantumProgram::PauliZProduct{ measurement, input_parameter_names: vec!["angle".to_string()]};
 // Run the program with 0.1 substituting `angle`
 let expectation_values = program.run(backend, &[0.1]).unwrap();
-println!("{:?}", expectation_values);
+println!("{expectation_values:?}");
 ```
 
 ## Translating to other quantum computing frameworks

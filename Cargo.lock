@@ -434,9 +434,9 @@ dependencies = [
 
 [[package]]
 name = "hyper-util"
-version = "0.1.14"
+version = "0.1.15"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "dc2fdfdbff08affe55bb779f33b053aa1fe5dd5b54c257343c17edfa55711bdb"
+checksum = "7f66d5bd4c6f02bf0542fad85d626775bab9258cf795a4256dcaf3161114d1df"
 dependencies = [
  "base64",
  "bytes",
@@ -1589,9 +1589,9 @@ dependencies = [
 
 [[package]]
 name = "struqture-py-macros"
-version = "2.1.0"
+version = "2.1.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c4313488c55f240b7015168a92d3d677bfc5a37228ec2c069349c6c337da4800"
+checksum = "26405078184354fc478534de1192cebd1c3fd8ecb96a7f6eef02ced2edea065f"
 dependencies = [
  "proc-macro2",
  "quote",

@@ -83,5 +83,5 @@ let measurement = Cheated {
 let backend = Backend::new(1);
 
 let result = backend.run_measurement(&measurement);
-println!("{:?}", result);
+println!("{result:?}");
 ```

@@ -729,7 +729,7 @@ impl CircuitDag {
     ///
     /// Returns an Iterator over Vectors of references to the NodeIndices in the parallel block as well
     /// as references to the Operation in the blocks
-    pub fn parallel_blocks(&self) -> ParallelBlocks {
+    pub fn parallel_blocks(&'_ self) -> ParallelBlocks<'_> {
         ParallelBlocks {
             dag: self,
             parallel_block: Vec::<NodeIndex<usize>>::new(),
@@ -739,7 +739,7 @@ impl CircuitDag {
 
     /// Returns an iterator over all successors in the CircuitDag of a given node.
     ///
-    pub fn successors(&self, node: NodeIndex<usize>) -> Neighbors<(), usize> {
+    pub fn successors(&'_ self, node: NodeIndex<usize>) -> Neighbors<'_, (), usize> {
         self.graph.neighbors_directed(node.into(), Outgoing)
     }
 

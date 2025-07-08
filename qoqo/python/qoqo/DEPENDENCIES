@@ -8383,7 +8383,7 @@ THE SOFTWARE.
 
 
 ====================================================
-hyper-util 0.1.14
+hyper-util 0.1.15
 https://hyper.rs
 by Sean McArthur <sean@seanmonstar.com>
 hyper utilities
@@ -28331,7 +28331,7 @@ Python interface of struqture, the HQS tool for representing operators, Hamilton
 License: Apache-2.0
 
 ====================================================
-struqture-py-macros 2.1.0
+struqture-py-macros 2.1.1
 by HQS Quantum Simulations <info@quantumsimulations.de>
 Macros for struqture-py crate.
 License: Apache-2.0

@@ -1227,7 +1227,7 @@ impl PragmaChangeDevice {
             wrapped_hqslang: wrapped_pragma.hqslang().to_string(),
             wrapped_operation: serialize(wrapped_pragma).map_err(|err| {
                 RoqoqoError::SerializationError {
-                    msg: format!("{:?}", err),
+                    msg: format!("{err:?}"),
                 }
             })?,
         })

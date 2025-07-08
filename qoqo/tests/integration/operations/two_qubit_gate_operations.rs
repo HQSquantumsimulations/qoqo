@@ -851,7 +851,7 @@ fn test_new_cnot(input_operation: Operation, arguments: (u32, u32), method: &str
         assert!(helper_eq);
 
         assert_eq!(
-            format!("{:?}", def_wrapper_diff),
+            format!("{def_wrapper_diff:?}"),
             "CNOTWrapper { internal: CNOT { control: 1, target: 2 } }"
         );
     })
@@ -882,7 +882,7 @@ fn test_new_swap(input_operation: Operation, arguments: (u32, u32), method: &str
         assert!(helper_eq);
 
         assert_eq!(
-            format!("{:?}", def_wrapper_diff),
+            format!("{def_wrapper_diff:?}"),
             "SWAPWrapper { internal: SWAP { control: 1, target: 2 } }"
         );
     })
@@ -913,7 +913,7 @@ fn test_new_iswap(input_operation: Operation, arguments: (u32, u32), method: &st
         assert!(helper_eq);
 
         assert_eq!(
-            format!("{:?}", def_wrapper_diff),
+            format!("{def_wrapper_diff:?}"),
             "ISwapWrapper { internal: ISwap { control: 1, target: 2 } }"
         );
     })
@@ -944,7 +944,7 @@ fn test_new_fswap(input_operation: Operation, arguments: (u32, u32), method: &st
         assert!(helper_eq);
 
         assert_eq!(
-            format!("{:?}", def_wrapper_diff),
+            format!("{def_wrapper_diff:?}"),
             "FSwapWrapper { internal: FSwap { control: 1, target: 2 } }"
         );
     })
@@ -975,7 +975,7 @@ fn test_new_sqrtiswap(input_operation: Operation, arguments: (u32, u32), method:
         assert!(helper_eq);
 
         assert_eq!(
-            format!("{:?}", def_wrapper_diff),
+            format!("{def_wrapper_diff:?}"),
             "SqrtISwapWrapper { internal: SqrtISwap { control: 1, target: 2 } }"
         );
     })
@@ -1006,7 +1006,7 @@ fn test_new_invsqrtiswap(input_operation: Operation, arguments: (u32, u32), meth
         assert!(helper_eq);
 
         assert_eq!(
-            format!("{:?}", def_wrapper_diff),
+            format!("{def_wrapper_diff:?}"),
             "InvSqrtISwapWrapper { internal: InvSqrtISwap { control: 1, target: 2 } }"
         );
     })
@@ -1037,7 +1037,7 @@ fn test_new_controlledpauliy(input_operation: Operation, arguments: (u32, u32), 
         assert!(helper_eq);
 
         assert_eq!(
-            format!("{:?}", def_wrapper_diff),
+            format!("{def_wrapper_diff:?}"),
             "ControlledPauliYWrapper { internal: ControlledPauliY { control: 1, target: 2 } }"
         );
     })
@@ -1068,7 +1068,7 @@ fn test_new_controlledpauliz(input_operation: Operation, arguments: (u32, u32), 
         assert!(helper_eq);
 
         assert_eq!(
-            format!("{:?}", def_wrapper_diff),
+            format!("{def_wrapper_diff:?}"),
             "ControlledPauliZWrapper { internal: ControlledPauliZ { control: 1, target: 2 } }"
         );
     })
@@ -1099,7 +1099,7 @@ fn test_new_molmersorensenxx(input_operation: Operation, arguments: (u32, u32), 
         assert!(helper_eq);
 
         assert_eq!(
-            format!("{:?}", def_wrapper_diff),
+            format!("{def_wrapper_diff:?}"),
             "MolmerSorensenXXWrapper { internal: MolmerSorensenXX { control: 1, target: 2 } }"
         );
     })
@@ -1135,7 +1135,7 @@ fn test_new_xy(input_operation: Operation, arguments: (u32, u32, f64), method: &
         assert!(helper_eq);
 
         assert_eq!(
-            format!("{:?}", def_wrapper_diff),
+            format!("{def_wrapper_diff:?}"),
             "XYWrapper { internal: XY { control: 1, target: 2, theta: Float(0.0) } }"
         );
     })
@@ -1179,7 +1179,7 @@ fn test_new_controlledphaseshift(
         assert!(helper_eq);
 
         assert_eq!(
-            format!("{:?}", def_wrapper_diff),
+            format!("{def_wrapper_diff:?}"),
             "ControlledPhaseShiftWrapper { internal: ControlledPhaseShift { control: 1, target: 2, theta: Float(0.0) } }"
         );
     })
@@ -1215,7 +1215,7 @@ fn test_new_variablemsxx(input_operation: Operation, arguments: (u32, u32, f64),
         assert!(helper_eq);
 
         assert_eq!(
-            format!("{:?}", def_wrapper_diff),
+            format!("{def_wrapper_diff:?}"),
             "VariableMSXXWrapper { internal: VariableMSXX { control: 1, target: 2, theta: Float(0.0) } }"
         );
     })
@@ -1251,7 +1251,7 @@ fn test_new_pminteraction(input_operation: Operation, arguments: (u32, u32, f64)
         assert!(helper_eq);
 
         assert_eq!(
-            format!("{:?}", def_wrapper_diff),
+            format!("{def_wrapper_diff:?}"),
             "PMInteractionWrapper { internal: PMInteraction { control: 1, target: 2, t: Float(0.0) } }"
         );
     })
@@ -1294,7 +1294,7 @@ fn test_new_givensrotation(
         assert!(helper_eq);
 
         assert_eq!(
-            format!("{:?}", def_wrapper_diff),
+            format!("{def_wrapper_diff:?}"),
             "GivensRotationWrapper { internal: GivensRotation { control: 1, target: 2, theta: Float(0.0), phi: Float(0.0) } }"
         );
     })
@@ -1345,7 +1345,7 @@ fn test_new_givensrotationlittleendian(
         assert!(helper_eq);
 
         assert_eq!(
-            format!("{:?}", def_wrapper_diff),
+            format!("{def_wrapper_diff:?}"),
             "GivensRotationLittleEndianWrapper { internal: GivensRotationLittleEndian { control: 1, target: 2, theta: Float(0.0), phi: Float(0.0) } }"
         );
     })
@@ -1384,7 +1384,7 @@ fn test_new_bogoliubov(input_operation: Operation, arguments: (u32, u32, f64, f6
         assert!(helper_eq);
 
         assert_eq!(
-            format!("{:?}", def_wrapper_diff),
+            format!("{def_wrapper_diff:?}"),
             "BogoliubovWrapper { internal: Bogoliubov { control: 1, target: 2, delta_real: Float(0.0), delta_imag: Float(0.0) } }"
         );
     })
@@ -1431,7 +1431,7 @@ fn test_new_complexpminteraction(
         assert!(helper_eq);
 
         assert_eq!(
-            format!("{:?}", def_wrapper_diff),
+            format!("{def_wrapper_diff:?}"),
             "ComplexPMInteractionWrapper { internal: ComplexPMInteraction { control: 1, target: 2, t_real: Float(0.0), t_imag: Float(0.0) } }"
         );
     })
@@ -1474,7 +1474,7 @@ fn test_new_qsim(input_operation: Operation, arguments: (u32, u32, f64, f64, f64
         assert!(helper_eq);
 
         assert_eq!(
-            format!("{:?}", def_wrapper_diff),
+            format!("{def_wrapper_diff:?}"),
             "QsimWrapper { internal: Qsim { control: 1, target: 2, x: Float(0.0), y: Float(0.0), z: Float(0.0) } }"
         );
     })
@@ -1516,7 +1516,7 @@ fn test_new_fsim(input_operation: Operation, arguments: (u32, u32, f64, f64, f64
         assert!(helper_eq);
 
         assert_eq!(
-            format!("{:?}", def_wrapper_diff),
+            format!("{def_wrapper_diff:?}"),
             "FsimWrapper { internal: Fsim { control: 1, target: 2, t: Float(0.0), u: Float(0.0), delta: Float(0.0) } }"
         );
     })
@@ -1563,7 +1563,7 @@ fn test_new_spininteraction(
         assert!(helper_eq);
 
         assert_eq!(
-            format!("{:?}", def_wrapper_diff),
+            format!("{def_wrapper_diff:?}"),
             "SpinInteractionWrapper { internal: SpinInteraction { control: 1, target: 2, x: Float(0.0), y: Float(0.0), z: Float(0.0) } }"
         );
     })
@@ -1611,7 +1611,7 @@ fn test_new_phaseshiftedcontrolledz(
         assert!(helper_eq);
 
         assert_eq!(
-            format!("{:?}", def_wrapper_diff),
+            format!("{def_wrapper_diff:?}"),
             "PhaseShiftedControlledZWrapper { internal: PhaseShiftedControlledZ { control: 1, target: 2, phi: Float(0.0) } }"
         );
     })
@@ -1659,7 +1659,7 @@ fn test_new_phaseshiftedcontrolledphase(
         assert!(helper_eq);
 
         assert_eq!(
-            format!("{:?}", def_wrapper_diff),
+            format!("{def_wrapper_diff:?}"),
             "PhaseShiftedControlledPhaseWrapper { internal: PhaseShiftedControlledPhase { control: 1, target: 2, theta: Float(0.0), phi: Float(0.0) } }"
         );
     })
@@ -1699,7 +1699,7 @@ fn test_new_controlledrotatex(
         assert!(helper_eq);
 
         assert_eq!(
-            format!("{:?}", def_wrapper_diff),
+            format!("{def_wrapper_diff:?}"),
             "ControlledRotateXWrapper { internal: ControlledRotateX { control: 1, target: 2, theta: Float(0.0) } }"
         );
     })
@@ -1739,7 +1739,7 @@ fn test_new_controlledrotatexy(
         assert!(helper_eq);
 
         assert_eq!(
-            format!("{:?}", def_wrapper_diff),
+            format!("{def_wrapper_diff:?}"),
             "ControlledRotateXYWrapper { internal: ControlledRotateXY { control: 1, target: 2, theta: Float(0.0), phi: Float(0.0) } }"
         );
     })
@@ -1775,7 +1775,7 @@ fn test_new_echocrossresonance(input_operation: Operation, arguments: (u32, u32)
         assert!(helper_eq);
 
         assert_eq!(
-            format!("{:?}", def_wrapper_diff),
+            format!("{def_wrapper_diff:?}"),
             "EchoCrossResonanceWrapper { internal: EchoCrossResonance { control: 1, target: 2 } }"
         );
     })

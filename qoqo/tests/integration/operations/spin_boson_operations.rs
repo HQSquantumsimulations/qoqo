@@ -52,7 +52,7 @@ fn test_new_quantum_rabi(input_operation: Operation, arguments: (u32, u32, f64),
         assert!(helper_eq);
 
         assert_eq!(
-            format!("{:?}", def_wrapper_diff),
+            format!("{def_wrapper_diff:?}"),
             "QuantumRabiWrapper { internal: QuantumRabi { qubit: 2, mode: 3, theta: Float(1.0) } }"
         );
 
@@ -104,7 +104,7 @@ fn test_new_longitudinal_coupling(
         assert!(helper_eq);
 
         assert_eq!(
-            format!("{:?}", def_wrapper_diff),
+            format!("{def_wrapper_diff:?}"),
             "LongitudinalCouplingWrapper { internal: LongitudinalCoupling { qubit: 2, mode: 3, theta: Float(1.0) } }"
         );
 
@@ -148,7 +148,7 @@ fn test_new_jaynes_cummings(input_operation: Operation, arguments: (u32, u32, f6
         assert!(helper_eq);
 
         assert_eq!(
-            format!("{:?}", def_wrapper_diff),
+            format!("{def_wrapper_diff:?}"),
             "JaynesCummingsWrapper { internal: JaynesCummings { qubit: 2, mode: 3, theta: Float(1.0) } }"
         );
 
@@ -200,7 +200,7 @@ fn test_new_single_excitation_load(
         assert!(helper_eq);
 
         assert_eq!(
-            format!("{:?}", def_wrapper_diff),
+            format!("{def_wrapper_diff:?}"),
             "SingleExcitationLoadWrapper { internal: SingleExcitationLoad { qubit: 2, mode: 3 } }"
         );
     })
@@ -239,7 +239,7 @@ fn test_new_single_excitation_store(
         assert!(helper_eq);
 
         assert_eq!(
-            format!("{:?}", def_wrapper_diff),
+            format!("{def_wrapper_diff:?}"),
             "SingleExcitationStoreWrapper { internal: SingleExcitationStore { qubit: 2, mode: 3 } }"
         );
     })
@@ -270,7 +270,7 @@ fn test_new_cz_qubit_resonator(input_operation: Operation, arguments: (u32, u32)
         assert!(helper_eq);
 
         assert_eq!(
-            format!("{:?}", def_wrapper_diff),
+            format!("{def_wrapper_diff:?}"),
             "CZQubitResonatorWrapper { internal: CZQubitResonator { qubit: 2, mode: 3 } }"
         );
     })

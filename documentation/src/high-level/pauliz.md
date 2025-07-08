@@ -185,6 +185,6 @@ let measurement = PauliZProduct {
     circuits: vec![z_circuit.clone(), x_circuit.clone()],
     constant_circuit: Some(init_circuit.clone()),
 
-println!("{:?}", measurement);
 };
+println!("{measurement:?}");
 ```
