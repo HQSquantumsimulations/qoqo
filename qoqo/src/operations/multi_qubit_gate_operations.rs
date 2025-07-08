@@ -381,11 +381,11 @@ impl CallDefinedGateWrapper {
 #[allow(clippy::upper_case_acronyms)]
 #[wrap(OperateMultiQubit, OperateGate, OperateMultiQubitGate, JsonSchema)]
 /// The quantum Fourier transform.
-/// 
+///
 /// This is the quantum analogue of the discrete Fourier transform, which maps between the time
 /// domain and the frequency domain.
 /// The QFT maps a quantum state |x> to |y> according to the following transformation:
-/// 
+///
 /// .. math::
 ///     y_k = \frac{1}{\sqrt{N}} \sum_{j=0}^{N-1} x_j e^{\frac{2 \pi \mathrm{i} j k}{N}}
 ///

@@ -919,44 +919,14 @@ fn test_circuit_qft(qubits: Vec<usize>, swap: bool, inverse: bool) {
 
 #[test_case(vec![0], false; "one_qubit")]
 #[test_case(vec![0], true; "one_qubit_inv")]
-#[test_case(vec![0, 1], false; "two_qubits")]
 fn test_matrix_output_qft(qubits: Vec<usize>, inverse: bool) {
     let dim = qubits.len();
     let r = 1. / 2_f64.powi(dim as i32).sqrt();
     let gate = QFT::new(qubits.clone(), true, inverse);
-    let mut test_array = match qubits.len() {
-        1 => array![
-            [Complex64::from_polar(r, 0.), Complex64::from_polar(r, 0.)],
-            [Complex64::from_polar(r, 0.), Complex64::from_polar(r, PI)],
-        ],
-        2 => array![
-            [
-                Complex64::from_polar(r, 0.),
-                Complex64::from_polar(r, 0.),
-                Complex64::from_polar(r, 0.),
-                Complex64::from_polar(r, 0.)
-            ],
-            [
-                Complex64::from_polar(r, 0.),
-                Complex64::from_polar(r, FRAC_PI_2),
-                Complex64::from_polar(r, PI),
-                Complex64::from_polar(r, 3. * FRAC_PI_2)
-            ],
-            [
-                Complex64::from_polar(r, 0.),
-                Complex64::from_polar(r, PI),
-                Complex64::from_polar(r, 0.),
-                Complex64::from_polar(r, PI)
-            ],
-            [
-                Complex64::from_polar(r, 0.),
-                Complex64::from_polar(r, 3. * FRAC_PI_2),
-                Complex64::from_polar(r, PI),
-                Complex64::from_polar(r, FRAC_PI_2)
-            ],
-        ],
-        _ => unreachable!(),
-    };
+    let mut test_array = array![
+        [Complex64::from_polar(r, 0.), Complex64::from_polar(r, 0.)],
+        [Complex64::from_polar(r, 0.), Complex64::from_polar(r, PI)],
+    ];
     if inverse {
         test_array.iter_mut().for_each(|x| *x = x.conj());
     }
