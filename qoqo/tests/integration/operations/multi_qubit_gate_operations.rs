@@ -18,7 +18,9 @@ use pyo3::Python;
 use qoqo::operations::convert_operation_to_pyobject;
 #[cfg(feature = "unstable_operation_definition")]
 use qoqo::operations::CallDefinedGateWrapper;
-use qoqo::operations::{MultiQubitCNOTWrapper, MultiQubitMSWrapper, MultiQubitZZWrapper, QFTWrapper};
+use qoqo::operations::{
+    MultiQubitCNOTWrapper, MultiQubitMSWrapper, MultiQubitZZWrapper, QFTWrapper,
+};
 use qoqo::CircuitWrapper;
 use qoqo_calculator::Calculator;
 use qoqo_calculator::CalculatorFloat;
@@ -28,11 +30,11 @@ use roqoqo::operations::*;
 #[cfg(feature = "json_schema")]
 use roqoqo::ROQOQO_VERSION;
 use roqoqo::{Circuit, RoqoqoError};
+use std::convert::TryInto;
 use std::{
     collections::HashMap,
     f64::consts::{FRAC_PI_2, FRAC_PI_4},
 };
-use std::convert::TryInto;
 use test_case::test_case;
 
 use super::convert_cf_to_pyobject;
@@ -188,15 +190,15 @@ fn test_new_multi_cnot(input_operation: Operation, arguments: Vec<u32>, method: 
     })
 }
 
-#[test_case(Operation::from(QFT::new(vec![0, 1], true, true)), vec![0, 1], "__eq__"; "QFT_eq")]
-#[test_case(Operation::from(QFT::new(vec![2, 3], true, true)), vec![0, 1], "__ne__"; "QFT_ne")]
-fn test_new_qft(input_operation: Operation, arguments: Vec<u32>, method: &str) {
+#[test_case(Operation::from(QFT::new(vec![0, 1], true, true)), (vec![0, 1], true, true), "__eq__"; "QFT_eq")]
+#[test_case(Operation::from(QFT::new(vec![2, 3], true, true)), (vec![0, 1], true, true), "__ne__"; "QFT_ne")]
+fn test_new_qft(input_operation: Operation, arguments: (Vec<u32>, bool, bool), method: &str) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
         // Basic initialisation, no errors
         let operation_type = py.get_type::<QFTWrapper>();
-        let binding = operation_type.call1((arguments,)).unwrap();
+        let binding = operation_type.call1(arguments).unwrap();
         let operation_py = binding.downcast::<QFTWrapper>().unwrap();
         let comparison =
             bool::extract_bound(&operation.call_method1(method, (operation_py,)).unwrap()).unwrap();
@@ -223,19 +225,10 @@ fn test_new_qft(input_operation: Operation, arguments: Vec<u32>, method: &str) {
         );
 
         // Testing inputs
-        let swaps_input = bool::extract_bound(
-            &operation
-                .call_method0("swaps",)
-                .unwrap(),
-        )
-        .unwrap();
+        let swaps_input = bool::extract_bound(&operation.call_method0("swaps").unwrap()).unwrap();
         assert!(swaps_input);
-        let inverse_input = bool::extract_bound(
-            &operation
-                .call_method0("inverse",)
-                .unwrap(),
-        )
-        .unwrap();
+        let inverse_input =
+            bool::extract_bound(&operation.call_method0("inverse").unwrap()).unwrap();
         assert!(inverse_input);
     })
 }
@@ -554,7 +547,7 @@ fn test_pyo3_remapqubits_error_call_defined_gate() {
 #[test_case(Operation::from(MultiQubitMS::new(vec![0, 1, 2], CalculatorFloat::from(1.3))); "MultiQubitMS")]
 #[test_case(Operation::from(MultiQubitZZ::new(vec![0, 1, 2], CalculatorFloat::from(1.3))); "MultiQubitZZ")]
 #[test_case(Operation::from(MultiQubitCNOT::new(vec![0, 1, 2])); "MultiQubitCNOT")]
-#[test_case(Operation::from(QFT::new(vec![0, 1, 2], false, false)); "QFT")]
+#[test_case(Operation::from(QFT::new(vec![0, 1, 2], true, false)); "QFT")]
 fn test_pyo3_unitarymatrix(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -1052,9 +1045,7 @@ fn test_pyo3_json_schema(operation: Operation, version_string: &str) {
         Operation::MultiQubitCNOT(_) => {
             serde_json::to_string_pretty(&schemars::schema_for!(MultiQubitCNOT)).unwrap()
         }
-        Operation::QFT(_) => {
-            serde_json::to_string_pretty(&schemars::schema_for!(QFT)).unwrap()
-        }
+        Operation::QFT(_) => serde_json::to_string_pretty(&schemars::schema_for!(QFT)).unwrap(),
         _ => unreachable!(),
     };
     pyo3::prepare_freethreaded_python();

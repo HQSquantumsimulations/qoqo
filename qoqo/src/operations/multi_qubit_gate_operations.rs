@@ -379,12 +379,7 @@ impl CallDefinedGateWrapper {
 }
 
 #[allow(clippy::upper_case_acronyms)]
-#[wrap(
-    OperateMultiQubit,
-    OperateGate,
-    OperateMultiQubitGate,
-    JsonSchema
-)]
+#[wrap(OperateMultiQubit, OperateGate, OperateMultiQubitGate, JsonSchema)]
 /// The quantum Fourier transformation.
 pub struct QFT {
     /// The qubits involved in the QFT.
