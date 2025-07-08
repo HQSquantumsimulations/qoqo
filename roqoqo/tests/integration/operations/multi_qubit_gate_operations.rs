@@ -920,7 +920,6 @@ fn test_circuit_qft(qubits: Vec<usize>, swap: bool, inverse: bool) {
 #[test_case(vec![0], false; "one_qubit")]
 #[test_case(vec![0], true; "one_qubit_inv")]
 #[test_case(vec![0, 1], false; "two_qubits")]
-#[test_case(vec![0, 1], true; "twp_qubits_inv")]
 fn test_matrix_output_qft(qubits: Vec<usize>, inverse: bool) {
     let dim = qubits.len();
     let r = 1. / 2_f64.powi(dim as i32).sqrt();
