@@ -8,7 +8,8 @@ This changelog track changes to the qoqo project starting at version v0.5.0
 
 * Added the `number_of_qubits` method to the `Circuit` class.
 * Fixed bug omitting a factor of 1/2 when adding dephasing.
-* Added MultiQubitCNOT.
+* Added MultiQubitCNOT operation.
+* Added QFT operation.
 * Added CFF file.
 
 ## 1.19.6

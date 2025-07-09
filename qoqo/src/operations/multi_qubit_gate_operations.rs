@@ -377,3 +377,142 @@ impl CallDefinedGateWrapper {
         format!("{}.{}.{}", min_version.0, min_version.1, min_version.2)
     }
 }
+
+#[allow(clippy::upper_case_acronyms)]
+#[wrap(OperateMultiQubit, OperateGate, OperateMultiQubitGate, JsonSchema)]
+/// The quantum Fourier transform.
+///
+/// This is the quantum analogue of the discrete Fourier transform, which maps between the time
+/// domain and the frequency domain.
+/// The QFT maps a quantum state |x> to |y> according to the following transformation:
+///
+/// .. math::
+///     y_k = \frac{1}{\sqrt{N}} \sum_{j=0}^{N-1} x_j e^{\frac{2 \pi \mathrm{i} j k}{N}}
+///
+pub struct QFT {
+    /// The qubits involved in the QFT.
+    qubits: Vec<usize>,
+    /// Include qubit swaps at the end.
+    swaps: bool,
+    /// Do inverse QFT.
+    inverse: bool,
+}
+
+#[pymethods]
+impl QFTWrapper {
+    #[new]
+    /// Creates new instance of Operation ControlledSWAP
+    fn new(qubits: Vec<usize>, swaps: bool, inverse: bool) -> PyResult<Self> {
+        Ok(Self {
+            internal: QFT::new(qubits, swaps, inverse),
+        })
+    }
+    /// Returns true if operation contains symbolic parameters
+    ///
+    /// Returns:
+    ///     bool: Whether or not the operation contains symbolic parameters.
+    fn is_parametrized(&self) -> bool {
+        self.internal.is_parametrized()
+    }
+    /// Returns tags identifying the Operation
+    ///
+    /// Returns:
+    ///     List[str]: The tags identifying the operation
+    fn tags(&self) -> Vec<String> {
+        self.internal.tags().iter().map(|s| s.to_string()).collect()
+    }
+    /// Returns hqslang name of Operation
+    ///
+    /// Returns:
+    ///     str: The name
+    fn hqslang(&self) -> &'static str {
+        self.internal.hqslang()
+    }
+    /// Substitutes internal symbolic parameters with float values
+    ///
+    /// Only available when all symbolic expressions can be evaluated to float with the
+    /// provided parameters.
+    ///
+    /// Args:
+    ///     substitution_parameters (Dict[str, float]): The substituted free parameters
+    ///
+    /// Returns:
+    ///     Operation: The operation with the parameters substituted
+    ///
+    /// Raises:
+    ///     RuntimeError: Parameter Substitution failed
+    fn substitute_parameters(
+        &self,
+        substitution_parameters: std::collections::HashMap<String, f64>,
+    ) -> PyResult<Self> {
+        let mut calculator = qoqo_calculator::Calculator::new();
+        for (key, val) in substitution_parameters.iter() {
+            calculator.set_variable(key, *val);
+        }
+        Ok(Self {
+            internal: self
+                .internal
+                .substitute_parameters(&calculator)
+                .map_err(|x| {
+                    pyo3::exceptions::PyRuntimeError::new_err(format!(
+                        "Parameter Substitution failed: {x:?}"
+                    ))
+                })?,
+        })
+    }
+    /// Remap qubits in the ControlledSWAP operation
+    ///
+    /// Args:
+    ///     mapping (Dict[int, int]): The mapping to be used in the remapping.
+    ///
+    /// Returns:
+    ///     Operation: The operation with the remapped qubits
+    ///
+    /// Raises:
+    ///     RuntimeError: Qubit remapping failed
+    fn remap_qubits(&self, mapping: HashMap<usize, usize>) -> PyResult<Self> {
+        let new_internal = self
+            .internal
+            .remap_qubits(&mapping)
+            .map_err(|x| PyRuntimeError::new_err(format!("Qubit remapping failed: {x:?}")))?;
+        Ok(Self {
+            internal: new_internal,
+        })
+    }
+    /// List all involved qubits in the ControlledSWAP operation.
+    ///
+    /// Returns:
+    ///     Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    fn involved_qubits<'py>(&'py self, py: Python<'py>) -> Bound<'py, PySet> {
+        let involved = self.internal.involved_qubits();
+        match involved {
+            InvolvedQubits::All => PySet::new(py, ["All"]).expect("Could not create PySet"),
+            InvolvedQubits::None => PySet::empty(py).expect("Could not create PySet"),
+            InvolvedQubits::Set(x) => {
+                let mut vector: Vec<usize> = Vec::new();
+                for qubit in x {
+                    vector.push(qubit)
+                }
+                PySet::new(py, &vector[..]).expect("Could not create PySet")
+            }
+        }
+    }
+    /// Copies Operation
+    ///
+    /// For qoqo operations copy is always a deep copy
+    fn __copy__(&self) -> Self {
+        self.clone()
+    }
+    /// Creates deep copy of Operation
+    fn __deepcopy__(&self, _memodict: &Bound<PyAny>) -> Self {
+        self.clone()
+    }
+    /// Returns the `swaps` input of the QFT operation
+    pub fn swaps(&self) -> bool {
+        *self.internal.swaps()
+    }
+    /// Returns the `inverse` input of the QFT operation
+    pub fn inverse(&self) -> bool {
+        *self.internal.inverse()
+    }
+}

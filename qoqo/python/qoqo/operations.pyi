@@ -17105,3 +17105,145 @@ class MultiQubitCNOT(Operation):
         Returns:
             str: The json schema serialized to json
         """
+
+class QFT(Operation):
+    """
+    The quantum Fourier transform.
+
+    This is the quantum analogue of the discrete Fourier transform, which maps between the time
+    domain and the frequency domain.
+    The QFT maps a quantum state |x> to |y> according to the following transformation:
+
+    .. math::
+        y_k = \frac{1}{\sqrt{N}} \sum_{j=0}^{N-1} x_j e^{\frac{2 \pi \mathrm{i} j k}{N}}
+
+    """
+
+    def __init__(self):
+        return
+
+    def is_parametrized(self) -> bool:
+        """
+        Returns true if operation contains symbolic parameters
+
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters.
+        """
+
+    def tags(self) -> List[str]:
+        """
+        Returns tags identifying the Operation
+
+        Returns:
+            List[str]: The tags identifying the operation
+        """
+
+    def hqslang(self) -> str:
+        """
+        Returns hqslang name of Operation
+
+        Returns:
+            str: The name
+        """
+
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
+        """
+        Substitutes internal symbolic parameters with float values
+
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
+
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
+        """
+
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
+        """
+        Remap qubits in the ControlledSWAP operation
+
+        Args:
+            mapping (Dict[int, int]): The mapping to be used in the remapping.
+
+        Returns:
+            Operation: The operation with the remapped qubits
+
+        Raises:
+            RuntimeError: Qubit remapping failed
+        """
+
+    def involved_qubits(self) -> Union[Set[int], str]:
+        """
+        List all involved qubits in the ControlledSWAP operation.
+
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
+
+    def swaps(self):
+        """
+        Returns the `swaps` input of the QFT operation
+        """
+
+    def inverse(self):
+        """
+        Returns the `inverse` input of the QFT operation
+        """
+
+    def qubits(self):
+        """
+        Return list of qubits of the multi qubit operation in order of descending significance
+
+        Returns:
+            List[int]
+        """
+
+    def circuit(self):
+        """
+        Return circuit implementing MultiQubitGateOperation
+
+        Returns:
+            Circuit
+        """
+
+    def unitary_matrix(self) -> numpy.ndarray:
+        """
+        Return unitary matrix of gate.
+
+        Returns:
+            np.ndarray: matrix of gate.
+
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix
+        """
+
+    def current_version(self) -> str:
+        """
+        Returns the current version of the qoqo library .
+
+        Returns:
+            str: The current version of the library.
+        """
+
+    def min_supported_version(self) -> str:
+        """
+        Return the minimum version of qoqo that supports this object.
+
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
+        """
+
+    def json_schema(self) -> str:
+        """
+        Return the JsonSchema for the json serialisation of the class.
+
+        Returns:
+            str: The json schema serialized to json
+        """
