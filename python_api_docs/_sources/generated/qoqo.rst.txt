@@ -66,6 +66,7 @@
       LongitudinalCoupling
       MeasureQubit
       MolmerSorensenXX
+      MultiQubitCNOT
       MultiQubitMS
       MultiQubitZZ
       PMInteraction
@@ -110,6 +111,7 @@
       PragmaStartDecompositionBlock
       PragmaStopDecompositionBlock
       PragmaStopParallelBlock
+      QFT
       Qsim
       QuantumProgram
       QuantumRabi

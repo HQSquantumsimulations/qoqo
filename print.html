@@ -44,6 +44,17 @@
         <script src="toc.js"></script>
     </head>
     <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
     <div id="body-container">
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
         <script>
@@ -121,7 +132,7 @@
                             <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
                         </ul>
-                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
                             <i class="fa fa-search"></i>
                         </button>
                     </div>
@@ -678,8 +689,8 @@ let measurement = PauliZProduct {
     circuits: vec![z_circuit.clone(), x_circuit.clone()],
     constant_circuit: Some(init_circuit.clone()),
 
-println!("{:?}", measurement);
 };
+println!("{measurement:?}");
 <span class="boring">}</span></code></pre></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="quantumprogram-and-variable-replacement"><a class="header" href="#quantumprogram-and-variable-replacement">QuantumProgram and Variable-Replacement</a></h1>
 <p>A <code>QuantumProgram</code> allows the user to call it with a list of free <code>float</code> parameters.
@@ -1035,7 +1046,7 @@ let program = QuantumProgram::CheatedPauliZProduct {
 let backend = Backend::new(3);
 
 let res = program.run(backend, &amp;[]);
-println!("{:?}", res);
+println!("{res:?}");
 
 <span class="boring">}</span></code></pre></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="cheated-measurement"><a class="header" href="#cheated-measurement">Cheated Measurement</a></h1>
@@ -1119,7 +1130,7 @@ let measurement = Cheated {
 let backend = Backend::new(1);
 
 let result = backend.run_measurement(&amp;measurement);
-println!("{:?}", result);
+println!("{result:?}");
 <span class="boring">}</span></code></pre></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="backends"><a class="header" href="#backends">Backends</a></h1>
 <p>Backends in qoqo/roqoqo are used for two things:</p>
@@ -1278,7 +1289,7 @@ let (_bit_registers, _float_registers, _complex_registers) = backend.run_circuit
 // b) To run a measurement we need to replace the free parameter by hand
 let executable_measurement = measurement.substitute_parameters(HashMap::from([("angle".to_string(), 0.2)])).unwrap();
 let expectation_values = backend.run_measurement(&amp;executable_measurement).unwrap();
-println!("{:?}", expectation_values);
+println!("{expectation_values:?}");
 
 // c) Run a quantum program
 // The QuantumProgram now has one free parameter that must be set when executing it.
@@ -1287,7 +1298,7 @@ println!("{:?}", expectation_values);
 let program = QuantumProgram::PauliZProduct{ measurement, input_parameter_names: vec!["angle".to_string()]};
 // Run the program with 0.1 substituting `angle`
 let expectation_values = program.run(backend, &amp;[0.1]).unwrap();
-println!("{:?}", expectation_values);
+println!("{expectation_values:?}");
 <span class="boring">}</span></code></pre></pre>
 <h2 id="translating-to-other-quantum-computing-frameworks"><a class="header" href="#translating-to-other-quantum-computing-frameworks">Translating to other quantum computing frameworks</a></h2>
 <p>There are many open- and closed-source quantum frameworks. For some use cases, it may be advantageous to interface between qoqo and another quantum computing framework. Depending on the target framework, circuits containing an available subset of qoqo operations can be translated to other frameworks by backends. Backends that translate qoqo/roqoqo objects (for example Circuits) to other frameworks or representations do not implement the <code>EvaluatingBackend</code>.</p>
@@ -1535,8 +1546,10 @@ square_lattice = devices.SquareLatticeDevice(rows, columns, ["RotateZ"], ["CNOT"
 <h2 id="multi-qubit-gates"><a class="header" href="#multi-qubit-gates"><a href="gate_operations/multi_qubit_gates.html">Multi-qubit gates</a></a></h2>
 <div class="table-wrapper"><table><thead><tr><th>Gate</th><th>Short Description</th></tr></thead><tbody>
 <tr><td>CallDefinedGate</td><td>The gate to be replaced by a gate defined with GateDefinition gate.</td></tr>
+<tr><td>MultiQubitCNOT</td><td>The multi qubit CNOT-Product gate: applies the CNOT gate with multiple controls.</td></tr>
 <tr><td>MultiQubitMS</td><td>The Molmer-Sorensen gate between multiple qubits.</td></tr>
 <tr><td>MultiQubitZZ</td><td>The multi qubit Pauli-Z-Product gate.</td></tr>
+<tr><td>QFT</td><td>The quantum Fourier transform.</td></tr>
 </tbody></table>
 </div>
 <h2 id="bosonic-operations"><a class="header" href="#bosonic-operations"><a href="gate_operations/bosonic_operations.html">Bosonic operations</a></a></h2>

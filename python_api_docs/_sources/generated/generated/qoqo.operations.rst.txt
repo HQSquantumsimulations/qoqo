@@ -47,6 +47,7 @@ qoqo.operations
       LongitudinalCoupling
       MeasureQubit
       MolmerSorensenXX
+      MultiQubitCNOT
       MultiQubitMS
       MultiQubitZZ
       PMInteraction
@@ -89,6 +90,7 @@ qoqo.operations
       PragmaStartDecompositionBlock
       PragmaStopDecompositionBlock
       PragmaStopParallelBlock
+      QFT
       Qsim
       QuantumRabi
       RotateAroundSphericalAxis

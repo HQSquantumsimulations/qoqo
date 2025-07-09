@@ -26,6 +26,7 @@ qoqo.Circuit
       ~Circuit.get_slice
       ~Circuit.json_schema
       ~Circuit.min_supported_version
+      ~Circuit.number_of_qubits
       ~Circuit.operations
       ~Circuit.overrotate
       ~Circuit.remap_qubits

@@ -43,6 +43,17 @@
         <script src="../toc.js"></script>
     </head>
     <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
     <div id="body-container">
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
         <script>
@@ -120,7 +131,7 @@
                             <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
                         </ul>
-                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
                             <i class="fa fa-search"></i>
                         </button>
                     </div>
@@ -249,8 +260,10 @@
 <h2 id="multi-qubit-gates"><a class="header" href="#multi-qubit-gates"><a href="multi_qubit_gates.html">Multi-qubit gates</a></a></h2>
 <div class="table-wrapper"><table><thead><tr><th>Gate</th><th>Short Description</th></tr></thead><tbody>
 <tr><td>CallDefinedGate</td><td>The gate to be replaced by a gate defined with GateDefinition gate.</td></tr>
+<tr><td>MultiQubitCNOT</td><td>The multi qubit CNOT-Product gate: applies the CNOT gate with multiple controls.</td></tr>
 <tr><td>MultiQubitMS</td><td>The Molmer-Sorensen gate between multiple qubits.</td></tr>
 <tr><td>MultiQubitZZ</td><td>The multi qubit Pauli-Z-Product gate.</td></tr>
+<tr><td>QFT</td><td>The quantum Fourier transform.</td></tr>
 </tbody></table>
 </div>
 <h2 id="bosonic-operations"><a class="header" href="#bosonic-operations"><a href="bosonic_operations.html">Bosonic operations</a></a></h2>
