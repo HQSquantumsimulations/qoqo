@@ -983,7 +983,7 @@ fn test_substitute_error_qft() {
 fn test_format_error_qft() {
     let qubits = vec![0, 1, 2];
     let gate = QFT::new(qubits.clone(), false, false);
-    let string = format!("{:?}", gate);
+    let string = format!("{gate:?}");
     assert!(string.contains("QFT"));
 }
 
