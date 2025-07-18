@@ -6,7 +6,7 @@ qoqo/roqoqo distinguishes between:
 
 * Definitions: Operations that declare (and initialize) classical register values ([see also here](readout.md))
 * Gate Operations: Unitary operations that can be executed on every unitary quantum computer (but might need to be decomposed into a sequence of native operations) ([see also here](unitary.md))
-* Pragma operations that are not generally available on all universal quantum computers (see [pragma operations](pragma.md) and [noise operations](noise.md) )
+* Pragma operations that provide additional functionality to a quantum program, and are not generally available on all universal quantum computers (see [pragma operations](pragma.md) and [noise operations](noise.md) )
 
 In order to create a useful result, a Circuit in qoqo/roqoqo must contain:
 
@@ -49,5 +49,41 @@ circuit += CNOT::new(0, 1);
 circuit += MeasureQubit::new(0, "ro".to_string(), 0);
 circuit += MeasureQubit::new(1, "ro".to_string(), 1);
 ```
+
+A circuit created with qoqo can also be visualized. The user can do this by installing the package `qollage` in python or the crate `roqollage` in rust.
+It can be installed the same way as qoqo/roqoqo:
+
+To install the package in a python environment run the following command
+```bash
+pip install qollage
+```
+
+or add this line to the Cargo.toml of a rust project
+
+```TOML
+qollage = "0.5" # Change this to the latest version to ensure compatibility of the latest qoqo operations.
+```
+
+In python the following code will output an image of the user's circuit using IPython’s display method.
+
+```python
+from qollage import draw_circuit
+
+# draw the circuit
+draw_circuit(circuit)
+```
+The generated image of the previous circuit should look like this:
+
+<img src="./images/circuit_example.png" alt="circuit" width="60%">
+
+In Rust, the image can be retrieved with the following function:
+
+```rust
+let image =
+        roqollage::circuit_to_image(&circuit, None, roqollage::RenderPragmas::All, None, None)
+            .expect("Failed to create an image of the circuit.");
+```
+
+For more information about this tool, please see the full documentation of [qollage](https://github.com/HQSquantumsimulations/qollage).
 
 For details on the **available methods** of a `Circuit` please refer to the **API documentation** of [roqoqo](https://docs.rs/roqoqo/latest/roqoqo/struct.Circuit.html) and [qoqo](https://hqsquantumsimulations.github.io/qoqo/generated/qoqo.html#qoqo.Circuit).

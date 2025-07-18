@@ -213,8 +213,7 @@ impl ControlledSWAPWrapper {
                 .substitute_parameters(&calculator)
                 .map_err(|x| {
                     pyo3::exceptions::PyRuntimeError::new_err(format!(
-                        "Parameter Substitution failed: {:?}",
-                        x
+                        "Parameter Substitution failed: {x:?}"
                     ))
                 })?,
         })
@@ -233,7 +232,7 @@ impl ControlledSWAPWrapper {
         let new_internal = self
             .internal
             .remap_qubits(&mapping)
-            .map_err(|x| PyRuntimeError::new_err(format!("Qubit remapping failed: {:?}", x)))?;
+            .map_err(|x| PyRuntimeError::new_err(format!("Qubit remapping failed: {x:?}")))?;
         Ok(Self {
             internal: new_internal,
         })
@@ -242,31 +241,19 @@ impl ControlledSWAPWrapper {
     ///
     /// Returns:
     ///     Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-    fn involved_qubits(&self) -> PyObject {
-        Python::with_gil(|py| -> PyObject {
-            let involved = self.internal.involved_qubits();
-            match involved {
-                InvolvedQubits::All => {
-                    let pyref: &Bound<PySet> = &PySet::new_bound(py, &["All"]).unwrap();
-                    let pyobject: PyObject = pyref.to_object(py);
-                    pyobject
+    fn involved_qubits<'py>(&'py self, py: Python<'py>) -> Bound<'py, PySet> {
+        let involved = self.internal.involved_qubits();
+        match involved {
+            InvolvedQubits::All => PySet::new(py, ["All"]).expect("Could not create PySet"),
+            InvolvedQubits::None => PySet::empty(py).expect("Could not create PySet"),
+            InvolvedQubits::Set(x) => {
+                let mut vector: Vec<usize> = Vec::new();
+                for qubit in x {
+                    vector.push(qubit)
                 }
-                InvolvedQubits::None => {
-                    let pyref: &Bound<PySet> = &PySet::empty_bound(py).unwrap();
-                    let pyobject: PyObject = pyref.to_object(py);
-                    pyobject
-                }
-                InvolvedQubits::Set(x) => {
-                    let mut vector: Vec<usize> = Vec::new();
-                    for qubit in x {
-                        vector.push(qubit)
-                    }
-                    let pyref: &Bound<PySet> = &PySet::new_bound(py, &vector[..]).unwrap();
-                    let pyobject: PyObject = pyref.to_object(py);
-                    pyobject
-                }
+                PySet::new(py, &vector[..]).expect("Could not create PySet")
             }
-        })
+        }
     }
     /// Copies Operation
     ///

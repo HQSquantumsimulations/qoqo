@@ -106,7 +106,7 @@ impl<'ast> Visit<'ast> for Visitor {
         // Check attributes
         for att in itemstruct.attrs.clone() {
             let path = att.path().get_ident().map(|id| id.to_string());
-            // TOFIX: REMOVE WHEN STABILISED
+            // TEMP: REMOVE WHEN STABILISED
             if matches!(att.style, AttrStyle::Outer)
                 && path == Some("cfg".to_string())
                 && !cfg!(feature = "unstable_operation_definition")
@@ -117,6 +117,22 @@ impl<'ast> Visit<'ast> for Visitor {
                     return;
                 }
             }
+
+            // TEMP: REMOVE WHEN STABILISED
+            if matches!(att.style, AttrStyle::Outer)
+                && path == Some("cfg".to_string())
+                && !cfg!(feature = "unstable_simulation_repetitions")
+            {
+                let cfg_feature_name: CfgFeatureMacroArgument =
+                    att.parse_args().expect("parsing failed 1");
+                if cfg_feature_name
+                    .0
+                    .contains("unstable_simulation_repetitions")
+                {
+                    return;
+                }
+            }
+
             // only consider the wrap attribute, if no derive attribute is present don't add anything
             // to the internal storage of the visitor
             if matches!(att.style, AttrStyle::Outer) && path == Some("wrap".to_string()) {
@@ -134,7 +150,7 @@ impl<'ast> Visit<'ast> for Visitor {
             Some(id) => Some(id.clone()),
             _ => i.path.segments.last().map(|segment| segment.ident.clone()),
         };
-        // TOFIX: REMOVE WHEN STABILISED
+        // TEMP: REMOVE WHEN STABILISED
         if i.tokens.clone().into_iter().any(|tok| {
             tok.to_string().contains("CallDefinedGate")
                 || tok.to_string().contains("DefinitionGate")
@@ -142,6 +158,17 @@ impl<'ast> Visit<'ast> for Visitor {
         {
             return;
         }
+
+        // TEMP: REMOVE WHEN STABILISED
+        if i.tokens
+            .clone()
+            .into_iter()
+            .any(|tok| tok.to_string().contains("PragmaSimulationRepetitions"))
+            && !cfg!(feature = "unstable_simulation_repetitions")
+        {
+            return;
+        }
+
         if let Some(ident) = id {
             if ident.to_string().as_str() == "insert_pyany_to_operation" {
                 self.pyany_to_operation.push(i.tokens.clone())
@@ -219,7 +246,7 @@ fn collect_args_from_doc(doc: &str, class_name: &str) -> Vec<String> {
                 "{}{}",
                 line.trim().split_once([' ', ':']).unwrap_or(("", "")).0,
                 arg_type
-                    .map(|arg_type| format!(": {}", arg_type))
+                    .map(|arg_type| format!(": {arg_type}"))
                     .unwrap_or_default()
             )
         })
@@ -241,7 +268,7 @@ fn collect_return_from_doc(doc: &str, class_name: &str) -> String {
         args_vec[0].trim().split_once([':']).unwrap_or(("", "")).0,
         class_name,
     ) {
-        format!(" -> {}", ret)
+        format!(" -> {ret}")
     } else {
         "".to_owned()
     }
@@ -271,14 +298,14 @@ fn create_doc(module: &str) -> PyResult<String> {
     let mut main_doc = "".to_owned();
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| -> PyResult<String> {
-        let python_module = PyModule::import_bound(py, module)?;
-        let dict = python_module.as_gil_ref().getattr("__dict__")?;
+        let python_module = PyModule::import(py, module)?;
+        let dict = python_module.as_ref().getattr("__dict__")?;
         let module_doc = python_module
-            .as_gil_ref()
+            .as_ref()
             .getattr("__doc__")?
             .extract::<String>()?;
         let r_dict = dict.downcast::<PyDict>()?;
-        for (fn_name, func) in r_dict.iter() {
+        for (fn_name, func) in pyo3::types::PyDictMethods::iter(r_dict) {
             let name = fn_name.str()?.extract::<String>()?;
             if name.starts_with("__")
                 || (module == "qoqo"
@@ -296,16 +323,14 @@ fn create_doc(module: &str) -> PyResult<String> {
                 let args = collect_args_from_doc(doc.as_str(), name.as_str()).join(", ");
                 main_doc.push_str(&format!(
                     "class {name}{}:\n    \"\"\"\n{doc}\n\"\"\"\n\n    def __init__(self{}):\n       return\n\n",
-                    module.eq("qoqo.operations").then_some("(Operation)").unwrap_or_default(),
-                    if args.is_empty() { "".to_owned() } else { format!(", {}", args) },
+                    if module.eq("qoqo.operations") { "(Operation)" } else { Default::default() },
+                    if args.is_empty() { "".to_owned() } else { format!(", {args}") },
                 ));
                 let class_dict = func.getattr("__dict__")?;
                 let items = class_dict.call_method0("items")?;
-                let dict_obj = py
-                    .import_bound("builtins")?
-                    .call_method1("dict", (items,))?;
-                let class_r_dict = dict_obj.as_gil_ref().downcast::<PyDict>()?;
-                for (class_fn_name, meth) in class_r_dict.iter() {
+                let dict_obj = py.import("builtins")?.call_method1("dict", (items,))?;
+                let class_r_dict = dict_obj.as_ref().downcast::<PyDict>()?;
+                for (class_fn_name, meth) in pyo3::types::PyDictMethods::iter(class_r_dict) {
                     let meth_name = class_fn_name.str()?.extract::<String>()?;
                     let meth_doc = match meth_name.as_str() {
                         "__add__" if name.eq(&"Circuit") => r#"Implement the `+` (__add__) magic method to add two Circuits.
@@ -345,7 +370,7 @@ Raises:
                         }
                         }
                     };
-                    if meth_doc.eq("") {
+                    if meth_doc.is_empty() {
                         continue;
                     }
                     let meth_args =
@@ -355,7 +380,7 @@ Raises:
                         if meth_args.is_empty() {
                             "".to_owned()
                         } else {
-                            format!(", {}", meth_args)
+                            format!(", {meth_args}")
                         },
                         collect_return_from_doc(meth_doc.as_str(), name.as_str(),)
                     ));
@@ -439,22 +464,27 @@ fn main() {
                                 }},
                                 "Option<Circuit>" => {quote!{
                                     let #pyobject_name = &op
-                                    .call_method0(#ident_string)
-                                    .map_err(|_| QoqoError::ConversionError)?;
-                                    let tmp: Option<&PyAny> = #pyobject_name.extract().map_err(|_|
-                                        QoqoError::ConversionError)?;
-                                    let #ident = match tmp{
-                                        Some(cw) => Some(convert_into_circuit(&cw.as_borrowed())
-                                        .map_err(|_| QoqoError::ConversionError)?),
+                                        .call_method0(#ident_string)
+                                        .map_err(|_| QoqoError::ConversionError)?;
+                                    let tmp: Option<&Bound<PyAny>> = #pyobject_name.into();
+                                    let #ident = match tmp {
+                                        Some(cw) => {
+                                            if cw.is_none() {
+                                                None
+                                            } else {
+                                                Some(convert_into_circuit(cw).map_err(|_| {
+                                                    QoqoError::ConversionError
+                                                })?)
+                                            }
+                                        },
                                         _ => None
                                     };
                                 }},
-                                "SpinHamiltonian" => {quote!{
+                                "PauliHamiltonian" => {quote!{
                                     let #pyobject_name = &op
                                     .call_method0(#ident_string)
                                     .map_err(|_| QoqoError::ConversionError)?;
-                                    let temp_op: struqture::spins::SpinHamiltonianSystem = struqture_py::spins::SpinHamiltonianSystemWrapper::from_pyany(#pyobject_name).map_err(|_| QoqoError::ConversionError)?;
-                                    let #ident = temp_op.hamiltonian().clone();
+                                    let #ident: struqture::spins::PauliHamiltonian = struqture_py::spins::PauliHamiltonianWrapper::from_pyany(#pyobject_name).map_err(|_| QoqoError::ConversionError)?;
                                 }},
                                 _ => {
                                     quote!{
@@ -492,8 +522,7 @@ fn main() {
                     Operation::#ident(internal) => {
                         let pyref: Py<#wrapper_ident> =
                             Py::new(py, #wrapper_ident { internal }).unwrap();
-                        let pyobject: PyObject = pyref.to_object(py);
-                        Ok(pyobject)
+                        pyref.into_pyobject(py).map(|bound| bound.as_any().to_owned()).map_err(|_| PyValueError::new_err("Unable to convert to Python object"))
                     }
                 }
             });
@@ -507,22 +536,20 @@ fn main() {
         use crate::convert_into_circuit;
         use qoqo_calculator::CalculatorFloat;
         use qoqo_calculator_pyo3::convert_into_calculator_float;
-        use pyo3::conversion::ToPyObject;
+        use pyo3::exceptions::PyValueError;
         use roqoqo::operations::*;
         use std::collections::HashMap;
-        use ndarray::Array1;
+        use ndarray::{Array1, Array2};
         use num_complex::Complex64;
-        use numpy::{PyArray2, PyReadonlyArray1};
+        use numpy::{PyReadonlyArray1, PyReadonlyArray2};
 
         /// Tries to convert a [roqoqo::operations::Operation] to a PyObject
-        pub fn convert_operation_to_pyobject(operation: Operation) -> PyResult<PyObject> {
-            Python::with_gil(|py| -> PyResult<PyObject> {
+        pub fn convert_operation_to_pyobject(operation: Operation, py: Python<'_>) -> PyResult<Bound<'_, PyAny>> {
             match operation {
                 #(#operation_to_pyobject_quotes),*
                 #(#operation_to_pyobject_injected_quotes),*
                 _ => Err(pyo3::exceptions::PyRuntimeError::new_err(format!("Unknown operation: {}", operation.hqslang())))
             }
-        })
         }
 
         /// Tries to convert any python object to a [roqoqo::operations::Operation]
@@ -539,7 +566,7 @@ fn main() {
             }
         }
     };
-    let final_str = format!("{}", final_quote);
+    let final_str = format!("{final_quote}");
     // Don't write to file when running on docs.rs
     let out_dir = PathBuf::from(
         std::env::var("OUT_DIR").expect("Cannot find a valid output directory for code generation"),
@@ -567,7 +594,7 @@ fn main() {
                 create_doc(&format!("qoqo.{module}"))
             }
             .expect("Could not generate documentation.");
-            let out_dir = PathBuf::from(format!("python/qoqo/{}.pyi", module));
+            let out_dir = PathBuf::from(format!("python/qoqo/{module}.pyi"));
             fs::write(&out_dir, qoqo_doc).expect("Could not write to file");
         }
     }

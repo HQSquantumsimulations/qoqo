@@ -36,29 +36,27 @@ pub use all_to_all::AllToAllDeviceWrapper;
 /// A wrapper around a python object that implements the ChainWithEnvironment trait.
 ///
 /// Can be used to avoid deserializain the python object.
-#[derive(Clone, Debug)]
-pub struct ChainWithEnvironmentCapsule {
-    internal: Py<PyAny>,
+#[derive(Debug)]
+pub struct ChainWithEnvironmentCapsule<'py> {
+    internal: &'py Bound<'py, PyAny>,
 }
 
 #[cfg(feature = "unstable_chain_with_environment")]
-impl ChainWithEnvironmentCapsule {
+impl<'py> ChainWithEnvironmentCapsule<'py> {
     /// Creates a new ChainWithEnvironmentCapsule for a Python object.
     ///
     /// # Arguments
     ///
     /// * `python_device` - The python object that should implement the
-    pub fn new(python_device: &Bound<PyAny>) -> Result<Self, RoqoqoError> {
+    pub fn new(python_device: &'py Bound<PyAny>) -> Result<Self, RoqoqoError> {
         let __implements_environment_with_chains =
             python_device.call_method0("__implements_environment_chains");
         let implements_protocol =
             __implements_environment_with_chains.map(|implement| implement.extract::<bool>());
 
         match implements_protocol {
-            Ok(Ok(true)) => Python::with_gil(|py| -> Result<Self, RoqoqoError> {
-                Ok(Self {
-                    internal: python_device.into_py(py),
-                })
+            Ok(Ok(true)) => Ok(Self {
+                internal: python_device,
             }),
             _ => Err(RoqoqoError::GenericError {
                 msg: "Python device does not implement `environment_chains` method.".to_string(),
@@ -68,18 +66,16 @@ impl ChainWithEnvironmentCapsule {
 }
 
 #[cfg(feature = "unstable_chain_with_environment")]
-impl ChainWithEnvironmentDevice for ChainWithEnvironmentCapsule {
+impl ChainWithEnvironmentDevice for ChainWithEnvironmentCapsule<'_> {
     fn environment_chains(&self) -> Vec<roqoqo::devices::ChainAndEnvironment> {
-        Python::with_gil(|py| -> Vec<roqoqo::devices::ChainAndEnvironment> {
-            let chains_with_environment = self
-                .internal
-                .call_method0(py, "__environment_chains")
-                .expect("Internal error `environment_chains` on python device failed.");
+        let chains_with_environment = self
+            .internal
+            .call_method0("__environment_chains")
+            .expect("Internal error `environment_chains` on python device failed.");
 
-            chains_with_environment
-                  .extract::<Vec<(Vec<usize>, HashMap<usize, Vec<usize>>)>>(py)
+        chains_with_environment
+                  .extract::<Vec<(Vec<usize>, HashMap<usize, Vec<usize>>)>>()
                   .expect("Internal error `environment_chains` on python device does not return valid description.")
-        })
     }
 }
 

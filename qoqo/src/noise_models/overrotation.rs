@@ -105,7 +105,7 @@ impl SingleQubitOverrotationDescriptionWrapper {
         })?;
         let b: Py<pyo3::types::PyByteArray> =
             Python::with_gil(|py| -> Py<pyo3::types::PyByteArray> {
-                pyo3::types::PyByteArray::new_bound(py, &serialized[..]).into()
+                pyo3::types::PyByteArray::new(py, &serialized[..]).into()
             });
         Ok(b)
     }
@@ -143,7 +143,7 @@ impl SingleQubitOverrotationDescriptionWrapper {
     pub fn from_bincode(
         input: &Bound<PyAny>,
     ) -> PyResult<SingleQubitOverrotationDescriptionWrapper> {
-        let bytes = input.as_gil_ref().extract::<Vec<u8>>().map_err(|_| {
+        let bytes = input.as_ref().extract::<Vec<u8>>().map_err(|_| {
             pyo3::exceptions::PyTypeError::new_err("Input cannot be converted to byte array")
         })?;
         let noise_description: SingleQubitOverrotationDescription =
@@ -269,8 +269,7 @@ impl SingleQubitOverrotationDescriptionWrapper {
             let bytes = get_bytes.extract::<Vec<u8>>()?;
             bincode::deserialize(&bytes[..]).map_err(|err| {
                 pyo3::exceptions::PyValueError::new_err(format!(
-                    "Cannot treat input as Overrotation Description: {}",
-                    err
+                    "Cannot treat input as Overrotation Description: {err}"
                 ))
             })
         }
@@ -443,7 +442,7 @@ impl SingleQubitOverrotationOnGateWrapper {
     #[staticmethod]
     #[pyo3(text_signature = "(input)")]
     pub fn from_bincode(input: &Bound<PyAny>) -> PyResult<SingleQubitOverrotationOnGateWrapper> {
-        let bytes = input.as_gil_ref().extract::<Vec<u8>>().map_err(|_| {
+        let bytes = input.as_ref().extract::<Vec<u8>>().map_err(|_| {
             pyo3::exceptions::PyTypeError::new_err("Input cannot be converted to byte array")
         })?;
         let noise_model: NoiseModel = bincode::deserialize(&bytes[..]).map_err(|_| {

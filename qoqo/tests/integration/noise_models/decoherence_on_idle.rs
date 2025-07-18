@@ -14,7 +14,7 @@ use pyo3::prelude::*;
 use qoqo::noise_models::*;
 #[cfg(feature = "json_schema")]
 use roqoqo::{noise_models::DecoherenceOnIdleModel, ROQOQO_VERSION};
-use struqture::OperateOnDensityMatrix;
+use struqture::{spins::PlusMinusLindbladNoiseOperator, OperateOnDensityMatrix};
 use struqture_py::spins;
 
 /// Test copy
@@ -22,15 +22,20 @@ use struqture_py::spins;
 fn test_pyo3_init() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let plus_minus_operator = spins::PlusMinusLindbladNoiseOperatorWrapper::new();
-        let br_type = py.get_type_bound::<DecoherenceOnIdleModelWrapper>();
-        let binding = br_type.call1((plus_minus_operator.clone(),)).unwrap();
+        super::initialise_struqture_version(py);
+        let plus_minus_operator = PlusMinusLindbladNoiseOperator::new();
+        let plus_minus_operator_wrapper = spins::PlusMinusLindbladNoiseOperatorWrapper::new();
+        let br_type = py.get_type::<DecoherenceOnIdleModelWrapper>();
+        let binding = br_type
+            .call1((plus_minus_operator_wrapper.clone(),))
+            .unwrap();
         let br = binding.downcast::<DecoherenceOnIdleModelWrapper>().unwrap();
-        let comparison = br
-            .call_method0("get_noise_operator")
-            .unwrap()
-            .extract::<spins::PlusMinusLindbladNoiseOperatorWrapper>();
-        assert_eq!(plus_minus_operator, comparison.unwrap());
+        let comparison = br.call_method0("get_noise_operator").unwrap();
+        assert_eq!(
+            plus_minus_operator,
+            spins::PlusMinusLindbladNoiseOperatorWrapper::from_pyany_struqture_1(&comparison)
+                .unwrap()
+        );
     })
 }
 
@@ -38,6 +43,7 @@ fn test_pyo3_init() {
 fn test_add_damping() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
+        super::initialise_struqture_version(py);
         let mut internal_plus_minus = struqture::spins::PlusMinusLindbladNoiseOperator::new();
         let _ = internal_plus_minus.add_operator_product(
             (
@@ -46,20 +52,18 @@ fn test_add_damping() {
             ),
             0.1.into(),
         );
-        let plus_minus_operator = spins::PlusMinusLindbladNoiseOperatorWrapper {
-            internal: internal_plus_minus,
-        };
 
-        let br_type = py.get_type_bound::<DecoherenceOnIdleModelWrapper>();
+        let br_type = py.get_type::<DecoherenceOnIdleModelWrapper>();
         let binding = br_type.call0().unwrap();
         let br = binding.downcast::<DecoherenceOnIdleModelWrapper>().unwrap();
         let binding = br.call_method1("add_damping_rate", ([0], 0.1)).unwrap();
         let br = binding.downcast::<DecoherenceOnIdleModelWrapper>().unwrap();
-        let comparison = br
-            .call_method0("get_noise_operator")
-            .unwrap()
-            .extract::<spins::PlusMinusLindbladNoiseOperatorWrapper>();
-        assert_eq!(plus_minus_operator, comparison.unwrap());
+        let comparison = br.call_method0("get_noise_operator").unwrap();
+        assert_eq!(
+            internal_plus_minus,
+            spins::PlusMinusLindbladNoiseOperatorWrapper::from_pyany_struqture_1(&comparison)
+                .unwrap()
+        );
     })
 }
 
@@ -67,6 +71,7 @@ fn test_add_damping() {
 fn test_add_dephasing() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
+        super::initialise_struqture_version(py);
         let mut internal_plus_minus = struqture::spins::PlusMinusLindbladNoiseOperator::new();
         let _ = internal_plus_minus.add_operator_product(
             (
@@ -75,20 +80,18 @@ fn test_add_dephasing() {
             ),
             0.1.into(),
         );
-        let plus_minus_operator = spins::PlusMinusLindbladNoiseOperatorWrapper {
-            internal: internal_plus_minus,
-        };
 
-        let br_type = py.get_type_bound::<DecoherenceOnIdleModelWrapper>();
+        let br_type = py.get_type::<DecoherenceOnIdleModelWrapper>();
         let binding = br_type.call0().unwrap();
         let br = binding.downcast::<DecoherenceOnIdleModelWrapper>().unwrap();
-        let binding = br.call_method1("add_dephasing_rate", ([0], 0.1)).unwrap();
+        let binding = br.call_method1("add_dephasing_rate", ([0], 0.2)).unwrap();
         let br = binding.downcast::<DecoherenceOnIdleModelWrapper>().unwrap();
-        let comparison = br
-            .call_method0("get_noise_operator")
-            .unwrap()
-            .extract::<spins::PlusMinusLindbladNoiseOperatorWrapper>();
-        assert_eq!(plus_minus_operator, comparison.unwrap());
+        let comparison = br.call_method0("get_noise_operator").unwrap();
+        assert_eq!(
+            internal_plus_minus,
+            spins::PlusMinusLindbladNoiseOperatorWrapper::from_pyany_struqture_1(&comparison)
+                .unwrap()
+        );
     })
 }
 
@@ -96,6 +99,7 @@ fn test_add_dephasing() {
 fn test_add_depolarising() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
+        super::initialise_struqture_version(py);
         let mut internal_plus_minus = struqture::spins::PlusMinusLindbladNoiseOperator::new();
         let _ = internal_plus_minus.add_operator_product(
             (
@@ -118,22 +122,20 @@ fn test_add_depolarising() {
             ),
             0.1.into(),
         );
-        let plus_minus_operator = spins::PlusMinusLindbladNoiseOperatorWrapper {
-            internal: internal_plus_minus,
-        };
 
-        let br_type = py.get_type_bound::<DecoherenceOnIdleModelWrapper>();
+        let br_type = py.get_type::<DecoherenceOnIdleModelWrapper>();
         let binding = br_type.call0().unwrap();
         let br = binding.downcast::<DecoherenceOnIdleModelWrapper>().unwrap();
         let binding = br
             .call_method1("add_depolarising_rate", ([0], 0.2))
             .unwrap();
         let br = binding.downcast::<DecoherenceOnIdleModelWrapper>().unwrap();
-        let comparison = br
-            .call_method0("get_noise_operator")
-            .unwrap()
-            .extract::<spins::PlusMinusLindbladNoiseOperatorWrapper>();
-        assert_eq!(plus_minus_operator, comparison.unwrap());
+        let comparison = br.call_method0("get_noise_operator").unwrap();
+        assert_eq!(
+            internal_plus_minus,
+            spins::PlusMinusLindbladNoiseOperatorWrapper::from_pyany_struqture_1(&comparison)
+                .unwrap()
+        );
     })
 }
 
@@ -141,6 +143,7 @@ fn test_add_depolarising() {
 fn test_add_excitation() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
+        super::initialise_struqture_version(py);
         let mut internal_plus_minus = struqture::spins::PlusMinusLindbladNoiseOperator::new();
         let _ = internal_plus_minus.add_operator_product(
             (
@@ -149,20 +152,18 @@ fn test_add_excitation() {
             ),
             0.1.into(),
         );
-        let plus_minus_operator = spins::PlusMinusLindbladNoiseOperatorWrapper {
-            internal: internal_plus_minus,
-        };
 
-        let br_type = py.get_type_bound::<DecoherenceOnIdleModelWrapper>();
+        let br_type = py.get_type::<DecoherenceOnIdleModelWrapper>();
         let binding = br_type.call0().unwrap();
         let br = binding.downcast::<DecoherenceOnIdleModelWrapper>().unwrap();
         let binding = br.call_method1("add_excitation_rate", ([0], 0.1)).unwrap();
         let br = binding.downcast::<DecoherenceOnIdleModelWrapper>().unwrap();
-        let comparison = br
-            .call_method0("get_noise_operator")
-            .unwrap()
-            .extract::<spins::PlusMinusLindbladNoiseOperatorWrapper>();
-        assert_eq!(plus_minus_operator, comparison.unwrap());
+        let comparison = br.call_method0("get_noise_operator").unwrap();
+        assert_eq!(
+            internal_plus_minus,
+            spins::PlusMinusLindbladNoiseOperatorWrapper::from_pyany_struqture_1(&comparison)
+                .unwrap()
+        );
     })
 }
 
@@ -170,7 +171,7 @@ fn test_add_excitation() {
 fn test_pyo3_debug() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let br_type = py.get_type_bound::<DecoherenceOnIdleModelWrapper>();
+        let br_type = py.get_type::<DecoherenceOnIdleModelWrapper>();
         let binding = br_type.call0().unwrap();
         let br = binding.downcast::<DecoherenceOnIdleModelWrapper>().unwrap();
         let br_wrapper = br.extract::<DecoherenceOnIdleModelWrapper>().unwrap();
@@ -193,7 +194,7 @@ fn test_pyo3_debug() {
 fn test_to_from_json() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let br_type = py.get_type_bound::<DecoherenceOnIdleModelWrapper>();
+        let br_type = py.get_type::<DecoherenceOnIdleModelWrapper>();
         let binding = br_type.call0().unwrap();
         let br = binding.downcast::<DecoherenceOnIdleModelWrapper>().unwrap();
 
@@ -202,8 +203,8 @@ fn test_to_from_json() {
         let binding = new_br.call_method1("from_json", (&serialised,)).unwrap();
         let deserialised = binding.downcast::<DecoherenceOnIdleModelWrapper>().unwrap();
         assert_eq!(
-            format!("{:?}", br.as_gil_ref()),
-            format!("{:?}", deserialised.as_gil_ref())
+            format!("{:?}", br.borrow()),
+            format!("{:?}", deserialised.borrow())
         );
 
         let deserialised_error =
@@ -224,7 +225,7 @@ fn test_to_from_json() {
 fn test_to_from_bincode() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let br_type = py.get_type_bound::<DecoherenceOnIdleModelWrapper>();
+        let br_type = py.get_type::<DecoherenceOnIdleModelWrapper>();
         let binding = br_type.call0().unwrap();
         let br = binding.downcast::<DecoherenceOnIdleModelWrapper>().unwrap();
         let new_br = br;
@@ -232,8 +233,8 @@ fn test_to_from_bincode() {
         let binding = new_br.call_method1("from_bincode", (&serialised,)).unwrap();
         let deserialised = binding.downcast::<DecoherenceOnIdleModelWrapper>().unwrap();
         assert_eq!(
-            format!("{:?}", br.as_gil_ref()),
-            format!("{:?}", deserialised.as_gil_ref())
+            format!("{:?}", br.borrow()),
+            format!("{:?}", deserialised.borrow())
         );
 
         let deserialised_error =
@@ -255,7 +256,7 @@ fn test_to_from_bincode() {
 fn test_json_schema() {
     pyo3::prepare_freethreaded_python();
     pyo3::Python::with_gil(|py| {
-        let br_type = py.get_type_bound::<DecoherenceOnIdleModelWrapper>();
+        let br_type = py.get_type::<DecoherenceOnIdleModelWrapper>();
         let binding = br_type.call0().unwrap();
         let br = binding.downcast::<DecoherenceOnIdleModelWrapper>().unwrap();
 

@@ -1,14 +1,14 @@
 [package]
-version = "1.17.0"
+version = "1.20.0"
 name = "qoqo"
 authors = ["HQS Quantum Simulations <info@quantumsimulations.de>"]
 license = "Apache-2.0"
 homepage = "https://github.com/HQSquantumsimulations/qoqo"
 repository = "https://github.com/HQSquantumsimulations/qoqo"
 documentation = "https://docs.rs/qoqo/"
-readme = "../README.md"
+readme = "README_qoqo.md"
 edition = "2021"
-rust-version = "1.70"
+rust-version = "1.76"
 categories = ["science", "simulation", "development-tools::ffi"]
 description = "Quantum computing circuit toolkit. Python interface of roqoqo"
 include = [
@@ -29,41 +29,43 @@ doctest = false
 crate-type = ["cdylib", "rlib"]
 
 [dependencies.pyo3]
-version = "0.21"
+version = "0.24"
 features = ["num-complex", "multiple-pymethods"]
 
 [dependencies]
-serde = { version = "1.0", features = ["derive"] }
-ndarray = "0.15"
-num-complex = "0.4"
-thiserror = "1.0"
-qoqo_calculator = { version = "~1.2" }
-qoqo_calculator_pyo3 = { version = "~1.2", default-features = false }
-qoqo-macros = { version = "~1.17", path = "../qoqo-macros" }
-roqoqo = { version = "~1.17", path = "../roqoqo", features = [
+qoqo-macros = { version = "~1.20", path = "../qoqo-macros" }
+roqoqo = { version = "~1.20", path = "../roqoqo", features = [
     "serialize",
     "overrotate",
 ] }
-struqture = { version = "~1.9" }
-struqture-py = { version = "~1.9", default-features = false, features = [
-    "unstable_struqture_2_import",
+
+qoqo_calculator = "~1.6"
+qoqo_calculator_pyo3 = { version = "~1.6", default-features = false }
+struqture = "~2.0"
+struqture-py = { version = "~2.0", default-features = false, features = [
+    "struqture_1_import"
 ] }
-numpy = "0.21"
+
 bincode = "1.3"
-serde_json = "1.0"
+ndarray = "0.16"
+num-complex = "0.4"
+numpy = "0.24"
 schemars = "0.8"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+thiserror = "2.0"
 
 [dev-dependencies]
-test-case = "3.0"
 nalgebra = "0.33.1"
+test-case = "3.0"
 
 [build-dependencies]
-quote = "1.0"
-syn = { version = "2.0", features = ["full", "visit"] }
 proc-macro2 = "1.0"
-pyo3-build-config = "0.21"
-pyo3 = "0.21"
+pyo3-build-config = "0.24"
+pyo3 = "0.24"
+quote = "1.0"
 regex = "1.10"
+syn = { version = "2.0", features = ["full", "visit"] }
 
 
 [package.metadata.docs.rs]
@@ -73,6 +75,7 @@ no-default-features = true
 extension-module = ["pyo3/extension-module", "circuitdag"]
 default = ["extension-module", "json_schema"]
 circuitdag = ["roqoqo/circuitdag"]
+overrotate = ["roqoqo/overrotate"]
 json_schema = ["roqoqo/json_schema"]
 doc_generator = []
 unstable_chain_with_environment = [
@@ -81,3 +84,4 @@ unstable_chain_with_environment = [
 ]
 unstable_analog_operations = ["roqoqo/unstable_analog_operations"]
 unstable_operation_definition = ["roqoqo/unstable_operation_definition"]
+unstable_simulation_repetitions = ["roqoqo/unstable_simulation_repetitions"]

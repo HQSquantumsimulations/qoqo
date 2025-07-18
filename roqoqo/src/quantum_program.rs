@@ -357,7 +357,7 @@ impl Display for QuantumProgram {
             }
         }
 
-        write!(f, "{}", s)
+        write!(f, "{s}")
     }
 }
 

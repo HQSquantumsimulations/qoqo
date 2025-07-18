@@ -111,7 +111,7 @@ impl PauliZProductInputWrapper {
         linear: HashMap<usize, f64>,
     ) -> PyResult<()> {
         self.internal.add_linear_exp_val(name, linear).map_err(|x| {
-            PyRuntimeError::new_err(format!("Failed to add linear expectation value {:?}", x))
+            PyRuntimeError::new_err(format!("Failed to add linear expectation value {x:?}"))
         })
     }
 
@@ -133,7 +133,7 @@ impl PauliZProductInputWrapper {
         self.internal
             .add_symbolic_exp_val(name, symbolic.into())
             .map_err(|x| {
-                PyRuntimeError::new_err(format!("Failed to add symbolic expectation value {:?}", x))
+                PyRuntimeError::new_err(format!("Failed to add symbolic expectation value {x:?}"))
             })
     }
 
@@ -176,7 +176,7 @@ impl PauliZProductInputWrapper {
         let serialized = serialize(&self.internal)
             .map_err(|_| PyValueError::new_err("Cannot serialize PauliZProductInput to bytes"))?;
         let b: Py<PyByteArray> = Python::with_gil(|py| -> Py<PyByteArray> {
-            PyByteArray::new_bound(py, &serialized[..]).into()
+            PyByteArray::new(py, &serialized[..]).into()
         });
         Ok(b)
     }
@@ -195,7 +195,7 @@ impl PauliZProductInputWrapper {
     #[staticmethod]
     pub fn from_bincode(input: &Bound<PyAny>) -> PyResult<Self> {
         let bytes = input
-            .as_gil_ref()
+            .as_ref()
             .extract::<Vec<u8>>()
             .map_err(|_| PyTypeError::new_err("Input cannot be converted to byte array"))?;
 
@@ -341,7 +341,7 @@ impl CheatedPauliZProductInputWrapper {
         linear: HashMap<usize, f64>,
     ) -> PyResult<()> {
         self.internal.add_linear_exp_val(name, linear).map_err(|x| {
-            PyRuntimeError::new_err(format!("Failed to add linear expectation value {:?}", x))
+            PyRuntimeError::new_err(format!("Failed to add linear expectation value {x:?}"))
         })
     }
 
@@ -364,7 +364,7 @@ impl CheatedPauliZProductInputWrapper {
         self.internal
             .add_symbolic_exp_val(name, symbolic.into())
             .map_err(|x| {
-                PyRuntimeError::new_err(format!("Failed to add symbolic expectation value {:?}", x))
+                PyRuntimeError::new_err(format!("Failed to add symbolic expectation value {x:?}"))
             })
     }
 
@@ -408,7 +408,7 @@ impl CheatedPauliZProductInputWrapper {
             PyValueError::new_err("Cannot serialize CheatedPauliZProductInput to bytes")
         })?;
         let b: Py<PyByteArray> = Python::with_gil(|py| -> Py<PyByteArray> {
-            PyByteArray::new_bound(py, &serialized[..]).into()
+            PyByteArray::new(py, &serialized[..]).into()
         });
         Ok(b)
     }
@@ -427,7 +427,7 @@ impl CheatedPauliZProductInputWrapper {
     #[staticmethod]
     pub fn from_bincode(input: &Bound<PyAny>) -> PyResult<Self> {
         let bytes = input
-            .as_gil_ref()
+            .as_ref()
             .extract::<Vec<u8>>()
             .map_err(|_| PyTypeError::new_err("Input cannot be converted to byte array"))?;
 
@@ -564,8 +564,7 @@ impl CheatedInputWrapper {
             .add_operator_exp_val(name, operator, readout)
             .map_err(|x| {
                 PyRuntimeError::new_err(format!(
-                    "Failed to add operator based expectation value {:?}",
-                    x
+                    "Failed to add operator based expectation value {x:?}"
                 ))
             })
     }
@@ -609,7 +608,7 @@ impl CheatedInputWrapper {
         let serialized = serialize(&self.internal)
             .map_err(|_| PyValueError::new_err("Cannot serialize CheatedInput to bytes"))?;
         let b: Py<PyByteArray> = Python::with_gil(|py| -> Py<PyByteArray> {
-            PyByteArray::new_bound(py, &serialized[..]).into()
+            PyByteArray::new(py, &serialized[..]).into()
         });
         Ok(b)
     }
@@ -628,7 +627,7 @@ impl CheatedInputWrapper {
     #[staticmethod]
     pub fn from_bincode(input: &Bound<PyAny>) -> PyResult<Self> {
         let bytes = input
-            .as_gil_ref()
+            .as_ref()
             .extract::<Vec<u8>>()
             .map_err(|_| PyTypeError::new_err("Input cannot be converted to byte array"))?;
 
@@ -722,8 +721,7 @@ impl CheatedPauliZProductInputWrapper {
             })?;
             bincode::deserialize(&bytes[..]).map_err(|err| {
                     PyTypeError::new_err(format!(
-                    "Python object cannot be converted to qoqo CheatedPauliZInput: Deserialization failed: {}",
-                    err
+                    "Python object cannot be converted to qoqo CheatedPauliZInput: Deserialization failed: {err}"
                 ))
                 })
         }
@@ -752,8 +750,7 @@ impl PauliZProductInputWrapper {
             })?;
             bincode::deserialize(&bytes[..]).map_err(|err| {
                     PyTypeError::new_err(format!(
-                    "Python object cannot be converted to qoqo PauliZInput: Deserialization failed: {}",
-                    err
+                    "Python object cannot be converted to qoqo PauliZInput: Deserialization failed: {err}"
                 ))
                 })
         }
@@ -782,8 +779,7 @@ impl CheatedInputWrapper {
             })?;
             bincode::deserialize(&bytes[..]).map_err(|err| {
                     PyTypeError::new_err(format!(
-                    "Python object cannot be converted to qoqo CheatedInput: Deserialization failed: {}",
-                    err
+                    "Python object cannot be converted to qoqo CheatedInput: Deserialization failed: {err}"
                 ))
                 })
         }

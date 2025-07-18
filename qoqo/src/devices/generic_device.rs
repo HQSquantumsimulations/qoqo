@@ -92,7 +92,7 @@ impl GenericDeviceWrapper {
             let get_bytes = generic_device_candidate.call_method0("to_bincode")?;
             let bytes = get_bytes.extract::<Vec<u8>>()?;
             deserialize(&bytes[..]).map_err(|err| {
-                PyValueError::new_err(format!("Cannot treat input as GenericDevice: {}", err))
+                PyValueError::new_err(format!("Cannot treat input as GenericDevice: {err}"))
             })
         }
     }

@@ -20,7 +20,7 @@ use roqoqo::ROQOQO_VERSION;
 
 // Helper functions
 fn new_circuitdag(py: Python) -> Bound<CircuitDagWrapper> {
-    let circuitdag_type = py.get_type_bound::<CircuitDagWrapper>();
+    let circuitdag_type = py.get_type::<CircuitDagWrapper>();
     circuitdag_type
         .call0()
         .unwrap()
@@ -30,7 +30,7 @@ fn new_circuitdag(py: Python) -> Bound<CircuitDagWrapper> {
 }
 
 fn new_circuit(py: Python) -> Bound<CircuitWrapper> {
-    let circuit_type = py.get_type_bound::<CircuitWrapper>();
+    let circuit_type = py.get_type::<CircuitWrapper>();
     circuit_type
         .call0()
         .unwrap()
@@ -43,8 +43,8 @@ fn new_circuit(py: Python) -> Bound<CircuitWrapper> {
 #[test]
 fn test_default() {
     pyo3::prepare_freethreaded_python();
-    let operation = convert_operation_to_pyobject(Operation::from(PauliX::new(0))).unwrap();
     Python::with_gil(|py| {
+        let operation = convert_operation_to_pyobject(Operation::from(PauliX::new(0)), py).unwrap();
         let dag = new_circuitdag(py);
         dag.call_method1("add_to_back", (operation.clone(),))
             .unwrap();
@@ -61,9 +61,9 @@ fn test_default() {
 #[test]
 fn test_add_to() {
     pyo3::prepare_freethreaded_python();
-    let paulix_0 = convert_operation_to_pyobject(Operation::from(PauliY::new(0))).unwrap();
-    let cnot_01 = convert_operation_to_pyobject(Operation::from(CNOT::new(0, 1))).unwrap();
     Python::with_gil(|py| {
+        let paulix_0 = convert_operation_to_pyobject(Operation::from(PauliY::new(0)), py).unwrap();
+        let cnot_01 = convert_operation_to_pyobject(Operation::from(CNOT::new(0, 1)), py).unwrap();
         let dag = new_circuitdag(py);
         dag.call_method1("add_to_back", (paulix_0.clone(),))
             .unwrap();
@@ -77,9 +77,9 @@ fn test_add_to() {
 #[test]
 fn test_get() {
     pyo3::prepare_freethreaded_python();
-    let paulix_0 = convert_operation_to_pyobject(Operation::from(PauliX::new(0))).unwrap();
-    let pauliy_0 = convert_operation_to_pyobject(Operation::from(PauliY::new(0))).unwrap();
     Python::with_gil(|py| {
+        let paulix_0 = convert_operation_to_pyobject(Operation::from(PauliX::new(0)), py).unwrap();
+        let pauliy_0 = convert_operation_to_pyobject(Operation::from(PauliY::new(0)), py).unwrap();
         let dag = new_circuitdag(py);
         dag.call_method1("add_to_back", (paulix_0.clone(),))
             .unwrap();
@@ -87,14 +87,14 @@ fn test_get() {
             .unwrap();
 
         let comp_op = dag.call_method1("get", (0,)).unwrap();
-        let operation = convert_operation_to_pyobject(Operation::from(PauliX::new(0))).unwrap();
+        let operation = convert_operation_to_pyobject(Operation::from(PauliX::new(0)), py).unwrap();
 
         let helper1 =
             bool::extract_bound(&comp_op.call_method1("__eq__", (operation,)).unwrap()).unwrap();
         assert!(helper1);
 
         let comp_op = dag.call_method1("get", (1,)).unwrap();
-        let operation = convert_operation_to_pyobject(Operation::from(PauliY::new(0))).unwrap();
+        let operation = convert_operation_to_pyobject(Operation::from(PauliY::new(0)), py).unwrap();
 
         let helper2 =
             bool::extract_bound(&comp_op.call_method1("__eq__", (operation,)).unwrap()).unwrap();
@@ -106,9 +106,9 @@ fn test_get() {
 #[test]
 fn test_copy() {
     pyo3::prepare_freethreaded_python();
-    let paulix_0 = convert_operation_to_pyobject(Operation::from(PauliX::new(0))).unwrap();
-    let pauliy_0 = convert_operation_to_pyobject(Operation::from(PauliY::new(0))).unwrap();
     Python::with_gil(|py| {
+        let paulix_0 = convert_operation_to_pyobject(Operation::from(PauliX::new(0)), py).unwrap();
+        let pauliy_0 = convert_operation_to_pyobject(Operation::from(PauliY::new(0)), py).unwrap();
         let dag = new_circuitdag(py);
         dag.call_method1("add_to_back", (paulix_0.clone(),))
             .unwrap();
@@ -134,10 +134,10 @@ fn test_copy() {
 #[test]
 fn test_richcmp() {
     pyo3::prepare_freethreaded_python();
-    let paulix_0 = convert_operation_to_pyobject(Operation::from(PauliX::new(0))).unwrap();
-    let pauliy_0 = convert_operation_to_pyobject(Operation::from(PauliY::new(0))).unwrap();
-    let cnot_01 = convert_operation_to_pyobject(Operation::from(CNOT::new(0, 1))).unwrap();
     Python::with_gil(|py| {
+        let paulix_0 = convert_operation_to_pyobject(Operation::from(PauliX::new(0)), py).unwrap();
+        let pauliy_0 = convert_operation_to_pyobject(Operation::from(PauliY::new(0)), py).unwrap();
+        let cnot_01 = convert_operation_to_pyobject(Operation::from(CNOT::new(0, 1)), py).unwrap();
         let dag1 = new_circuitdag(py);
         dag1.call_method1("add_to_back", (paulix_0.clone(),))
             .unwrap();
@@ -166,8 +166,8 @@ fn test_richcmp() {
 #[test]
 fn test_qoqo_versions() {
     pyo3::prepare_freethreaded_python();
-    let paulix_0 = convert_operation_to_pyobject(Operation::from(PauliX::new(0))).unwrap();
     Python::with_gil(|py| {
+        let paulix_0 = convert_operation_to_pyobject(Operation::from(PauliX::new(0)), py).unwrap();
         let dag = new_circuitdag(py);
         dag.call_method1("add_to_back", (paulix_0.clone(),))
             .unwrap();
@@ -194,8 +194,8 @@ fn test_qoqo_versions() {
 #[test]
 fn test_to_from_bincode() {
     pyo3::prepare_freethreaded_python();
-    let paulix_0 = convert_operation_to_pyobject(Operation::from(PauliX::new(0))).unwrap();
     Python::with_gil(|py| {
+        let paulix_0 = convert_operation_to_pyobject(Operation::from(PauliX::new(0)), py).unwrap();
         let dag = new_circuitdag(py);
         dag.call_method1("add_to_back", (paulix_0.clone(),))
             .unwrap();
@@ -223,7 +223,7 @@ fn test_to_from_bincode() {
         assert!(serialised_error.is_err());
 
         // testing that 'from_bincode' can be called directly on a circuitdag (python staticmethod)
-        let circuitdag_type = py.get_type_bound::<CircuitDagWrapper>();
+        let circuitdag_type = py.get_type::<CircuitDagWrapper>();
         let deserialised_py = circuitdag_type
             .call_method1("from_bincode", (&serialised,))
             .unwrap();
@@ -238,10 +238,10 @@ fn test_to_from_bincode() {
 #[test]
 fn test_from_circuit() {
     pyo3::prepare_freethreaded_python();
-    let paulix_0 = convert_operation_to_pyobject(Operation::from(PauliX::new(0))).unwrap();
-    let pauliy_0 = convert_operation_to_pyobject(Operation::from(PauliY::new(0))).unwrap();
-    let cnot_01 = convert_operation_to_pyobject(Operation::from(CNOT::new(0, 1))).unwrap();
     Python::with_gil(|py| {
+        let paulix_0 = convert_operation_to_pyobject(Operation::from(PauliX::new(0)), py).unwrap();
+        let pauliy_0 = convert_operation_to_pyobject(Operation::from(PauliY::new(0)), py).unwrap();
+        let cnot_01 = convert_operation_to_pyobject(Operation::from(CNOT::new(0, 1)), py).unwrap();
         let circuit = new_circuit(py);
         circuit.call_method1("add", (paulix_0.clone(),)).unwrap();
         circuit.call_method1("add", (pauliy_0.clone(),)).unwrap();
@@ -271,10 +271,10 @@ fn test_from_circuit() {
 #[test]
 fn test_to_circuit() {
     pyo3::prepare_freethreaded_python();
-    let paulix_0 = convert_operation_to_pyobject(Operation::from(PauliX::new(0))).unwrap();
-    let pauliy_0 = convert_operation_to_pyobject(Operation::from(PauliY::new(0))).unwrap();
-    let cnot_01 = convert_operation_to_pyobject(Operation::from(CNOT::new(0, 1))).unwrap();
     Python::with_gil(|py| {
+        let paulix_0 = convert_operation_to_pyobject(Operation::from(PauliX::new(0)), py).unwrap();
+        let pauliy_0 = convert_operation_to_pyobject(Operation::from(PauliY::new(0)), py).unwrap();
+        let cnot_01 = convert_operation_to_pyobject(Operation::from(CNOT::new(0, 1)), py).unwrap();
         let dag = new_circuitdag(py);
         dag.call_method1("add_to_back", (paulix_0.clone(),))
             .unwrap();
@@ -309,13 +309,14 @@ fn test_to_circuit() {
 #[test]
 fn test_execution_blocked() {
     pyo3::prepare_freethreaded_python();
-    let paulix_0 = convert_operation_to_pyobject(Operation::from(PauliX::new(0))).unwrap();
-    let pauliy_1 = convert_operation_to_pyobject(Operation::from(PauliY::new(1))).unwrap();
-    let cnot_01 = convert_operation_to_pyobject(Operation::from(CNOT::new(0, 1))).unwrap();
-    let pauliz_0 = convert_operation_to_pyobject(Operation::from(PauliZ::new(0))).unwrap();
-    let cpauliz_12 =
-        convert_operation_to_pyobject(Operation::from(ControlledPauliZ::new(1, 2))).unwrap();
     Python::with_gil(|py| {
+        let paulix_0 = convert_operation_to_pyobject(Operation::from(PauliX::new(0)), py).unwrap();
+        let pauliy_1 = convert_operation_to_pyobject(Operation::from(PauliY::new(1)), py).unwrap();
+        let cnot_01 = convert_operation_to_pyobject(Operation::from(CNOT::new(0, 1)), py).unwrap();
+        let pauliz_0 = convert_operation_to_pyobject(Operation::from(PauliZ::new(0)), py).unwrap();
+        let cpauliz_12 =
+            convert_operation_to_pyobject(Operation::from(ControlledPauliZ::new(1, 2)), py)
+                .unwrap();
         let dag = new_circuitdag(py);
 
         let a = &dag
@@ -374,11 +375,11 @@ fn test_execution_blocked() {
 #[test]
 fn test_blocking_predecessors() {
     pyo3::prepare_freethreaded_python();
-    let paulix_0 = convert_operation_to_pyobject(Operation::from(PauliX::new(0))).unwrap();
-    let pauliy_1 = convert_operation_to_pyobject(Operation::from(PauliY::new(1))).unwrap();
-    let cnot_01 = convert_operation_to_pyobject(Operation::from(CNOT::new(0, 1))).unwrap();
-    let pauliz_0 = convert_operation_to_pyobject(Operation::from(PauliZ::new(0))).unwrap();
     Python::with_gil(|py| {
+        let paulix_0 = convert_operation_to_pyobject(Operation::from(PauliX::new(0)), py).unwrap();
+        let pauliy_1 = convert_operation_to_pyobject(Operation::from(PauliY::new(1)), py).unwrap();
+        let cnot_01 = convert_operation_to_pyobject(Operation::from(CNOT::new(0, 1)), py).unwrap();
+        let pauliz_0 = convert_operation_to_pyobject(Operation::from(PauliZ::new(0)), py).unwrap();
         let dag = new_circuitdag(py);
 
         let a = &dag
@@ -419,13 +420,14 @@ fn test_blocking_predecessors() {
 #[test]
 fn test_new_front_layer() {
     pyo3::prepare_freethreaded_python();
-    let paulix_0 = convert_operation_to_pyobject(Operation::from(PauliX::new(0))).unwrap();
-    let pauliy_1 = convert_operation_to_pyobject(Operation::from(PauliY::new(1))).unwrap();
-    let cnot_01 = convert_operation_to_pyobject(Operation::from(CNOT::new(0, 1))).unwrap();
-    let pauliz_0 = convert_operation_to_pyobject(Operation::from(PauliZ::new(0))).unwrap();
-    let cpauliz_12 =
-        convert_operation_to_pyobject(Operation::from(ControlledPauliZ::new(1, 2))).unwrap();
     Python::with_gil(|py| {
+        let paulix_0 = convert_operation_to_pyobject(Operation::from(PauliX::new(0)), py).unwrap();
+        let pauliy_1 = convert_operation_to_pyobject(Operation::from(PauliY::new(1)), py).unwrap();
+        let cnot_01 = convert_operation_to_pyobject(Operation::from(CNOT::new(0, 1)), py).unwrap();
+        let pauliz_0 = convert_operation_to_pyobject(Operation::from(PauliZ::new(0)), py).unwrap();
+        let cpauliz_12 =
+            convert_operation_to_pyobject(Operation::from(ControlledPauliZ::new(1, 2)), py)
+                .unwrap();
         let dag = new_circuitdag(py);
 
         let a = &dag
@@ -480,12 +482,12 @@ fn test_new_front_layer() {
 #[test]
 fn test_parallel_blocks() {
     pyo3::prepare_freethreaded_python();
-    let paulix_0 = convert_operation_to_pyobject(Operation::from(PauliX::new(0))).unwrap();
-    let paulix_1 = convert_operation_to_pyobject(Operation::from(PauliX::new(1))).unwrap();
-    let pauliy_1 = convert_operation_to_pyobject(Operation::from(PauliY::new(1))).unwrap();
-    let cnot_01 = convert_operation_to_pyobject(Operation::from(CNOT::new(0, 1))).unwrap();
-    let pauliz_0 = convert_operation_to_pyobject(Operation::from(PauliZ::new(0))).unwrap();
     Python::with_gil(|py| {
+        let paulix_0 = convert_operation_to_pyobject(Operation::from(PauliX::new(0)), py).unwrap();
+        let paulix_1 = convert_operation_to_pyobject(Operation::from(PauliX::new(1)), py).unwrap();
+        let pauliy_1 = convert_operation_to_pyobject(Operation::from(PauliY::new(1)), py).unwrap();
+        let cnot_01 = convert_operation_to_pyobject(Operation::from(CNOT::new(0, 1)), py).unwrap();
+        let pauliz_0 = convert_operation_to_pyobject(Operation::from(PauliZ::new(0)), py).unwrap();
         let dag = new_circuitdag(py);
 
         dag.call_method1("add_to_back", (paulix_0.clone(),))
@@ -555,10 +557,10 @@ fn test_parallel_blocks() {
 #[test]
 fn test_successors() {
     pyo3::prepare_freethreaded_python();
-    let cnot_01 = convert_operation_to_pyobject(Operation::from(CNOT::new(0, 1))).unwrap();
-    let paulix_0 = convert_operation_to_pyobject(Operation::from(PauliX::new(0))).unwrap();
-    let paulix_1 = convert_operation_to_pyobject(Operation::from(PauliX::new(1))).unwrap();
     Python::with_gil(|py| {
+        let cnot_01 = convert_operation_to_pyobject(Operation::from(CNOT::new(0, 1)), py).unwrap();
+        let paulix_0 = convert_operation_to_pyobject(Operation::from(PauliX::new(0)), py).unwrap();
+        let paulix_1 = convert_operation_to_pyobject(Operation::from(PauliX::new(1)), py).unwrap();
         let dag = new_circuitdag(py);
 
         let a = dag.call_method1("add_to_back", (cnot_01.clone(),)).unwrap();
@@ -587,11 +589,12 @@ fn test_successors() {
 #[test]
 fn test_getters_commuting_operations() {
     pyo3::prepare_freethreaded_python();
-    let commut_op = convert_operation_to_pyobject(Operation::from(
-        PragmaSetNumberOfMeasurements::new(3, "ro".to_string()),
-    ))
-    .unwrap();
     Python::with_gil(|py| {
+        let commut_op = convert_operation_to_pyobject(
+            Operation::from(PragmaSetNumberOfMeasurements::new(3, "ro".to_string())),
+            py,
+        )
+        .unwrap();
         let dag = new_circuitdag(py);
 
         let commut_vec = dag.call_method0("commuting_operations").unwrap();
@@ -608,10 +611,10 @@ fn test_getters_commuting_operations() {
 #[test]
 fn test_getters_parallel_blocks() {
     pyo3::prepare_freethreaded_python();
-    let paulix_0 = convert_operation_to_pyobject(Operation::from(PauliX::new(0))).unwrap();
-    let paulix_1 = convert_operation_to_pyobject(Operation::from(PauliX::new(1))).unwrap();
-    let cnot_01 = convert_operation_to_pyobject(Operation::from(CNOT::new(0, 1))).unwrap();
     Python::with_gil(|py| {
+        let paulix_0 = convert_operation_to_pyobject(Operation::from(PauliX::new(0)), py).unwrap();
+        let paulix_1 = convert_operation_to_pyobject(Operation::from(PauliX::new(1)), py).unwrap();
+        let cnot_01 = convert_operation_to_pyobject(Operation::from(CNOT::new(0, 1)), py).unwrap();
         let dag = new_circuitdag(py);
 
         let fpb = dag.call_method0("first_parallel_block").unwrap();
@@ -640,8 +643,8 @@ fn test_getters_parallel_blocks() {
 #[test]
 fn test_getters_operation_involving_qubit() {
     pyo3::prepare_freethreaded_python();
-    let paulix_0 = convert_operation_to_pyobject(Operation::from(PauliX::new(0))).unwrap();
     Python::with_gil(|py| {
+        let paulix_0 = convert_operation_to_pyobject(Operation::from(PauliX::new(0)), py).unwrap();
         let dag = new_circuitdag(py);
 
         let foiq = dag.call_method0("first_operation_involving_qubit").unwrap();
@@ -662,10 +665,12 @@ fn test_getters_operation_involving_qubit() {
 #[test]
 fn test_getters_operations_involving_classical() {
     pyo3::prepare_freethreaded_python();
-    let meas =
-        convert_operation_to_pyobject(Operation::from(MeasureQubit::new(0, "ro".to_string(), 0)))
-            .unwrap();
     Python::with_gil(|py| {
+        let meas = convert_operation_to_pyobject(
+            Operation::from(MeasureQubit::new(0, "ro".to_string(), 0)),
+            py,
+        )
+        .unwrap();
         let dag = new_circuitdag(py);
 
         dag.call_method1("add_to_back", (meas,)).unwrap();
@@ -686,7 +691,7 @@ fn test_convert_into_circuitdag() {
     pyo3::prepare_freethreaded_python();
     let added_op = Operation::from(PauliX::new(0));
     Python::with_gil(|py| {
-        let operation = convert_operation_to_pyobject(added_op).unwrap();
+        let operation = convert_operation_to_pyobject(added_op, py).unwrap();
 
         let added_dag = new_circuitdag(py);
         let comparison = added_dag.call_method1("convert_into_circuitdag", (operation,));

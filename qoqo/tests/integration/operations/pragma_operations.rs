@@ -12,8 +12,7 @@
 
 use ndarray::{arr2, array, Array1, Array2};
 use num_complex::Complex64;
-use numpy::PyArray2;
-use numpy::PyReadonlyArray1;
+use numpy::{PyReadonlyArray1, PyReadonlyArray2};
 use pyo3::prelude::*;
 use pyo3::types::PyList;
 use pyo3::Python;
@@ -91,7 +90,7 @@ fn circuit_remapped() -> Circuit {
 }
 
 pub(crate) fn new_circuit(py: Python) -> Bound<CircuitWrapper> {
-    let circuit_type = py.get_type_bound::<CircuitWrapper>();
+    let circuit_type = py.get_type::<CircuitWrapper>();
     circuit_type
         .call0()
         .unwrap()
@@ -100,18 +99,18 @@ pub(crate) fn new_circuit(py: Python) -> Bound<CircuitWrapper> {
         .to_owned()
 }
 
+#[cfg(feature = "unstable_simulation_repetitions")]
 /// Test inputs of PragmaSimulationRepetitions
 #[test]
 fn test_pyo3_inputs_simulation_repetitions() {
     let input_pragma = Operation::from(PragmaSimulationRepetitions::new(100));
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = convert_operation_to_pyobject(input_pragma).unwrap();
+        let operation = convert_operation_to_pyobject(input_pragma, py).unwrap();
 
         let repetitions: &usize = &operation
-            .call_method0(py, "repetitions")
+            .call_method0("repetitions")
             .unwrap()
-            .bind(py)
             .extract()
             .unwrap();
         let repetitions_param: &usize = &100_usize;
@@ -125,21 +124,19 @@ fn test_pyo3_inputs_setnumbermeasurements() {
     let input_pragma = Operation::from(PragmaSetNumberOfMeasurements::new(1, String::from("ro")));
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = convert_operation_to_pyobject(input_pragma).unwrap();
+        let operation = convert_operation_to_pyobject(input_pragma, py).unwrap();
 
         let nbr_meas_op: &usize = &operation
-            .call_method0(py, "number_measurements")
+            .call_method0("number_measurements")
             .unwrap()
-            .bind(py)
             .extract()
             .unwrap();
         let nbr_meas_param: &usize = &1_usize;
         assert_eq!(nbr_meas_op, nbr_meas_param);
 
         let readout_op: &String = &operation
-            .call_method0(py, "readout")
+            .call_method0("readout")
             .unwrap()
-            .bind(py)
             .extract()
             .unwrap();
         let readout_param: &String = &String::from("ro");
@@ -156,12 +153,11 @@ fn test_pyo3_inputs_loop() {
     ));
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = convert_operation_to_pyobject(input_pragma).unwrap();
+        let operation = convert_operation_to_pyobject(input_pragma, py).unwrap();
 
         let nbr_meas_op: &CalculatorFloatWrapper = &operation
-            .call_method0(py, "repetitions")
+            .call_method0("repetitions")
             .unwrap()
-            .bind(py)
             .extract()
             .unwrap();
         let nbr_meas_param: &CalculatorFloatWrapper = &CalculatorFloatWrapper {
@@ -170,9 +166,8 @@ fn test_pyo3_inputs_loop() {
         assert_eq!(nbr_meas_op.internal, nbr_meas_param.internal);
 
         let readout_op: &CircuitWrapper = &operation
-            .call_method0(py, "circuit")
+            .call_method0("circuit")
             .unwrap()
-            .bind(py)
             .extract()
             .unwrap();
         let readout_param: &CircuitWrapper = &CircuitWrapper {
@@ -188,11 +183,11 @@ fn test_pyo3_inputs_setstatevector() {
     let input_pragma = Operation::from(PragmaSetStateVector::new(statevector()));
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = convert_operation_to_pyobject(input_pragma).unwrap();
+        let operation = convert_operation_to_pyobject(input_pragma, py).unwrap();
 
-        let to_op: Py<PyAny> = operation.call_method0(py, "statevector").unwrap();
+        let to_op: Bound<PyAny> = operation.call_method0("statevector").unwrap();
 
-        let to_statevector_op: PyReadonlyArray1<Complex64> = to_op.bind(py).extract().unwrap();
+        let to_statevector_op: PyReadonlyArray1<Complex64> = to_op.extract().unwrap();
         let statevector_op: Array1<Complex64> = to_statevector_op.as_array().to_owned();
         assert_eq!(statevector_op, statevector());
     })
@@ -204,17 +199,12 @@ fn test_pyo3_inputs_setdensitymatrix() {
     let input_pragma = Operation::from(PragmaSetDensityMatrix::new(densitymatrix()));
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = convert_operation_to_pyobject(input_pragma).unwrap();
-        let to_operators_py = operation.call_method0(py, "density_matrix").unwrap();
+        let operation = convert_operation_to_pyobject(input_pragma, py).unwrap();
+        let to_operators_py = operation.call_method0("density_matrix").unwrap();
         let to_operators_op = to_operators_py
-            .bind(py)
-            .downcast::<PyArray2<Complex64>>()
+            .extract::<PyReadonlyArray2<Complex64>>()
             .unwrap();
-        let densmat_array = to_operators_op
-            .as_gil_ref()
-            .readonly()
-            .as_array()
-            .to_owned();
+        let densmat_array = to_operators_op.as_array().to_owned();
 
         assert_eq!(densmat_array, densitymatrix());
     })
@@ -226,12 +216,11 @@ fn test_pyo3_inputs_repeatgate() {
     let input_pragma = Operation::from(PragmaRepeatGate::new(3));
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = convert_operation_to_pyobject(input_pragma).unwrap();
+        let operation = convert_operation_to_pyobject(input_pragma, py).unwrap();
 
         let repeat_op: &usize = &operation
-            .call_method0(py, "repetition_coefficient")
+            .call_method0("repetition_coefficient")
             .unwrap()
-            .bind(py)
             .extract()
             .unwrap();
         assert_eq!(repeat_op, &3_usize);
@@ -249,33 +238,25 @@ fn test_pyo3_inputs_overrotation() {
     ));
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = convert_operation_to_pyobject(input_pragma).unwrap();
+        let operation = convert_operation_to_pyobject(input_pragma, py).unwrap();
 
         let string_op: &String = &operation
-            .call_method0(py, "gate_hqslang")
+            .call_method0("gate_hqslang")
             .unwrap()
-            .bind(py)
             .extract()
             .unwrap();
         assert_eq!(string_op, &"RotateX".to_string());
-        let qubits_op: &Vec<usize> = &operation
-            .call_method0(py, "qubits")
-            .unwrap()
-            .bind(py)
-            .extract()
-            .unwrap();
+        let qubits_op: &Vec<usize> = &operation.call_method0("qubits").unwrap().extract().unwrap();
         assert_eq!(qubits_op, &vec![0]);
         let amp_op: &f64 = &operation
-            .call_method0(py, "amplitude")
+            .call_method0("amplitude")
             .unwrap()
-            .bind(py)
             .extract()
             .unwrap();
         assert_eq!(amp_op, &0.03);
         let var_op: &f64 = &operation
-            .call_method0(py, "variance")
+            .call_method0("variance")
             .unwrap()
-            .bind(py)
             .extract()
             .unwrap();
         assert_eq!(var_op, &0.001);
@@ -288,12 +269,11 @@ fn test_pyo3_inputs_boostnoise() {
     let input_pragma = Operation::from(PragmaBoostNoise::new(CalculatorFloat::from(0.003)));
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = convert_operation_to_pyobject(input_pragma).unwrap();
+        let operation = convert_operation_to_pyobject(input_pragma, py).unwrap();
 
         let boost_op: &f64 = &operation
-            .call_method0(py, "noise_coefficient")
+            .call_method0("noise_coefficient")
             .unwrap()
-            .bind(py)
             .extract()
             .unwrap();
         assert_eq!(
@@ -312,21 +292,15 @@ fn test_pyo3_inputs_stop() {
     ));
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = convert_operation_to_pyobject(input_pragma).unwrap();
+        let operation = convert_operation_to_pyobject(input_pragma, py).unwrap();
 
-        let qubits_op: &Vec<usize> = &operation
-            .call_method0(py, "qubits")
-            .unwrap()
-            .bind(py)
-            .extract()
-            .unwrap();
+        let qubits_op: &Vec<usize> = &operation.call_method0("qubits").unwrap().extract().unwrap();
         let qubits_param: Vec<usize> = vec![0, 1];
         assert_eq!(qubits_op, &qubits_param);
 
         let boost_op: &f64 = &operation
-            .call_method0(py, "execution_time")
+            .call_method0("execution_time")
             .unwrap()
-            .bind(py)
             .extract()
             .unwrap();
         assert_eq!(
@@ -342,14 +316,9 @@ fn test_pyo3_inputs_globalphase() {
     let input_pragma = Operation::from(PragmaGlobalPhase::new(CalculatorFloat::from(0.05)));
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = convert_operation_to_pyobject(input_pragma).unwrap();
+        let operation = convert_operation_to_pyobject(input_pragma, py).unwrap();
 
-        let boost_op: &f64 = &operation
-            .call_method0(py, "phase")
-            .unwrap()
-            .bind(py)
-            .extract()
-            .unwrap();
+        let boost_op: &f64 = &operation.call_method0("phase").unwrap().extract().unwrap();
         assert_eq!(CalculatorFloat::from(boost_op), CalculatorFloat::from(0.05));
     })
 }
@@ -363,21 +332,15 @@ fn test_pyo3_inputs_sleep() {
     ));
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = convert_operation_to_pyobject(input_pragma).unwrap();
+        let operation = convert_operation_to_pyobject(input_pragma, py).unwrap();
 
-        let qubits_op: &Vec<usize> = &operation
-            .call_method0(py, "qubits")
-            .unwrap()
-            .bind(py)
-            .extract()
-            .unwrap();
+        let qubits_op: &Vec<usize> = &operation.call_method0("qubits").unwrap().extract().unwrap();
         let qubits_param: Vec<usize> = vec![0, 1];
         assert_eq!(qubits_op, &qubits_param);
 
         let boost_op: &f64 = &operation
-            .call_method0(py, "sleep_time")
+            .call_method0("sleep_time")
             .unwrap()
-            .bind(py)
             .extract()
             .unwrap();
         assert_eq!(
@@ -393,14 +356,9 @@ fn test_pyo3_inputs_activereset() {
     let input_pragma = Operation::from(PragmaActiveReset::new(0));
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = convert_operation_to_pyobject(input_pragma).unwrap();
+        let operation = convert_operation_to_pyobject(input_pragma, py).unwrap();
 
-        let qubit_op: &usize = &operation
-            .call_method0(py, "qubit")
-            .unwrap()
-            .bind(py)
-            .extract()
-            .unwrap();
+        let qubit_op: &usize = &operation.call_method0("qubit").unwrap().extract().unwrap();
         let qubit_param: &usize = &0_usize;
         assert_eq!(qubit_op, qubit_param);
     })
@@ -413,21 +371,15 @@ fn test_pyo3_inputs_startdecompblock() {
         Operation::from(PragmaStartDecompositionBlock::new(vec![0, 1], reordering()));
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = convert_operation_to_pyobject(input_pragma).unwrap();
+        let operation = convert_operation_to_pyobject(input_pragma, py).unwrap();
 
-        let qubits_op: &Vec<usize> = &operation
-            .call_method0(py, "qubits")
-            .unwrap()
-            .bind(py)
-            .extract()
-            .unwrap();
+        let qubits_op: &Vec<usize> = &operation.call_method0("qubits").unwrap().extract().unwrap();
         let qubits_param: Vec<usize> = vec![0, 1];
         assert_eq!(qubits_op, &qubits_param);
 
         let boost_op: HashMap<usize, usize> = operation
-            .call_method0(py, "reordering_dictionary")
+            .call_method0("reordering_dictionary")
             .unwrap()
-            .bind(py)
             .extract()
             .unwrap();
         assert_eq!(boost_op, reordering());
@@ -440,14 +392,9 @@ fn test_pyo3_inputs_stopdecompblock() {
     let input_pragma = Operation::from(PragmaStopDecompositionBlock::new(vec![0, 1]));
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = convert_operation_to_pyobject(input_pragma).unwrap();
+        let operation = convert_operation_to_pyobject(input_pragma, py).unwrap();
 
-        let qubits_op: &Vec<usize> = &operation
-            .call_method0(py, "qubits")
-            .unwrap()
-            .bind(py)
-            .extract()
-            .unwrap();
+        let qubits_op: &Vec<usize> = &operation.call_method0("qubits").unwrap().extract().unwrap();
         let qubits_param: Vec<usize> = vec![0, 1];
         assert_eq!(qubits_op, &qubits_param);
     })
@@ -460,21 +407,15 @@ fn test_pyo3_inputs_stopdecompblock() {
 fn test_pyo3_inputs_noise(input_pragma: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = convert_operation_to_pyobject(input_pragma).unwrap();
+        let operation = convert_operation_to_pyobject(input_pragma, py).unwrap();
 
-        let qubit_op: &usize = &operation
-            .call_method0(py, "qubit")
-            .unwrap()
-            .bind(py)
-            .extract()
-            .unwrap();
+        let qubit_op: &usize = &operation.call_method0("qubit").unwrap().extract().unwrap();
         let qubit_param: &usize = &0_usize;
         assert_eq!(qubit_op, qubit_param);
 
         let gate_time_op: &f64 = &operation
-            .call_method0(py, "gate_time")
+            .call_method0("gate_time")
             .unwrap()
-            .bind(py)
             .extract()
             .unwrap();
         assert_eq!(
@@ -482,12 +423,7 @@ fn test_pyo3_inputs_noise(input_pragma: Operation) {
             CalculatorFloat::from(0.005),
         );
 
-        let rate_op: &f64 = &operation
-            .call_method0(py, "rate")
-            .unwrap()
-            .bind(py)
-            .extract()
-            .unwrap();
+        let rate_op: &f64 = &operation.call_method0("rate").unwrap().extract().unwrap();
         assert_eq!(CalculatorFloat::from(rate_op), CalculatorFloat::from(0.02));
     })
 }
@@ -503,21 +439,15 @@ fn test_pyo3_inputs_randomnoise() {
     ));
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = convert_operation_to_pyobject(input_pragma).unwrap();
+        let operation = convert_operation_to_pyobject(input_pragma, py).unwrap();
 
-        let qubit_op: &usize = &operation
-            .call_method0(py, "qubit")
-            .unwrap()
-            .bind(py)
-            .extract()
-            .unwrap();
+        let qubit_op: &usize = &operation.call_method0("qubit").unwrap().extract().unwrap();
         let qubit_param: &usize = &0_usize;
         assert_eq!(qubit_op, qubit_param);
 
         let gate_time_op: &f64 = &operation
-            .call_method0(py, "gate_time")
+            .call_method0("gate_time")
             .unwrap()
-            .bind(py)
             .extract()
             .unwrap();
         assert_eq!(
@@ -526,9 +456,8 @@ fn test_pyo3_inputs_randomnoise() {
         );
 
         let depol_rate_op: &f64 = &operation
-            .call_method0(py, "depolarising_rate")
+            .call_method0("depolarising_rate")
             .unwrap()
-            .bind(py)
             .extract()
             .unwrap();
         assert_eq!(
@@ -537,9 +466,8 @@ fn test_pyo3_inputs_randomnoise() {
         );
 
         let dephas_rate_op: &f64 = &operation
-            .call_method0(py, "dephasing_rate")
+            .call_method0("dephasing_rate")
             .unwrap()
-            .bind(py)
             .extract()
             .unwrap();
         assert_eq!(
@@ -559,21 +487,15 @@ fn test_pyo3_inputs_generalnoise() {
     ));
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = convert_operation_to_pyobject(input_pragma).unwrap();
+        let operation = convert_operation_to_pyobject(input_pragma, py).unwrap();
 
-        let qubit_op: &usize = &operation
-            .call_method0(py, "qubit")
-            .unwrap()
-            .bind(py)
-            .extract()
-            .unwrap();
+        let qubit_op: &usize = &operation.call_method0("qubit").unwrap().extract().unwrap();
         let qubit_param: &usize = &0_usize;
         assert_eq!(qubit_op, qubit_param);
 
         let gate_time_op: &f64 = &operation
-            .call_method0(py, "gate_time")
+            .call_method0("gate_time")
             .unwrap()
-            .bind(py)
             .extract()
             .unwrap();
         assert_eq!(
@@ -581,16 +503,9 @@ fn test_pyo3_inputs_generalnoise() {
             CalculatorFloat::from(0.005),
         );
 
-        let to_operators_py = operation.call_method0(py, "rates").unwrap();
-        let to_operators_op = to_operators_py
-            .bind(py)
-            .downcast::<PyArray2<f64>>()
-            .unwrap();
-        let operators_op = to_operators_op
-            .as_gil_ref()
-            .readonly()
-            .as_array()
-            .to_owned();
+        let to_operators_py = operation.call_method0("rates").unwrap();
+        let to_operators_op = to_operators_py.extract::<PyReadonlyArray2<f64>>().unwrap();
+        let operators_op = to_operators_op.as_array().to_owned();
         assert_eq!(operators_op, operators());
     })
 }
@@ -605,29 +520,27 @@ fn test_pyo3_inputs_conditional() {
     ));
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = convert_operation_to_pyobject(input_pragma).unwrap();
+        let operation = convert_operation_to_pyobject(input_pragma, py).unwrap();
 
         let condition_register_op: &String = &operation
-            .call_method0(py, "condition_register")
+            .call_method0("condition_register")
             .unwrap()
-            .bind(py)
             .extract()
             .unwrap();
         let condition_register_param: &String = &String::from("ro");
         assert_eq!(condition_register_op, condition_register_param);
 
         let condition_index_op: &usize = &operation
-            .call_method0(py, "condition_index")
+            .call_method0("condition_index")
             .unwrap()
-            .bind(py)
             .extract()
             .unwrap();
         assert_eq!(condition_index_op, &1_usize);
 
-        let to_circuit = operation.call_method0(py, "circuit").unwrap();
-        let circuit_op = to_circuit.bind(py);
+        let to_circuit = operation.call_method0("circuit").unwrap();
+        let circuit_op = to_circuit;
         let circuit = new_circuit(py);
-        let paulix = convert_operation_to_pyobject(Operation::from(PauliX::new(0))).unwrap();
+        let paulix = convert_operation_to_pyobject(Operation::from(PauliX::new(0)), py).unwrap();
         circuit.call_method1("add", (paulix,)).unwrap();
         let comparison_circuit =
             bool::extract_bound(&circuit_op.call_method1("__eq__", (circuit,)).unwrap()).unwrap();
@@ -641,20 +554,19 @@ fn test_pyo3_inputs_controlled_circuit() {
     let input_pragma = Operation::from(PragmaControlledCircuit::new(1, create_circuit()));
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = convert_operation_to_pyobject(input_pragma).unwrap();
+        let operation = convert_operation_to_pyobject(input_pragma, py).unwrap();
 
         let condition_index_op: &usize = &operation
-            .call_method0(py, "controlling_qubit")
+            .call_method0("controlling_qubit")
             .unwrap()
-            .bind(py)
             .extract()
             .unwrap();
         assert_eq!(condition_index_op, &1_usize);
 
-        let to_circuit = operation.call_method0(py, "circuit").unwrap();
-        let circuit_op = to_circuit.bind(py);
+        let to_circuit = operation.call_method0("circuit").unwrap();
+        let circuit_op = to_circuit;
         let circuit = new_circuit(py);
-        let paulix = convert_operation_to_pyobject(Operation::from(PauliX::new(0))).unwrap();
+        let paulix = convert_operation_to_pyobject(Operation::from(PauliX::new(0)), py).unwrap();
         circuit.call_method1("add", (paulix,)).unwrap();
         let comparison_circuit =
             bool::extract_bound(&circuit_op.call_method1("__eq__", (circuit,)).unwrap()).unwrap();
@@ -670,15 +582,15 @@ fn test_pyo3_inputs_annotated_op() {
         Operation::from(PragmaAnnotatedOp::new(input_op.clone(), "test".to_string()));
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = convert_operation_to_pyobject(input_pragma).unwrap();
+        let operation = convert_operation_to_pyobject(input_pragma, py).unwrap();
 
-        let op = operation.call_method0(py, "operation").unwrap();
-        let op_ref = op.bind(py);
+        let op = operation.call_method0("operation").unwrap();
+        let op_ref = op;
         let comparison_op = bool::extract_bound(
             &op_ref
                 .call_method1(
                     "__eq__",
-                    (convert_operation_to_pyobject(input_op.clone()).unwrap(),),
+                    (convert_operation_to_pyobject(input_op.clone(), py).unwrap(),),
                 )
                 .unwrap(),
         )
@@ -686,9 +598,8 @@ fn test_pyo3_inputs_annotated_op() {
         assert!(comparison_op);
 
         let annotation: String = operation
-            .call_method0(py, "annotation")
+            .call_method0("annotation")
             .unwrap()
-            .bind(py)
             .extract()
             .unwrap();
         assert_eq!(annotation, "test".to_string());
@@ -704,9 +615,9 @@ fn test_pyo3_inputs_annotated_op() {
 fn test_pyo3_involved_qubits_none(input_definition: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = convert_operation_to_pyobject(input_definition).unwrap();
-        let to_involved = operation.call_method0(py, "involved_qubits").unwrap();
-        let involved_op: HashSet<usize> = to_involved.bind(py).extract().unwrap();
+        let operation = convert_operation_to_pyobject(input_definition, py).unwrap();
+        let to_involved = operation.call_method0("involved_qubits").unwrap();
+        let involved_op: HashSet<usize> = to_involved.extract().unwrap();
         let involved_param: HashSet<usize> = HashSet::new();
         assert_eq!(involved_op, involved_param);
     })
@@ -720,9 +631,9 @@ fn test_pyo3_involved_qubits_none(input_definition: Operation) {
 fn test_pyo3_involved_qubits_all(input_definition: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = convert_operation_to_pyobject(input_definition).unwrap();
-        let to_involved = operation.call_method0(py, "involved_qubits").unwrap();
-        let involved_op: HashSet<String> = to_involved.bind(py).extract().unwrap();
+        let operation = convert_operation_to_pyobject(input_definition, py).unwrap();
+        let to_involved = operation.call_method0("involved_qubits").unwrap();
+        let involved_op: HashSet<String> = to_involved.extract().unwrap();
         let mut involved_param: HashSet<String> = HashSet::new();
         involved_param.insert("All".to_owned());
         assert_eq!(involved_op, involved_param);
@@ -746,9 +657,9 @@ fn test_pyo3_involved_qubits_all(input_definition: Operation) {
 fn test_pyo3_involved_qubits_qubit(input_definition: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = convert_operation_to_pyobject(input_definition).unwrap();
-        let to_involved = operation.call_method0(py, "involved_qubits").unwrap();
-        let involved_op: HashSet<usize> = to_involved.bind(py).extract().unwrap();
+        let operation = convert_operation_to_pyobject(input_definition, py).unwrap();
+        let to_involved = operation.call_method0("involved_qubits").unwrap();
+        let involved_op: HashSet<usize> = to_involved.extract().unwrap();
         let mut involved_param: HashSet<usize> = HashSet::new();
         involved_param.insert(0);
         assert_eq!(involved_op, involved_param);
@@ -759,9 +670,9 @@ fn test_pyo3_involved_qubits_qubit(input_definition: Operation) {
 fn test_pyo3_involved_qubits_qubit_overrotation(input_definition: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = convert_operation_to_pyobject(input_definition).unwrap();
-        let to_involved = operation.call_method0(py, "involved_qubits").unwrap();
-        let involved_op: HashSet<usize> = to_involved.bind(py).extract().unwrap();
+        let operation = convert_operation_to_pyobject(input_definition, py).unwrap();
+        let to_involved = operation.call_method0("involved_qubits").unwrap();
+        let involved_op: HashSet<usize> = to_involved.extract().unwrap();
         let mut involved_param: HashSet<usize> = HashSet::new();
         involved_param.insert(0);
         assert_eq!(involved_op, involved_param);
@@ -812,11 +723,11 @@ fn test_pyo3_involved_qubits_qubit_overrotation(input_definition: Operation) {
 fn test_pyo3_format_repr(input_measurement: Operation, format_repr: &str) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = convert_operation_to_pyobject(input_measurement).unwrap();
-        let to_format = operation.call_method1(py, "__format__", ("",)).unwrap();
-        let format_op: String = to_format.bind(py).extract().unwrap();
-        let to_repr = operation.call_method0(py, "__repr__").unwrap();
-        let repr_op: String = to_repr.bind(py).extract().unwrap();
+        let operation = convert_operation_to_pyobject(input_measurement, py).unwrap();
+        let to_format = operation.call_method1("__format__", ("",)).unwrap();
+        let format_op: String = to_format.extract().unwrap();
+        let to_repr = operation.call_method0("__repr__").unwrap();
+        let repr_op: String = to_repr.extract().unwrap();
         assert_eq!(format_op, format_repr);
         assert_eq!(repr_op, format_repr);
     })
@@ -827,11 +738,11 @@ fn test_pyo3_format_repr(input_measurement: Operation, format_repr: &str) {
 fn test_pyo3_format_repr_overrotation(input_measurement: Operation, format_repr: &str) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = convert_operation_to_pyobject(input_measurement).unwrap();
-        let to_format = operation.call_method1(py, "__format__", ("",)).unwrap();
-        let format_op: String = to_format.bind(py).extract().unwrap();
-        let to_repr = operation.call_method0(py, "__repr__").unwrap();
-        let repr_op: String = to_repr.bind(py).extract().unwrap();
+        let operation = convert_operation_to_pyobject(input_measurement, py).unwrap();
+        let to_format = operation.call_method1("__format__", ("",)).unwrap();
+        let format_op: String = to_format.extract().unwrap();
+        let to_repr = operation.call_method0("__repr__").unwrap();
+        let repr_op: String = to_repr.extract().unwrap();
         assert_eq!(format_op, format_repr);
         assert_eq!(repr_op, format_repr);
     })
@@ -861,14 +772,13 @@ fn test_pyo3_format_repr_overrotation(input_measurement: Operation, format_repr:
 fn test_pyo3_copy_deepcopy(input_measurement: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = convert_operation_to_pyobject(input_measurement).unwrap();
-        let copy_op = operation.call_method0(py, "__copy__").unwrap();
-        let deepcopy_op = operation.call_method1(py, "__deepcopy__", ("",)).unwrap();
+        let operation = convert_operation_to_pyobject(input_measurement, py).unwrap();
+        let copy_op = operation.call_method0("__copy__").unwrap();
+        let deepcopy_op = operation.call_method1("__deepcopy__", ("",)).unwrap();
         let copy_deepcopy_param = operation;
 
         let comparison_copy = bool::extract_bound(
             &copy_op
-                .bind(py)
                 .call_method1("__eq__", (copy_deepcopy_param.clone(),))
                 .unwrap(),
         )
@@ -876,7 +786,6 @@ fn test_pyo3_copy_deepcopy(input_measurement: Operation) {
         assert!(comparison_copy);
         let comparison_deepcopy = bool::extract_bound(
             &deepcopy_op
-                .bind(py)
                 .call_method1("__eq__", (copy_deepcopy_param,))
                 .unwrap(),
         )
@@ -889,42 +798,40 @@ fn test_pyo3_copy_deepcopy(input_measurement: Operation) {
 fn test_pyo3_copy_deepcopy_overrotation() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = convert_operation_to_pyobject(Operation::from(PragmaOverrotation::new(
-            "RotateX".to_string(),
-            vec![0],
-            0.03,
-            0.001,
-        )))
+        let operation = convert_operation_to_pyobject(
+            Operation::from(PragmaOverrotation::new(
+                "RotateX".to_string(),
+                vec![0],
+                0.03,
+                0.001,
+            )),
+            py,
+        )
         .unwrap();
-        let copy_op = operation.call_method0(py, "__copy__").unwrap();
-        let deepcopy_op = operation.call_method1(py, "__deepcopy__", ("",)).unwrap();
+        let copy_op = operation.call_method0("__copy__").unwrap();
+        let deepcopy_op = operation.call_method1("__deepcopy__", ("",)).unwrap();
 
-        let extracted_copy: PragmaOverrotationWrapper = copy_op.bind(py).extract().unwrap();
+        let extracted_copy: PragmaOverrotationWrapper = copy_op.extract().unwrap();
         assert_eq!(
             extracted_copy.internal,
             PragmaOverrotation::new("RotateX".to_string(), vec![0], 0.03, 0.001)
         );
         let comparison_copy = bool::extract_bound(
             &copy_op
-                .bind(py)
                 .call_method1("__eq__", (operation.clone(),))
                 .unwrap(),
         )
         .unwrap();
         assert!(comparison_copy);
 
-        let extracted_copy: PragmaOverrotationWrapper = copy_op.bind(py).extract().unwrap();
+        let extracted_copy: PragmaOverrotationWrapper = copy_op.extract().unwrap();
         assert_eq!(
             extracted_copy.internal,
             PragmaOverrotation::new("RotateX".to_string(), vec![0], 0.03, 0.001)
         );
-        let comparison_deepcopy = bool::extract_bound(
-            &deepcopy_op
-                .bind(py)
-                .call_method1("__eq__", (operation,))
-                .unwrap(),
-        )
-        .unwrap();
+        let comparison_deepcopy =
+            bool::extract_bound(&deepcopy_op.call_method1("__eq__", (operation,)).unwrap())
+                .unwrap();
         assert!(comparison_deepcopy);
     })
 }
@@ -941,9 +848,9 @@ fn test_pyo3_copy_deepcopy_overrotation() {
 fn test_pyo3_tags_simple(input_measurement: Operation, tag_name: &str) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = convert_operation_to_pyobject(input_measurement).unwrap();
-        let to_tag = operation.call_method0(py, "tags").unwrap();
-        let tags_op: &Vec<String> = &to_tag.bind(py).extract().unwrap();
+        let operation = convert_operation_to_pyobject(input_measurement, py).unwrap();
+        let to_tag = operation.call_method0("tags").unwrap();
+        let tags_op: &Vec<String> = &to_tag.extract().unwrap();
         let tags_param: &[&str] = &["Operation", "PragmaOperation", tag_name];
         assert_eq!(tags_op, tags_param);
     })
@@ -957,9 +864,9 @@ fn test_pyo3_tags_simple(input_measurement: Operation, tag_name: &str) {
 fn test_pyo3_tags_multi(input_measurement: Operation, tag_name: &str) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = convert_operation_to_pyobject(input_measurement).unwrap();
-        let to_tag = operation.call_method0(py, "tags").unwrap();
-        let tags_op: &Vec<String> = &to_tag.bind(py).extract().unwrap();
+        let operation = convert_operation_to_pyobject(input_measurement, py).unwrap();
+        let to_tag = operation.call_method0("tags").unwrap();
+        let tags_op: &Vec<String> = &to_tag.extract().unwrap();
         let tags_param: &[&str] = &[
             "Operation",
             "MultiQubitOperation",
@@ -974,9 +881,9 @@ fn test_pyo3_tags_multi(input_measurement: Operation, tag_name: &str) {
 fn test_pyo3_tags_multi_overrotation(input_measurement: Operation, tag_name: &str) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = convert_operation_to_pyobject(input_measurement).unwrap();
-        let to_tag = operation.call_method0(py, "tags").unwrap();
-        let tags_op: &Vec<String> = &to_tag.bind(py).extract().unwrap();
+        let operation = convert_operation_to_pyobject(input_measurement, py).unwrap();
+        let to_tag = operation.call_method0("tags").unwrap();
+        let tags_op: &Vec<String> = &to_tag.extract().unwrap();
         let tags_param: &[&str] = &[
             "Operation",
             "MultiQubitOperation",
@@ -992,9 +899,9 @@ fn test_pyo3_tags_multi_overrotation(input_measurement: Operation, tag_name: &st
 fn test_pyo3_tags_single(input_measurement: Operation, tag_name: &str) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = convert_operation_to_pyobject(input_measurement).unwrap();
-        let to_tag = operation.call_method0(py, "tags").unwrap();
-        let tags_op: &Vec<String> = &to_tag.bind(py).extract().unwrap();
+        let operation = convert_operation_to_pyobject(input_measurement, py).unwrap();
+        let to_tag = operation.call_method0("tags").unwrap();
+        let tags_op: &Vec<String> = &to_tag.extract().unwrap();
         let tags_param: &[&str] = &[
             "Operation",
             "SingleQubitOperation",
@@ -1011,9 +918,9 @@ fn test_pyo3_tags_single(input_measurement: Operation, tag_name: &str) {
 fn test_pyo3_tags_conditional(input_measurement: Operation, tag_name: &str) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = convert_operation_to_pyobject(input_measurement).unwrap();
-        let to_tag = operation.call_method0(py, "tags").unwrap();
-        let tags_op: &Vec<String> = &to_tag.bind(py).extract().unwrap();
+        let operation = convert_operation_to_pyobject(input_measurement, py).unwrap();
+        let to_tag = operation.call_method0("tags").unwrap();
+        let tags_op: &Vec<String> = &to_tag.extract().unwrap();
         let tags_param: &[&str] = &["Operation", "PragmaOperation", tag_name];
         assert_eq!(tags_op, tags_param);
     })
@@ -1024,9 +931,9 @@ fn test_pyo3_tags_conditional(input_measurement: Operation, tag_name: &str) {
 fn test_pyo3_tags_general_noise(input_measurement: Operation, tag_name: &str) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = convert_operation_to_pyobject(input_measurement).unwrap();
-        let to_tag = operation.call_method0(py, "tags").unwrap();
-        let tags_op: &Vec<String> = &to_tag.bind(py).extract().unwrap();
+        let operation = convert_operation_to_pyobject(input_measurement, py).unwrap();
+        let to_tag = operation.call_method0("tags").unwrap();
+        let tags_op: &Vec<String> = &to_tag.extract().unwrap();
         let tags_param: &[&str] = &[
             "Operation",
             "SingleQubitOperation",
@@ -1046,9 +953,9 @@ fn test_pyo3_tags_general_noise(input_measurement: Operation, tag_name: &str) {
 fn test_pyo3_tags_noise(input_measurement: Operation, tag_name: &str) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = convert_operation_to_pyobject(input_measurement).unwrap();
-        let to_tag = operation.call_method0(py, "tags").unwrap();
-        let tags_op: &Vec<String> = &to_tag.bind(py).extract().unwrap();
+        let operation = convert_operation_to_pyobject(input_measurement, py).unwrap();
+        let to_tag = operation.call_method0("tags").unwrap();
+        let tags_op: &Vec<String> = &to_tag.extract().unwrap();
         let tags_param: &[&str] = &[
             "Operation",
             "SingleQubitOperation",
@@ -1085,11 +992,10 @@ fn test_pyo3_tags_noise(input_measurement: Operation, tag_name: &str) {
 fn test_pyo3_hqslang(input_measurement: Operation, hqslang_param: &str) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = convert_operation_to_pyobject(input_measurement).unwrap();
+        let operation = convert_operation_to_pyobject(input_measurement, py).unwrap();
         let hqslang_op: String = operation
-            .call_method0(py, "hqslang")
+            .call_method0("hqslang")
             .unwrap()
-            .bind(py)
             .extract()
             .unwrap();
         assert_eq!(hqslang_op, hqslang_param.to_string());
@@ -1100,11 +1006,10 @@ fn test_pyo3_hqslang(input_measurement: Operation, hqslang_param: &str) {
 fn test_pyo3_hqslang_overrotation(input_measurement: Operation, hqslang_param: &str) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = convert_operation_to_pyobject(input_measurement).unwrap();
+        let operation = convert_operation_to_pyobject(input_measurement, py).unwrap();
         let hqslang_op: String = operation
-            .call_method0(py, "hqslang")
+            .call_method0("hqslang")
             .unwrap()
-            .bind(py)
             .extract()
             .unwrap();
         assert_eq!(hqslang_op, hqslang_param.to_string());
@@ -1135,11 +1040,10 @@ fn test_pyo3_hqslang_overrotation(input_measurement: Operation, hqslang_param: &
 fn test_pyo3_is_parametrized_false(input_pragma: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = convert_operation_to_pyobject(input_pragma).unwrap();
+        let operation = convert_operation_to_pyobject(input_pragma, py).unwrap();
         assert!(!operation
-            .call_method0(py, "is_parametrized")
+            .call_method0("is_parametrized")
             .unwrap()
-            .bind(py)
             .extract::<bool>()
             .unwrap());
     })
@@ -1150,11 +1054,10 @@ fn test_pyo3_is_parametrized_false(input_pragma: Operation) {
 fn test_pyo3_is_parametrized_true(input_pragma: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = convert_operation_to_pyobject(input_pragma).unwrap();
+        let operation = convert_operation_to_pyobject(input_pragma, py).unwrap();
         assert!(operation
-            .call_method0(py, "is_parametrized")
+            .call_method0("is_parametrized")
             .unwrap()
-            .bind(py)
             .extract::<bool>()
             .unwrap());
     })
@@ -1164,11 +1067,10 @@ fn test_pyo3_is_parametrized_true(input_pragma: Operation) {
 fn test_pyo3_is_parametrized_overrotation(input_measurement: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = convert_operation_to_pyobject(input_measurement).unwrap();
+        let operation = convert_operation_to_pyobject(input_measurement, py).unwrap();
         assert!(!operation
-            .call_method0(py, "is_parametrized")
+            .call_method0("is_parametrized")
             .unwrap()
-            .bind(py)
             .extract::<bool>()
             .unwrap());
     })
@@ -1238,17 +1140,16 @@ fn test_pyo3_is_parametrized_overrotation(input_measurement: Operation) {
 fn test_pyo3_substitute_parameters(first_op: Operation, second_op: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = convert_operation_to_pyobject(first_op).unwrap();
+        let operation = convert_operation_to_pyobject(first_op, py).unwrap();
         let mut substitution_dict: HashMap<String, f64> = HashMap::new();
         substitution_dict.insert("test".to_owned(), 1.0);
         let substitute_op = operation
-            .call_method1(py, "substitute_parameters", (substitution_dict,))
+            .call_method1("substitute_parameters", (substitution_dict,))
             .unwrap();
-        let substitute_param = convert_operation_to_pyobject(second_op).unwrap();
+        let substitute_param = convert_operation_to_pyobject(second_op, py).unwrap();
 
         let comparison = bool::extract_bound(
             &substitute_op
-                .bind(py)
                 .call_method1("__eq__", (substitute_param,))
                 .unwrap(),
         )
@@ -1261,28 +1162,30 @@ fn test_pyo3_substitute_parameters(first_op: Operation, second_op: Operation) {
 fn test_pyo3_substitute_parameters_overrotation() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = convert_operation_to_pyobject(Operation::from(PragmaOverrotation::new(
-            "RotateX".to_string(),
-            vec![0],
-            0.03,
-            0.001,
-        )))
+        let operation = convert_operation_to_pyobject(
+            Operation::from(PragmaOverrotation::new(
+                "RotateX".to_string(),
+                vec![0],
+                0.03,
+                0.001,
+            )),
+            py,
+        )
         .unwrap();
 
         let mut substitution_dict: HashMap<String, f64> = HashMap::new();
         substitution_dict.insert("test".to_owned(), 1.0);
         let substitute_op = operation
-            .call_method1(py, "substitute_parameters", (substitution_dict,))
+            .call_method1("substitute_parameters", (substitution_dict,))
             .unwrap();
 
-        let extracted: PragmaOverrotationWrapper = substitute_op.bind(py).extract().unwrap();
+        let extracted: PragmaOverrotationWrapper = substitute_op.extract().unwrap();
         assert_eq!(
             extracted.internal,
             PragmaOverrotation::new("RotateX".to_string(), vec![0], 0.03, 0.001)
         );
 
         let comparison = substitute_op
-            .bind(py)
             .call_method1("__eq__", (operation,))
             .unwrap()
             .extract::<bool>()
@@ -1320,9 +1223,9 @@ fn test_pyo3_substitute_parameters_overrotation() {
 fn test_pyo3_substitute_params_error(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = convert_operation_to_pyobject(input_operation).unwrap();
+        let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
         let substitution_dict: HashMap<String, f64> = HashMap::new();
-        let result = operation.call_method1(py, "substitute_parameters", (substitution_dict,));
+        let result = operation.call_method1("substitute_parameters", (substitution_dict,));
         assert!(result.is_err());
     })
 }
@@ -1341,10 +1244,10 @@ fn test_pyo3_substitute_params_error(input_operation: Operation) {
 fn test_pyo3_substituteparameters_error(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = convert_operation_to_pyobject(input_operation).unwrap();
+        let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
         let mut substitution_dict: HashMap<&str, &str> = HashMap::new();
         substitution_dict.insert("ro", "test");
-        let result = operation.call_method1(py, "substitute_parameters", (substitution_dict,));
+        let result = operation.call_method1("substitute_parameters", (substitution_dict,));
         assert!(result.is_err());
     })
 }
@@ -1413,17 +1316,16 @@ fn test_pyo3_substituteparameters_error(input_operation: Operation) {
 fn test_pyo3_remap_qubits(first_op: Operation, second_op: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = convert_operation_to_pyobject(first_op).unwrap();
+        let operation = convert_operation_to_pyobject(first_op, py).unwrap();
 
         let remapped_op = operation
-            .call_method1(py, "remap_qubits", (qubit_remapping(),))
+            .call_method1("remap_qubits", (qubit_remapping(),))
             .unwrap();
-        let comparison_op = convert_operation_to_pyobject(second_op).unwrap();
+        let comparison_op = convert_operation_to_pyobject(second_op, py).unwrap();
 
         let comparison = remapped_op
-            .call_method1(py, "__eq__", (comparison_op,))
+            .call_method1("__eq__", (comparison_op,))
             .unwrap()
-            .bind(py)
             .extract::<bool>()
             .unwrap();
         assert!(comparison);
@@ -1434,29 +1336,37 @@ fn test_pyo3_remap_qubits(first_op: Operation, second_op: Operation) {
 fn test_pyo3_remap_qubits_overrotation() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = convert_operation_to_pyobject(Operation::from(PragmaOverrotation::new(
-            "RotateX".to_string(),
-            vec![0],
-            0.03,
-            0.001,
-        )))
+        let operation = convert_operation_to_pyobject(
+            Operation::from(PragmaOverrotation::new(
+                "RotateX".to_string(),
+                vec![0],
+                0.03,
+                0.001,
+            )),
+            py,
+        )
         .unwrap();
 
         let remapped_op = operation
-            .call_method1(py, "remap_qubits", (qubit_remapping(),))
+            .call_method1("remap_qubits", (qubit_remapping(),))
             .unwrap();
-        let extracted: PragmaOverrotationWrapper = remapped_op.bind(py).extract().unwrap();
+        let extracted: PragmaOverrotationWrapper = remapped_op.extract().unwrap();
         assert_eq!(
             extracted.internal,
             PragmaOverrotation::new("RotateX".to_string(), vec![2], 0.03, 0.001)
         );
 
-        let operation_two = convert_operation_to_pyobject(Operation::from(
-            PragmaOverrotation::new("RotateX".to_string(), vec![2], 0.03, 0.001),
-        ))
+        let operation_two = convert_operation_to_pyobject(
+            Operation::from(PragmaOverrotation::new(
+                "RotateX".to_string(),
+                vec![2],
+                0.03,
+                0.001,
+            )),
+            py,
+        )
         .unwrap();
         let comparison = remapped_op
-            .bind(py)
             .call_method1("__eq__", (operation_two,))
             .unwrap()
             .extract::<bool>()
@@ -1465,7 +1375,7 @@ fn test_pyo3_remap_qubits_overrotation() {
 
         let mut qubit_mapping: HashMap<usize, usize> = HashMap::new();
         qubit_mapping.insert(2, 0);
-        let result = operation.call_method1(py, "remap_qubits", (qubit_mapping,));
+        let result = operation.call_method1("remap_qubits", (qubit_mapping,));
         assert!(result.is_err());
     })
 }
@@ -1478,7 +1388,7 @@ fn test_pyo3_noise_superoperator_damping() {
     let noise_pragma = Operation::from(pragma_op.clone());
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = convert_operation_to_pyobject(noise_pragma).unwrap();
+        let operation = convert_operation_to_pyobject(noise_pragma, py).unwrap();
 
         let superop_prob: f64 = f64::try_from(pragma_op.probability()).unwrap();
         let superop_sqrt: f64 = (1.0 - superop_prob).sqrt();
@@ -1489,12 +1399,10 @@ fn test_pyo3_noise_superoperator_damping() {
             [0.0, 0.0, 0.0, 1.0 - superop_prob],
         ]);
 
-        let to_superop_op = operation.call_method0(py, "superoperator").unwrap();
+        let to_superop_op = operation.call_method0("superoperator").unwrap();
         let superop_op = to_superop_op
-            .downcast_bound::<PyArray2<f64>>(py)
+            .extract::<PyReadonlyArray2<f64>>()
             .unwrap()
-            .as_gil_ref()
-            .readonly()
             .as_array()
             .to_owned();
         assert_eq!(superop_op, superop_param);
@@ -1511,7 +1419,7 @@ fn test_pyo3_noise_superoperator_depolarising() {
     ));
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = convert_operation_to_pyobject(noise_pragma).unwrap();
+        let operation = convert_operation_to_pyobject(noise_pragma, py).unwrap();
 
         let superop_pre_exp: f64 = -1.0 * 0.005 * 0.02;
         let superop_prob: f64 = 0.75 * (1.0 - superop_pre_exp.exp());
@@ -1525,12 +1433,10 @@ fn test_pyo3_noise_superoperator_depolarising() {
             [superop_proba3, 0.0, 0.0, superop_proba1],
         ]);
 
-        let to_superop_op = operation.call_method0(py, "superoperator").unwrap();
+        let to_superop_op = operation.call_method0("superoperator").unwrap();
         let superop_op = to_superop_op
-            .downcast_bound::<PyArray2<f64>>(py)
+            .extract::<PyReadonlyArray2<f64>>()
             .unwrap()
-            .as_gil_ref()
-            .readonly()
             .as_array()
             .to_owned();
 
@@ -1548,7 +1454,7 @@ fn test_pyo3_noise_superoperator_dephasing() {
     ));
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = convert_operation_to_pyobject(noise_pragma).unwrap();
+        let operation = convert_operation_to_pyobject(noise_pragma, py).unwrap();
 
         let superop_pre_exp: f64 = -2.0 * 0.005 * 0.02;
         let superop_prob: f64 = 0.5 * (1.0 - superop_pre_exp.exp());
@@ -1560,12 +1466,10 @@ fn test_pyo3_noise_superoperator_dephasing() {
             [0.0, 0.0, 0.0, 1.0],
         ]);
 
-        let to_superop_op = operation.call_method0(py, "superoperator").unwrap();
+        let to_superop_op = operation.call_method0("superoperator").unwrap();
         let superop_op = to_superop_op
-            .downcast_bound::<PyArray2<f64>>(py)
+            .extract::<PyReadonlyArray2<f64>>()
             .unwrap()
-            .as_gil_ref()
-            .readonly()
             .as_array()
             .to_owned();
 
@@ -1584,7 +1488,7 @@ fn test_pyo3_noise_superoperator_randomnoise() {
     ));
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = convert_operation_to_pyobject(noise_pragma).unwrap();
+        let operation = convert_operation_to_pyobject(noise_pragma, py).unwrap();
 
         let superop_pre_exp: f64 = -2.0 * 0.005 * 0.01;
         let superop_prob: f64 = 0.5 * (1.0 - superop_pre_exp.exp());
@@ -1596,12 +1500,10 @@ fn test_pyo3_noise_superoperator_randomnoise() {
             [0.0, 0.0, 0.0, 1.0],
         ]);
 
-        let to_superop_op = operation.call_method0(py, "superoperator").unwrap();
+        let to_superop_op = operation.call_method0("superoperator").unwrap();
         let superop_op = to_superop_op
-            .downcast_bound::<PyArray2<f64>>(py)
+            .extract::<PyReadonlyArray2<f64>>()
             .unwrap()
-            .as_gil_ref()
-            .readonly()
             .as_array()
             .to_owned();
         assert_eq!(superop_op, superop_param);
@@ -1616,12 +1518,11 @@ fn test_pyo3_noise_superoperator_randomnoise() {
 fn test_pyo3_noise_proba(noise_pragma: Operation, proba: f64) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = convert_operation_to_pyobject(noise_pragma).unwrap();
+        let operation = convert_operation_to_pyobject(noise_pragma, py).unwrap();
 
         let gate_time_op: &f64 = &operation
-            .call_method0(py, "probability")
+            .call_method0("probability")
             .unwrap()
-            .bind(py)
             .extract()
             .unwrap();
         assert_eq!(
@@ -1647,16 +1548,15 @@ fn test_pyo3_noise_proba(noise_pragma: Operation, proba: f64) {
 fn test_pyo3_noise_powercf(first_op: Operation, second_op: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = convert_operation_to_pyobject(first_op).unwrap();
+        let operation = convert_operation_to_pyobject(first_op, py).unwrap();
 
         let power = convert_cf_to_pyobject(py, CalculatorFloat::from(1.5));
-        let comparison_op = convert_operation_to_pyobject(second_op).unwrap();
+        let comparison_op = convert_operation_to_pyobject(second_op, py).unwrap();
 
-        let remapped_op = operation.call_method1(py, "powercf", (power,)).unwrap();
+        let remapped_op = operation.call_method1("powercf", (power,)).unwrap();
         let comparison = &remapped_op
-            .call_method1(py, "__eq__", (comparison_op,))
+            .call_method1("__eq__", (comparison_op,))
             .unwrap()
-            .bind(py)
             .extract::<bool>()
             .unwrap();
         assert!(comparison);
@@ -1727,12 +1627,11 @@ fn test_pyo3_noise_powercf(first_op: Operation, second_op: Operation) {
 fn test_pyo3_richcmp(definition_1: Operation, definition_2: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation_one = convert_operation_to_pyobject(definition_1).unwrap();
-        let operation_two = convert_operation_to_pyobject(definition_2).unwrap();
+        let operation_one = convert_operation_to_pyobject(definition_1, py).unwrap();
+        let operation_two = convert_operation_to_pyobject(definition_2, py).unwrap();
 
         let comparison = bool::extract_bound(
             &operation_one
-                .bind(py)
                 .call_method1("__eq__", (operation_two.clone(),))
                 .unwrap(),
         )
@@ -1741,17 +1640,16 @@ fn test_pyo3_richcmp(definition_1: Operation, definition_2: Operation) {
 
         let comparison = bool::extract_bound(
             &operation_one
-                .bind(py)
                 .call_method1("__ne__", (operation_two.clone(),))
                 .unwrap(),
         )
         .unwrap();
         assert!(comparison);
 
-        let comparison = operation_one.call_method1(py, "__eq__", (vec!["fails"],));
+        let comparison = operation_one.call_method1("__eq__", (vec!["fails"],));
         assert!(comparison.is_err());
 
-        let comparison = operation_one.call_method1(py, "__ge__", (operation_two,));
+        let comparison = operation_one.call_method1("__ge__", (operation_two,));
         assert!(comparison.is_err());
     })
 }
@@ -1760,16 +1658,28 @@ fn test_pyo3_richcmp(definition_1: Operation, definition_2: Operation) {
 fn test_pyo3_richcmp_overrotation() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation_one = convert_operation_to_pyobject(Operation::from(
-            PragmaOverrotation::new("RotateX".to_string(), vec![0], 0.03, 0.001),
-        ))
+        let operation_one = convert_operation_to_pyobject(
+            Operation::from(PragmaOverrotation::new(
+                "RotateX".to_string(),
+                vec![0],
+                0.03,
+                0.001,
+            )),
+            py,
+        )
         .unwrap();
-        let operation_two = convert_operation_to_pyobject(Operation::from(
-            PragmaOverrotation::new("RotateX".to_string(), vec![1], 0.03, 0.001),
-        ))
+        let operation_two = convert_operation_to_pyobject(
+            Operation::from(PragmaOverrotation::new(
+                "RotateX".to_string(),
+                vec![1],
+                0.03,
+                0.001,
+            )),
+            py,
+        )
         .unwrap();
 
-        let extracted_one: PragmaOverrotationWrapper = operation_one.bind(py).extract().unwrap();
+        let extracted_one: PragmaOverrotationWrapper = operation_one.extract().unwrap();
         assert_eq!(
             extracted_one.internal,
             PragmaOverrotation::new("RotateX".to_string(), vec![0], 0.03, 0.001)
@@ -1777,17 +1687,16 @@ fn test_pyo3_richcmp_overrotation() {
 
         let comparison = bool::extract_bound(
             &operation_one
-                .bind(py)
                 .call_method1("__ne__", (operation_two.clone(),))
                 .unwrap(),
         )
         .unwrap();
         assert!(comparison);
 
-        let comparison = operation_one.call_method1(py, "__eq__", (vec!["fails"],));
+        let comparison = operation_one.call_method1("__eq__", (vec!["fails"],));
         assert!(comparison.is_err());
 
-        let comparison = operation_one.call_method1(py, "__ge__", (operation_two,));
+        let comparison = operation_one.call_method1("__ge__", (operation_two,));
         assert!(comparison.is_err());
     })
 }
@@ -1797,7 +1706,7 @@ fn test_pyo3_richcmp_overrotation() {
 fn test_pyo3_new_set_number_of_measurements() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = py.get_type_bound::<PragmaSetNumberOfMeasurementsWrapper>();
+        let operation = py.get_type::<PragmaSetNumberOfMeasurementsWrapper>();
         let binding = operation.call1((1, "ro".to_string())).unwrap();
         let new_op = binding
             .downcast::<PragmaSetNumberOfMeasurementsWrapper>()
@@ -1805,7 +1714,7 @@ fn test_pyo3_new_set_number_of_measurements() {
 
         let input_definition =
             Operation::from(PragmaSetNumberOfMeasurements::new(1, String::from("ro")));
-        let copy_param = convert_operation_to_pyobject(input_definition).unwrap();
+        let copy_param = convert_operation_to_pyobject(input_definition, py).unwrap();
         let comparison_copy =
             bool::extract_bound(&new_op.call_method1("__eq__", (copy_param,)).unwrap()).unwrap();
         assert!(comparison_copy);
@@ -1837,16 +1746,17 @@ fn test_pyo3_new_set_number_of_measurements() {
 fn test_pyo3_new_set_statevector() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = py.get_type_bound::<PragmaSetStateVectorWrapper>();
+        let operation = py.get_type::<PragmaSetStateVectorWrapper>();
 
-        let pylist = PyList::new_bound(py, vec![1.0, 0.0]);
+        let pylist = PyList::new(py, vec![1.0, 0.0]).unwrap();
         let binding_from_pylist = operation.call1((pylist,));
         assert!(binding_from_pylist.is_ok());
 
         let to_get_statevec_0 = Operation::from(PragmaSetStateVector::new(statevector()));
-        let convert_to_get_statevec_0 = convert_operation_to_pyobject(to_get_statevec_0).unwrap();
+        let convert_to_get_statevec_0 =
+            convert_operation_to_pyobject(to_get_statevec_0, py).unwrap();
         let statevector_op_0 = convert_to_get_statevec_0
-            .call_method0(py, "statevector")
+            .call_method0("statevector")
             .unwrap();
         let binding = operation.call1((statevector_op_0,)).unwrap();
         let new_op = binding.downcast::<PragmaSetStateVectorWrapper>().unwrap();
@@ -1860,9 +1770,10 @@ fn test_pyo3_new_set_statevector() {
         assert!(comparison_copy);
 
         let to_get_statevec_1 = Operation::from(PragmaSetStateVector::new(statevector() + 1.0));
-        let convert_to_get_statevec_1 = convert_operation_to_pyobject(to_get_statevec_1).unwrap();
+        let convert_to_get_statevec_1 =
+            convert_operation_to_pyobject(to_get_statevec_1, py).unwrap();
         let statevector_op_1 = convert_to_get_statevec_1
-            .call_method0(py, "statevector")
+            .call_method0("statevector")
             .unwrap();
 
         let pragma_wrapper = new_op.extract::<PragmaSetStateVectorWrapper>().unwrap();
@@ -1888,16 +1799,16 @@ fn test_pyo3_new_set_statevector() {
 fn test_pyo3_new_set_densitymatrix() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = py.get_type_bound::<PragmaSetDensityMatrixWrapper>();
+        let operation = py.get_type::<PragmaSetDensityMatrixWrapper>();
 
-        let pylist = PyList::new_bound(py, vec![vec![1.0, 0.0], vec![0.0, 0.0]]);
+        let pylist = PyList::new(py, vec![vec![1.0, 0.0], vec![0.0, 0.0]]).unwrap();
         let binding_from_pylist = operation.call1((pylist,));
         assert!(binding_from_pylist.is_ok());
 
         let to_get_densmat_0 = Operation::from(PragmaSetDensityMatrix::new(densitymatrix()));
-        let convert_to_get_densmat_0 = convert_operation_to_pyobject(to_get_densmat_0).unwrap();
+        let convert_to_get_densmat_0 = convert_operation_to_pyobject(to_get_densmat_0, py).unwrap();
         let densmat_op_0 = convert_to_get_densmat_0
-            .call_method0(py, "density_matrix")
+            .call_method0("density_matrix")
             .unwrap();
         let binding = operation.call1((densmat_op_0,)).unwrap();
         let new_op = binding.downcast::<PragmaSetDensityMatrixWrapper>().unwrap();
@@ -1911,9 +1822,9 @@ fn test_pyo3_new_set_densitymatrix() {
         assert!(comparison_copy);
 
         let to_get_densmat_1 = Operation::from(PragmaSetDensityMatrix::new(densitymatrix() + 1.0));
-        let convert_to_get_densmat_1 = convert_operation_to_pyobject(to_get_densmat_1).unwrap();
+        let convert_to_get_densmat_1 = convert_operation_to_pyobject(to_get_densmat_1, py).unwrap();
         let densmat_op_1 = convert_to_get_densmat_1
-            .call_method0(py, "density_matrix")
+            .call_method0("density_matrix")
             .unwrap();
 
         let pragma_wrapper = new_op.extract::<PragmaSetDensityMatrixWrapper>().unwrap();
@@ -1939,12 +1850,12 @@ fn test_pyo3_new_set_densitymatrix() {
 fn test_pyo3_new_repeated_gate() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = py.get_type_bound::<PragmaRepeatGateWrapper>();
+        let operation = py.get_type::<PragmaRepeatGateWrapper>();
         let binding = operation.call1((2,)).unwrap();
         let new_op = binding.downcast::<PragmaRepeatGateWrapper>().unwrap();
 
         let input_definition = Operation::from(PragmaRepeatGate::new(2));
-        let copy_param = convert_operation_to_pyobject(input_definition).unwrap();
+        let copy_param = convert_operation_to_pyobject(input_definition, py).unwrap();
         let comparison_copy =
             bool::extract_bound(&new_op.call_method1("__eq__", (copy_param,)).unwrap()).unwrap();
         assert!(comparison_copy);
@@ -1971,7 +1882,7 @@ fn test_pyo3_new_overrotation() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         // Basic initialisation, no errors
-        let operation = py.get_type_bound::<PragmaOverrotationWrapper>();
+        let operation = py.get_type::<PragmaOverrotationWrapper>();
         let binding = operation.call1(("RotateX", vec![0], 0.03, 0.001)).unwrap();
         let new_op = binding.downcast::<PragmaOverrotationWrapper>().unwrap();
         let input_definition = Operation::from(PragmaOverrotation::new(
@@ -1980,7 +1891,7 @@ fn test_pyo3_new_overrotation() {
             0.03,
             0.001,
         ));
-        let copy_param = convert_operation_to_pyobject(input_definition).unwrap();
+        let copy_param = convert_operation_to_pyobject(input_definition, py).unwrap();
         let extracted: PragmaOverrotationWrapper =
             PragmaOverrotationWrapper::extract_bound(new_op).unwrap();
         assert_eq!(
@@ -2014,11 +1925,11 @@ fn test_pyo3_new_boost_noise() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         // Basic initialisation, no errors
-        let operation = py.get_type_bound::<PragmaBoostNoiseWrapper>();
+        let operation = py.get_type::<PragmaBoostNoiseWrapper>();
         let binding = operation.call1((0.003,)).unwrap();
         let new_op = binding.downcast::<PragmaBoostNoiseWrapper>().unwrap();
         let input_definition = Operation::from(PragmaBoostNoise::new(CalculatorFloat::from(0.003)));
-        let copy_param = convert_operation_to_pyobject(input_definition).unwrap();
+        let copy_param = convert_operation_to_pyobject(input_definition, py).unwrap();
         let comparison_copy =
             bool::extract_bound(&new_op.call_method1("__eq__", (copy_param,)).unwrap()).unwrap();
         assert!(comparison_copy);
@@ -2050,7 +1961,7 @@ fn test_pyo3_new_stop() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         // Basic initialisation, no errors
-        let operation = py.get_type_bound::<PragmaStopParallelBlockWrapper>();
+        let operation = py.get_type::<PragmaStopParallelBlockWrapper>();
         let binding = operation.call1((vec![0], 0.0000001)).unwrap();
         let new_op = binding
             .downcast::<PragmaStopParallelBlockWrapper>()
@@ -2059,7 +1970,7 @@ fn test_pyo3_new_stop() {
             vec![0],
             CalculatorFloat::from(0.0000001),
         ));
-        let copy_param = convert_operation_to_pyobject(input_definition).unwrap();
+        let copy_param = convert_operation_to_pyobject(input_definition, py).unwrap();
         let comparison_copy =
             bool::extract_bound(&new_op.call_method1("__eq__", (copy_param,)).unwrap()).unwrap();
         assert!(comparison_copy);
@@ -2100,12 +2011,12 @@ fn test_pyo3_new_global_phase() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         // Basic initialisation, no errors
-        let operation = py.get_type_bound::<PragmaGlobalPhaseWrapper>();
+        let operation = py.get_type::<PragmaGlobalPhaseWrapper>();
         let binding = operation.call1((0.003,)).unwrap();
         let new_op = binding.downcast::<PragmaGlobalPhaseWrapper>().unwrap();
         let input_definition =
             Operation::from(PragmaGlobalPhase::new(CalculatorFloat::from(0.003)));
-        let copy_param = convert_operation_to_pyobject(input_definition).unwrap();
+        let copy_param = convert_operation_to_pyobject(input_definition, py).unwrap();
         let comparison_copy =
             bool::extract_bound(&new_op.call_method1("__eq__", (copy_param,)).unwrap()).unwrap();
         assert!(comparison_copy);
@@ -2137,13 +2048,13 @@ fn test_pyo3_new_sleep() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         // Basic initialisation, no errors
-        let operation = py.get_type_bound::<PragmaSleepWrapper>();
+        let operation = py.get_type::<PragmaSleepWrapper>();
         let binding = operation.call1((vec![0], 0.0000001)).unwrap();
         let new_op = binding.downcast::<PragmaSleepWrapper>().unwrap();
 
         let input_definition =
             Operation::from(PragmaSleep::new(vec![0], CalculatorFloat::from(0.0000001)));
-        let copy_param = convert_operation_to_pyobject(input_definition).unwrap();
+        let copy_param = convert_operation_to_pyobject(input_definition, py).unwrap();
         let comparison_copy =
             bool::extract_bound(&new_op.call_method1("__eq__", (copy_param,)).unwrap()).unwrap();
         assert!(comparison_copy);
@@ -2179,12 +2090,12 @@ fn test_pyo3_new_sleep() {
 fn test_pyo3_new_active_reset() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = py.get_type_bound::<PragmaActiveResetWrapper>();
+        let operation = py.get_type::<PragmaActiveResetWrapper>();
         let binding = operation.call1((0,)).unwrap();
         let new_op = binding.downcast::<PragmaActiveResetWrapper>().unwrap();
 
         let input_definition = Operation::from(PragmaActiveReset::new(0));
-        let copy_param = convert_operation_to_pyobject(input_definition).unwrap();
+        let copy_param = convert_operation_to_pyobject(input_definition, py).unwrap();
         let comparison_copy =
             bool::extract_bound(&new_op.call_method1("__eq__", (copy_param,)).unwrap()).unwrap();
         assert!(comparison_copy);
@@ -2210,7 +2121,7 @@ fn test_pyo3_new_active_reset() {
 fn test_pyo3_new_start_decomposition_block() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = py.get_type_bound::<PragmaStartDecompositionBlockWrapper>();
+        let operation = py.get_type::<PragmaStartDecompositionBlockWrapper>();
         let binding = operation.call1((vec![0], reordering())).unwrap();
         let new_op = binding
             .downcast::<PragmaStartDecompositionBlockWrapper>()
@@ -2218,7 +2129,7 @@ fn test_pyo3_new_start_decomposition_block() {
 
         let input_definition =
             Operation::from(PragmaStartDecompositionBlock::new(vec![0], reordering()));
-        let copy_param = convert_operation_to_pyobject(input_definition).unwrap();
+        let copy_param = convert_operation_to_pyobject(input_definition, py).unwrap();
         let comparison_copy =
             bool::extract_bound(&new_op.call_method1("__eq__", (copy_param,)).unwrap()).unwrap();
         assert!(comparison_copy);
@@ -2250,14 +2161,14 @@ fn test_pyo3_new_start_decomposition_block() {
 fn test_pyo3_new_stop_decomposition_block() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = py.get_type_bound::<PragmaStopDecompositionBlockWrapper>();
+        let operation = py.get_type::<PragmaStopDecompositionBlockWrapper>();
         let binding = operation.call1((vec![0],)).unwrap();
         let new_op = binding
             .downcast::<PragmaStopDecompositionBlockWrapper>()
             .unwrap();
 
         let input_definition = Operation::from(PragmaStopDecompositionBlock::new(vec![0]));
-        let copy_param = convert_operation_to_pyobject(input_definition).unwrap();
+        let copy_param = convert_operation_to_pyobject(input_definition, py).unwrap();
         let comparison_copy =
             bool::extract_bound(&new_op.call_method1("__eq__", (copy_param,)).unwrap()).unwrap();
         assert!(comparison_copy);
@@ -2290,7 +2201,7 @@ fn test_pyo3_new_damping() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         // Basic initialisation, no errors
-        let operation = py.get_type_bound::<PragmaDampingWrapper>();
+        let operation = py.get_type::<PragmaDampingWrapper>();
         let binding = operation.call1((0, 0.005, 0.02)).unwrap();
         let new_op = binding.downcast::<PragmaDampingWrapper>().unwrap();
         let input_definition = Operation::from(PragmaDamping::new(
@@ -2298,7 +2209,7 @@ fn test_pyo3_new_damping() {
             CalculatorFloat::from(0.005),
             CalculatorFloat::from(0.02),
         ));
-        let copy_param = convert_operation_to_pyobject(input_definition).unwrap();
+        let copy_param = convert_operation_to_pyobject(input_definition, py).unwrap();
         let comparison_copy =
             bool::extract_bound(&new_op.call_method1("__eq__", (copy_param,)).unwrap()).unwrap();
         assert!(comparison_copy);
@@ -2332,7 +2243,7 @@ fn test_pyo3_new_depolarising() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         // Basic initialisation, no errors
-        let operation = py.get_type_bound::<PragmaDepolarisingWrapper>();
+        let operation = py.get_type::<PragmaDepolarisingWrapper>();
         let binding = operation.call1((0, 0.005, 0.02)).unwrap();
         let new_op = binding.downcast::<PragmaDepolarisingWrapper>().unwrap();
         let input_definition = Operation::from(PragmaDepolarising::new(
@@ -2340,7 +2251,7 @@ fn test_pyo3_new_depolarising() {
             CalculatorFloat::from(0.005),
             CalculatorFloat::from(0.02),
         ));
-        let copy_param = convert_operation_to_pyobject(input_definition).unwrap();
+        let copy_param = convert_operation_to_pyobject(input_definition, py).unwrap();
         let comparison_copy =
             bool::extract_bound(&new_op.call_method1("__eq__", (copy_param,)).unwrap()).unwrap();
         assert!(comparison_copy);
@@ -2374,7 +2285,7 @@ fn test_pyo3_new_dephasing() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         // Basic initialisation, no errors
-        let operation = py.get_type_bound::<PragmaDephasingWrapper>();
+        let operation = py.get_type::<PragmaDephasingWrapper>();
         let binding = operation.call1((0, 0.005, 0.02)).unwrap();
         let new_op = binding.downcast::<PragmaDephasingWrapper>().unwrap();
         let input_definition = Operation::from(PragmaDephasing::new(
@@ -2382,7 +2293,7 @@ fn test_pyo3_new_dephasing() {
             CalculatorFloat::from(0.005),
             CalculatorFloat::from(0.02),
         ));
-        let copy_param = convert_operation_to_pyobject(input_definition).unwrap();
+        let copy_param = convert_operation_to_pyobject(input_definition, py).unwrap();
         let comparison_copy =
             bool::extract_bound(&new_op.call_method1("__eq__", (copy_param,)).unwrap()).unwrap();
         assert!(comparison_copy);
@@ -2416,7 +2327,7 @@ fn test_pyo3_new_randomnoise() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         // Basic initialisation, no errors
-        let operation = py.get_type_bound::<PragmaRandomNoiseWrapper>();
+        let operation = py.get_type::<PragmaRandomNoiseWrapper>();
         let binding = operation.call1((0, 0.005, 0.02, 0.01)).unwrap();
         let new_op = binding.downcast::<PragmaRandomNoiseWrapper>().unwrap();
         let input_definition = Operation::from(PragmaRandomNoise::new(
@@ -2425,7 +2336,7 @@ fn test_pyo3_new_randomnoise() {
             CalculatorFloat::from(0.02),
             CalculatorFloat::from(0.01),
         ));
-        let copy_param = convert_operation_to_pyobject(input_definition).unwrap();
+        let copy_param = convert_operation_to_pyobject(input_definition, py).unwrap();
         let comparison_copy =
             bool::extract_bound(&new_op.call_method1("__eq__", (copy_param,)).unwrap()).unwrap();
         assert!(comparison_copy);
@@ -2461,16 +2372,17 @@ fn test_pyo3_new_general_noise() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         // Basic initialisation, no errors
-        let operation = py.get_type_bound::<PragmaGeneralNoiseWrapper>();
+        let operation = py.get_type::<PragmaGeneralNoiseWrapper>();
 
-        let pylist = PyList::new_bound(
+        let pylist = PyList::new(
             py,
             vec![
                 vec![1.0, 0.0, 0.0],
                 vec![0.0, 1.0, 0.0],
                 vec![0.0, 0.0, 1.0],
             ],
-        );
+        )
+        .unwrap();
         let binding_from_pylist = operation.call1((0, 1.0, pylist));
         assert!(binding_from_pylist.is_ok());
 
@@ -2479,8 +2391,8 @@ fn test_pyo3_new_general_noise() {
             CalculatorFloat::from(0.005),
             operators(),
         ));
-        let convert_to_get_operators = convert_operation_to_pyobject(to_get_operators).unwrap();
-        let operators_op = convert_to_get_operators.call_method0(py, "rates").unwrap();
+        let convert_to_get_operators = convert_operation_to_pyobject(to_get_operators, py).unwrap();
+        let operators_op = convert_to_get_operators.call_method0("rates").unwrap();
 
         let binding = operation.call1((0, 0.005, operators_op.clone())).unwrap();
         let new_op = binding.downcast::<PragmaGeneralNoiseWrapper>().unwrap();
@@ -2522,7 +2434,7 @@ fn test_pyo3_new_general_noise() {
 fn test_pyo3_new_conditional() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = py.get_type_bound::<PragmaConditionalWrapper>();
+        let operation = py.get_type::<PragmaConditionalWrapper>();
         let binding = operation
             .call1(("ro".to_string(), 0, new_circuit(py)))
             .unwrap();
@@ -2530,7 +2442,7 @@ fn test_pyo3_new_conditional() {
 
         let input_definition =
             Operation::from(PragmaConditional::new("ro".to_string(), 0, Circuit::new()));
-        let copy_param = convert_operation_to_pyobject(input_definition).unwrap();
+        let copy_param = convert_operation_to_pyobject(input_definition, py).unwrap();
         let comparison_copy =
             bool::extract_bound(&new_op.call_method1("__eq__", (copy_param,)).unwrap()).unwrap();
         assert!(comparison_copy);
@@ -2558,14 +2470,14 @@ fn test_pyo3_new_conditional() {
 fn test_pyo3_new_controlled_circuit() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = py.get_type_bound::<PragmaControlledCircuitWrapper>();
+        let operation = py.get_type::<PragmaControlledCircuitWrapper>();
         let binding = operation.call1((0, new_circuit(py))).unwrap();
         let new_op = binding
             .downcast::<PragmaControlledCircuitWrapper>()
             .unwrap();
 
         let input_definition = Operation::from(PragmaControlledCircuit::new(0, Circuit::new()));
-        let copy_param = convert_operation_to_pyobject(input_definition).unwrap();
+        let copy_param = convert_operation_to_pyobject(input_definition, py).unwrap();
         let comparison_copy =
             bool::extract_bound(&new_op.call_method1("__eq__", (copy_param,)).unwrap()).unwrap();
         assert!(comparison_copy);
@@ -2595,14 +2507,14 @@ fn test_pyo3_new_controlled_circuit() {
 fn test_pyo3_new_loop() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = py.get_type_bound::<PragmaLoopWrapper>();
+        let operation = py.get_type::<PragmaLoopWrapper>();
         let binding = operation
             .call1(("number_t".to_string(), new_circuit(py)))
             .unwrap();
         let new_op = binding.downcast::<PragmaLoopWrapper>().unwrap();
 
         let input_definition = Operation::from(PragmaLoop::new("number_t".into(), Circuit::new()));
-        let copy_param = convert_operation_to_pyobject(input_definition).unwrap();
+        let copy_param = convert_operation_to_pyobject(input_definition, py).unwrap();
         let comparison_copy =
             bool::extract_bound(&new_op.call_method1("__eq__", (copy_param,)).unwrap()).unwrap();
         assert!(comparison_copy);
@@ -2632,10 +2544,10 @@ fn test_pyo3_new_annotated_op() {
     let internal_op_1 = Operation::from(PauliX::new(1));
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = py.get_type_bound::<PragmaAnnotatedOpWrapper>();
+        let operation = py.get_type::<PragmaAnnotatedOpWrapper>();
         let binding = operation
             .call1((
-                convert_operation_to_pyobject(internal_op_0).unwrap(),
+                convert_operation_to_pyobject(internal_op_0, py).unwrap(),
                 "test",
             ))
             .unwrap();
@@ -2645,7 +2557,7 @@ fn test_pyo3_new_annotated_op() {
             Operation::from(PauliX::new(0)),
             "test".to_string(),
         ));
-        let copy_param = convert_operation_to_pyobject(input_definition).unwrap();
+        let copy_param = convert_operation_to_pyobject(input_definition, py).unwrap();
         let comparison_copy =
             bool::extract_bound(&new_op.call_method1("__eq__", (copy_param,)).unwrap()).unwrap();
         assert!(comparison_copy);
@@ -2653,7 +2565,7 @@ fn test_pyo3_new_annotated_op() {
         let pragma_wrapper = new_op.extract::<PragmaAnnotatedOpWrapper>().unwrap();
         let binding = operation
             .call1((
-                convert_operation_to_pyobject(internal_op_1).unwrap(),
+                convert_operation_to_pyobject(internal_op_1, py).unwrap(),
                 "test",
             ))
             .unwrap();
@@ -2688,11 +2600,11 @@ fn test_pyo3_remapqubits_error(input_operation: Operation) {
     // preparation
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = convert_operation_to_pyobject(input_operation).unwrap();
+        let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
         // remap qubits
         let mut qubit_mapping: HashMap<usize, usize> = HashMap::new();
         qubit_mapping.insert(2, 0);
-        let result = operation.call_method1(py, "remap_qubits", (qubit_mapping,));
+        let result = operation.call_method1("remap_qubits", (qubit_mapping,));
         assert!(result.is_err());
     })
 }
@@ -2794,8 +2706,8 @@ fn test_pyo3_json_schema(operation: PragmaOperation) {
             _ => "1.0.0".to_string(),
         };
         let converted_op = Operation::from(operation);
-        let pyobject = convert_operation_to_pyobject(converted_op).unwrap();
-        let operation = pyobject.bind(py);
+        let pyobject = convert_operation_to_pyobject(converted_op, py).unwrap();
+        let operation = pyobject;
 
         let schema: String =
             String::extract_bound(&operation.call_method0("json_schema").unwrap()).unwrap();

@@ -19,7 +19,7 @@ use crate::{QoqoError, QOQO_VERSION};
 use bincode::{deserialize, serialize};
 use pyo3::exceptions::{PyIndexError, PyTypeError, PyValueError};
 use pyo3::prelude::*;
-use pyo3::types::PyByteArray;
+use pyo3::types::{PyByteArray, PyDict};
 use roqoqo::{Circuit, CircuitDag, ROQOQO_VERSION};
 
 use crate::operations::{convert_operation_to_pyobject, convert_pyany_to_operation};
@@ -72,8 +72,7 @@ impl CircuitDagWrapper {
             })?;
             deserialize(&bytes[..]).map_err(|err| {
                 PyTypeError::new_err(format!(
-                    "Python object cannot be converted to qoqo CircuitDag: Deserialization failed: {}",
-                    err
+                    "Python object cannot be converted to qoqo CircuitDag: Deserialization failed: {err}"
                 ))}
             )
         }
@@ -132,7 +131,7 @@ impl CircuitDagWrapper {
     #[pyo3(text_signature = "($self, op)")]
     pub fn add_to_back(&mut self, op: &Bound<PyAny>) -> PyResult<Option<usize>> {
         let operation = convert_pyany_to_operation(op).map_err(|x| {
-            PyTypeError::new_err(format!("Cannot convert python object to Operation {:?}", x))
+            PyTypeError::new_err(format!("Cannot convert python object to Operation {x:?}"))
         })?;
         Ok(self.internal.add_to_back(operation))
     }
@@ -147,7 +146,7 @@ impl CircuitDagWrapper {
     #[pyo3(text_signature = "($self, op)")]
     pub fn add_to_front(&mut self, op: &Bound<PyAny>) -> PyResult<Option<usize>> {
         let operation = convert_pyany_to_operation(op).map_err(|x| {
-            PyTypeError::new_err(format!("Cannot convert python object to Operation {:?}", x))
+            PyTypeError::new_err(format!("Cannot convert python object to Operation {x:?}"))
         })?;
         Ok(self.internal.add_to_front(operation))
     }
@@ -248,13 +247,13 @@ impl CircuitDagWrapper {
     /// Raises:
     ///     IndexError: Index out of range.
     #[pyo3(text_signature = "($self, index)")]
-    pub fn get(&self, index: usize) -> PyResult<PyObject> {
+    pub fn get<'py>(&'py self, py: Python<'py>, index: usize) -> PyResult<Bound<'py, PyAny>> {
         let operation = self
             .internal
             .get(index)
-            .ok_or_else(|| PyIndexError::new_err(format!("Index {} out of range", index)))?
+            .ok_or_else(|| PyIndexError::new_err(format!("Index {index} out of range")))?
             .clone();
-        convert_operation_to_pyobject(operation)
+        convert_operation_to_pyobject(operation, py)
     }
 
     /// Returns a copy of the CircuitDag (produces a deepcopy).
@@ -332,7 +331,7 @@ impl CircuitDagWrapper {
         let serialized = serialize(&self.internal)
             .map_err(|_| PyValueError::new_err("Cannot serialize CircuitDag to bytes"))?;
         let b: Py<PyByteArray> = Python::with_gil(|py| -> Py<PyByteArray> {
-            PyByteArray::new_bound(py, &serialized[..]).into()
+            PyByteArray::new(py, &serialized[..]).into()
         });
         Ok(b)
     }
@@ -352,7 +351,7 @@ impl CircuitDagWrapper {
     #[pyo3(text_signature = "(input)")]
     pub fn from_bincode(input: &Bound<PyAny>) -> PyResult<Self> {
         let bytes = input
-            .as_gil_ref()
+            .as_ref()
             .extract::<Vec<u8>>()
             .map_err(|_| PyTypeError::new_err("Input cannot be converted to byte array"))?;
 
@@ -401,12 +400,16 @@ impl CircuitDagWrapper {
     /// Returns:
     ///     Dict[int, int]: The dictionary of {qubit: node} elements.
     #[pyo3(text_signature = "($self)")]
-    pub fn first_operation_involving_qubit(&self) -> PyObject {
-        Python::with_gil(|py| -> PyObject {
-            self.internal
-                .first_operation_involving_qubit()
-                .to_object(py)
-        })
+    pub fn first_operation_involving_qubit<'py>(
+        &'py self,
+        py: Python<'py>,
+    ) -> PyResult<Bound<'py, PyDict>> {
+        self.internal
+            .first_operation_involving_qubit()
+            .into_pyobject(py)
+            .map_err(|_| {
+                PyValueError::new_err("Cannot convert  Rust object to a Python dictionary")
+            })
     }
 
     /// Returns a dictionary where a key represents a qubit and its value represents
@@ -415,10 +418,16 @@ impl CircuitDagWrapper {
     /// Returns:
     ///     Dict[int, int]: The dictionary of {qubit: node} elements.
     #[pyo3(text_signature = "($self)")]
-    pub fn last_operation_involving_qubit(&self) -> PyObject {
-        Python::with_gil(|py| -> PyObject {
-            self.internal.last_operation_involving_qubit().to_object(py)
-        })
+    pub fn last_operation_involving_qubit<'py>(
+        &'py self,
+        py: Python<'py>,
+    ) -> PyResult<Bound<'py, PyDict>> {
+        self.internal
+            .last_operation_involving_qubit()
+            .into_pyobject(py)
+            .map_err(|_| {
+                PyValueError::new_err("Cannot convert  Rust object to a Python dictionary")
+            })
     }
 
     /// Returns a dictionary where a key is composed by the name and the size
@@ -428,12 +437,16 @@ impl CircuitDagWrapper {
     /// Returns:
     ///     Dict[(str, int), int]: The dictionary of {(str, int), int} elements.
     #[pyo3(text_signature = "($self)")]
-    pub fn first_operation_involving_classical(&self) -> PyObject {
-        Python::with_gil(|py| -> PyObject {
-            self.internal
-                .first_operation_involving_classical()
-                .to_object(py)
-        })
+    pub fn first_operation_involving_classical<'py>(
+        &'py self,
+        py: Python<'py>,
+    ) -> PyResult<Bound<'py, PyDict>> {
+        self.internal
+            .first_operation_involving_classical()
+            .into_pyobject(py)
+            .map_err(|_| {
+                PyValueError::new_err("Cannot convert  Rust object to a Python dictionary")
+            })
     }
 
     /// Returns a dictionary where a key is composed by the name and the size
@@ -443,12 +456,16 @@ impl CircuitDagWrapper {
     /// Returns:
     ///     Dict[(str, int), int]: The dictionary of {(str, int), int} elements.
     #[pyo3(text_signature = "($self)")]
-    pub fn last_operation_involving_classical(&self) -> PyObject {
-        Python::with_gil(|py| -> PyObject {
-            self.internal
-                .last_operation_involving_classical()
-                .to_object(py)
-        })
+    pub fn last_operation_involving_classical<'py>(
+        &'py self,
+        py: Python<'py>,
+    ) -> PyResult<Bound<'py, PyDict>> {
+        self.internal
+            .last_operation_involving_classical()
+            .into_pyobject(py)
+            .map_err(|_| {
+                PyValueError::new_err("Cannot convert  Rust object to a Python dictionary")
+            })
     }
 }
 
@@ -456,7 +473,7 @@ impl CircuitDagWrapper {
 ///
 /// Fallible conversion of generic python object to [roqoqo::CircuitDag].
 pub fn convert_into_circuitdag(input: &Bound<PyAny>) -> Result<CircuitDag, QoqoError> {
-    if let Ok(try_downcast) = input.as_gil_ref().extract::<CircuitDagWrapper>() {
+    if let Ok(try_downcast) = input.as_ref().extract::<CircuitDagWrapper>() {
         return Ok(try_downcast.internal);
     }
     // Everything that follows tries to extract the circuitdag when two separately

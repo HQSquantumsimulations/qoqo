@@ -22,7 +22,7 @@ use syn::punctuated::Punctuated;
 use syn::visit::{self, Visit};
 use syn::{AttrStyle, File, Ident, ItemImpl, ItemStruct, LitStr, Path, Token, Type, TypePath};
 
-const NUMBER_OF_MINOR_VERSIONS: usize = 18;
+const NUMBER_OF_MINOR_VERSIONS: usize = 21;
 
 static AVAILABLE_GATES: OnceLock<Mutex<Vec<String>>> = OnceLock::new();
 
@@ -180,11 +180,10 @@ impl<'ast> Visit<'ast> for Visitor {
     // Only visit struct declarations
     fn visit_item_struct(&mut self, i: &'ast ItemStruct) {
         // Check attributes
-        for att in i.attrs.clone() {
-            let path = att.path().get_ident().map(|id| id.to_string());
-            // TOFIX: REMOVE WHEN STABILISED
+        for att in &i.attrs {
+            // TEMP: REMOVE WHEN STABILISED
             if matches!(att.style, AttrStyle::Outer)
-                && path == Some("cfg".to_string())
+                && att.path().is_ident("cfg")
                 && !cfg!(feature = "unstable_operation_definition")
             {
                 let cfg_feature_name: CfgFeatureMacroArgument =
@@ -193,9 +192,10 @@ impl<'ast> Visit<'ast> for Visitor {
                     return;
                 }
             }
+
             // only consider the derive attribute, if no derive attribute is present don't add anything
             // to the internal storage of the visitor
-            if matches!(att.style, AttrStyle::Outer) && path == Some("derive".to_string()) {
+            if matches!(att.style, AttrStyle::Outer) && att.path().is_ident("derive") {
                 //let tokens: TokenStream = att.tokens.into();
                 let parsed_arguments: DeriveMacroArguments =
                     att.parse_args().expect("parsing failed 1");
@@ -336,6 +336,27 @@ impl<'ast> Visit<'ast> for Visitor {
                         .clone(),
                 };
 
+                // TEMP remove this block when PragmaSimulationRepetitions is stable
+                for att in &i.attrs {
+                    // check outer attributes
+                    if matches!(att.style, AttrStyle::Outer)
+                        // if attribute is cfg
+                        && att.path().is_ident("cfg")
+                        // and if the feature is not active
+                        && !cfg!(feature = "unstable_simulation_repetitions")
+                    {
+                        let cfg_feature_name: CfgFeatureMacroArgument =
+                            att.parse_args().expect("parsing failed 1");
+
+                        if cfg_feature_name
+                            .0
+                            .contains("unstable_simulation_repetitions")
+                        {
+                            return;
+                        }
+                    }
+                }
+
                 if trait_name.as_str() == "Operate" {
                     self.operations.push(id.clone());
                 }
@@ -405,6 +426,15 @@ impl<'ast> Visit<'ast> for Visitor {
                 if trait_name.as_str() == "ImplementedIn1point17" {
                     self.roqoqo_version_register.insert(id.clone(), 17);
                 }
+                if trait_name.as_str() == "ImplementedIn1point18" {
+                    self.roqoqo_version_register.insert(id.clone(), 18);
+                }
+                if trait_name.as_str() == "ImplementedIn1point19" {
+                    self.roqoqo_version_register.insert(id.clone(), 19);
+                }
+                if trait_name.as_str() == "ImplementedIn1point20" {
+                    self.roqoqo_version_register.insert(id.clone(), 20);
+                }
                 if trait_name.as_str() == "OperateSingleQubitGate" {
                     self.single_qubit_gate_operations.push(id.clone());
                 }
@@ -470,8 +500,9 @@ const SOURCE_FILES: &[&str] = &[
 ];
 
 fn main() {
-    // create a visitor that will go through source code and collect the identifiers of structs that belong ad variants
-    // in the Operation enum, those that belong in the SingleQubitGateOperationEnum and so on
+    // create a visitor that will go through source code and collect the identifiers of structs that
+    // belong in variants in the Operation enum, those that belong in the
+    // SingleQubitGateOperationEnum and so on
     let mut vis = Visitor::new();
     // iterate over all source files where Operations are supposed to be located
     for source_location in SOURCE_FILES {
@@ -679,9 +710,6 @@ fn main() {
 
     // Construct TokenStream for auto-generated rust file containing the enums
     let final_quote = quote! {
-
-        //use crate::operations::*;
-
         /// List of hqslang of all available gates
         pub const AVAILABLE_GATES_HQSLANG: [&str; #available_gates_length] = [#(#available_gates),*];
 
@@ -895,7 +923,7 @@ fn main() {
         }
 
     };
-    let final_str = format!("{}", final_quote);
+    let final_str = format!("{final_quote}");
     let out_dir = PathBuf::from(
         std::env::var("OUT_DIR").expect("Cannot find a valid output directory for code generation"),
     )
@@ -912,7 +940,7 @@ fn build_quotes(vis: &Visitor, i: usize, idents: Vec<Ident>) -> Vec<proc_macro2:
         .into_iter()
         .filter(|v| vis.filter_for_version(v, i))
         .map(|v| {
-            let msg = format!("Variant for {}", v);
+            let msg = format!("Variant for {v}");
             quote! {
             #[allow(clippy::upper_case_acronyms)]
             #[doc = #msg]

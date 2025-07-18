@@ -169,17 +169,17 @@ fn operate_qubits_struct(ds: DataStruct, ident: Ident) -> TokenStream {
 
     let struqture_fields = fields_with_type
         .clone()
-        .filter(|(_, type_string, _)| type_string == &Some("SpinHamiltonian".to_string()))
+        .filter(|(_, type_string, _)| type_string == &Some("PauliHamiltonian".to_string()))
         .map(|(id, _, _)| {
             quote! {
                 self.#id.values().any(|x| !x.is_float())
             }
         });
 
-    let is_parametrized_fields = if calculator_float_fields.clone().last().is_none()
-        && circuit_fields.clone().last().is_none()
-        && circuit_fields2.clone().last().is_none()
-        && struqture_fields.clone().last().is_none()
+    let is_parametrized_fields = if calculator_float_fields.clone().next_back().is_none()
+        && circuit_fields.clone().next_back().is_none()
+        && circuit_fields2.clone().next_back().is_none()
+        && struqture_fields.clone().next_back().is_none()
     {
         vec![quote!(false)]
     } else {
@@ -195,7 +195,7 @@ fn operate_qubits_struct(ds: DataStruct, ident: Ident) -> TokenStream {
             !reserved_fields.contains(id.to_string().as_str())
         })
         .map(|(id, _, ty)| {
-            let msg = format!("Returns the value of the field `{}`.", id);
+            let msg = format!("Returns the value of the field `{id}`.");
             quote! {
                 #[doc = #msg]
                 #[inline]
@@ -205,8 +205,8 @@ fn operate_qubits_struct(ds: DataStruct, ident: Ident) -> TokenStream {
             }
         });
     let formated_tags = format_ident!("TAGS_{}", ident);
-    let formated_hqslang = format!("{}", ident);
-    let msg = format!("Creates a new instance of `{}`.\n\n", ident);
+    let formated_hqslang = format!("{ident}");
+    let msg = format!("Creates a new instance of `{ident}`.\n\n");
     quote! {
         #[automatically_derived]
         impl #ident{

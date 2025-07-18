@@ -137,7 +137,7 @@ pub fn device_wrapper_def(
             #[pyo3(text_signature = "(gate, qubit, gate_time)")]
             pub fn set_single_qubit_gate_time(&mut self, gate: &str, qubit: usize, gate_time: f64) -> PyResult<()> {
                 self.internal.set_single_qubit_gate_time(gate, qubit, gate_time).map_err(|err|
-                PyValueError::new_err(format!("{:?}", err)))
+                PyValueError::new_err(format!("{err:?}")))
             }
 
             /// Set the gate time of a two qubit gate.
@@ -153,7 +153,7 @@ pub fn device_wrapper_def(
             #[pyo3(text_signature = "(gate, control, target, gate_time)")]
             pub fn set_two_qubit_gate_time(&mut self, gate: &str, control: usize, target: usize, gate_time: f64) -> PyResult<()> {
                 self.internal.set_two_qubit_gate_time(gate, control, target, gate_time).map_err(|err|
-                    PyValueError::new_err(format!("{:?}", err)))
+                    PyValueError::new_err(format!("{err:?}")))
             }
 
             /// Set the gate time of a three qubit gate.
@@ -170,7 +170,7 @@ pub fn device_wrapper_def(
             #[pyo3(text_signature = "(gate, control_0, control_1, target, gate_time)")]
             pub fn set_three_qubit_gate_time(&mut self, gate: &str, control_0: usize, control_1: usize, target: usize, gate_time: f64) -> PyResult<()> {
                 self.internal.set_three_qubit_gate_time(gate, control_0, control_1, target, gate_time).map_err(|err|
-                    PyValueError::new_err(format!("{:?}", err)))
+                    PyValueError::new_err(format!("{err:?}")))
             }
 
 
@@ -205,7 +205,7 @@ pub fn device_wrapper_def(
             #[pyo3(text_signature = "(gate, qubits, gate_time)")]
             pub fn set_multi_qubit_gate_time(&self, gate: &str, qubits: Vec<usize>, gate_time: f64) -> PyResult<()> {
                 self.internal.clone().set_multi_qubit_gate_time(gate, qubits, gate_time).map_err(|err|
-                    PyValueError::new_err(format!("{:?}", err)))
+                    PyValueError::new_err(format!("{err:?}")))
             }
 
             /// Return the matrix of the decoherence rates of the Lindblad equation.
@@ -220,10 +220,10 @@ pub fn device_wrapper_def(
             fn qubit_decoherence_rates(&self, qubit: usize) -> Py<PyArray2<f64>> {
                 Python::with_gil(|py| -> Py<PyArray2<f64>> {
                     match self.internal.qubit_decoherence_rates(&qubit) {
-                        Some(matrix) => matrix.to_pyarray_bound(py).to_owned().into(),
+                        Some(matrix) => matrix.to_pyarray(py).to_owned().into(),
                         None => {
                             let matrix = Array2::<f64>::zeros((3, 3));
-                            matrix.to_pyarray_bound(py).to_owned().into()
+                            matrix.to_pyarray(py).to_owned().into()
                         }
                     }
                 })
@@ -357,7 +357,7 @@ pub fn device_wrapper_def(
                 let serialized = serialize(&self.internal)
                     .map_err(|_| PyValueError::new_err("Cannot serialize Device to bytes"))?;
                 let b: Py<PyByteArray> = Python::with_gil(|py| -> Py<PyByteArray> {
-                    PyByteArray::new_bound(py, &serialized[..]).into()
+                    PyByteArray::new(py, &serialized[..]).into()
                 });
                 Ok(b)
             }
@@ -391,7 +391,7 @@ pub fn device_wrapper_def(
             #[pyo3(text_signature = "(input)")]
             pub fn from_bincode(input: &Bound<PyAny>) -> PyResult<#ident> {
                 let bytes = input
-                    .as_gil_ref()
+                    .as_ref()
                     .extract::<Vec<u8>>()
                     .map_err(|_| PyTypeError::new_err("Input cannot be converted to byte array"))?;
 

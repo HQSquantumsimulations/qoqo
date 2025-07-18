@@ -1,10 +1,10 @@
 [package]
 name = "roqoqo-test"
-version = "1.17.0"
+version = "1.20.0"
 authors = ["HQS Quantum Simulations <info@quantumsimulations.de>"]
 license = "Apache-2.0"
 edition = "2021"
-rust-version = "1.70"
+rust-version = "1.76"
 categories = ["science", "simulation"]
 readme = "../README.md"
 repository = "https://github.com/HQSquantumsimulations/qoqo"
@@ -18,12 +18,13 @@ doctest = false
 crate-type = ["rlib"]
 
 [dependencies]
-roqoqo = { version = "~1.17", path = "../roqoqo", features = ["serialize"] }
-rand = "~0.8"
+roqoqo = { version = "~1.20", path = "../roqoqo", features = ["serialize"] }
+
 nalgebra = "0.33.1"
-ndarray = { version = "0.15" }
+ndarray = "0.16"
+rand = "~0.9"
 
 [build-dependencies]
-quote = "1.0"
 syn = { version = "2.0", features = ["full", "visit"] }
 proc-macro2 = "1.0"
+quote = "1.0"

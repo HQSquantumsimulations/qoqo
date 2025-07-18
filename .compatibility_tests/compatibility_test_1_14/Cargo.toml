@@ -1,10 +1,10 @@
 [package]
 name = "compatibility_test_1_14"
-version = "1.17.0"
+version = "1.20.0"
 authors = ["HQS Quantum Simulations <info@quantumsimulations.de>"]
 license = "Apache-2.0"
 edition = "2021"
-rust-version = "1.70"
+rust-version = "1.76"
 categories = ["science", "simulation"]
 homepage = "https://github.com/HQSquantumsimulations/qoqo"
 repository = "https://github.com/HQSquantumsimulations/qoqo"
@@ -20,18 +20,22 @@ publish = false
 
 [dependencies]
 test_roqoqo_1_14 = { package = "roqoqo", version = "=1.14.0" }
-roqoqo = { version = "~1.17", path = "../../roqoqo", features = [
+roqoqo = { version = "~1.20", path = "../../roqoqo", features = [
     "serialize",
     "overrotate",
 ] }
-struqture = { git = "https://github.com/HQSquantumsimulations/struqture" }
+struqture_1_12 = { git = "https://github.com/HQSquantumsimulations/struqture", package = "struqture", tag = "v1.12.2" }
 struqture_1_7 = { git = "https://github.com/HQSquantumsimulations/struqture", package = "struqture", tag = "v1.7.1" }
 bincode = { version = "1.3" }
 ndarray = "0.15"
+qoqo_calculator = { git = "https://github.com/HQSquantumsimulations/qoqo_calculator" }
+qoqo_calculator_1_2 = { git = "https://github.com/HQSquantumsimulations/qoqo_calculator", package = "qoqo_calculator", tag = "v1.2.4" }
 
 [patch.crates-io]
-struqture = { git = "https://github.com/HQSquantumsimulations/struqture" }
+struqture_1_12 = { git = "https://github.com/HQSquantumsimulations/struqture", package = "struqture", tag = "v1.12.2" }
 struqture_1_7 = { git = "https://github.com/HQSquantumsimulations/struqture", package = "struqture", tag = "v1.7.1" }
+qoqo_calculator = { git = "https://github.com/HQSquantumsimulations/qoqo_calculator" }
+qoqo_calculator_1_2 = { git = "https://github.com/HQSquantumsimulations/qoqo_calculator", package = "qoqo_calculator", tag = "v1.2.4" }
 
 [dev-dependencies]
 test-case = "3.0"

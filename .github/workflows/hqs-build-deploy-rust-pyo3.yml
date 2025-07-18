@@ -10,8 +10,7 @@ jobs:
   deploy_cratesio:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    #- uses: Swatinem/rust-cache@v2
+    - uses: actions/checkout@v4
     - uses: actions-rs/toolchain@v1
       with:
         profile: minimal
@@ -40,6 +39,7 @@ jobs:
       deploy: true
       # Whether to build for aarch64. Can fail if there are C/C++ dependencies
       build_for_arm: true
+      python_3_13: true
     secrets: inherit
 
 # Build macos wheels and upload them to PyPi
@@ -50,6 +50,7 @@ jobs:
     with: 
       py_interface_folder: "qoqo"
       deploy: true
+      python_3_13: true
     secrets: inherit
 
 # Build windows wheels and upload them to PyPi
@@ -60,4 +61,5 @@ jobs:
     with: 
       py_interface_folder: "qoqo"
       deploy: true
+      python_3_13: true
     secrets: inherit

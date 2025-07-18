@@ -36,11 +36,18 @@ fn operate_struct(ds: DataStruct, ident: Ident) -> TokenStream {
                 "CalculatorFloat" => quote! {#id: &pyo3::Bound<pyo3::PyAny>},
                 "Circuit" => quote! {#id: &pyo3::Bound<pyo3::PyAny>},
                 "Option<Circuit>" => quote! {#id: &pyo3::Bound<pyo3::PyAny>},
-                "SpinHamiltonian" => quote! {#id: &pyo3::Bound<pyo3::PyAny>},
+                "PauliHamiltonian" => quote! {#id: &pyo3::Bound<pyo3::PyAny>},
                 _ => quote! {#id: #ty},
             },
             _ => quote! {#id: #ty},
         });
+    let formatted_input_arguments =
+        fields_with_type
+            .clone()
+            .map(|(id, type_string, _ty)| match type_string {
+                Some(s) if s.contains("Option") && !s.contains("Circuit") => quote! {#id=None},
+                _ => quote! {#id},
+            });
     let arguments = fields_with_type
         .clone()
         .map(|(id, type_string, _)| match type_string {
@@ -60,7 +67,7 @@ fn operate_struct(ds: DataStruct, ident: Ident) -> TokenStream {
                     quote! {
                     #id_extracted}
                 }
-                "SpinHamiltonian" => {
+                "PauliHamiltonian" => {
                     let id_extracted = format_ident!("{}_extracted", id);
                     quote! {
                     #id_extracted}
@@ -81,7 +88,7 @@ fn operate_struct(ds: DataStruct, ident: Ident) -> TokenStream {
                 let id_extracted = format_ident!("{}_extracted", id);
                 quote! {
                     let #id_extracted: #ty = convert_into_calculator_float(#id).map_err(|x| {
-                        pyo3::exceptions::PyTypeError::new_err(format!("Argument cannot be converted to CalculatorFloat {:?}",x))
+                        pyo3::exceptions::PyTypeError::new_err(format!("Argument cannot be converted to CalculatorFloat: {x:?}"))
                     })?;
                 }
             },
@@ -89,29 +96,35 @@ fn operate_struct(ds: DataStruct, ident: Ident) -> TokenStream {
                 let id_extracted = format_ident!("{}_extracted", id);
                 quote! {
                     let #id_extracted: #ty = convert_into_circuit(#id).map_err(|x| {
-                        pyo3::exceptions::PyTypeError::new_err(format!("Argument cannot be converted to Circuit {:?}",x))
+                        pyo3::exceptions::PyTypeError::new_err(format!("Argument cannot be converted to Circuit: {x:?}"))
                     })?;
                 }
             },
             "Option<Circuit>" => {
                 let id_extracted = format_ident!("{}_extracted", id);
                 quote! {
-                    let tmp: Option<&PyAny> = #id.extract().map_err(|x| {
-                        pyo3::exceptions::PyTypeError::new_err(format!("Argument cannot be converted to Circuit {:?}",x))
+                    let tmp: Option<&Bound<PyAny>> = #id.try_into().map_err(|x| {
+                        pyo3::exceptions::PyTypeError::new_err(format!("Argument cannot be converted to PyAny: {x:?}"))
                     })?;
-                    let #id_extracted: Option<Circuit> = match tmp{
-                        Some(cw) => Some(convert_into_circuit(&cw.as_borrowed()).map_err(|x| {
-                            pyo3::exceptions::PyTypeError::new_err(format!("Argument cannot be converted to Circuit {:?}",x))
-                    })?),
+                    let #id_extracted: Option<Circuit> = match tmp {
+                        Some(cw) => {
+                            if cw.is_none() {
+                                None
+                            } else {
+                                Some(convert_into_circuit(cw).map_err(|x| {
+                                    pyo3::exceptions::PyTypeError::new_err(format!("Argument cannot be converted to Some(Circuit): {x:?}"))
+                                })?)
+                            }
+                        },
                         _ => None };
             }},
-            "SpinHamiltonian" => {
+            "PauliHamiltonian" => {
                 let id_extracted = format_ident!("{}_extracted", id);
                 quote! {
-                    let temp_op: struqture::spins::SpinHamiltonianSystem = SpinHamiltonianSystemWrapper::from_pyany(#id).map_err(|x| {
-                        pyo3::exceptions::PyTypeError::new_err(format!("Argument cannot be converted to SpinHamiltonianSystem {:?}",x))
+                    let temp_op: struqture::spins::PauliHamiltonian = PauliHamiltonianWrapper::from_pyany(#id).map_err(|x| {
+                        pyo3::exceptions::PyTypeError::new_err(format!("Argument cannot be converted to PauliHamiltonian: {x:?}"))
                     })?;
-                    let #id_extracted: #ty = temp_op.hamiltonian().clone();
+                    let #id_extracted: #ty = temp_op.clone();
                 }
             },
             _ => {
@@ -127,7 +140,7 @@ fn operate_struct(ds: DataStruct, ident: Ident) -> TokenStream {
         .map(|(id, type_string, ty)| match type_string {
             Some(s) => match s.as_str() {
                 "CalculatorFloat" => {
-                    let msg = format!("Returns value of attribute {}", id);
+                    let msg = format!("Returns value of attribute {id}");
                     quote! {
                         #[doc = #msg]
                         pub fn #id(&self) -> CalculatorFloatWrapper{
@@ -136,7 +149,7 @@ fn operate_struct(ds: DataStruct, ident: Ident) -> TokenStream {
                     }
                 }
                 "Circuit" => {
-                    let msg = format!("Get value of struct field {}", id);
+                    let msg = format!("Get value of struct field {id}");
                     quote! {
                         #[doc = #msg]
                         pub fn #id(&self) -> CircuitWrapper{
@@ -145,7 +158,7 @@ fn operate_struct(ds: DataStruct, ident: Ident) -> TokenStream {
                     }
                 }
                 "Option<Circuit>" => {
-                    let msg = format!("Get value of struct field {}", id);
+                    let msg = format!("Get value of struct field {id}");
                     quote! {
                             #[doc = #msg]
                             pub fn #id(&self) -> Option<CircuitWrapper>{
@@ -156,18 +169,17 @@ fn operate_struct(ds: DataStruct, ident: Ident) -> TokenStream {
                         }
                     }
                 }
-                "SpinHamiltonian" => {
-                    let msg = format!("Get value of struct field {}", id);
+                "PauliHamiltonian" => {
+                    let msg = format!("Get value of struct field {id}");
                     quote! {
                         #[doc = #msg]
-                        pub fn #id(&self) -> SpinHamiltonianSystemWrapper{
-                            let shs = struqture::spins::SpinHamiltonianSystem::from_hamiltonian(self.internal.#id().clone(), None).expect("Unexpectedly could not construct SpinHamiltonianSystem from SpinHamiltonian");
-                            SpinHamiltonianSystemWrapper{internal: shs}
+                        pub fn #id(&self) -> PauliHamiltonianWrapper{
+                            PauliHamiltonianWrapper{internal: self.internal.#id().clone()}
                         }
                     }
                 }
                 _ => {
-                    let msg = format!("Get value of struct field {}", id);
+                    let msg = format!("Get value of struct field {id}");
                     quote! {
                         #[doc = #msg]
                         pub fn #id(&self) -> #ty{
@@ -177,7 +189,7 @@ fn operate_struct(ds: DataStruct, ident: Ident) -> TokenStream {
                 }
             },
             _ => {
-                let msg = format!("Get value of struct field {}", id);
+                let msg = format!("Get value of struct field {id}");
                 quote! {
                     #[doc=#msg]
                     pub fn #id(&self) -> #ty{
@@ -187,13 +199,14 @@ fn operate_struct(ds: DataStruct, ident: Ident) -> TokenStream {
             }
         });
 
-    let new_msg = format!("Creates new instance of Operations {}", ident);
+    let new_msg = format!("Creates new instance of Operations {ident}");
     quote! {
 
         #(#getter_fields)*
 
         #[new]
         #[doc = #new_msg]
+        #[pyo3(signature = (#(#formatted_input_arguments),*))]
         fn new(#(#input_arguments),*) -> PyResult<Self>{
             #(#conversion_quotes)*
             Ok(Self{internal: #ident::new(#(#arguments),*)})
@@ -258,7 +271,7 @@ fn operate_struct(ds: DataStruct, ident: Ident) -> TokenStream {
         ///     RuntimeError: Qubit remapping failed
         fn remap_qubits(&self, mapping: HashMap<usize, usize>) -> PyResult<Self>{
             let new_internal = self.internal.remap_qubits(&mapping).map_err(|x|
-                PyRuntimeError::new_err(format!("Qubit remapping failed: {:?}",x))
+                PyRuntimeError::new_err(format!("Qubit remapping failed: {x:?}"))
             )?;
             Ok(Self{internal: new_internal})
         }
@@ -267,31 +280,19 @@ fn operate_struct(ds: DataStruct, ident: Ident) -> TokenStream {
         ///
         /// Returns:
         ///     Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-        fn involved_qubits(&self) -> PyObject {
-            Python::with_gil(|py| -> PyObject {
-                let involved = self.internal.involved_qubits();
-                match involved {
-                    InvolvedQubits::All => {
-                        let pyref: &Bound<PySet> = &PySet::new_bound(py, &["All"]).unwrap();
-                        let pyobject: PyObject = pyref.to_object(py);
-                        pyobject
-                    },
-                    InvolvedQubits::None => {
-                        let pyref: &Bound<PySet> = &PySet::empty_bound(py).unwrap();
-                        let pyobject: PyObject = pyref.to_object(py);
-                        pyobject
-                    },
-                    InvolvedQubits::Set(x) => {
-                        let mut vector: Vec<usize> = Vec::new();
-                        for qubit in x {
-                            vector.push(qubit)
-                        }
-                        let pyref: &Bound<PySet> = &PySet::new_bound(py, &vector[..]).unwrap();
-                        let pyobject: PyObject = pyref.to_object(py);
-                        pyobject
-                    },
+        fn involved_qubits<'py>(&'py self, py: Python<'py>) -> Bound<'py, PySet> {
+            let involved = self.internal.involved_qubits();
+            match involved {
+                InvolvedQubits::All => PySet::new(py, ["All"]).expect("Could not create PySet."),
+                InvolvedQubits::None => PySet::empty(py).expect("Could not create PySet."),
+                InvolvedQubits::Set(x) => {
+                    let mut vector: Vec<usize> = Vec::new();
+                    for qubit in x {
+                        vector.push(qubit)
+                    }
+                    PySet::new(py, &vector[..]).expect("Could not create PySet.")
                 }
-            })
+            }
         }
 
         /// Copies Operation

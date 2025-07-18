@@ -60,8 +60,7 @@ impl ClassicalRegisterWrapper {
             for c in circuits.into_iter() {
                 let tmp_c = CircuitWrapper::from_pyany(c.bind(py)).map_err(|err| {
                     PyTypeError::new_err(format!(
-                        "`circuits` argument is not a list of qoqo Circuits: {}",
-                        err
+                        "`circuits` argument is not a list of qoqo Circuits: {err}"
                     ))
                 })?;
                 new_circuits.push(tmp_c)
@@ -71,8 +70,7 @@ impl ClassicalRegisterWrapper {
                 Some(c) => {
                     let tmp_c = CircuitWrapper::from_pyany(c).map_err(|err| {
                         PyTypeError::new_err(format!(
-                            "`constant_circuit` argument is not None or a qoqo Circuit: {}",
-                            err
+                            "`constant_circuit` argument is not None or a qoqo Circuit: {err}"
                         ))
                     })?;
                     Some(tmp_c)
@@ -135,10 +133,7 @@ impl ClassicalRegisterWrapper {
                 .internal
                 .substitute_parameters(substituted_parameters)
                 .map_err(|x| {
-                    PyRuntimeError::new_err(format!(
-                        "Error substituting symbolic parameters {:?}",
-                        x
-                    ))
+                    PyRuntimeError::new_err(format!("Error substituting symbolic parameters {x:?}"))
                 })?,
         })
     }
@@ -154,7 +149,7 @@ impl ClassicalRegisterWrapper {
         let serialized = serialize(&self.internal)
             .map_err(|_| PyValueError::new_err("Cannot serialize ClassicalRegister to bytes"))?;
         let b: Py<PyByteArray> = Python::with_gil(|py| -> Py<PyByteArray> {
-            PyByteArray::new_bound(py, &serialized[..]).into()
+            PyByteArray::new(py, &serialized[..]).into()
         });
         Ok(("ClassicalRegister", b))
     }
@@ -170,7 +165,7 @@ impl ClassicalRegisterWrapper {
         let serialized = serialize(&self.internal)
             .map_err(|_| PyValueError::new_err("Cannot serialize ClassicalRegister to bytes"))?;
         let b: Py<PyByteArray> = Python::with_gil(|py| -> Py<PyByteArray> {
-            PyByteArray::new_bound(py, &serialized[..]).into()
+            PyByteArray::new(py, &serialized[..]).into()
         });
         Ok(b)
     }
@@ -189,7 +184,7 @@ impl ClassicalRegisterWrapper {
     #[staticmethod]
     pub fn from_bincode(input: &Bound<PyAny>) -> PyResult<Self> {
         let bytes = input
-            .as_gil_ref()
+            .as_ref()
             .extract::<Vec<u8>>()
             .map_err(|_| PyTypeError::new_err("Input cannot be converted to byte array"))?;
 
@@ -322,8 +317,7 @@ impl ClassicalRegisterWrapper {
             })?;
             deserialize(&bytes[..]).map_err(|err| {
                     PyTypeError::new_err(format!(
-                    "Python object cannot be converted to qoqo ClassicalRegister: Deserialization failed: {}",
-                    err
+                    "Python object cannot be converted to qoqo ClassicalRegister: Deserialization failed: {err}"
                 ))
                 })
         }

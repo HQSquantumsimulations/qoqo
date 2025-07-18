@@ -2,13 +2,15 @@
 
 **Welcome to the user documentation for the qoqo/roqoqo quantum computing toolkit.**
 
-This user documentation gives a general overview of the design principles and intended usage scenarios for qoqo and roqoqo. For a detailed description of all the types and functions, see the API-documentation of [roqoqo](https://docs.rs/roqoqo/) and [qoqo](https://hqsquantumsimulations.github.io/qoqo/).
+This user documentation gives a general overview of the design principles and intended usage scenarios for qoqo and roqoqo. For a detailed description of all the types and functions, see the API-documentation of [roqoqo](https://docs.rs/roqoqo/) and [qoqo](https://hqsquantumsimulations.github.io/qoqo/python_api_docs/index.html).
 
 ## What are qoqo and roqoqo
 
 The qoqo and roqoqo packages are a pair of quantum computing toolkits by [HQS Quantum Simulations](https://quantumsimulations.de).
 
 Like many quantum toolkits, qoqo and roqoqo are circuit-based toolkits, at the core. A sequence of operations to be run on a quantum computer is grouped into a [quantum circuit](circuits/intro.md).
+
+<img src="./images/Introduction_Graphics.png" alt="qoqo" width="60%">
 
 In the majority of quantum computing applications, the output of several quantum circuits needs to be collected and processed using additional classical measurement input, in order to construct a usable measurement result (e.g. when using a quantum computer to simulate physical quantum systems).
 
@@ -65,4 +67,4 @@ The circuit compilation use cases can be visualized in a similar way:
 
 The API documentation can be found at the following link:
 
- - [Python API](https://hqsquantumsimulations.github.io/qoqo/python_api_docs/qoqo/index.html)
+ - [Python API](https://hqsquantumsimulations.github.io/qoqo/python_api_docs/index.html)

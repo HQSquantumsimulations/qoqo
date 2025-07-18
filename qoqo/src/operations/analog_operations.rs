@@ -20,8 +20,8 @@ use qoqo_macros::*;
 use roqoqo::operations::*;
 #[cfg(feature = "json_schema")]
 use roqoqo::ROQOQO_VERSION;
-use struqture::spins::SpinHamiltonian;
-use struqture_py::spins::SpinHamiltonianSystemWrapper;
+use struqture::spins::PauliHamiltonian;
+use struqture_py::spins::PauliHamiltonianWrapper;
 
 use std::collections::HashMap;
 
@@ -29,10 +29,10 @@ use std::collections::HashMap;
 ///  Constant Hamiltonian operation on analog quantum device (PASQAL)
 ///
 /// Args:
-///     hamiltonian (SpinHamiltonian): The hamiltonian that is to be simulated.
+///     hamiltonian (PauliHamiltonian): The hamiltonian that is to be simulated.
 ///     time (CalculatorFloat): The duration for which the state evolution takes place.
-pub struct ApplyConstantSpinHamiltonian {
-    hamiltonian: SpinHamiltonian,
+pub struct ApplyConstantPauliHamiltonian {
+    hamiltonian: PauliHamiltonian,
     time: CalculatorFloat,
 }
 
@@ -40,11 +40,11 @@ pub struct ApplyConstantSpinHamiltonian {
 ///  Constant Hamiltonian operation on analog quantum device (PASCAL)
 ///
 /// Args:
-///     hamiltonian (SpinHamiltonian): The hamiltonian that is to be simulated.
+///     hamiltonian (PauliHamiltonian): The hamiltonian that is to be simulated.
 ///     time (List[float]): Range of time stored as a vector. The total duration of the simulations is given by the last value in the range.
 ///     values (Mapping[str, List[float]]): /// Values of time-dependent parameters, appearing in `hamiltonian`, at instances given by the vector `time`.
-pub struct ApplyTimeDependentSpinHamiltonian {
-    hamiltonian: SpinHamiltonian,
+pub struct ApplyTimeDependentPauliHamiltonian {
+    hamiltonian: PauliHamiltonian,
     time: Vec<f64>,
     values: HashMap<String, Vec<f64>>,
 }

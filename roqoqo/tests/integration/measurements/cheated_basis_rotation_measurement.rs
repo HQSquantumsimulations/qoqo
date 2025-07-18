@@ -75,7 +75,7 @@ fn test_clone_eq_format() {
     let helper = br != br2;
     assert!(helper);
 
-    assert!(format!("{:?}", br2).contains("theta"));
+    assert!(format!("{br2:?}").contains("theta"));
 }
 
 #[test]

@@ -11,6 +11,8 @@
 // limitations under the License.
 
 use super::SupportedVersion;
+#[cfg(feature = "serialize")]
+use crate::RoqoqoError;
 use struqture::{
     spins::PlusMinusLindbladNoiseOperator, spins::PlusMinusProduct, OperateOnDensityMatrix,
 };
@@ -39,10 +41,59 @@ use struqture::{
 /// For more fine control access the internal lindblad_noise directly and modify it.
 #[derive(Debug, Clone, PartialEq, Default)]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
-#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+#[cfg_attr(
+    feature = "serialize",
+    serde(try_from = "DecoherenceOnIdleModelSerialize")
+)]
+#[cfg_attr(feature = "serialize", serde(into = "DecoherenceOnIdleModelSerialize"))]
 pub struct DecoherenceOnIdleModel {
     /// Decoherence rates for all qubits
     pub lindblad_noise: PlusMinusLindbladNoiseOperator,
+}
+
+#[cfg(feature = "json_schema")]
+impl schemars::JsonSchema for DecoherenceOnIdleModel {
+    fn schema_name() -> String {
+        "DecoherenceOnIdleModel".to_string()
+    }
+
+    fn json_schema(gen: &mut schemars::gen::SchemaGenerator) -> schemars::schema::Schema {
+        <DecoherenceOnIdleModelSerialize>::json_schema(gen)
+    }
+}
+
+#[cfg(feature = "serialize")]
+#[derive(Clone, PartialEq, Debug, Default)]
+#[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+#[cfg_attr(feature = "serialize", serde(rename = "DecoherenceOnIdleModel"))]
+#[cfg_attr(
+    feature = "json_schema",
+    derive(schemars::JsonSchema),
+    schemars(deny_unknown_fields)
+)]
+struct DecoherenceOnIdleModelSerialize {
+    /// Decoherence rates for all qubits.
+    lindblad_noise: struqture_1::spins::PlusMinusLindbladNoiseOperator,
+}
+
+#[cfg(feature = "serialize")]
+impl TryFrom<DecoherenceOnIdleModelSerialize> for DecoherenceOnIdleModel {
+    type Error = RoqoqoError;
+    fn try_from(value: DecoherenceOnIdleModelSerialize) -> Result<Self, Self::Error> {
+        Ok(DecoherenceOnIdleModel {
+            lindblad_noise: PlusMinusLindbladNoiseOperator::from_struqture_1(&value.lindblad_noise).expect("Failed to convert PlusMinusLindbladNoiseOperator from struqture 1.x for serialization."),
+        })
+    }
+}
+
+#[cfg(feature = "serialize")]
+impl From<DecoherenceOnIdleModel> for DecoherenceOnIdleModelSerialize {
+    fn from(value: DecoherenceOnIdleModel) -> Self {
+        let lindblad_noise = value.lindblad_noise.to_struqture_1().expect(
+            "Failed to convert PlusMinusLindbladNoiseOperator to struqture 1.x for serialization.",
+        );
+        Self { lindblad_noise }
+    }
 }
 
 impl SupportedVersion for DecoherenceOnIdleModel {
@@ -132,7 +183,7 @@ impl DecoherenceOnIdleModel {
                         PlusMinusProduct::new().z(*qubit),
                         PlusMinusProduct::new().z(*qubit),
                     ),
-                    rate.into(),
+                    (0.5 * rate).into(),
                 )
                 .expect("Internal struqture bug.");
         }
@@ -291,13 +342,13 @@ mod tests {
         lindblad_operator
             .add_operator_product(
                 (PlusMinusProduct::new().z(0), PlusMinusProduct::new().z(0)),
-                0.9.into(),
+                0.45.into(),
             )
             .unwrap();
         lindblad_operator
             .add_operator_product(
                 (PlusMinusProduct::new().z(1), PlusMinusProduct::new().z(1)),
-                0.9.into(),
+                0.45.into(),
             )
             .unwrap();
 

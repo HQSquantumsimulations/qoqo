@@ -54,10 +54,10 @@ class ContinuousDecoherenceModel:
 
     def get_noise_operator(self) -> PlusMinusLindbladNoiseOperator:
         """
-        Return the internal Lindblad noise operator of the continuous noise model.
+        Return the internal Lindblad noise operator of the ContinuousDecoherenceModel noise model.
 
         Returns:
-            PlusMinusLindbladNoiseOperator: The internal Lindblad noise operator of the continuous noise
+            PlusMinusLindbladNoiseOperator: The internal Lindblad noise operator of the ContinuousDecoherenceModel.
         """
 
     def from_bincode(self, input: bytearray):
@@ -908,10 +908,10 @@ class DecoherenceOnIdleModel:
 
     def get_noise_operator(self) -> PlusMinusLindbladNoiseOperator:
         """
-        Return the internal Lindblad noise operator of the continuous noise model.
+        Return the internal Lindblad noise operator of the DecoherenceOnIdle noise model.
 
         Returns:
-            PlusMinusLindbladNoiseOperator: The internal Lindblad noise operator of the continuous noise
+            PlusMinusLindbladNoiseOperator: The internal Lindblad noise operator of the DecoherenceOnIdle.
         """
 
     def from_bincode(self, input: bytearray):

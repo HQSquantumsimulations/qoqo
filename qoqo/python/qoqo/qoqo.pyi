@@ -287,6 +287,14 @@ class Circuit:
             op (Operation): The Operation to add to the Circuit.
         """
 
+    def number_of_qubits(self) -> int:
+        """
+        Return the number of qubits in the Circuit.
+
+        Returns:
+           int: The number of qubits in the Circuit.
+        """
+
 class QuantumProgram:
     """
     Represents a quantum program evaluating measurements based on a one or more free float parameters.

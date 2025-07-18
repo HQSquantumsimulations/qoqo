@@ -88,7 +88,6 @@ impl InvolveQubits for DefinitionFloat {
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
 #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
-
 pub struct DefinitionComplex {
     /// The name of the register that is defined.
     name: String,

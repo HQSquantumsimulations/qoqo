@@ -4,13 +4,106 @@ This changelog track changes to the qoqo project starting at version v0.5.0
 
 ## Unreleased
 
+* Added the `run_parallel` method to QuantumProgram under the `unstable_parallel_run` feature.
+
+## 1.20.0
+
+* Added the `number_of_qubits` method to the `Circuit` class.
+* Fixed bug omitting a factor of 1/2 when adding dephasing.
+* Added MultiQubitCNOT operation.
+* Added QFT operation.
+* Added CFF file.
+
+## 1.19.6
+
+### Updated in 1.19.6
+
+* Updated to non-deprecated pyo3 functions.
+* Updated to pyo3 0.24.
+
+## 1.19.5
+
+### Updated in 1.19.5
+
+* Updated to struqture 2.0.0.
+
+## 1.19.4
+
+### Updated in 1.19.4
+
+* Updated to struqture 2.0.0-alpha.16.
+
+## 1.19.3
+
+### Fixed in 1.19.3
+
+* Fixed a deserialization bug concerning DecoherenceOnIdleModel and ContinuousDecoherenceModel.
+
+## 1.19.2
+
+### Updated in 1.19.2
+
+* Updated the user documentation.
+* Updated the readme in the `Cargo.toml` for qoqo and roqoqo.
+
+### Fixed in 1.19.2
+
+* Removed `importlib` from the qoqo pyproject.toml, as it is a default install.
+
+## 1.19.1
+
+### Fixed in 1.19.1
+
+* Bugfix for release of 1.19.0.
+
+## 1.19.0
+
+### Updated in 1.19.0
+
+* Updated to struqture 2.0.0-alpha.11.
+* Updated to pyo3 0.23, except the IntoPy and ToPyObject deprecation warnings.
+* Updated the noise models to output struqture 2.0 or 1.0 based on installed struqture-py version.
+* Updated badges in top-level readme.
+
+### Added in 1.19.0
+
+* Added qoqo/.cargo/config file with aarch64 and x86_64 targets for macos.
+
+### Fixed in 1.19.0
+
+* Switched serialisation of the NoiseModels to struqture 1.0.
+
+## 1.18.1
+
+### Updated in 1.18.1
+
+* Updated dependencies which were out of date.
+* Updated github actions to latest versions.
+
+### Fixed 1.18.1
+
+* Fixed new clippy warnings.
+
+## 1.18.0
+
+### Fixed 1.18.0
+
+* Fixed documentation building by hardcoding the paths.
+
+### Added in 1.18.0
+
+* Updated minimum supported Rust version from 1.70 to 1.76.
+* Updated minimum supported Python version from 3.8 to 3.9.
+* Updated to struqture 1.11.1.
+* Updated to qoqo-calculator 1.4.
+
 ## 1.17.0
 
 ### Added in 1.17.0
 
 * Added the documentation from qoqo_examples.
 * Added `PragmaSimulationRepetitions` operation.
-* Added the `run_parallel` method to QuantumProgram under the `unstable_parallel_run` feature.
+* Updated to pyo3 0.22, thereby adding support for python 3.13.
 
 ## 1.16.1
 
@@ -89,7 +182,7 @@ This changelog track changes to the qoqo project starting at version v0.5.0
 ### Added in 1.11.0
 
 * Added the DecoherenceOnIdle noise model
-* Feature `unstable_analog_operations` adding new analog operations: `ApplyConstantSpinHamiltonian`, `ApplyTimeDependentSpinHamiltonian`
+* Feature `unstable_analog_operations` adding new analog operations: `ApplyConstantPauliHamiltonian`, `ApplyTimeDependentPauliHamiltonian`
 * Added `SingleQubitOverrotationDescription`
 * Added `SingleQubitOverrotationOnGate` noise model
 * Updated cargo (including updating mio from v0.8.10 to v0.8.11)

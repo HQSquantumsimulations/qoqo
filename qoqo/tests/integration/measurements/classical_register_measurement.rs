@@ -30,7 +30,7 @@ fn test_returning_circuits() {
         let mut circ1 = CircuitWrapper::new();
         circ1.internal += roqoqo::operations::RotateX::new(0, 0.0.into());
         circs.push(circ1);
-        let br_type = py.get_type_bound::<ClassicalRegisterWrapper>();
+        let br_type = py.get_type::<ClassicalRegisterWrapper>();
         let binding = br_type
             .call1((Some(CircuitWrapper::new()), circs.clone()))
             .unwrap();
@@ -58,7 +58,7 @@ fn test_pyo3_copy() {
         let mut circ1 = CircuitWrapper::new();
         circ1.internal += roqoqo::operations::RotateX::new(0, 0.0.into());
         circs.push(circ1);
-        let br_type = py.get_type_bound::<ClassicalRegisterWrapper>();
+        let br_type = py.get_type::<ClassicalRegisterWrapper>();
         let binding = br_type
             .call1((Some(CircuitWrapper::new()), circs.clone()))
             .unwrap();
@@ -94,7 +94,7 @@ fn test_pyo3_debug() {
     Python::with_gil(|py| {
         let circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
 
-        let br_type = py.get_type_bound::<ClassicalRegisterWrapper>();
+        let br_type = py.get_type::<ClassicalRegisterWrapper>();
         let binding = br_type.call1((Some(CircuitWrapper::new()), circs)).unwrap();
         let br = binding.downcast::<ClassicalRegisterWrapper>().unwrap();
         let br_wrapper = br.extract::<ClassicalRegisterWrapper>().unwrap();
@@ -102,8 +102,8 @@ fn test_pyo3_debug() {
         #[allow(clippy::redundant_clone)]
         let br_clone = br_wrapper.clone();
         assert_eq!(format!("{:?}", br_wrapper), format!("{:?}", br_clone));
-        let debug_string = "RefCell { value: ClassicalRegisterWrapper { internal: ClassicalRegister { constant_circuit: Some(Circuit { definitions: [], operations: [], _roqoqo_version: RoqoqoVersion }), circuits: [Circuit { definitions: [], operations: [], _roqoqo_version: RoqoqoVersion }] } } }";
-        assert_eq!(format!("{:?}", br.as_gil_ref()), debug_string);
+        let debug_string = "ClassicalRegisterWrapper { internal: ClassicalRegister { constant_circuit: Some(Circuit { definitions: [], operations: [], _roqoqo_version: RoqoqoVersion }), circuits: [Circuit { definitions: [], operations: [], _roqoqo_version: RoqoqoVersion }] } }";
+        assert_eq!(format!("{:?}", br.borrow()), debug_string);
     })
 }
 
@@ -114,7 +114,7 @@ fn test_internal_to_bincode() {
     Python::with_gil(|py| {
         let circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
 
-        let br_type = py.get_type_bound::<ClassicalRegisterWrapper>();
+        let br_type = py.get_type::<ClassicalRegisterWrapper>();
         let binding = br_type.call1((Some(CircuitWrapper::new()), circs)).unwrap();
         let br = binding.downcast::<ClassicalRegisterWrapper>().unwrap();
 
@@ -142,7 +142,7 @@ fn test_to_from_json() {
     Python::with_gil(|py| {
         let circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
 
-        let br_type = py.get_type_bound::<ClassicalRegisterWrapper>();
+        let br_type = py.get_type::<ClassicalRegisterWrapper>();
         let binding = br_type.call1((Some(CircuitWrapper::new()), circs)).unwrap();
         let br = binding.downcast::<ClassicalRegisterWrapper>().unwrap();
 
@@ -151,8 +151,8 @@ fn test_to_from_json() {
         let binding = new_br.call_method1("from_json", (&serialised,)).unwrap();
         let deserialised = binding.downcast::<ClassicalRegisterWrapper>().unwrap();
         assert_eq!(
-            format!("{:?}", br.as_gil_ref()),
-            format!("{:?}", deserialised.as_gil_ref())
+            format!("{:?}", br.as_ref()),
+            format!("{:?}", deserialised.as_ref())
         );
 
         let deserialised_error =
@@ -175,7 +175,7 @@ fn test_to_from_bincode() {
     Python::with_gil(|py| {
         let circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
 
-        let br_type = py.get_type_bound::<ClassicalRegisterWrapper>();
+        let br_type = py.get_type::<ClassicalRegisterWrapper>();
         let binding = br_type.call1((Some(CircuitWrapper::new()), circs)).unwrap();
         let br = binding.downcast::<ClassicalRegisterWrapper>().unwrap();
 
@@ -184,8 +184,8 @@ fn test_to_from_bincode() {
         let binding = new_br.call_method1("from_bincode", (&serialised,)).unwrap();
         let deserialised = binding.downcast::<ClassicalRegisterWrapper>().unwrap();
         assert_eq!(
-            format!("{:?}", br.as_gil_ref()),
-            format!("{:?}", deserialised.as_gil_ref())
+            format!("{:?}", br.as_ref()),
+            format!("{:?}", deserialised.as_ref())
         );
 
         let deserialised_error =
@@ -209,7 +209,7 @@ fn test_substitute_parameters() {
         let mut circ1 = CircuitWrapper::new();
         circ1.internal += roqoqo::operations::RotateX::new(0, "theta".into());
         circs.push(circ1);
-        let br_type = py.get_type_bound::<ClassicalRegisterWrapper>();
+        let br_type = py.get_type::<ClassicalRegisterWrapper>();
         let binding = br_type
             .call1((Some(CircuitWrapper::new()), circs.clone()))
             .unwrap();
@@ -235,7 +235,7 @@ fn test_substitute_parameters_error() {
         let mut circ1 = CircuitWrapper::new();
         circ1.internal += roqoqo::operations::RotateX::new(0, "theta".into());
         circs.push(circ1);
-        let br_type = py.get_type_bound::<ClassicalRegisterWrapper>();
+        let br_type = py.get_type::<ClassicalRegisterWrapper>();
         let binding = br_type
             .call1((Some(CircuitWrapper::new()), circs.clone()))
             .unwrap();
@@ -255,7 +255,7 @@ fn test_measurement_type() {
         let mut circ1 = CircuitWrapper::new();
         circ1.internal += roqoqo::operations::RotateX::new(0, "theta".into());
         circs.push(circ1);
-        let br_type = py.get_type_bound::<ClassicalRegisterWrapper>();
+        let br_type = py.get_type::<ClassicalRegisterWrapper>();
         let binding = br_type
             .call1((Some(CircuitWrapper::new()), circs.clone()))
             .unwrap();
@@ -272,7 +272,7 @@ fn test_pyo3_format_repr() {
     Python::with_gil(|py| {
         let format_repr = "ClassicalRegister { constant_circuit: Some(Circuit { definitions: [], operations: [], _roqoqo_version: RoqoqoVersion }), circuits: [Circuit { definitions: [], operations: [], _roqoqo_version: RoqoqoVersion }] }";
         let circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
-        let br_type = py.get_type_bound::<ClassicalRegisterWrapper>();
+        let br_type = py.get_type::<ClassicalRegisterWrapper>();
         let binding = br_type.call1((Some(CircuitWrapper::new()), circs)).unwrap();
         let br = binding.downcast::<ClassicalRegisterWrapper>().unwrap();
         let to_format = br.call_method1("__format__", ("",)).unwrap();
@@ -289,7 +289,7 @@ fn test_pyo3_copy_deepcopy() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         let circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
-        let br_type = py.get_type_bound::<ClassicalRegisterWrapper>();
+        let br_type = py.get_type::<ClassicalRegisterWrapper>();
         let binding = br_type.call1((Some(CircuitWrapper::new()), circs)).unwrap();
         let br = binding.downcast::<ClassicalRegisterWrapper>().unwrap();
         let copy_op = br.call_method0("__copy__").unwrap();
@@ -318,7 +318,7 @@ fn test_pyo3_richcmp() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         let circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
-        let br_type = py.get_type_bound::<ClassicalRegisterWrapper>();
+        let br_type = py.get_type::<ClassicalRegisterWrapper>();
         let binding = br_type
             .call1((Some(CircuitWrapper::new()), circs.clone()))
             .unwrap();
@@ -348,7 +348,7 @@ fn test_pyo3_json_schema() {
     pyo3::prepare_freethreaded_python();
     pyo3::Python::with_gil(|py| {
         let circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
-        let br_type = py.get_type_bound::<ClassicalRegisterWrapper>();
+        let br_type = py.get_type::<ClassicalRegisterWrapper>();
         #[allow(clippy::redundant_clone)]
         let binding = br_type
             .call1((Some(CircuitWrapper::new()), circs.clone()))

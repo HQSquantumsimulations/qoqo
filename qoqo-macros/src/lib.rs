@@ -132,9 +132,8 @@ pub fn wrap(
             }
             #[cfg(feature = "overrotate")]
             /// Returns clone of the gate with one parameter statistically overrotated.
-            fn overrotate(&self, amplitude: &f64, variance: &f64) -> Self {
-                Self{internal: self.internal.overrotate(amplitude, variance)}
-
+            fn overrotate(&self, amplitude: f64, variance: f64) -> Self {
+                Self{internal: self.internal.overrotate(&amplitude, &variance)}
             }
         }
     } else {
@@ -154,7 +153,7 @@ pub fn wrap(
             ///
             pub fn superoperator(&self) -> PyResult<Py<PyArray2<f64>>>{
                 Python::with_gil(|py| -> PyResult<Py<PyArray2<f64>>> {
-                    Ok(self.internal.superoperator().unwrap().to_pyarray_bound(py).as_gil_ref().into())
+                    Ok(self.internal.superoperator().unwrap().to_pyarray(py).into())
                 })
             }
             /// Return the power of the noise gate
@@ -300,13 +299,13 @@ pub fn wrap(
             ///
             pub fn mul(&self, other: &Bound<PyAny>) -> PyResult<SingleQubitGateWrapper> {
                 let other: Operation = crate::operations::convert_pyany_to_operation(other).map_err(|x| {
-                    pyo3::exceptions::PyTypeError::new_err(format!("Right hand side cannot be converted to Operation {:?}",x))
+                    pyo3::exceptions::PyTypeError::new_err(format!("Right hand side cannot be converted to Operation {x:?}"))
                 })?;
                 let other_converted: SingleQubitGateOperation = other.clone().try_into().map_err(|x| {
-                    pyo3::exceptions::PyRuntimeError::new_err(format!("Conversion to SingleQubitGateOperation failed {:?}",x))
+                    pyo3::exceptions::PyRuntimeError::new_err(format!("Conversion to SingleQubitGateOperation failed {x:?}"))
                 })?;
                 let multiplied = self.internal.mul(&other_converted).map_err(|x| {
-                    pyo3::exceptions::PyRuntimeError::new_err(format!("Multiplication failed {:?}",x))
+                    pyo3::exceptions::PyRuntimeError::new_err(format!("Multiplication failed {x:?}"))
                 })?;
                 Ok(SingleQubitGateWrapper{ internal: multiplied})
             }
@@ -415,9 +414,8 @@ pub fn wrap(
             ///     ValueError: Error symbolic operation cannot return float unitary matrix
             pub fn unitary_matrix(&self) -> PyResult<Py<PyArray2<Complex64>>>{
                 Python::with_gil(|py| -> PyResult<Py<PyArray2<Complex64>>> {
-                    Ok(self.internal.unitary_matrix().map_err(|x| PyValueError::new_err(format!("Error symbolic operation cannot return float unitary matrix {:?}",x)))?
-                        .to_pyarray_bound(py)
-                        .as_gil_ref()
+                    Ok(self.internal.unitary_matrix().map_err(|x| PyValueError::new_err(format!("Error symbolic operation cannot return float unitary matrix {x:?}")))?
+                        .to_pyarray(py)
                         .into())
                 })
             }
@@ -484,31 +482,23 @@ pub fn wrap(
         ///
         /// Returns:
         ///     Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-        pub fn involved_modes(&self) -> PyObject {
-            Python::with_gil(|py| -> PyObject {
+        pub fn involved_modes<'py>(&'py self, py: Python<'py>) -> Bound<PySet> {
                 let involved = self.internal.involved_modes();
                 match involved {
                     InvolvedModes::All => {
-                        let pyref: &Bound<PySet> = &PySet::new_bound(py, &["All"]).unwrap();
-                        let pyobject: PyObject = pyref.to_object(py);
-                        pyobject
+                        PySet::new(py, &["All"]).unwrap()
                     },
                     InvolvedModes::None => {
-                        let pyref: &Bound<PySet> = &PySet::empty_bound(py).unwrap();
-                        let pyobject: PyObject = pyref.to_object(py);
-                        pyobject
+                        PySet::empty(py).unwrap()
                     },
                     InvolvedModes::Set(x) => {
                         let mut vector: Vec<usize> = Vec::new();
                         for mode in x {
                             vector.push(mode)
                         }
-                        let pyref: &Bound<PySet> = &PySet::new_bound(py, &vector[..]).unwrap();
-                        let pyobject: PyObject = pyref.to_object(py);
-                        pyobject
+                        PySet::new(py, &vector[..]).unwrap()
                     },
                 }
-            })
             }
         }
     } else {
@@ -529,7 +519,7 @@ pub fn wrap(
         ///     PyValueError: Remapping could not be performed
         pub fn remap_modes(&self, mapping: HashMap<usize, usize>) -> PyResult<Self> {
             let new_internal = self.internal.remap_modes(&mapping).map_err(|x|
-                PyRuntimeError::new_err(format!("Mode remapping failed: {:?}",x))
+                PyRuntimeError::new_err(format!("Mode remapping failed: {x:?}"))
             )?;
             Ok(Self{internal: new_internal})
             }
@@ -565,7 +555,7 @@ pub fn wrap(
             ///     Vec<usize>
             pub fn spin(&self) -> PyResult<Vec<usize>> {
                 Python::with_gil(|py| -> PyResult<Vec<usize>> {
-                    Ok(self.internal.spin().map_err(|x| PyValueError::new_err(format!("Error operation cannot return spins {:?}",x)))?.to_owned())
+                    Ok(self.internal.spin().map_err(|x| PyValueError::new_err(format!("Error operation cannot return spins {x:?}")))?.to_owned())
                 })
             }
         }
@@ -639,7 +629,7 @@ pub fn wrap(
         TokenStream::new()
     };
 
-    let msg = format!("Internal storage of {} object", ident);
+    let msg = format!("Internal storage of {ident} object");
     let q = quote! {
         #[automatically_derived]
         #[pyclass(name=#str_ident)]
@@ -702,7 +692,7 @@ pub fn wrap(
             ///
             fn __richcmp__(&self, other: &Bound<PyAny>, op: pyo3::class::basic::CompareOp) -> PyResult<bool> {
                 let other: Operation = crate::operations::convert_pyany_to_operation(other).map_err(|x| {
-                    pyo3::exceptions::PyTypeError::new_err(format!("Right hand side cannot be converted to Operation {:?}",x))
+                    pyo3::exceptions::PyTypeError::new_err(format!("Right hand side cannot be converted to Operation {:?}", x))
                 })?;
                 match op {
                     pyo3::class::basic::CompareOp::Eq => Ok(Operation::from(self.internal.clone()) == other),
@@ -761,7 +751,7 @@ fn extract_fields_with_types(ds: DataStruct) -> Vec<(Ident, Option<String>, Type
         };
         if let Some(ref x) = type_string{
             if x.as_str() == "Option"{
-           let inner_type = match &type_path.segments.iter().next().unwrap().arguments{
+           let inner_type: Option<String> = match &type_path.segments.iter().next().unwrap().arguments{
                PathArguments::AngleBracketed(angle_argumnets) =>  match angle_argumnets.args.iter().next().unwrap() {
                GenericArgument::Type(Type::Path(TypePath{path:innerty,..})) => match innerty.get_ident(){
                    Some(ident_path) => Some(ident_path.to_string()),

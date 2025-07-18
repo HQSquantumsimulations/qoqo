@@ -1,15 +1,15 @@
 [package]
 name = "roqoqo"
-version = "1.17.0"
+version = "1.20.0"
 authors = ["HQS Quantum Simulations <info@quantumsimulations.de>"]
 license = "Apache-2.0"
 edition = "2021"
-rust-version = "1.70"
+rust-version = "1.76"
 categories = ["science", "simulation"]
 homepage = "https://github.com/HQSquantumsimulations/qoqo"
 repository = "https://github.com/HQSquantumsimulations/qoqo"
 documentation = "https://docs.rs/roqoqo/"
-readme = "../README.md"
+readme = "README_roqoqo.md"
 description = "Rust Quantum Computing Toolkit by HQS"
 include = ["src*", "build.rs", "LICENSE", "README.md"]
 
@@ -22,42 +22,48 @@ path = "src/lib.rs"
 doctest = false
 
 [dependencies]
-serde = { version = "1.0", features = ["derive"], optional = true }
-ndarray = { version = "0.15" }
-num-complex = { version = "0.4" }
-thiserror = "1.0"
-dyn-clone = { version = "1.0", optional = true }
-qoqo_calculator = { version = "~1.2" }
-roqoqo-derive = { version = "~1.17", path = "../roqoqo-derive" }
-typetag = { version = "0.2", optional = true }
+roqoqo-derive = { version = "~1.20", path = "../roqoqo-derive" }
+
+qoqo_calculator = "~1.6"
+struqture = { version = "~2.0", features = [
+    "json_schema",
+    "struqture_1_export",
+    "struqture_1_import",
+] }
+struqture_1 = { package = "struqture", version = "1.12" }
+
 nalgebra = "0.33.1"
-schemars = { version = "0.8", optional = true }
-jsonschema = { version = "0.23", optional = true }
-rand_distr = { version = "0.4", optional = true }
-rand = { version = "~0.8" }
+ndarray = "0.16"
+num-complex = "0.4"
+rand = "~0.9"
+thiserror = "2.0"
 async-trait = { version = "0.1", optional = true }
-futures = { version = "0.3", optional = true }
-petgraph = { version = "0.6.2", optional = true }
 bincode = { version = "1.3", optional = true }
-struqture = { version = "~1.9", features = ["json_schema"] }
 rayon = { version = "~1.10", optional = true }
+dyn-clone = { version = "1.0", optional = true }
+jsonschema = { version = "0.29", optional = true }
+futures = { version = "0.3", optional = true }
+petgraph = { version = "0.7", optional = true }
+rand_distr = { version = "0.5", optional = true }
+schemars = { version = "0.8", optional = true }
+serde = { version = "1.0", features = ["derive"], optional = true }
+typetag = { version = "0.2", optional = true }
 
 [dev-dependencies]
+serde_json = "1.0"
 serde_test = "1.0"
 test-case = "3.0"
-serde_json = "1.0"
 
 [build-dependencies]
-quote = "1.0"
-syn = { version = "2.0", features = ["full", "visit"] }
 proc-macro2 = "1.0"
-rand = { version = "~0.8" }
+quote = "1.0"
+rand = "~0.9"
+syn = { version = "2.0", features = ["full", "visit"] }
 
 [package.metadata.docs.rs]
 rustdoc-args = ["--document-private-items"]
 
 [features]
-
 default = ["serialize", "circuitdag"]
 dynamic = ["typetag", "dyn-clone"]
 unstable_qoqo_devices = []
@@ -81,3 +87,4 @@ unstable_chain_with_environment = []
 unstable_analog_operations = []
 unstable_operation_definition = []
 unstable_parallel_run = ["rayon"]
+unstable_simulation_repetitions = []

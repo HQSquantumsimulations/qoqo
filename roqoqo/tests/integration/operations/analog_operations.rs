@@ -22,52 +22,52 @@ use schemars::schema_for;
 #[cfg(feature = "serialize")]
 use serde_test::{assert_tokens, Configure, Token};
 use std::collections::HashMap;
-use struqture::prelude::*;
-use struqture::spins::{PauliProduct, SpinHamiltonian};
+use struqture::spins::{PauliHamiltonian, PauliProduct};
+use struqture::{prelude::*, STRUQTURE_VERSION};
 use test_case::test_case;
 
-fn create_apply_constant_spin_hamiltonian<T>(p: T) -> ApplyConstantSpinHamiltonian
+fn create_apply_constant_spin_hamiltonian<T>(p: T) -> ApplyConstantPauliHamiltonian
 where
     CalculatorFloat: From<T>,
 {
     let pp = PauliProduct::new().z(0);
-    let mut hamiltonian = SpinHamiltonian::new();
+    let mut hamiltonian = PauliHamiltonian::new();
     hamiltonian
         .add_operator_product(pp.clone(), CalculatorFloat::from(p))
         .unwrap();
-    ApplyConstantSpinHamiltonian::new(hamiltonian, 1.0.into())
+    ApplyConstantPauliHamiltonian::new(hamiltonian, 1.0.into())
 }
 
-fn create_apply_constant_spin_hamiltonian_param_time() -> ApplyConstantSpinHamiltonian {
+fn create_apply_constant_spin_hamiltonian_param_time() -> ApplyConstantPauliHamiltonian {
     let pp = PauliProduct::new().z(0);
-    let mut hamiltonian = SpinHamiltonian::new();
+    let mut hamiltonian = PauliHamiltonian::new();
     hamiltonian
         .add_operator_product(pp.clone(), CalculatorFloat::from(1.0))
         .unwrap();
-    ApplyConstantSpinHamiltonian::new(hamiltonian, "time".into())
+    ApplyConstantPauliHamiltonian::new(hamiltonian, "time".into())
 }
 
-fn create_param_apply_constant_spin_hamiltonian<T>(p: T) -> ApplyConstantSpinHamiltonian
+fn create_param_apply_constant_spin_hamiltonian<T>(p: T) -> ApplyConstantPauliHamiltonian
 where
     CalculatorFloat: From<T>,
 {
     let pp = PauliProduct::new().z(0);
-    let mut hamiltonian = SpinHamiltonian::new();
+    let mut hamiltonian = PauliHamiltonian::new();
     hamiltonian
         .add_operator_product(pp, CalculatorFloat::from(p))
         .unwrap();
     let pp = PauliProduct::new().x(1);
     hamiltonian.add_operator_product(pp, 1.0.into()).unwrap();
 
-    ApplyConstantSpinHamiltonian::new(hamiltonian, 1.0.into())
+    ApplyConstantPauliHamiltonian::new(hamiltonian, 1.0.into())
 }
 
-fn create_apply_timedependent_spin_hamiltonian<T>(p: T) -> ApplyTimeDependentSpinHamiltonian
+fn create_apply_timedependent_spin_hamiltonian<T>(p: T) -> ApplyTimeDependentPauliHamiltonian
 where
     CalculatorFloat: From<T>,
 {
     let pp = PauliProduct::new().z(0);
-    let mut hamiltonian = SpinHamiltonian::new();
+    let mut hamiltonian = PauliHamiltonian::new();
     hamiltonian
         .add_operator_product(pp.clone(), CalculatorFloat::from(p))
         .unwrap();
@@ -75,14 +75,14 @@ where
     let mut values = HashMap::new();
     values.insert("omega".to_string(), vec![1.0]);
 
-    ApplyTimeDependentSpinHamiltonian::new(hamiltonian, vec![1.0], values.clone())
+    ApplyTimeDependentPauliHamiltonian::new(hamiltonian, vec![1.0], values.clone())
 }
 
 /// Test inputs
 #[test]
 fn inputs() {
     let pp = PauliProduct::new().z(0);
-    let mut hamiltonian = SpinHamiltonian::new();
+    let mut hamiltonian = PauliHamiltonian::new();
     let mut values = HashMap::new();
     values.insert("omega".to_string(), vec![1.0]);
 
@@ -94,7 +94,7 @@ fn inputs() {
     assert_eq!(op.hamiltonian(), &hamiltonian);
     assert_eq!(op.time(), &CalculatorFloat::from(1.0));
 
-    let mut test_time_dep_hamiltonian = SpinHamiltonian::new();
+    let mut test_time_dep_hamiltonian = PauliHamiltonian::new();
     test_time_dep_hamiltonian
         .add_operator_product(pp.clone(), CalculatorFloat::from("omega"))
         .unwrap();
@@ -128,10 +128,10 @@ fn clone(op: Operation) {
     assert_eq!(op.clone(), op);
 }
 
-#[test_case(Operation::from(create_apply_constant_spin_hamiltonian(1.0)), "ApplyConstantSpinHamiltonian(ApplyConstantSpinHamiltonian { hamiltonian: SpinHamiltonian { internal_map: {PauliProduct { items: [(0, Z)] }: Float(1.0)} }, time: Float(1.0) })")]
-#[test_case(Operation::from(create_apply_timedependent_spin_hamiltonian("omega")), "ApplyTimeDependentSpinHamiltonian(ApplyTimeDependentSpinHamiltonian { hamiltonian: SpinHamiltonian { internal_map: {PauliProduct { items: [(0, Z)] }: Str(\"omega\")} }, time: [1.0], values: {\"omega\": [1.0]} })")]
+#[test_case(Operation::from(create_apply_constant_spin_hamiltonian(1.0)), "ApplyConstantPauliHamiltonian(ApplyConstantPauliHamiltonian { hamiltonian: PauliHamiltonian { internal_map: {PauliProduct { items: [(0, Z)] }: Float(1.0)} }, time: Float(1.0) })")]
+#[test_case(Operation::from(create_apply_timedependent_spin_hamiltonian("omega")), "ApplyTimeDependentPauliHamiltonian(ApplyTimeDependentPauliHamiltonian { hamiltonian: PauliHamiltonian { internal_map: {PauliProduct { items: [(0, Z)] }: Str(\"omega\")} }, time: [1.0], values: {\"omega\": [1.0]} })")]
 fn debug(op: Operation, string: &str) {
-    assert_eq!(format!("{:?}", op), string);
+    assert_eq!(format!("{op:?}"), string);
 }
 
 #[test_case(
@@ -159,7 +159,7 @@ fn substitute(op: Operation, op_test: Operation) {
 fn remap_qubit() {
     let pp1 = PauliProduct::new().z(0).x(1);
     let pp2 = PauliProduct::new().z(2).x(3);
-    let mut hamiltonian = SpinHamiltonian::new();
+    let mut hamiltonian = PauliHamiltonian::new();
     hamiltonian
         .add_operator_product(pp1, CalculatorFloat::from(1.0))
         .unwrap();
@@ -169,7 +169,7 @@ fn remap_qubit() {
 
     let pp1 = PauliProduct::new().z(2).x(1);
     let pp2 = PauliProduct::new().z(0).x(3);
-    let mut test_hamiltonian = SpinHamiltonian::new();
+    let mut test_hamiltonian = PauliHamiltonian::new();
     test_hamiltonian
         .add_operator_product(pp1, CalculatorFloat::from(1.0))
         .unwrap();
@@ -177,8 +177,8 @@ fn remap_qubit() {
         .add_operator_product(pp2, CalculatorFloat::from(2.0))
         .unwrap();
 
-    let op = ApplyConstantSpinHamiltonian::new(hamiltonian, 1.0.into());
-    let test_op = ApplyConstantSpinHamiltonian::new(test_hamiltonian, 1.0.into());
+    let op = ApplyConstantPauliHamiltonian::new(hamiltonian, 1.0.into());
+    let test_op = ApplyConstantPauliHamiltonian::new(test_hamiltonian, 1.0.into());
 
     let mut qubit_mapping_test: HashMap<usize, usize> = HashMap::new();
     qubit_mapping_test.insert(0, 2);
@@ -188,7 +188,7 @@ fn remap_qubit() {
 
     let pp1 = PauliProduct::new().z(0).x(1);
     let pp2 = PauliProduct::new().z(2).x(3);
-    let mut time_dep_hamiltonian = SpinHamiltonian::new();
+    let mut time_dep_hamiltonian = PauliHamiltonian::new();
     time_dep_hamiltonian
         .add_operator_product(pp1, CalculatorFloat::from("omega"))
         .unwrap();
@@ -198,7 +198,7 @@ fn remap_qubit() {
 
     let pp1 = PauliProduct::new().z(2).x(1);
     let pp2 = PauliProduct::new().z(0).x(3);
-    let mut test_time_dep_hamiltonian = SpinHamiltonian::new();
+    let mut test_time_dep_hamiltonian = PauliHamiltonian::new();
     test_time_dep_hamiltonian
         .add_operator_product(pp1, CalculatorFloat::from("omega"))
         .unwrap();
@@ -208,8 +208,8 @@ fn remap_qubit() {
     let mut values = HashMap::new();
     values.insert("omega".to_string(), vec![1.0]);
     let op =
-        ApplyTimeDependentSpinHamiltonian::new(time_dep_hamiltonian, vec![1.0], values.clone());
-    let test_op = ApplyTimeDependentSpinHamiltonian::new(
+        ApplyTimeDependentPauliHamiltonian::new(time_dep_hamiltonian, vec![1.0], values.clone());
+    let test_op = ApplyTimeDependentPauliHamiltonian::new(
         test_time_dep_hamiltonian,
         vec![1.0],
         values.clone(),
@@ -254,7 +254,7 @@ fn constant_spin_hamiltonian_json_schema() {
     let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
 
     // Create JSONSchema
-    let test_schema = schema_for!(ApplyConstantSpinHamiltonian);
+    let test_schema = schema_for!(ApplyConstantPauliHamiltonian);
     let schema = serde_json::to_string(&test_schema).unwrap();
     let schema_value: serde_json::Value = serde_json::from_str(&schema).unwrap();
     let compiled_schema = Validator::options()
@@ -276,7 +276,7 @@ fn timedependent_spin_hamiltonian_json_schema() {
     let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
 
     // Create JSONSchema
-    let test_schema = schema_for!(ApplyTimeDependentSpinHamiltonian);
+    let test_schema = schema_for!(ApplyTimeDependentPauliHamiltonian);
     let schema = serde_json::to_string(&test_schema).unwrap();
     let schema_value: serde_json::Value = serde_json::from_str(&schema).unwrap();
     let compiled_schema = Validator::options()
@@ -297,12 +297,12 @@ fn constant_spin_hamiltonian_serde() {
         &op.clone().readable(),
         &[
             Token::Struct {
-                name: "ApplyConstantSpinHamiltonian",
+                name: "ApplyConstantPauliHamiltonian",
                 len: 2,
             },
             Token::Str("hamiltonian"),
             Token::Struct {
-                name: "SpinHamiltonianSerialize",
+                name: "PauliHamiltonianSerialize",
                 len: 2,
             },
             Token::Str("items"),
@@ -312,15 +312,21 @@ fn constant_spin_hamiltonian_serde() {
             Token::F64(1.0),
             Token::TupleEnd,
             Token::SeqEnd,
-            Token::Str("_struqture_version"),
+            Token::Str("serialisation_meta"),
             Token::Struct {
-                name: "StruqtureVersionSerializable",
-                len: 2,
+                name: "StruqtureSerialisationMeta",
+                len: 3,
             },
-            Token::Str("major_version"),
-            Token::U32(1),
-            Token::Str("minor_version"),
-            Token::U32(0),
+            Token::Str("type_name"),
+            Token::Str("PauliHamiltonian"),
+            Token::Str("min_version"),
+            Token::Tuple { len: 3 },
+            Token::U64(2),
+            Token::U64(0),
+            Token::U64(0),
+            Token::TupleEnd,
+            Token::Str("version"),
+            Token::Str(STRUQTURE_VERSION),
             Token::StructEnd,
             Token::StructEnd,
             Token::Str("time"),
@@ -333,12 +339,12 @@ fn constant_spin_hamiltonian_serde() {
         &op.compact(),
         &[
             Token::Struct {
-                name: "ApplyConstantSpinHamiltonian",
+                name: "ApplyConstantPauliHamiltonian",
                 len: 2,
             },
             Token::Str("hamiltonian"),
             Token::Struct {
-                name: "SpinHamiltonianSerialize",
+                name: "PauliHamiltonianSerialize",
                 len: 2,
             },
             Token::Str("items"),
@@ -348,7 +354,7 @@ fn constant_spin_hamiltonian_serde() {
             Token::Tuple { len: 2 },
             Token::U64(0),
             Token::UnitVariant {
-                name: "SingleSpinOperator",
+                name: "SinglePauliOperator",
                 variant: "Z",
             },
             Token::TupleEnd,
@@ -360,15 +366,21 @@ fn constant_spin_hamiltonian_serde() {
             Token::F64(1.0),
             Token::TupleEnd,
             Token::SeqEnd,
-            Token::Str("_struqture_version"),
+            Token::Str("serialisation_meta"),
             Token::Struct {
-                name: "StruqtureVersionSerializable",
-                len: 2,
+                name: "StruqtureSerialisationMeta",
+                len: 3,
             },
-            Token::Str("major_version"),
-            Token::U32(1),
-            Token::Str("minor_version"),
-            Token::U32(0),
+            Token::Str("type_name"),
+            Token::Str("PauliHamiltonian"),
+            Token::Str("min_version"),
+            Token::Tuple { len: 3 },
+            Token::U64(2),
+            Token::U64(0),
+            Token::U64(0),
+            Token::TupleEnd,
+            Token::Str("version"),
+            Token::Str(STRUQTURE_VERSION),
             Token::StructEnd,
             Token::StructEnd,
             Token::Str("time"),
@@ -391,12 +403,12 @@ fn timedependent_hamiltonian_serde() {
         &op.clone().readable(),
         &[
             Token::Struct {
-                name: "ApplyTimeDependentSpinHamiltonian",
+                name: "ApplyTimeDependentPauliHamiltonian",
                 len: 3,
             },
             Token::Str("hamiltonian"),
             Token::Struct {
-                name: "SpinHamiltonianSerialize",
+                name: "PauliHamiltonianSerialize",
                 len: 2,
             },
             Token::Str("items"),
@@ -406,15 +418,21 @@ fn timedependent_hamiltonian_serde() {
             Token::Str("omega"),
             Token::TupleEnd,
             Token::SeqEnd,
-            Token::Str("_struqture_version"),
+            Token::Str("serialisation_meta"),
             Token::Struct {
-                name: "StruqtureVersionSerializable",
-                len: 2,
+                name: "StruqtureSerialisationMeta",
+                len: 3,
             },
-            Token::Str("major_version"),
-            Token::U32(1),
-            Token::Str("minor_version"),
-            Token::U32(0),
+            Token::Str("type_name"),
+            Token::Str("PauliHamiltonian"),
+            Token::Str("min_version"),
+            Token::Tuple { len: 3 },
+            Token::U64(2),
+            Token::U64(0),
+            Token::U64(0),
+            Token::TupleEnd,
+            Token::Str("version"),
+            Token::Str(STRUQTURE_VERSION),
             Token::StructEnd,
             Token::StructEnd,
             Token::Str("time"),
@@ -436,12 +454,12 @@ fn timedependent_hamiltonian_serde() {
         &op.compact(),
         &[
             Token::Struct {
-                name: "ApplyTimeDependentSpinHamiltonian",
+                name: "ApplyTimeDependentPauliHamiltonian",
                 len: 3,
             },
             Token::Str("hamiltonian"),
             Token::Struct {
-                name: "SpinHamiltonianSerialize",
+                name: "PauliHamiltonianSerialize",
                 len: 2,
             },
             Token::Str("items"),
@@ -451,7 +469,7 @@ fn timedependent_hamiltonian_serde() {
             Token::Tuple { len: 2 },
             Token::U64(0),
             Token::UnitVariant {
-                name: "SingleSpinOperator",
+                name: "SinglePauliOperator",
                 variant: "Z",
             },
             Token::TupleEnd,
@@ -463,15 +481,21 @@ fn timedependent_hamiltonian_serde() {
             Token::Str("omega"),
             Token::TupleEnd,
             Token::SeqEnd,
-            Token::Str("_struqture_version"),
+            Token::Str("serialisation_meta"),
             Token::Struct {
-                name: "StruqtureVersionSerializable",
-                len: 2,
+                name: "StruqtureSerialisationMeta",
+                len: 3,
             },
-            Token::Str("major_version"),
-            Token::U32(1),
-            Token::Str("minor_version"),
-            Token::U32(0),
+            Token::Str("type_name"),
+            Token::Str("PauliHamiltonian"),
+            Token::Str("min_version"),
+            Token::Tuple { len: 3 },
+            Token::U64(2),
+            Token::U64(0),
+            Token::U64(0),
+            Token::TupleEnd,
+            Token::Str("version"),
+            Token::Str(STRUQTURE_VERSION),
             Token::StructEnd,
             Token::StructEnd,
             Token::Str("time"),
@@ -492,7 +516,7 @@ fn timedependent_hamiltonian_serde() {
 
 #[test]
 fn operate_analog_const_spin() {
-    let name = "ApplyConstantSpinHamiltonian";
+    let name = "ApplyConstantPauliHamiltonian";
     let unparam_analog = create_apply_constant_spin_hamiltonian(1.0);
     let param_analog = create_apply_constant_spin_hamiltonian("parametrized");
 
@@ -515,18 +539,18 @@ fn operate_analog_const_spin() {
 fn analog_spins() {
     let pp1 = PauliProduct::new().z(0).x(2);
     let pp2 = PauliProduct::new().y(3).z(0);
-    let mut hamlitonian = SpinHamiltonian::new();
+    let mut hamlitonian = PauliHamiltonian::new();
     hamlitonian.add_operator_product(pp1, (1.0).into()).unwrap();
     hamlitonian.add_operator_product(pp2, (1.0).into()).unwrap();
     let time = CalculatorFloat::from(1.0);
 
-    let analog = ApplyConstantSpinHamiltonian::new(hamlitonian, time);
+    let analog = ApplyConstantPauliHamiltonian::new(hamlitonian, time);
 
     assert_eq!(analog.spin().unwrap(), vec![0, 2, 3]);
 
     let pp1 = PauliProduct::new().z(0).x(2);
     let pp2 = PauliProduct::new().y(3).z(0);
-    let mut hamiltonian_p = SpinHamiltonian::new();
+    let mut hamiltonian_p = PauliHamiltonian::new();
     hamiltonian_p
         .add_operator_product(pp1, (1.0).into())
         .unwrap();
@@ -535,14 +559,14 @@ fn analog_spins() {
         .unwrap();
 
     let values: HashMap<_, _> = [("omega".to_string(), vec![1.0])].iter().cloned().collect();
-    let analog_td = ApplyTimeDependentSpinHamiltonian::new(hamiltonian_p, vec![1.0], values);
+    let analog_td = ApplyTimeDependentPauliHamiltonian::new(hamiltonian_p, vec![1.0], values);
 
     assert_eq!(analog_td.spin().unwrap(), vec![0, 2, 3]);
 }
 
 #[test]
 fn operate_analog_timedependent_spin() {
-    let name = "ApplyTimeDependentSpinHamiltonian";
+    let name = "ApplyTimeDependentPauliHamiltonian";
     let unparam_analog = create_apply_timedependent_spin_hamiltonian(1.0);
     let param_analog = create_apply_timedependent_spin_hamiltonian("omega");
     // (1) Test tags function
