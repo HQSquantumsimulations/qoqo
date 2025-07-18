@@ -153,7 +153,7 @@ impl QuantumProgram {
                         ),
                     });
                 };
-                let vec_measurements: Result<Vec<_>, _> = vec_parameters
+                vec_parameters
                     .into_par_iter()
                     .map(|parameters| {
                         let substituted_parameters: HashMap<String, f64> = input_parameter_names
@@ -166,9 +166,7 @@ impl QuantumProgram {
                             .expect("Failed to substitute parameters in measurement");
                         backend.run_measurement(&m)
                     })
-                    .collect();
-
-                vec_measurements
+                    .collect()
             }
             QuantumProgram::CheatedPauliZProduct{measurement, input_parameter_names } => {
                 if vec_parameters[0].len() != input_parameter_names.len() {
@@ -180,7 +178,7 @@ impl QuantumProgram {
                         ),
                     });
                 };
-                let vec_measurements: Result<Vec<_>, _> = vec_parameters
+                vec_parameters
                     .into_par_iter()
                     .map(|parameters| {
                         let substituted_parameters: HashMap<String, f64> = input_parameter_names
@@ -193,9 +191,7 @@ impl QuantumProgram {
                             .expect("Failed to substitute parameters in measurement");
                         backend.run_measurement(&m)
                     })
-                    .collect();
-
-                vec_measurements
+                    .collect()
             }
             QuantumProgram::Cheated{measurement, input_parameter_names } => {
                 if vec_parameters[0].len() != input_parameter_names.len() {
@@ -207,7 +203,7 @@ impl QuantumProgram {
                         ),
                     });
                 };
-                let vec_measurements: Result<Vec<_>, _> = vec_parameters
+                vec_parameters
                     .into_par_iter()
                     .map(|parameters| {
                         let substituted_parameters: HashMap<String, f64> = input_parameter_names
@@ -220,9 +216,7 @@ impl QuantumProgram {
                             .expect("Failed to substitute parameters in measurement");
                         backend.run_measurement(&m)
                     })
-                    .collect();
-
-                vec_measurements
+                    .collect()
             }
             _ => Err(RoqoqoBackendError::GenericError{msg: "A quantum programm returning classical registeres cannot be executed by `run` use `run_registers` instead".to_string()})
         }
