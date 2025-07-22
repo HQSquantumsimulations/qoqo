@@ -11,7 +11,8 @@
 // limitations under the License.
 
 //! Represents a quantum program evaluating measurements based on a one or more free float parameters.
-
+#[cfg(feature = "unstable_parallel_run")]
+use rayon::prelude::*;
 use std::collections::HashMap;
 
 #[cfg(feature = "async")]
@@ -112,6 +113,110 @@ impl QuantumProgram {
                     substituted_parameters
                 )?;
                 backend.run_measurement(&substituted_measurement)
+            }
+            _ => Err(RoqoqoBackendError::GenericError{msg: "A quantum programm returning classical registeres cannot be executed by `run` use `run_registers` instead".to_string()})
+        }
+    }
+
+    #[cfg(feature = "unstable_parallel_run")]
+    /// Runs the QuantumProgram and returns expectation values.
+    ///
+    /// Runs the quantum programm for multiple given sets of parameters in parallel and returns expectation values.
+    /// The parameters must be  passed in the same order as the parameters listed in `input_parameter_names`.
+    ///
+    /// This method is not implemented in the qoqo version of this Struct: QuantumProgramWrapper because since it is not
+    /// possible to convert the Bound<PyAny> into a Backend it will not be possible to call this method directly and
+    /// reimplementing it in the qoqo level would mean that we would have to instantiate one python interpreter per thrread, or
+    /// it wont run in parallel.
+    /// Instead each Backends that needs to be able to use this function will need to implement a method in its python interface
+    /// that takes a quantumprogram
+    /// Arguments:
+    ///
+    /// * `backend` - The backend the program is executed on.
+    /// * `parameters` - List of float ([f64]) parameters of the function call in order of `input_parameter_names`
+    pub fn run_parallel<T>(
+        &self,
+        backend: T,
+        vec_parameters: &[Vec<f64>],
+    ) -> Result<Vec<Option<HashMap<String, f64>>>, RoqoqoBackendError>
+    where
+        T: EvaluatingBackend + Sync,
+    {
+        match self{
+            QuantumProgram::PauliZProduct{measurement, input_parameter_names } => {
+                if vec_parameters[0].len() != input_parameter_names.len() {
+                    return Err(RoqoqoBackendError::GenericError {
+                        msg: format!(
+                            "Wrong number of parameters {} parameters expected {} parameters given",
+                            input_parameter_names.len(),
+                            vec_parameters[0].len()
+                        ),
+                    });
+                };
+                vec_parameters
+                    .into_par_iter()
+                    .map(|parameters| {
+                        let substituted_parameters: HashMap<String, f64> = input_parameter_names
+                            .iter()
+                            .zip(parameters.iter())
+                            .map(|(key, value)| (key.clone(), *value))
+                            .collect();
+                        let m = measurement
+                            .substitute_parameters(substituted_parameters)
+                            .expect("Failed to substitute parameters in measurement");
+                        backend.run_measurement(&m)
+                    })
+                    .collect()
+            }
+            QuantumProgram::CheatedPauliZProduct{measurement, input_parameter_names } => {
+                if vec_parameters[0].len() != input_parameter_names.len() {
+                    return Err(RoqoqoBackendError::GenericError {
+                        msg: format!(
+                            "Wrong number of parameters {} parameters expected {} parameters given",
+                            input_parameter_names.len(),
+                            vec_parameters[0].len()
+                        ),
+                    });
+                };
+                vec_parameters
+                    .into_par_iter()
+                    .map(|parameters| {
+                        let substituted_parameters: HashMap<String, f64> = input_parameter_names
+                            .iter()
+                            .zip(parameters.iter())
+                            .map(|(key, value)| (key.clone(), *value))
+                            .collect();
+                        let m = measurement
+                            .substitute_parameters(substituted_parameters)
+                            .expect("Failed to substitute parameters in measurement");
+                        backend.run_measurement(&m)
+                    })
+                    .collect()
+            }
+            QuantumProgram::Cheated{measurement, input_parameter_names } => {
+                if vec_parameters[0].len() != input_parameter_names.len() {
+                    return Err(RoqoqoBackendError::GenericError {
+                        msg: format!(
+                            "Wrong number of parameters {} parameters expected {} parameters given",
+                            input_parameter_names.len(),
+                            vec_parameters[0].len()
+                        ),
+                    });
+                };
+                vec_parameters
+                    .into_par_iter()
+                    .map(|parameters| {
+                        let substituted_parameters: HashMap<String, f64> = input_parameter_names
+                            .iter()
+                            .zip(parameters.iter())
+                            .map(|(key, value)| (key.clone(), *value))
+                            .collect();
+                        let m = measurement
+                            .substitute_parameters(substituted_parameters)
+                            .expect("Failed to substitute parameters in measurement");
+                        backend.run_measurement(&m)
+                    })
+                    .collect()
             }
             _ => Err(RoqoqoBackendError::GenericError{msg: "A quantum programm returning classical registeres cannot be executed by `run` use `run_registers` instead".to_string()})
         }
