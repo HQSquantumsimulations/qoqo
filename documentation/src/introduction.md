@@ -67,4 +67,4 @@ The circuit compilation use cases can be visualized in a similar way:
 
 The API documentation can be found at the following link:
 
- - [Python API](https://hqsquantumsimulations.github.io/qoqo/python_api_docs/index.html)
+ - [Python API](https://hqsquantumsimulations.github.io/qoqo/python_api_docs/generated/qoqo.html)

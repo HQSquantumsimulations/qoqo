@@ -8,7 +8,7 @@
 
 roqoqo is the core rust library for **qoqo** - a toolkit to represent quantum circuits by [HQS Quantum Simulations](https://quantumsimulations.de). 
 
-For a detailed introduction see the [user documentation](https://hqsquantumsimulations.github.io/qoqo) and the [qoqo examples repository](https://github.com/HQSquantumsimulations/qoqo_examples).
+For a detailed introduction see the [user documentation](https://hqsquantumsimulations.github.io/qoqo) and the [qoqo examples repository](https://github.com/HQSquantumsimulations/qoqo_examples). Additionally, the [API documentation](https://docs.rs/roqoqo/) is available.
 
 What roqoqo is:
 
