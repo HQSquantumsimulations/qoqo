@@ -98,7 +98,7 @@ use std::pin::Pin;
 /// for (index, b) in br.circuits.iter().enumerate() {
 ///     assert_eq!(b, circs.get(index).unwrap());
 /// }
-/// assert_eq!(&Circuit::new(), br.constant_circuit.as_ref().unwrap());
+/// assert_eq!(&Circuit::new(), br.constant_circuit.unwrap());
 /// ```
 ///
 pub trait Measure: PartialEq + Clone {

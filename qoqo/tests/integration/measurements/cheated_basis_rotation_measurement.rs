@@ -398,10 +398,7 @@ fn test_to_from_bincode() {
         let serialised = br.call_method0("to_bincode").unwrap();
         let binding = new_br.call_method1("from_bincode", (&serialised,)).unwrap();
         let deserialised = binding.downcast::<CheatedPauliZProductWrapper>().unwrap();
-        assert_eq!(
-            format!("{:?}", br.as_ref()),
-            format!("{:?}", deserialised.as_ref())
-        );
+        assert_eq!(format!("{:?}", br), format!("{:?}", deserialised));
 
         let deserialised_error =
             new_br.call_method1("from_bincode", (bincode::serialize("fails").unwrap(),));
@@ -448,10 +445,7 @@ fn test_to_from_json() {
         let serialised = br.call_method0("to_json").unwrap();
         let binding = new_br.call_method1("from_json", (&serialised,)).unwrap();
         let deserialised = binding.downcast::<CheatedPauliZProductWrapper>().unwrap();
-        assert_eq!(
-            format!("{:?}", br.as_ref()),
-            format!("{:?}", deserialised.as_ref())
-        );
+        assert_eq!(format!("{:?}", br), format!("{:?}", deserialised));
 
         let deserialised_error =
             new_br.call_method1("from_json", (serde_json::to_string("fails").unwrap(),));

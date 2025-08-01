@@ -12,7 +12,6 @@
 
 //! Qoqo measurement inputs
 
-use bincode::{deserialize, serialize};
 use num_complex::Complex64;
 use pyo3::exceptions::{PyRuntimeError, PyTypeError, PyValueError};
 use pyo3::prelude::*;
@@ -195,7 +194,6 @@ impl PauliZProductInputWrapper {
     #[staticmethod]
     pub fn from_bincode(input: &Bound<PyAny>) -> PyResult<Self> {
         let bytes = input
-            .as_ref()
             .extract::<Vec<u8>>()
             .map_err(|_| PyTypeError::new_err("Input cannot be converted to byte array"))?;
 
@@ -427,7 +425,6 @@ impl CheatedPauliZProductInputWrapper {
     #[staticmethod]
     pub fn from_bincode(input: &Bound<PyAny>) -> PyResult<Self> {
         let bytes = input
-            .as_ref()
             .extract::<Vec<u8>>()
             .map_err(|_| PyTypeError::new_err("Input cannot be converted to byte array"))?;
 
@@ -627,7 +624,6 @@ impl CheatedInputWrapper {
     #[staticmethod]
     pub fn from_bincode(input: &Bound<PyAny>) -> PyResult<Self> {
         let bytes = input
-            .as_ref()
             .extract::<Vec<u8>>()
             .map_err(|_| PyTypeError::new_err("Input cannot be converted to byte array"))?;
 

@@ -16,7 +16,6 @@ use crate::measurements::{
     CheatedPauliZProductWrapper, CheatedWrapper, ClassicalRegisterWrapper, PauliZProductWrapper,
 };
 use crate::{QoqoError, QOQO_VERSION};
-use bincode::{deserialize, serialize};
 use pyo3::exceptions::{PyRuntimeError, PyTypeError, PyValueError};
 use pyo3::prelude::*;
 use pyo3::types::PyByteArray;
@@ -360,7 +359,6 @@ impl QuantumProgramWrapper {
     #[staticmethod]
     pub fn from_bincode(input: &Bound<PyAny>) -> PyResult<Self> {
         let bytes = input
-            .as_ref()
             .extract::<Vec<u8>>()
             .map_err(|_| PyTypeError::new_err("Input cannot be converted to byte array"))?;
 
@@ -472,7 +470,7 @@ impl QuantumProgramWrapper {
 ///
 /// Fallible conversion of generic python object to [roqoqo::QuantumProgram].
 pub fn convert_into_quantum_program(input: &Bound<PyAny>) -> Result<QuantumProgram, QoqoError> {
-    if let Ok(try_downcast) = input.as_ref().extract::<QuantumProgramWrapper>() {
+    if let Ok(try_downcast) = input.extract::<QuantumProgramWrapper>() {
         return Ok(try_downcast.internal);
     }
     // Everything that follows tries to extract the quantum program when two separately

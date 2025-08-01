@@ -11,7 +11,6 @@
 // limitations under the License.
 //
 
-use bincode::{deserialize, serialize};
 use ndarray::Array2;
 use numpy::{PyArray2, PyReadonlyArray2, ToPyArray};
 use pyo3::exceptions::{PyTypeError, PyValueError};

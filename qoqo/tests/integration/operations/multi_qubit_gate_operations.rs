@@ -170,7 +170,7 @@ fn test_new_multi_cnot(input_operation: Operation, arguments: Vec<u32>, method: 
 
         // Error initialisation
         let result = operation_type.call1((vec!["fails"],));
-        let result_ref = result.as_ref();
+        let result_ref = result;
         assert!(result_ref.is_err());
 
         // Testing PartialEq, Clone and Debug
@@ -206,7 +206,7 @@ fn test_new_qft(input_operation: Operation, arguments: (Vec<u32>, bool, bool), m
 
         // Error initialisation
         let result = operation_type.call1((vec!["fails"], false, false));
-        let result_ref = result.as_ref();
+        let result_ref = result;
         assert!(result_ref.is_err());
 
         // Testing PartialEq, Clone and Debug

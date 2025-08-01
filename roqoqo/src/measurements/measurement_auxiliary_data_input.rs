@@ -332,12 +332,12 @@ pub struct CheatedInput {
 
 #[cfg(feature = "json_schema")]
 impl schemars::JsonSchema for CheatedInput {
-    fn schema_name() -> String {
-        "CheatedInput".to_string()
+    fn schema_name() -> std::borrow::Cow<'static, str> {
+        "CheatedInput".into()
     }
 
-    fn json_schema(gen: &mut schemars::gen::SchemaGenerator) -> schemars::schema::Schema {
-        <SchemaHelperCheatedInput>::json_schema(gen)
+    fn json_schema(generator: &mut schemars::SchemaGenerator) -> schemars::Schema {
+        <SchemaHelperCheatedInput>::json_schema(generator)
     }
 }
 

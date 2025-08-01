@@ -160,7 +160,7 @@ fn operate_qubits_struct(ds: DataStruct, ident: Ident) -> TokenStream {
         .filter(|(_, type_string, _)| type_string == &Some("Option<Circuit>".to_string()))
         .map(|(id, _, _)| {
             quote! {
-                match self.#id.as_ref(){
+                match self.#id.as_ref() {
                     Some(x) => x.is_parametrized(),
                     None => false
                 }

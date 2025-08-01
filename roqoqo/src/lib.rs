@@ -24,12 +24,7 @@
 use qoqo_calculator::CalculatorError;
 use qoqo_calculator::CalculatorFloat;
 #[cfg(feature = "json_schema")]
-use schemars::{
-    gen::SchemaGenerator,
-    schema::SchemaObject,
-    schema::{InstanceType, Schema},
-    JsonSchema,
-};
+use schemars::{JsonSchema, Schema};
 use std::str::FromStr;
 #[cfg(feature = "unstable_analog_operations")]
 use struqture::StruqtureError;
@@ -47,12 +42,12 @@ struct RoqoqoVersion;
 
 #[cfg(feature = "json_schema")]
 impl JsonSchema for RoqoqoVersion {
-    fn schema_name() -> String {
-        "RoqoqoVersion".to_string()
+    fn schema_name() -> std::borrow::Cow<'static, str> {
+        "RoqoqoVersion".into()
     }
 
-    fn json_schema(gen: &mut schemars::gen::SchemaGenerator) -> Schema {
-        RoqoqoVersionSerializable::json_schema(gen)
+    fn json_schema(generator: &mut schemars::SchemaGenerator) -> Schema {
+        RoqoqoVersionSerializable::json_schema(generator)
     }
 }
 
@@ -328,22 +323,20 @@ pub enum RoqoqoBackendError {
 pub(crate) struct Complex64Def;
 #[cfg(feature = "json_schema")]
 impl JsonSchema for Complex64Def {
-    fn schema_name() -> String {
-        "Complex64".to_string()
+    fn schema_name() -> std::borrow::Cow<'static, str> {
+        "Complex64".into()
     }
-    fn json_schema(gen: &mut SchemaGenerator) -> Schema {
-        let mut schema = SchemaObject {
-            instance_type: Some(InstanceType::Number.into()),
-            ..Default::default()
-        };
-        let obj = schema.object();
-        obj.required.insert("re".to_owned());
-        obj.required.insert("im".to_owned());
-        obj.properties
-            .insert("re".to_owned(), <f64>::json_schema(gen));
-        obj.properties
-            .insert("im".to_owned(), <f64>::json_schema(gen));
-        schema.into()
+
+    fn json_schema(generator: &mut schemars::SchemaGenerator) -> schemars::Schema {
+        let number_schema = generator.subschema_for::<f64>();
+        schemars::json_schema!({
+            "type": "object",
+            "properties": {
+                "re": number_schema,
+                "im": number_schema
+            },
+            "required": ["re", "im"]
+        })
     }
 }
 
@@ -351,27 +344,23 @@ impl JsonSchema for Complex64Def {
 pub(crate) struct Array1C64Def;
 #[cfg(feature = "json_schema")]
 impl JsonSchema for Array1C64Def {
-    fn schema_name() -> String {
-        "Array1_Complex64".to_string()
+    fn schema_name() -> std::borrow::Cow<'static, str> {
+        "Array1_Complex64".into()
     }
-    fn json_schema(gen: &mut SchemaGenerator) -> Schema {
-        let mut schema = SchemaObject {
-            instance_type: Some(InstanceType::Object.into()),
-            ..Default::default()
-        };
-        let obj = schema.object();
-        obj.required.insert("v".to_owned());
-        obj.required.insert("dim".to_owned());
-        obj.required.insert("data".to_owned());
-        obj.properties
-            .insert("v".to_owned(), <u8>::json_schema(gen));
-        obj.properties
-            .insert("dim".to_owned(), <Vec<u8>>::json_schema(gen));
-        obj.properties.insert(
-            "data".to_owned(),
-            <Vec<Vec<Complex64Def>>>::json_schema(gen),
-        );
-        schema.into()
+
+    fn json_schema(generator: &mut schemars::SchemaGenerator) -> schemars::Schema {
+        let v_schema = generator.subschema_for::<u8>();
+        let dim_schema = generator.subschema_for::<Vec<u8>>();
+        let data_schema = generator.subschema_for::<Vec<Vec<Complex64Def>>>();
+        schemars::json_schema!({
+            "type": "object",
+            "properties": {
+                "v": v_schema,
+                "dim": dim_schema,
+                "data": data_schema
+            },
+            "required": ["v", "dim", "data"]
+        })
     }
 }
 
@@ -379,27 +368,24 @@ impl JsonSchema for Array1C64Def {
 pub(crate) struct Array2C64Def;
 #[cfg(feature = "json_schema")]
 impl JsonSchema for Array2C64Def {
-    fn schema_name() -> String {
-        "Array2_Complex64".to_string()
+    fn schema_name() -> std::borrow::Cow<'static, str> {
+        "Array2_Complex64".into()
     }
-    fn json_schema(gen: &mut SchemaGenerator) -> Schema {
-        let mut schema = SchemaObject {
-            instance_type: Some(InstanceType::Object.into()),
-            ..Default::default()
-        };
-        let obj = schema.object();
-        obj.required.insert("v".to_owned());
-        obj.required.insert("dim".to_owned());
-        obj.required.insert("data".to_owned());
-        obj.properties
-            .insert("v".to_owned(), <u8>::json_schema(gen));
-        obj.properties
-            .insert("dim".to_owned(), <Vec<u8>>::json_schema(gen));
-        obj.properties.insert(
-            "data".to_owned(),
-            <Vec<Vec<Complex64Def>>>::json_schema(gen),
-        );
-        schema.into()
+
+    fn json_schema(generator: &mut schemars::SchemaGenerator) -> schemars::Schema {
+        let v_schema = generator.subschema_for::<u8>();
+        let dim_schema = generator.subschema_for::<Vec<u8>>();
+        let data_schema = generator.subschema_for::<Vec<Vec<Complex64Def>>>();
+
+        schemars::json_schema!({
+            "type": "object",
+            "properties": {
+                "v": v_schema,
+                "dim": dim_schema,
+                "data": data_schema
+            },
+            "required": ["v", "dim", "data"]
+        })
     }
 }
 
@@ -407,25 +393,24 @@ impl JsonSchema for Array2C64Def {
 pub(crate) struct Array2f64Def;
 #[cfg(feature = "json_schema")]
 impl JsonSchema for Array2f64Def {
-    fn schema_name() -> String {
-        "Array2_f64".to_string()
+    fn schema_name() -> std::borrow::Cow<'static, str> {
+        "Array2_f64".into()
     }
-    fn json_schema(gen: &mut SchemaGenerator) -> Schema {
-        let mut schema = SchemaObject {
-            instance_type: Some(InstanceType::Object.into()),
-            ..Default::default()
-        };
-        let obj = schema.object();
-        obj.required.insert("v".to_owned());
-        obj.required.insert("dim".to_owned());
-        obj.required.insert("data".to_owned());
-        obj.properties
-            .insert("v".to_owned(), <u8>::json_schema(gen));
-        obj.properties
-            .insert("dim".to_owned(), <Vec<u8>>::json_schema(gen));
-        obj.properties
-            .insert("data".to_owned(), <Vec<f64>>::json_schema(gen));
-        schema.into()
+
+    fn json_schema(generator: &mut schemars::SchemaGenerator) -> schemars::Schema {
+        let v_schema = generator.subschema_for::<u8>();
+        let dim_schema = generator.subschema_for::<Vec<u8>>();
+        let data_schema = generator.subschema_for::<Vec<f64>>();
+
+        schemars::json_schema!({
+            "type": "object",
+            "properties": {
+                "v": v_schema,
+                "dim": dim_schema,
+                "data": data_schema
+            },
+            "required": ["v", "dim", "data"]
+        })
     }
 }
 

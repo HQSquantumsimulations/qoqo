@@ -16,7 +16,6 @@
 use std::collections::HashSet;
 
 use crate::{QoqoError, QOQO_VERSION};
-use bincode::{deserialize, serialize};
 use pyo3::exceptions::{PyIndexError, PyTypeError, PyValueError};
 use pyo3::prelude::*;
 use pyo3::types::{PyByteArray, PyDict};
@@ -351,7 +350,6 @@ impl CircuitDagWrapper {
     #[pyo3(text_signature = "(input)")]
     pub fn from_bincode(input: &Bound<PyAny>) -> PyResult<Self> {
         let bytes = input
-            .as_ref()
             .extract::<Vec<u8>>()
             .map_err(|_| PyTypeError::new_err("Input cannot be converted to byte array"))?;
 
@@ -473,7 +471,7 @@ impl CircuitDagWrapper {
 ///
 /// Fallible conversion of generic python object to [roqoqo::CircuitDag].
 pub fn convert_into_circuitdag(input: &Bound<PyAny>) -> Result<CircuitDag, QoqoError> {
-    if let Ok(try_downcast) = input.as_ref().extract::<CircuitDagWrapper>() {
+    if let Ok(try_downcast) = input.extract::<CircuitDagWrapper>() {
         return Ok(try_downcast.internal);
     }
     // Everything that follows tries to extract the circuitdag when two separately
