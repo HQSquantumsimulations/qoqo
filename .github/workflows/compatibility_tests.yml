@@ -33,7 +33,7 @@ jobs:
             if [ -d "$dir" ]; then
               echo "Running tests in $dir"
               cd $dir
-              CARGO_TARGET_DIR=../target cargo test --no-default-features --locked --offline
+              CARGO_TARGET_DIR=../target cargo test --no-default-features --locked
               cd - > /dev/null
             fi
           done
