@@ -20,19 +20,19 @@ publish = false
 
 [dependencies]
 test_roqoqo_1_16 = { package = "roqoqo", version = "=1.16.1" }
-roqoqo = { version = "~1.20", path = "../../roqoqo", features = [
+roqoqo = { version = "~1.21", path = "../../roqoqo", features = [
     "serialize",
     "overrotate",
 ] }
-struqture_1_12 = { git = "https://github.com/HQSquantumsimulations/struqture", package = "struqture", tag = "v1.12.2" }
+struqture_1_13 = { git = "https://github.com/HQSquantumsimulations/struqture", package = "struqture", tag = "v1.13.0" }
 struqture_1_9 = { git = "https://github.com/HQSquantumsimulations/struqture", package = "struqture", tag = "v1.9.2" }
-bincode = { version = "1.3" }
+bincode = { version = "2.0" }
 ndarray = "0.15"
 qoqo_calculator = { git = "https://github.com/HQSquantumsimulations/qoqo_calculator" }
 qoqo_calculator_1_2 = { git = "https://github.com/HQSquantumsimulations/qoqo_calculator", package = "qoqo_calculator", tag = "v1.2.4" }
 
 [patch.crates-io]
-struqture_1_12 = { git = "https://github.com/HQSquantumsimulations/struqture", package = "struqture", tag = "v1.12.2" }
+struqture_1_13 = { git = "https://github.com/HQSquantumsimulations/struqture", package = "struqture", tag = "v1.13.0" }
 struqture_1_9 = { git = "https://github.com/HQSquantumsimulations/struqture", package = "struqture", tag = "v1.9.2" }
 qoqo_calculator = { git = "https://github.com/HQSquantumsimulations/qoqo_calculator" }
 qoqo_calculator_1_2 = { git = "https://github.com/HQSquantumsimulations/qoqo_calculator", package = "qoqo_calculator", tag = "v1.2.4" }
