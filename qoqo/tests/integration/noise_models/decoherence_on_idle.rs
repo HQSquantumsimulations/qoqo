@@ -237,12 +237,16 @@ fn test_to_from_bincode() {
             format!("{:?}", deserialised.borrow())
         );
 
-        let deserialised_error =
-            new_br.call_method1("from_bincode", (bincode::serialize("fails").unwrap(),));
+        let deserialised_error = new_br.call_method1(
+            "from_bincode",
+            (bincode::serde::encode_to_vec("fails", bincode::config::legacy()).unwrap(),),
+        );
         assert!(deserialised_error.is_err());
 
-        let deserialised_error =
-            new_br.call_method1("from_bincode", (bincode::serialize(&vec![0]).unwrap(),));
+        let deserialised_error = new_br.call_method1(
+            "from_bincode",
+            (bincode::serde::encode_to_vec(&vec![0], bincode::config::legacy()).unwrap(),),
+        );
         assert!(deserialised_error.is_err());
 
         let serialised_error = serialised.call_method0("to_bincode");

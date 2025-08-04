@@ -212,8 +212,10 @@ impl CheatedWrapper {
     /// Raises:
     ///     ValueError: Cannot serialize Measurement to bytes.
     pub fn _internal_to_bincode(&self) -> PyResult<(&'static str, Py<PyByteArray>)> {
-        let serialized = serialize(&self.internal)
-            .map_err(|_| PyValueError::new_err("Cannot serialize CheatedMeasurement to bytes"))?;
+        let serialized = bincode::serde::encode_to_vec(&self.internal, bincode::config::legacy())
+            .map_err(|_| {
+            PyValueError::new_err("Cannot serialize CheatedMeasurement to bytes")
+        })?;
         let b: Py<PyByteArray> = Python::with_gil(|py| -> Py<PyByteArray> {
             PyByteArray::new(py, &serialized[..]).into()
         });
@@ -228,7 +230,7 @@ impl CheatedWrapper {
     /// Raises:
     ///     ValueError: Cannot serialize Cheated to bytes.
     pub fn to_bincode(&self) -> PyResult<Py<PyByteArray>> {
-        let serialized = serialize(&self.internal)
+        let serialized = bincode::serde::encode_to_vec(&self.internal, bincode::config::legacy())
             .map_err(|_| PyValueError::new_err("Cannot serialize Cheated to bytes"))?;
         let b: Py<PyByteArray> = Python::with_gil(|py| -> Py<PyByteArray> {
             PyByteArray::new(py, &serialized[..]).into()
@@ -254,8 +256,9 @@ impl CheatedWrapper {
             .map_err(|_| PyTypeError::new_err("Input cannot be converted to byte array"))?;
 
         Ok(Self {
-            internal: deserialize(&bytes[..])
-                .map_err(|_| PyValueError::new_err("Input cannot be deserialized to Cheated"))?,
+            internal: bincode::serde::decode_from_slice(&bytes[..], bincode::config::legacy())
+                .map_err(|_| PyValueError::new_err("Input cannot be deserialized to Cheated"))?
+                .0,
         })
     }
 
@@ -379,11 +382,11 @@ impl CheatedWrapper {
             let bytes = get_bytes.extract::<Vec<u8>>().map_err(|_| {
                 PyTypeError::new_err("Python object cannot be converted to qoqo Cheated: Cast to binary representation failed".to_string())
             })?;
-            deserialize(&bytes[..]).map_err(|err| {
+            bincode::serde::decode_from_slice(&bytes[..], bincode::config::legacy()).map_err(|err| {
                 PyTypeError::new_err(format!(
                     "Python object cannot be converted to qoqo Cheated: Deserialization failed: {err}"
                 ))
-            })
+            }).map(|(deserialized, _)| deserialized)
         }
     }
 }

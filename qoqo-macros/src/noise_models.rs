@@ -54,7 +54,7 @@ pub fn noise_model_wrapper_def(
             ///
             pub fn to_bincode(&self) -> PyResult<Py<pyo3::types::PyByteArray>> {
                 let noise_model = NoiseModel::from(self.internal.clone());
-                let serialized = bincode::encode_to_vec(&noise_model, bincode::config::legacy())
+                let serialized = bincode::serde::encode_to_vec(&noise_model, bincode::config::legacy())
                     .map_err(|_| pyo3::exceptions::PyValueError::new_err("Cannot serialize Noise-Model to bytes"))?;
                 let b: Py<pyo3::types::PyByteArray> = Python::with_gil(|py| -> Py<pyo3::types::PyByteArray> {
                     pyo3::types::PyByteArray::new(py, &serialized[..]).into()
@@ -142,7 +142,7 @@ pub fn noise_model_wrapper_def(
                                 "Cannot treat input as NoiseModel: {}",
                                 err
                             ))
-                        }).map(|(deserialized, _) deserialized)
+                        }).map(|(deserialized, _)| deserialized)
                     }
             }
         }

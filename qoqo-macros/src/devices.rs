@@ -395,7 +395,7 @@ pub fn device_wrapper_def(
                     .map_err(|_| PyTypeError::new_err("Input cannot be converted to byte array"))?;
 
                 Ok(#ident {
-                    internal: bincode::decode_from_slice(&bytes[..], bincode::config::legacy()).map_err(|_| {
+                    internal: bincode::serde::decode_from_slice(&bytes[..], bincode::config::legacy()).map_err(|_| {
                         PyValueError::new_err("Input cannot be deserialized to selected Device.")
                     })?.0,
                 })

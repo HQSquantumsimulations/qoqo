@@ -1,6 +1,6 @@
 [package]
 name = "roqoqo"
-version = "1.20.0"
+version = "1.21.0"
 authors = ["HQS Quantum Simulations <info@quantumsimulations.de>"]
 license = "Apache-2.0"
 edition = "2021"
@@ -22,7 +22,7 @@ path = "src/lib.rs"
 doctest = false
 
 [dependencies]
-roqoqo-derive = { version = "~1.20", path = "../roqoqo-derive" }
+roqoqo-derive = { version = "~1.21", path = "../roqoqo-derive" }
 
 qoqo_calculator = "~1.7"
 struqture = { version = "~2.2", features = [
@@ -48,9 +48,9 @@ rand_distr = { version = "0.5", optional = true }
 schemars = { version = "1.0", optional = true }
 serde = { version = "1.0", features = ["derive"], optional = true }
 typetag = { version = "0.2", optional = true }
+serde_json = "1.0"
 
 [dev-dependencies]
-serde_json = "1.0"
 serde_test = "1.0"
 test-case = "3.0"
 

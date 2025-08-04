@@ -811,6 +811,7 @@ fn pragma_set_density_matrix_json_schema() {
         .with_draft(Draft::Draft7)
         .build(&schema_value)
         .unwrap();
+    println!("{:?}\n\n{:?}", schema_value, test_value);
 
     let validation_result = compiled_schema.validate(&test_value);
     assert!(validation_result.is_ok());

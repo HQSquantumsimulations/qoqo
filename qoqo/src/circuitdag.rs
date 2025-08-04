@@ -69,11 +69,11 @@ impl CircuitDagWrapper {
             let bytes = get_bytes.extract::<Vec<u8>>().map_err(|_| {
                 PyTypeError::new_err("Python object cannot be converted to qoqo CircuitDag: Cast to binary representation failed".to_string())
             })?;
-            deserialize(&bytes[..]).map_err(|err| {
+            bincode::serde::decode_from_slice(&bytes[..], bincode::config::legacy()).map_err(|err| {
                 PyTypeError::new_err(format!(
                     "Python object cannot be converted to qoqo CircuitDag: Deserialization failed: {err}"
                 ))}
-            )
+            ).map(|(deserialized, _)| deserialized)
         }
     }
 }
@@ -327,8 +327,9 @@ impl CircuitDagWrapper {
     ///     ValueError: Cannot serialize CircuitDag to bytes.
     #[pyo3(text_signature = "($self)")]
     pub fn to_bincode(&self) -> PyResult<Py<PyByteArray>> {
-        let serialized = serialize(&self.internal)
-            .map_err(|_| PyValueError::new_err("Cannot serialize CircuitDag to bytes"))?;
+        let serialized =
+            bincode::serde::encode_to_vec(&self.internal, bincode::config::legacy())
+                .map_err(|_| PyValueError::new_err("Cannot serialize CircuitDag to bytes"))?;
         let b: Py<PyByteArray> = Python::with_gil(|py| -> Py<PyByteArray> {
             PyByteArray::new(py, &serialized[..]).into()
         });
@@ -354,8 +355,9 @@ impl CircuitDagWrapper {
             .map_err(|_| PyTypeError::new_err("Input cannot be converted to byte array"))?;
 
         Ok(Self {
-            internal: deserialize(&bytes[..])
-                .map_err(|_| PyValueError::new_err("Input cannot be deserialized to CircuitDag"))?,
+            internal: bincode::serde::decode_from_slice(&bytes[..], bincode::config::legacy())
+                .map_err(|_| PyValueError::new_err("Input cannot be deserialized to CircuitDag"))?
+                .0,
         })
     }
 
@@ -502,7 +504,9 @@ pub fn convert_into_circuitdag(input: &Bound<PyAny>) -> Result<CircuitDag, QoqoE
     let bytes = get_bytes
         .extract::<Vec<u8>>()
         .map_err(|_| QoqoError::CannotExtractObject)?;
-    deserialize(&bytes[..]).map_err(|_| QoqoError::CannotExtractObject)
+    bincode::serde::decode_from_slice(&bytes[..], bincode::config::legacy())
+        .map_err(|_| QoqoError::CannotExtractObject)
+        .map(|(deserialized, _)| deserialized)
     // } else {
     //     Err(QoqoError::VersionMismatch)
     // }

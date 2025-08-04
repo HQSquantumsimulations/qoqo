@@ -104,21 +104,36 @@ fn test_bincode_compatibility_1_2(operation: test_roqoqo_1_2::operations::Operat
         measurement: test_measurement,
         input_parameter_names: vec!["test".to_string()],
     };
-    let test_serialisation: Vec<u8> = bincode::serialize(&test_program).unwrap();
+    let config = bincode::config::legacy();
+    let test_serialisation: Vec<u8> = bincode::serde::encode_to_vec(&test_program, config).unwrap();
 
     let _test_deserialisation: roqoqo::QuantumProgram =
-        bincode::deserialize(&test_serialisation).unwrap();
+        bincode::serde::decode_from_slice(&test_serialisation, config)
+            .unwrap()
+            .0;
 }
 
-
 #[test]
-fn test_device_compat(){
-    let test_device = test_roqoqo_1_2::devices::AllToAllDevice::new(3, &["RotateZ".to_string()], &["CNOT".to_string()], 1.0);
-    let test_serialisation: Vec<u8> = bincode::serialize(&test_device).unwrap();
+fn test_device_compat() {
+    let test_device = test_roqoqo_1_2::devices::AllToAllDevice::new(
+        3,
+        &["RotateZ".to_string()],
+        &["CNOT".to_string()],
+        1.0,
+    );
+    let config = bincode::config::legacy();
+    let test_serialisation: Vec<u8> = bincode::serde::encode_to_vec(&test_device, config).unwrap();
 
     let test_deserialisation: roqoqo::devices::AllToAllDevice =
-        bincode::deserialize(&test_serialisation).unwrap();
+        bincode::serde::decode_from_slice(&test_serialisation, config)
+            .unwrap()
+            .0;
 
-    let comparsion_device = roqoqo::devices::AllToAllDevice::new(3, &["RotateZ".to_string()], &["CNOT".to_string()], 1.0);
+    let comparsion_device = roqoqo::devices::AllToAllDevice::new(
+        3,
+        &["RotateZ".to_string()],
+        &["CNOT".to_string()],
+        1.0,
+    );
     assert_eq!(test_deserialisation, comparsion_device);
 }

@@ -1907,7 +1907,6 @@ struct PragmaSimulationRepetitions {
 #[cfg(test)]
 mod tests {
     use crate::operations::*;
-    use bincode::serialize;
     use roqoqo::operations::*;
     use std::collections::HashSet;
 
@@ -1934,7 +1933,7 @@ mod tests {
     fn test_pyo3_format_repr_change_device() {
         let wrapped: Operation = PragmaActiveReset::new(0).into();
         let input_measurement: Operation = PragmaChangeDevice::new(&wrapped).unwrap().into();
-        let format_repr = format!("PragmaChangeDevice {{ wrapped_tags: {:?}, wrapped_hqslang: {:?}, wrapped_operation: {:?} }}", wrapped.tags(), wrapped.hqslang(), serialize(&wrapped).unwrap());
+        let format_repr = format!("PragmaChangeDevice {{ wrapped_tags: {:?}, wrapped_hqslang: {:?}, wrapped_operation: {:?} }}", wrapped.tags(), wrapped.hqslang(), bincode::serde::encode_to_vec(&wrapped, bincode::config::legacy()).unwrap());
 
         pyo3::prepare_freethreaded_python();
         Python::with_gil(|py| {

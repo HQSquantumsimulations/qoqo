@@ -351,7 +351,7 @@ impl JsonSchema for Array1C64Def {
     fn json_schema(generator: &mut schemars::SchemaGenerator) -> schemars::Schema {
         let v_schema = generator.subschema_for::<u8>();
         let dim_schema = generator.subschema_for::<Vec<u8>>();
-        let data_schema = generator.subschema_for::<Vec<Vec<Complex64Def>>>();
+        let data_schema = generator.subschema_for::<Vec<[f64; 2]>>();
         schemars::json_schema!({
             "type": "object",
             "properties": {
@@ -375,7 +375,7 @@ impl JsonSchema for Array2C64Def {
     fn json_schema(generator: &mut schemars::SchemaGenerator) -> schemars::Schema {
         let v_schema = generator.subschema_for::<u8>();
         let dim_schema = generator.subschema_for::<Vec<u8>>();
-        let data_schema = generator.subschema_for::<Vec<Vec<Complex64Def>>>();
+        let data_schema = generator.subschema_for::<Vec<[f64; 2]>>();
 
         schemars::json_schema!({
             "type": "object",

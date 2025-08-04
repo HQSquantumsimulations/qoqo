@@ -12,7 +12,6 @@
 
 //! Integration test for public API of Basis rotation measurement
 
-use bincode::serialize;
 use pyo3::prelude::*;
 use pyo3::Python;
 use qoqo::measurements::{CheatedPauliZProductInputWrapper, CheatedPauliZProductWrapper};
@@ -351,7 +350,8 @@ fn test_internal_to_bincode() {
             circuits: circs,
             input: roqoqo_bri,
         };
-        let comparison_serialised = serialize(&roqoqo_br).unwrap();
+        let comparison_serialised =
+            bincode::serde::encode_to_vec(&roqoqo_br, bincode::config::legacy()).unwrap();
 
         let serialised: (String, Vec<u8>) = br
             .call_method0("_internal_to_bincode")
@@ -400,12 +400,16 @@ fn test_to_from_bincode() {
         let deserialised = binding.downcast::<CheatedPauliZProductWrapper>().unwrap();
         assert_eq!(format!("{:?}", br), format!("{:?}", deserialised));
 
-        let deserialised_error =
-            new_br.call_method1("from_bincode", (bincode::serialize("fails").unwrap(),));
+        let deserialised_error = new_br.call_method1(
+            "from_bincode",
+            (bincode::serde::encode_to_vec("fails", bincode::config::legacy()).unwrap(),),
+        );
         assert!(deserialised_error.is_err());
 
-        let deserialised_error =
-            new_br.call_method1("from_bincode", (bincode::serialize(&vec![0]).unwrap(),));
+        let deserialised_error = new_br.call_method1(
+            "from_bincode",
+            (bincode::serde::encode_to_vec(&vec![0], bincode::config::legacy()).unwrap(),),
+        );
         assert!(deserialised_error.is_err());
 
         let serialised_error = serialised.call_method0("to_bincode");

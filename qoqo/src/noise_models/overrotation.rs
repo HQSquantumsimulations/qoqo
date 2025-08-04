@@ -98,11 +98,12 @@ impl SingleQubitOverrotationDescriptionWrapper {
     ///     ValueError: Cannot serialize SingleQubitOverrotationDescription to bytes.
     pub fn to_bincode(&self) -> PyResult<Py<pyo3::types::PyByteArray>> {
         let noise_descp = self.internal.clone();
-        let serialized = bincode::serialize(&noise_descp).map_err(|_| {
-            pyo3::exceptions::PyValueError::new_err(
-                "Cannot serialize Noise-Overrotation description to bytes",
-            )
-        })?;
+        let serialized = bincode::serde::encode_to_vec(&noise_descp, bincode::config::legacy())
+            .map_err(|_| {
+                pyo3::exceptions::PyValueError::new_err(
+                    "Cannot serialize Noise-Overrotation description to bytes",
+                )
+            })?;
         let b: Py<pyo3::types::PyByteArray> =
             Python::with_gil(|py| -> Py<pyo3::types::PyByteArray> {
                 pyo3::types::PyByteArray::new(py, &serialized[..]).into()
@@ -147,11 +148,13 @@ impl SingleQubitOverrotationDescriptionWrapper {
             pyo3::exceptions::PyTypeError::new_err("Input cannot be converted to byte array")
         })?;
         let noise_description: SingleQubitOverrotationDescription =
-            bincode::deserialize(&bytes[..]).map_err(|_| {
-                pyo3::exceptions::PyValueError::new_err(
-                    "Input cannot be deserialized to overrotation description.",
-                )
-            })?;
+            bincode::serde::decode_from_slice(&bytes[..], bincode::config::legacy())
+                .map_err(|_| {
+                    pyo3::exceptions::PyValueError::new_err(
+                        "Input cannot be deserialized to overrotation description.",
+                    )
+                })?
+                .0;
 
         Ok(SingleQubitOverrotationDescriptionWrapper {
             internal: noise_description,
@@ -267,11 +270,13 @@ impl SingleQubitOverrotationDescriptionWrapper {
         } else {
             let get_bytes = input.call_method0("to_bincode")?;
             let bytes = get_bytes.extract::<Vec<u8>>()?;
-            bincode::deserialize(&bytes[..]).map_err(|err| {
-                pyo3::exceptions::PyValueError::new_err(format!(
-                    "Cannot treat input as Overrotation Description: {err}"
-                ))
-            })
+            bincode::serde::decode_from_slice(&bytes[..], bincode::config::legacy())
+                .map_err(|err| {
+                    pyo3::exceptions::PyValueError::new_err(format!(
+                        "Cannot treat input as Overrotation Description: {err}"
+                    ))
+                })
+                .map(|(deserialized, _)| deserialized)
         }
     }
 }
@@ -445,9 +450,14 @@ impl SingleQubitOverrotationOnGateWrapper {
         let bytes = input.extract::<Vec<u8>>().map_err(|_| {
             pyo3::exceptions::PyTypeError::new_err("Input cannot be converted to byte array")
         })?;
-        let noise_model: NoiseModel = bincode::deserialize(&bytes[..]).map_err(|_| {
-            pyo3::exceptions::PyValueError::new_err("Input cannot be deserialized to Noise-Model.")
-        })?;
+        let noise_model: NoiseModel =
+            bincode::serde::decode_from_slice(&bytes[..], bincode::config::legacy())
+                .map_err(|_| {
+                    pyo3::exceptions::PyValueError::new_err(
+                        "Input cannot be deserialized to Noise-Model.",
+                    )
+                })?
+                .0;
         match noise_model {
             NoiseModel::SingleQubitOverrotationOnGate(internal) => {
                 Ok(SingleQubitOverrotationOnGateWrapper { internal })

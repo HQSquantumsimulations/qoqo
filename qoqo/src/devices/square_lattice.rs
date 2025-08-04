@@ -235,9 +235,13 @@ impl SquareLatticeDeviceWrapper {
         } else {
             let get_bytes = input.call_method0("to_bincode")?;
             let bytes = get_bytes.extract::<Vec<u8>>()?;
-            deserialize(&bytes[..]).map_err(|err| {
-                PyValueError::new_err(format!("Cannot treat input as SquareLatticeDevice: {err}"))
-            })
+            bincode::serde::decode_from_slice(&bytes[..], bincode::config::legacy())
+                .map_err(|err| {
+                    PyValueError::new_err(format!(
+                        "Cannot treat input as SquareLatticeDevice: {err}"
+                    ))
+                })
+                .map(|(deserialized, _)| deserialized)
         }
     }
 }
