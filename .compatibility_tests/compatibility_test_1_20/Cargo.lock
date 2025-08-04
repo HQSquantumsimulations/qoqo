@@ -71,7 +71,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "9555578bc9e57714c812a1f84e4fc5b4d21fcb063490c624de019f7464c91268"
 
 [[package]]
-name = "compatibility_test_1_19"
+name = "compatibility_test_1_20"
 version = "1.21.0"
 dependencies = [
  "bincode 2.0.1",
