@@ -495,7 +495,6 @@ version = "1.6.1"
 source = "git+https://github.com/HQSquantumsimulations/qoqo_calculator?tag=v1.6.1#dad220a41da7f81fdac6cbf18302239ff32d4e69"
 dependencies = [
  "num-complex",
- "schemars 0.8.22",
  "serde",
  "thiserror",
 ]
@@ -630,7 +629,6 @@ dependencies = [
  "rand_distr",
  "roqoqo-derive 1.21.0",
  "serde",
- "serde_json",
  "struqture 1.13.0",
  "struqture 2.2.0",
  "syn",
