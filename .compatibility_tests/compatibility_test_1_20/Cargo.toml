@@ -1,0 +1,45 @@
+[package]
+name = "compatibility_test_1_19"
+version = "1.21.0"
+authors = ["HQS Quantum Simulations <info@quantumsimulations.de>"]
+license = "Apache-2.0"
+edition = "2021"
+rust-version = "1.76"
+categories = ["science", "simulation"]
+homepage = "https://github.com/HQSquantumsimulations/qoqo"
+repository = "https://github.com/HQSquantumsimulations/qoqo"
+documentation = "https://docs.rs/roqoqo/"
+readme = "../README.md"
+description = "Compatibility tests for roqoqo"
+include = ["src*", "build.rs", "LICENSE", "README.md"]
+publish = false
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[workspace]
+
+[dependencies]
+test_roqoqo_1_20 = { package = "roqoqo", version = "=1.20" }
+roqoqo = { version = "~1.21", path = "../../roqoqo", features = [
+    "serialize",
+    "overrotate",
+] }
+struqture_1_13 = { git = "https://github.com/HQSquantumsimulations/struqture", package = "struqture", tag = "v1.13.0" }
+struqture_1_12 = { git = "https://github.com/HQSquantumsimulations/struqture", package = "struqture", tag = "v1.12.2" }
+struqture_2_2 = { git = "https://github.com/HQSquantumsimulations/struqture", package = "struqture", tag = "v2.2.0" }
+struqture_2_0 = { git = "https://github.com/HQSquantumsimulations/struqture", package = "struqture", tag = "v2.0.1" }
+bincode = "2.0"
+ndarray = "0.16"
+qoqo_calculator = { git = "https://github.com/HQSquantumsimulations/qoqo_calculator" }
+qoqo_calculator_1_6 = { git = "https://github.com/HQSquantumsimulations/qoqo_calculator", package = "qoqo_calculator", tag = "v1.6.1" }
+
+[patch.crates-io]
+struqture_1_13 = { git = "https://github.com/HQSquantumsimulations/struqture", package = "struqture", tag = "v1.13.0" }
+struqture_1_12 = { git = "https://github.com/HQSquantumsimulations/struqture", package = "struqture", tag = "v1.12.2" }
+struqture_2_2 = { git = "https://github.com/HQSquantumsimulations/struqture", package = "struqture", tag = "v2.2.0" }
+struqture_2_0 = { git = "https://github.com/HQSquantumsimulations/struqture", package = "struqture", tag = "v2.0.1" }
+qoqo_calculator = { git = "https://github.com/HQSquantumsimulations/qoqo_calculator" }
+qoqo_calculator_1_6 = { git = "https://github.com/HQSquantumsimulations/qoqo_calculator", package = "qoqo_calculator", tag = "v1.6.1" }
+
+[dev-dependencies]
+test-case = "3.0"
