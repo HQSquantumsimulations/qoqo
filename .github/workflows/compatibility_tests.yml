@@ -33,10 +33,10 @@ jobs:
             if [ -d "$dir" ]; then
               echo "Running tests in $dir"
               cd "$dir"
-              if [[ "$dir" == *compatibility_test_1_20 ]]; then
-                  CARGO_TARGET_DIR=../target cargo test --no-default-features --locked --offline
-              else
+              if [[ -f Cargo.lock ]]; then
                   CARGO_TARGET_DIR=../target cargo test --no-default-features --locked
+              else
+                  CARGO_TARGET_DIR=../target cargo test --no-default-features --offline
               fi
               cd - > /dev/null
             fi
