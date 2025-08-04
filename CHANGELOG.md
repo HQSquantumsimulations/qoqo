@@ -4,7 +4,15 @@ This changelog track changes to the qoqo project starting at version v0.5.0
 
 ## Unreleased
 
+## 1.21.0
+
 * Added the `run_parallel` method to QuantumProgram under the `unstable_parallel_run` feature.
+* Updated to struqture 2.2.
+* Updated to bincode 2.0
+* Updated to schemars 1.0.
+* Updated to Pyo3 0.25.
+* Updated to qoqo_calculator 1.7.
+* Updated to numpy 0.25.
 
 ## 1.20.0
 
