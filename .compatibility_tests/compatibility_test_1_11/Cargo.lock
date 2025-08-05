@@ -674,7 +674,6 @@ dependencies = [
  "rand_distr",
  "roqoqo-derive 1.21.0",
  "serde",
- "serde_json",
  "struqture 1.13.2",
  "struqture 2.2.0",
  "syn",
