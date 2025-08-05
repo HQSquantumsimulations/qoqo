@@ -1125,6 +1125,7 @@ dependencies = [
  "serde_json",
  "struqture 2.0.1",
  "struqture-py",
+ "struqture-py-macros",
  "syn",
  "test-case",
  "thiserror",
@@ -1635,9 +1636,9 @@ dependencies = [
 
 [[package]]
 name = "struqture-py-macros"
-version = "2.2.1"
+version = "2.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "655235e4bb86d413d5cccb571403df0bac3e6bb87b3643491b06e8e398b1eb1c"
+checksum = "496026c085adb99c3de0da73aac9a1c62b9caa55db914b89334ff5ccdcd77c75"
 dependencies = [
  "proc-macro2",
  "quote",

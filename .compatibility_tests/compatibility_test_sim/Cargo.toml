@@ -22,8 +22,8 @@ publish = false
 test_roqoqo_1_2 = { package = "roqoqo", features = [
     "serialize",
 ], version = "=1.2.5" }
-qoqo_calculator = { version = "~1.6" }
-roqoqo = { version = "~1.20", path = "../../roqoqo", features = [
+qoqo_calculator = { version = "1.6" }
+roqoqo = { version = "1.20", path = "../../roqoqo", features = [
     "serialize",
     "overrotate",
 ] }
