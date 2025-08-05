@@ -16,7 +16,7 @@ proc-macro = true
 doctest = false
 
 [dependencies]
-struqture = { version = "2.0" }
+struqture = { version = "~2.0" }
 
 proc-macro2 = "1.0"
 quote = "1.0"

@@ -39,10 +39,10 @@ roqoqo = { version = "1.20", path = "../roqoqo", features = [
     "overrotate",
 ] }
 
-qoqo_calculator = "1.6"
-qoqo_calculator_pyo3 = { version = "1.6", default-features = false }
-struqture = "2.0"
-struqture-py = { version = "2.0", default-features = false, features = [
+qoqo_calculator = "~1.6"
+qoqo_calculator_pyo3 = { version = "~1.6", default-features = false }
+struqture = "~2.0"
+struqture-py = { version = "~2.0", default-features = false, features = [
     "struqture_1_import"
 ] }
 
