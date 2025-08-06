@@ -1,6 +1,6 @@
 [package]
 name = "compatibility_test_1_14"
-version = "1.20.0"
+version = "1.20.1"
 authors = ["HQS Quantum Simulations <info@quantumsimulations.de>"]
 license = "Apache-2.0"
 edition = "2021"
@@ -19,13 +19,19 @@ publish = false
 [workspace]
 
 [dependencies]
-test_roqoqo_1_14 = { package = "roqoqo", path = "patched-roqoqo" }
+test_roqoqo_1_14 = { package = "roqoqo", version = "=1.14.0" }
 roqoqo = { version = "1.21", path = "../../roqoqo", features = [
     "serialize",
     "overrotate",
 ]}
 bincode = { version = "2.0" }
 ndarray = "0.15"
+qoqo_calculator_1_2 = { git = "https://github.com/HQSquantumsimulations/qoqo_calculator", package = "qoqo_calculator", tag = "v1.2.4" }
+struqture_1_7 = { git = "https://github.com/HQSquantumsimulations/struqture", package = "struqture", tag = "v1.7.1" }
+
+[patch.crates-io]
+struqture_1_7 = { git = "https://github.com/HQSquantumsimulations/struqture", package = "struqture", tag = "v1.7.1" }
+qoqo_calculator_1_2 = { git = "https://github.com/HQSquantumsimulations/qoqo_calculator", package = "qoqo_calculator", tag = "v1.2.4" }
 
 [dev-dependencies]
 test-case = "3.0"

@@ -18,11 +18,11 @@ doctest = false
 crate-type = ["rlib"]
 
 [dependencies]
-roqoqo = { version = "~1.21", path = "../roqoqo", features = ["serialize"] }
+roqoqo = { version = "1.21", path = "../roqoqo", features = ["serialize"] }
 
-nalgebra = "0.33.1"
+nalgebra = "0.34"
 ndarray = "0.16"
-rand = "~0.9"
+rand = "0.9"
 
 [build-dependencies]
 syn = { version = "2.0", features = ["full", "visit"] }

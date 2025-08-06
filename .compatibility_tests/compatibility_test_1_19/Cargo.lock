@@ -72,12 +72,11 @@ checksum = "9555578bc9e57714c812a1f84e4fc5b4d21fcb063490c624de019f7464c91268"
 
 [[package]]
 name = "compatibility_test_1_19"
-version = "1.20.0"
+version = "1.20.1"
 dependencies = [
  "bincode 2.0.1",
  "ndarray",
  "qoqo_calculator 1.6.1",
- "qoqo_calculator 1.7.1",
  "roqoqo 1.19.6",
  "roqoqo 1.21.0",
  "struqture 1.12.2",

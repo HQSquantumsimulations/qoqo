@@ -219,9 +219,9 @@ dependencies = [
 
 [[package]]
 name = "dyn-clone"
-version = "1.0.19"
+version = "1.0.20"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1c7a8fb8a9fbf66c1f703fe16184d10ca0ee9d23be5b4436400408ba54a95005"
+checksum = "d0881ea181b1df73ff77ffaaf9c7544ecc11e82fba9b5f27b262a3c73a332555"
 
 [[package]]
 name = "either"
@@ -910,7 +910,7 @@ checksum = "78bed444cc8a2160f01cbcf811ef18cac863ad68ae8ca62092e8db51d51c761c"
 dependencies = [
  "libc",
  "wasi 0.11.1+wasi-snapshot-preview1",
- "windows-sys 0.59.0",
+ "windows-sys",
 ]
 
 [[package]]
@@ -1304,7 +1304,11 @@ dependencies = [
  "schemars",
  "serde",
  "serde_json",
+<<<<<<< HEAD
  "struqture 2.2.0",
+=======
+ "struqture 2.0.2",
+>>>>>>> upstream/main
  "struqture-py",
  "syn 2.0.104",
  "test-case",
@@ -1313,12 +1317,21 @@ dependencies = [
 
 [[package]]
 name = "qoqo-macros"
+<<<<<<< HEAD
 version = "1.21.0"
 dependencies = [
  "proc-macro2",
  "quote",
  "struqture 2.2.0",
  "syn 2.0.104",
+=======
+version = "1.20.1"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "struqture 2.0.2",
+ "syn",
+>>>>>>> upstream/main
 ]
 
 [[package]]
@@ -1427,9 +1440,15 @@ dependencies = [
 
 [[package]]
 name = "redox_syscall"
+<<<<<<< HEAD
 version = "0.5.15"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7e8af0dde094006011e6a740d4879319439489813bd0bcdc7d821beaeeff48ec"
+=======
+version = "0.5.17"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "5407465600fb0548f1442edf71dd20683c6ed326200ace4b1ef0763521bb3b77"
+>>>>>>> upstream/main
 dependencies = [
  "bitflags",
 ]
@@ -1555,9 +1574,15 @@ dependencies = [
  "serde",
  "serde_json",
  "serde_test",
+<<<<<<< HEAD
  "struqture 1.13.2",
  "struqture 2.2.0",
  "syn 2.0.104",
+=======
+ "struqture 1.12.2",
+ "struqture 2.0.2",
+ "syn",
+>>>>>>> upstream/main
  "test-case",
  "thiserror",
  "typetag",
@@ -1587,9 +1612,9 @@ dependencies = [
 
 [[package]]
 name = "rustc-demangle"
-version = "0.1.25"
+version = "0.1.26"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "989e6739f80c4ad5b13e0fd7fe89531180375b18520cc8c82080e4dc4035b84f"
+checksum = "56f7d92ca342cea22a06f2121d944b4fd82af56988c270852495420f961d4ace"
 
 [[package]]
 name = "rustc-hash"
@@ -1682,9 +1707,15 @@ dependencies = [
 
 [[package]]
 name = "serde_json"
+<<<<<<< HEAD
 version = "1.0.141"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "30b9eff21ebe718216c6ec64e1d9ac57087aad11efc64e32002bce4a0d4c03d3"
+=======
+version = "1.0.142"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "030fedb782600dcbd6f02d479bf0d817ac3bb40d644745b769d6a96bc3afc5a7"
+>>>>>>> upstream/main
 dependencies = [
  "itoa",
  "memchr",
@@ -1740,12 +1771,12 @@ checksum = "67b1b7a3b5fe4f1376887184045fcf45c69e92af734b7aaddc05fb777b6fbd03"
 
 [[package]]
 name = "socket2"
-version = "0.5.10"
+version = "0.6.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e22376abed350d73dd1cd119b57ffccad95b4e585a7cda43e286245ce23c0678"
+checksum = "233504af464074f9d066d7b5416c5f9b894a5862a6506e306f7b816cdd6f1807"
 dependencies = [
  "libc",
- "windows-sys 0.52.0",
+ "windows-sys",
 ]
 
 [[package]]
@@ -1783,9 +1814,15 @@ dependencies = [
 
 [[package]]
 name = "struqture"
+<<<<<<< HEAD
 version = "2.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "295af05af1c66452f464b759eddc3ecd13335c8fe1d07b25a09208ec2be184c9"
+=======
+version = "2.0.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "5c66c525f6661c156defc2101c3b505b8731c6f72cf138b5c7bfa0dcf2518000"
+>>>>>>> upstream/main
 dependencies = [
  "indexmap",
  "itertools",
@@ -1802,9 +1839,15 @@ dependencies = [
 
 [[package]]
 name = "struqture-py"
+<<<<<<< HEAD
 version = "2.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d8d94a2f6ca2be7f8f88bf9dc443c18f50147a15a13e23b42cebc8c0cd2ff2e2"
+=======
+version = "2.0.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "17f4cdb2b0c926470b621f90cb2a1cbdf6c08996e6ef50d7506abdd7225fce8e"
+>>>>>>> upstream/main
 dependencies = [
  "bincode",
  "num-complex",
@@ -1818,8 +1861,13 @@ dependencies = [
  "regex",
  "schemars",
  "serde_json",
+<<<<<<< HEAD
  "struqture 1.13.2",
  "struqture 2.2.0",
+=======
+ "struqture 1.12.2",
+ "struqture 2.0.2",
+>>>>>>> upstream/main
  "struqture-py-macros",
  "syn 2.0.104",
  "thiserror",
@@ -1827,9 +1875,15 @@ dependencies = [
 
 [[package]]
 name = "struqture-py-macros"
+<<<<<<< HEAD
 version = "2.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e34904d12bcf509f0c9d509afb7126f70d8cc2e437447fefa465e1c677d1dd37"
+=======
+version = "2.0.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "0e8c5c89ff555b3658f600dfde660e4a05dec4dc34a3da8fe8d5bb55271fb543"
+>>>>>>> upstream/main
 dependencies = [
  "proc-macro2",
  "quote",
@@ -1965,9 +2019,9 @@ checksum = "1f3ccbac311fea05f86f61904b462b55fb3df8837a366dfc601a0161d0532f20"
 
 [[package]]
 name = "tokio"
-version = "1.46.1"
+version = "1.47.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0cc3a2344dafbe23a245241fe8b09735b521110d30fcefbbd5feb1797ca35d17"
+checksum = "89e49afdadebb872d3145a5638b59eb0691ea23e46ca484037cfab3b76b95038"
 dependencies = [
  "backtrace",
  "io-uring",
@@ -1975,8 +2029,13 @@ dependencies = [
  "mio",
  "pin-project-lite",
  "slab",
+<<<<<<< HEAD
  "socket2 0.5.10",
  "windows-sys 0.52.0",
+=======
+ "socket2",
+ "windows-sys",
+>>>>>>> upstream/main
 ]
 
 [[package]]
@@ -2276,15 +2335,6 @@ dependencies = [
 
 [[package]]
 name = "windows-sys"
-version = "0.52.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "282be5f36a8ce781fad8c8ae18fa3f9beff57ec1b52cb3de0789201425d9a33d"
-dependencies = [
- "windows-targets",
-]
-
-[[package]]
-name = "windows-sys"
 version = "0.59.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "1e38bc4d79ed67fd075bcc251a1c39b32a1776bbe92e5bef1f0bf1f8c531853b"
@@ -2449,9 +2499,9 @@ dependencies = [
 
 [[package]]
 name = "zerovec"
-version = "0.11.2"
+version = "0.11.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4a05eb080e015ba39cc9e23bbe5e7fb04d5fb040350f99f34e338d5fdd294428"
+checksum = "bdbb9122ea75b11bf96e7492afb723e8a7fbe12c67417aa95e7e3d18144d37cd"
 dependencies = [
  "yoke",
  "zerofrom",
