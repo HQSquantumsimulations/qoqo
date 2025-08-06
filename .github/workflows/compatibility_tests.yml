@@ -32,7 +32,7 @@ jobs:
           for dir in ./.compatibility_tests/compatibility_test_*; do
             if [ -d "$dir" ]; then
               echo "Running tests in $dir"
-              cd "$dir"
+              cd $dir
               CARGO_TARGET_DIR=../target cargo test --no-default-features
               cd - > /dev/null
             fi
