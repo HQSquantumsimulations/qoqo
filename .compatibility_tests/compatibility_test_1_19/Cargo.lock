@@ -77,13 +77,11 @@ dependencies = [
  "bincode 2.0.1",
  "ndarray",
  "qoqo_calculator 1.6.1",
- "qoqo_calculator 1.7.0",
+ "qoqo_calculator 1.7.1",
  "roqoqo 1.19.6",
  "roqoqo 1.21.0",
  "struqture 1.12.2",
- "struqture 1.13.0",
- "struqture 2.0.1",
- "struqture 2.2.0",
+ "struqture 2.0.2",
  "test-case",
 ]
 
@@ -502,8 +500,9 @@ dependencies = [
 
 [[package]]
 name = "qoqo_calculator"
-version = "1.7.0"
-source = "git+https://github.com/HQSquantumsimulations/qoqo_calculator#5cdaa3cec104804d24e9b5dd9a6c86af398bc46c"
+version = "1.7.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b20f9315850dffd815725aafe9e9ba8daa427295daaff40b68e9360b7f1fe20e"
 dependencies = [
  "num-complex",
  "schemars 1.0.4",
@@ -609,7 +608,7 @@ dependencies = [
  "roqoqo-derive 1.19.6",
  "serde",
  "struqture 1.12.2",
- "struqture 2.0.1",
+ "struqture 2.0.2",
  "syn",
  "thiserror",
 ]
@@ -624,15 +623,14 @@ dependencies = [
  "num-complex",
  "petgraph 0.8.2",
  "proc-macro2",
- "qoqo_calculator 1.7.0",
+ "qoqo_calculator 1.7.1",
  "quote",
  "rand",
  "rand_distr",
  "roqoqo-derive 1.21.0",
  "serde",
- "serde_json",
- "struqture 1.13.0",
- "struqture 2.2.0",
+ "struqture 1.13.4",
+ "struqture 2.2.3",
  "syn",
  "thiserror",
 ]
@@ -795,13 +793,14 @@ dependencies = [
 
 [[package]]
 name = "struqture"
-version = "1.13.0"
-source = "git+https://github.com/HQSquantumsimulations/struqture?tag=v1.13.0#d7edc015616f8c1d3463cc62dde475588d3bf198"
+version = "1.13.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "8c2da74b8d003595f06980583b82e94943f341e2b4dd4d6ea39577931269ee5c"
 dependencies = [
  "itertools",
  "ndarray",
  "num-complex",
- "qoqo_calculator 1.7.0",
+ "qoqo_calculator 1.7.1",
  "schemars 1.0.4",
  "serde",
  "test-case",
@@ -811,8 +810,8 @@ dependencies = [
 
 [[package]]
 name = "struqture"
-version = "2.0.1"
-source = "git+https://github.com/HQSquantumsimulations/struqture?tag=v2.0.1#96e1278eef4cd80c7c065a8dc250765f0eef108c"
+version = "2.0.2"
+source = "git+https://github.com/HQSquantumsimulations/struqture?tag=v2.0.2#cf289f8ceee11d0207290e43925db438f5cf64b3"
 dependencies = [
  "indexmap",
  "itertools",
@@ -829,17 +828,18 @@ dependencies = [
 
 [[package]]
 name = "struqture"
-version = "2.2.0"
-source = "git+https://github.com/HQSquantumsimulations/struqture?tag=v2.2.0#1bec2b7b4775b274556b19f1ee7689dd06547702"
+version = "2.2.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "395c547ccbb3a2be8a5a9caccf97c08db555867a759071a995b3757f150eaef3"
 dependencies = [
  "indexmap",
  "itertools",
  "ndarray",
  "num-complex",
- "qoqo_calculator 1.7.0",
+ "qoqo_calculator 1.7.1",
  "schemars 1.0.4",
  "serde",
- "struqture 1.13.0",
+ "struqture 1.13.4",
  "test-case",
  "thiserror",
  "tinyvec",

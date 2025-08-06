@@ -21,7 +21,7 @@ publish = false
 [dependencies]
 test_roqoqo_1_0 = { package = "roqoqo", version = "=1.0.0" }
 test_roqoqo_derive_1_0 = { package = "roqoqo-derive", version = "=1.0.0" }
-roqoqo = { version = "~1.21", path = "../../roqoqo", features = [
+roqoqo = { version = "1.21", path = "../../roqoqo", features = [
     "serialize",
     "overrotate",
 ] }

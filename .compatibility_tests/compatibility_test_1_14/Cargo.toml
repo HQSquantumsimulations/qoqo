@@ -19,23 +19,13 @@ publish = false
 [workspace]
 
 [dependencies]
-test_roqoqo_1_14 = { package = "roqoqo", version = "=1.14.0" }
-roqoqo = { version = "~1.21", path = "../../roqoqo", features = [
+test_roqoqo_1_14 = { package = "roqoqo", path = "patched-roqoqo" }
+roqoqo = { version = "1.21", path = "../../roqoqo", features = [
     "serialize",
     "overrotate",
-] }
-struqture_1_13 = { git = "https://github.com/HQSquantumsimulations/struqture", package = "struqture", tag = "v1.13.0" }
-struqture_1_7 = { git = "https://github.com/HQSquantumsimulations/struqture", package = "struqture", tag = "v1.7.1" }
+]}
 bincode = { version = "2.0" }
 ndarray = "0.15"
-qoqo_calculator = { git = "https://github.com/HQSquantumsimulations/qoqo_calculator" }
-qoqo_calculator_1_2 = { git = "https://github.com/HQSquantumsimulations/qoqo_calculator", package = "qoqo_calculator", tag = "v1.2.4" }
-
-[patch.crates-io]
-struqture_1_13 = { git = "https://github.com/HQSquantumsimulations/struqture", package = "struqture", tag = "v1.13.0" }
-struqture_1_7 = { git = "https://github.com/HQSquantumsimulations/struqture", package = "struqture", tag = "v1.7.1" }
-qoqo_calculator = { git = "https://github.com/HQSquantumsimulations/qoqo_calculator" }
-qoqo_calculator_1_2 = { git = "https://github.com/HQSquantumsimulations/qoqo_calculator", package = "qoqo_calculator", tag = "v1.2.4" }
 
 [dev-dependencies]
 test-case = "3.0"
