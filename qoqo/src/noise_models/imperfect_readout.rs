@@ -39,7 +39,7 @@ use roqoqo::{operations::SupportedVersion, ROQOQO_VERSION};
 #[pyclass(frozen, name = "ImperfectReadoutModel")]
 #[derive(Debug, Default, Clone, PartialEq)]
 pub struct ImperfectReadoutModelWrapper {
-    /// Noise model representing readout errors 
+    /// Noise model representing readout errors
     pub internal: ImperfectReadoutModel,
 }
 
