@@ -1,6 +1,6 @@
 [package]
-name = "compatibility_test_1_19"
-version = "1.20.1"
+name = "compatibility_test_1_20"
+version = "1.21.0"
 authors = ["HQS Quantum Simulations <info@quantumsimulations.de>"]
 license = "Apache-2.0"
 edition = "2021"
@@ -19,21 +19,21 @@ publish = false
 [workspace]
 
 [dependencies]
-test_roqoqo_1_19 = { package = "roqoqo", version = "=1.19" }
+test_roqoqo_1_20 = { package = "roqoqo", version = "1.20.0" }
 roqoqo = { version = "1.21", path = "../../roqoqo", features = [
     "serialize",
     "overrotate",
 ] }
-struqture_2_0 = { git = "https://github.com/HQSquantumsimulations/struqture", package = "struqture", tag = "v2.0.2" }
-bincode = { version = "2.0" }
+bincode = "2.0"
 ndarray = "0.16"
-qoqo_calculator_1_6 = { git = "https://github.com/HQSquantumsimulations/qoqo_calculator", package = "qoqo_calculator", tag = "v1.6.1" }
-struqture_1_12 = { git = "https://github.com/HQSquantumsimulations/struqture", package = "struqture", tag = "v1.12.2" }
+struqture_1_11 = { git = "https://github.com/HQSquantumsimulations/struqture", package = "struqture", tag = "v1.12.2" }
+qoqo_calculator_1_4 = { git = "https://github.com/HQSquantumsimulations/qoqo_calculator", package = "qoqo_calculator", tag = "v1.6.1" }
+struqture_2_0 = { git = "https://github.com/HQSquantumsimulations/struqture", package = "struqture", tag = "v2.0.1" }
 
 [patch.crates-io]
 struqture_1_12 = { git = "https://github.com/HQSquantumsimulations/struqture", package = "struqture", tag = "v1.12.2" }
-struqture_2_0 = { git = "https://github.com/HQSquantumsimulations/struqture", package = "struqture", tag = "v2.0.2" }
-qoqo_calculator_1_6 = { git = "https://github.com/HQSquantumsimulations/qoqo_calculator", package = "qoqo_calculator", tag = "v1.6.1" }
+struqture_2_0 = { git = "https://github.com/HQSquantumsimulations/struqture", package = "struqture", tag = "v2.0.1" }
+qoqo_calculator_1_4 = { git = "https://github.com/HQSquantumsimulations/qoqo_calculator", package = "qoqo_calculator", tag = "v1.6.1" }
 
 [dev-dependencies]
 test-case = "3.0"

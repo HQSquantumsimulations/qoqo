@@ -97,6 +97,7 @@ pub struct Circuit {
 
 #[cfg(feature = "serialize")]
 #[derive(Clone, PartialEq, Debug, Default)]
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
 #[cfg_attr(feature = "serialize", serde(rename = "Circuit"))]
 struct CircuitSerializable {

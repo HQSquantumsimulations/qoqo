@@ -322,12 +322,17 @@ impl DecoherenceOnGateModelWrapper {
     #[staticmethod]
     #[pyo3(text_signature = "(input)")]
     pub fn from_bincode(input: &Bound<PyAny>) -> PyResult<DecoherenceOnGateModelWrapper> {
-        let bytes = input.as_ref().extract::<Vec<u8>>().map_err(|_| {
+        let bytes = input.extract::<Vec<u8>>().map_err(|_| {
             pyo3::exceptions::PyTypeError::new_err("Input cannot be converted to byte array")
         })?;
-        let noise_model: NoiseModel = bincode::deserialize(&bytes[..]).map_err(|_| {
-            pyo3::exceptions::PyValueError::new_err("Input cannot be deserialized to Noise-Model.")
-        })?;
+        let noise_model: NoiseModel =
+            bincode::serde::decode_from_slice(&bytes[..], bincode::config::legacy())
+                .map_err(|_| {
+                    pyo3::exceptions::PyValueError::new_err(
+                        "Input cannot be deserialized to Noise-Model.",
+                    )
+                })?
+                .0;
         match noise_model {
             NoiseModel::DecoherenceOnGateModel(internal) => {
                 Ok(DecoherenceOnGateModelWrapper { internal })

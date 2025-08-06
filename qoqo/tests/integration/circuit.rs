@@ -307,12 +307,16 @@ fn test_to_from_bincode() {
                 .unwrap();
         assert!(comparison);
 
-        let deserialised_error =
-            new.call_method1("from_bincode", (bincode::serialize("fails").unwrap(),));
+        let deserialised_error = new.call_method1(
+            "from_bincode",
+            (bincode::serde::encode_to_vec("fails", bincode::config::legacy()).unwrap(),),
+        );
         assert!(deserialised_error.is_err());
 
-        let deserialised_error =
-            new.call_method1("from_bincode", (bincode::serialize(&vec![0]).unwrap(),));
+        let deserialised_error = new.call_method1(
+            "from_bincode",
+            (bincode::serde::encode_to_vec(&vec![0], bincode::config::legacy()).unwrap(),),
+        );
         assert!(deserialised_error.is_err());
 
         let deserialised_error = deserialised.call_method0("from_bincode");
@@ -1009,7 +1013,6 @@ fn test_circuit_overrotate() {
 
         let comparison = bool::extract_bound(
             &circuit
-                .as_ref()
                 .call_method1("__ne__", (circuit_overrotated,))
                 .unwrap(),
         )

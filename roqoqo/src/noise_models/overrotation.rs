@@ -139,12 +139,12 @@ pub struct SingleQubitOverrotationOnGate {
 
 #[cfg(feature = "json_schema")]
 impl schemars::JsonSchema for SingleQubitOverrotationOnGate {
-    fn schema_name() -> String {
-        "SingleQubitOverrotationOnGate".to_string()
+    fn schema_name() -> std::borrow::Cow<'static, str> {
+        "SingleQubitOverrotationOnGate".into()
     }
 
-    fn json_schema(gen: &mut schemars::gen::SchemaGenerator) -> schemars::schema::Schema {
-        <SingleQubitOverrotationOnGateSerialize>::json_schema(gen)
+    fn json_schema(generator: &mut schemars::SchemaGenerator) -> schemars::Schema {
+        <SingleQubitOverrotationOnGateSerialize>::json_schema(generator)
     }
 }
 
