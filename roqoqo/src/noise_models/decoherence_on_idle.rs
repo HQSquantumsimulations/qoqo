@@ -53,12 +53,12 @@ pub struct DecoherenceOnIdleModel {
 
 #[cfg(feature = "json_schema")]
 impl schemars::JsonSchema for DecoherenceOnIdleModel {
-    fn schema_name() -> String {
-        "DecoherenceOnIdleModel".to_string()
+    fn schema_name() -> std::borrow::Cow<'static, str> {
+        "DecoherenceOnIdleModel".into()
     }
 
-    fn json_schema(gen: &mut schemars::gen::SchemaGenerator) -> schemars::schema::Schema {
-        <DecoherenceOnIdleModelSerialize>::json_schema(gen)
+    fn json_schema(generator: &mut schemars::SchemaGenerator) -> schemars::Schema {
+        <DecoherenceOnIdleModelSerialize>::json_schema(generator)
     }
 }
 

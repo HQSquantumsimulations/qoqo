@@ -12,8 +12,6 @@
 //
 //! Integration test for public API of Measurement operations
 
-#[cfg(feature = "serialize")]
-use bincode::serialize;
 #[cfg(feature = "json_schema")]
 use jsonschema::{Draft, Validator};
 use nalgebra::{matrix, Matrix4};
@@ -813,6 +811,7 @@ fn pragma_set_density_matrix_json_schema() {
         .with_draft(Draft::Draft7)
         .build(&schema_value)
         .unwrap();
+    println!("{:?}\n\n{:?}", schema_value, test_value);
 
     let validation_result = compiled_schema.validate(&test_value);
     assert!(validation_result.is_ok());
@@ -3533,6 +3532,7 @@ fn pragma_conditional_json_schema() {
 #[cfg(feature = "serialize")]
 fn pragma_change_device_inputs_qubits() {
     // This is not a change device pragma, but for testing purposes it can be used
+
     let wrapped: Operation = PragmaActiveReset::new(0).into();
     let pragma = PragmaChangeDevice::new(&wrapped).unwrap();
 
@@ -3545,7 +3545,10 @@ fn pragma_change_device_inputs_qubits() {
         "PragmaActiveReset",
     ];
     assert_eq!(pragma.wrapped_tags, tags);
-    assert_eq!(pragma.wrapped_operation, serialize(&wrapped).unwrap());
+    assert_eq!(
+        pragma.wrapped_operation,
+        bincode::serde::encode_to_vec(&wrapped, bincode::config::legacy()).unwrap()
+    );
 
     // Test InvolveQubits trait
     assert_eq!(pragma.involved_qubits(), InvolvedQubits::All);

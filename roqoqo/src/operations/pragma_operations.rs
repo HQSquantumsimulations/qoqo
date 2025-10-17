@@ -21,8 +21,6 @@ use crate::operations::{
 use crate::Circuit;
 #[cfg(feature = "json_schema")]
 use crate::{Array1C64Def, Array2C64Def, Array2f64Def};
-#[cfg(feature = "serialize")]
-use bincode::serialize;
 use nalgebra::{matrix, Matrix4};
 use ndarray::{array, Array, Array1, Array2};
 use num_complex::Complex64;
@@ -115,12 +113,12 @@ pub struct PragmaSetStateVector {
 
 #[cfg(feature = "json_schema")]
 impl schemars::JsonSchema for PragmaSetStateVector {
-    fn schema_name() -> String {
-        "PragmaSetStateVector".to_string()
+    fn schema_name() -> std::borrow::Cow<'static, str> {
+        "PragmaSetStateVector".into()
     }
 
-    fn json_schema(gen: &mut schemars::gen::SchemaGenerator) -> schemars::schema::Schema {
-        <SchemaHelperPragmaSetStateVector>::json_schema(gen)
+    fn json_schema(generator: &mut schemars::SchemaGenerator) -> schemars::Schema {
+        <SchemaHelperPragmaSetStateVector>::json_schema(generator)
     }
 }
 
@@ -182,12 +180,12 @@ pub struct PragmaSetDensityMatrix {
 
 #[cfg(feature = "json_schema")]
 impl schemars::JsonSchema for PragmaSetDensityMatrix {
-    fn schema_name() -> String {
-        "PragmaSetDensityMatrix".to_string()
+    fn schema_name() -> std::borrow::Cow<'static, str> {
+        "PragmaSetDensityMatrix".into()
     }
 
-    fn json_schema(gen: &mut schemars::gen::SchemaGenerator) -> schemars::schema::Schema {
-        <SchemaHelperPragmaSetDensityMatrix>::json_schema(gen)
+    fn json_schema(generator: &mut schemars::SchemaGenerator) -> schemars::Schema {
+        <SchemaHelperPragmaSetDensityMatrix>::json_schema(generator)
     }
 }
 
@@ -897,12 +895,12 @@ pub struct PragmaGeneralNoise {
 
 #[cfg(feature = "json_schema")]
 impl schemars::JsonSchema for PragmaGeneralNoise {
-    fn schema_name() -> String {
-        "PragmaGeneralNoise".to_string()
+    fn schema_name() -> std::borrow::Cow<'static, str> {
+        "PragmaGeneralNoise".into()
     }
 
-    fn json_schema(gen: &mut schemars::gen::SchemaGenerator) -> schemars::schema::Schema {
-        <SchemaHelperPragmaGeneralNoise>::json_schema(gen)
+    fn json_schema(generator: &mut schemars::SchemaGenerator) -> schemars::Schema {
+        <SchemaHelperPragmaGeneralNoise>::json_schema(generator)
     }
 }
 
@@ -1225,10 +1223,12 @@ impl PragmaChangeDevice {
                 .map(|x| x.to_string())
                 .collect(),
             wrapped_hqslang: wrapped_pragma.hqslang().to_string(),
-            wrapped_operation: serialize(wrapped_pragma).map_err(|err| {
-                RoqoqoError::SerializationError {
-                    msg: format!("{err:?}"),
-                }
+            wrapped_operation: bincode::serde::encode_to_vec(
+                wrapped_pragma,
+                bincode::config::legacy(),
+            )
+            .map_err(|err| RoqoqoError::SerializationError {
+                msg: format!("{err:?}"),
             })?,
         })
     }

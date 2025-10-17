@@ -354,7 +354,7 @@ pub fn device_wrapper_def(
             ///     ValueError: Cannot serialize Device to bytes.
             ///
             pub fn to_bincode(&self) -> PyResult<Py<PyByteArray>> {
-                let serialized = serialize(&self.internal)
+                let serialized = bincode::serde::encode_to_vec(&self.internal, bincode::config::legacy())
                     .map_err(|_| PyValueError::new_err("Cannot serialize Device to bytes"))?;
                 let b: Py<PyByteArray> = Python::with_gil(|py| -> Py<PyByteArray> {
                     PyByteArray::new(py, &serialized[..]).into()
@@ -391,14 +391,13 @@ pub fn device_wrapper_def(
             #[pyo3(text_signature = "(input)")]
             pub fn from_bincode(input: &Bound<PyAny>) -> PyResult<#ident> {
                 let bytes = input
-                    .as_ref()
                     .extract::<Vec<u8>>()
                     .map_err(|_| PyTypeError::new_err("Input cannot be converted to byte array"))?;
 
                 Ok(#ident {
-                    internal: deserialize(&bytes[..]).map_err(|_| {
+                    internal: bincode::serde::decode_from_slice(&bytes[..], bincode::config::legacy()).map_err(|_| {
                         PyValueError::new_err("Input cannot be deserialized to selected Device.")
-                    })?,
+                    })?.0,
                 })
             }
 

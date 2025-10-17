@@ -11,7 +11,6 @@
 // limitations under the License.
 //
 
-use bincode::{deserialize, serialize};
 use ndarray::Array2;
 use numpy::{PyArray2, PyReadonlyArray2, ToPyArray};
 use pyo3::exceptions::{PyTypeError, PyValueError};
@@ -91,9 +90,11 @@ impl GenericDeviceWrapper {
             let generic_device_candidate = input.call_method0("generic_device")?;
             let get_bytes = generic_device_candidate.call_method0("to_bincode")?;
             let bytes = get_bytes.extract::<Vec<u8>>()?;
-            deserialize(&bytes[..]).map_err(|err| {
-                PyValueError::new_err(format!("Cannot treat input as GenericDevice: {err}"))
-            })
+            bincode::serde::decode_from_slice(&bytes[..], bincode::config::legacy())
+                .map_err(|err| {
+                    PyValueError::new_err(format!("Cannot treat input as GenericDevice: {err}"))
+                })
+                .map(|(deserialized, _)| deserialized)
         }
     }
 }

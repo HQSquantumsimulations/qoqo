@@ -682,7 +682,6 @@ mod test_chain_with_environment {
     use roqoqo::RoqoqoError;
     #[derive(Clone, Debug, PartialEq, serde::Serialize, serde::Deserialize)]
     struct TestDevice;
-    use bincode::{deserialize, serialize};
     use ndarray::Array2;
     use numpy::{PyArray2, PyReadonlyArray2, ToPyArray};
     use pyo3::exceptions::{PyTypeError, PyValueError};
