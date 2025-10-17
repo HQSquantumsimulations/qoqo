@@ -41,7 +41,7 @@ async-trait = { version = "0.1", optional = true }
 bincode = { version = "2.0", optional = true, features = ["std", "serde"] }
 rayon = { version = "1.10", optional = true }
 dyn-clone = { version = "1.0", optional = true }
-jsonschema = { version = "0.32", optional = true }
+jsonschema = { version = "0.33", optional = true }
 futures = { version = "0.3", optional = true }
 petgraph = { version = "0.8", optional = true }
 rand_distr = { version = "0.5", optional = true }
