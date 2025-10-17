@@ -4,6 +4,8 @@ This changelog track changes to the qoqo project starting at version v0.5.0
 
 ## Unreleased
 
+* Updated minimum supported Python version to 3.10.
+
 ## 1.21.0
 
 * Updated qoqo and roqoqo to bincode 2.0, schemars 1.0 and pyo3 0.25.
