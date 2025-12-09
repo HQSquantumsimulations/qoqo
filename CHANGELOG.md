@@ -5,6 +5,7 @@ This changelog track changes to the qoqo project starting at version v0.5.0
 ## Unreleased
 
 * Updated minimum supported Python version to 3.10.
+* Removed the `unstable_analog_operations` trait.
 
 ## 1.21.0
 
