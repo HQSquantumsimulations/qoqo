@@ -192,8 +192,6 @@ const SOURCE_FILES: &[&str] = &[
     "src/operations/define_operations.rs",
     "src/operations/bosonic_operations.rs",
     "src/operations/spin_boson_operations.rs",
-    #[cfg(feature = "unstable_analog_operations")]
-    "src/operations/analog_operations.rs",
 ];
 
 #[cfg(feature = "doc_generator")]

@@ -84,7 +84,6 @@ json_schema = [
 ]
 circuitdag = ["petgraph"]
 unstable_chain_with_environment = []
-unstable_analog_operations = []
 unstable_operation_definition = []
 unstable_parallel_run = ["rayon"]
 unstable_simulation_repetitions = []
