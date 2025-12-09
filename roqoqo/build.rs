@@ -328,27 +328,6 @@ impl<'ast> Visit<'ast> for Visitor {
                         .clone(),
                 };
 
-                // TEMP remove this block when PragmaSimulationRepetitions is stable
-                for att in &i.attrs {
-                    // check outer attributes
-                    if matches!(att.style, AttrStyle::Outer)
-                        // if attribute is cfg
-                        && att.path().is_ident("cfg")
-                        // and if the feature is not active
-                        && !cfg!(feature = "unstable_simulation_repetitions")
-                    {
-                        let cfg_feature_name: CfgFeatureMacroArgument =
-                            att.parse_args().expect("parsing failed 1");
-
-                        if cfg_feature_name
-                            .0
-                            .contains("unstable_simulation_repetitions")
-                        {
-                            return;
-                        }
-                    }
-                }
-
                 if trait_name.as_str() == "Operate" {
                     self.operations.push(id.clone());
                 }
