@@ -34,9 +34,6 @@ mod bosonic_operations;
 
 mod spin_boson_operations;
 
-#[cfg(feature = "unstable_analog_operations")]
-mod analog_operations;
-
 use nalgebra as na;
 use ndarray::Array2;
 use num_complex::Complex64;

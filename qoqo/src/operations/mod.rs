@@ -34,10 +34,6 @@ mod bosonic_operations;
 pub use bosonic_operations::*;
 mod spin_boson_operations;
 pub use spin_boson_operations::*;
-#[cfg(feature = "unstable_analog_operations")]
-mod analog_operations;
-#[cfg(feature = "unstable_analog_operations")]
-pub use analog_operations::*;
 
 include!(concat!(
     env!("OUT_DIR"),
@@ -164,10 +160,6 @@ pub fn operations(_py: Python, m: &Bound<PyModule>) -> PyResult<()> {
     // unstable version of ApplyConstantPauliHamiltonianWrapper and ApplyTimeDependentPauliHamiltonianWrapper
     // will be released later
     // 1.11
-    #[cfg(feature = "unstable_analog_operations")]
-    m.add_class::<ApplyConstantPauliHamiltonianWrapper>()?;
-    #[cfg(feature = "unstable_analog_operations")]
-    m.add_class::<ApplyTimeDependentPauliHamiltonianWrapper>()?;
     m.add_class::<QuantumRabiWrapper>()?;
     m.add_class::<LongitudinalCouplingWrapper>()?;
     m.add_class::<JaynesCummingsWrapper>()?;

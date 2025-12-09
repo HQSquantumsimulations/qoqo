@@ -18,7 +18,7 @@ jobs:
       macos: true
       rust_package_name: "roqoqo"
       python_3_14: false
-      features: "json_schema overrotate circuitdag unstable_chain_with_environment unstable_analog_operations unstable_operation_definition unstable_simulation_repetitions"
+      features: "json_schema overrotate circuitdag unstable_chain_with_environment unstable_operation_definition unstable_simulation_repetitions"
       pip_install: "numpy struqture-py"
 
   build_tests:
