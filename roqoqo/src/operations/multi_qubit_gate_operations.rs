@@ -348,7 +348,6 @@ const TAGS_CallDefinedGate: &[&str; 3] =
 )]
 #[cfg_attr(feature = "serialize", derive(Serialize, Deserialize))]
 #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
-#[allow(clippy::upper_case_acronyms)]
 pub struct QFT {
     /// The qubits involved in the QFT.
     qubits: Vec<usize>,
