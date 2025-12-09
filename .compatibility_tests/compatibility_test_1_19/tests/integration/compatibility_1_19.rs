@@ -142,8 +142,7 @@ use test_roqoqo_1_19;
 #[test_case(test_roqoqo_1_19::operations::ControlledSWAP::new(0, 1, 2).into(); "ControlledSWAP")]
 #[test_case(test_roqoqo_1_19::operations::PhaseShiftedControlledControlledZ::new(0, 1, 2, 1.0.into()).into(); "PhaseShiftedControlledControlledZ")]
 #[test_case(test_roqoqo_1_19::operations::PhaseShiftedControlledControlledPhase::new(0, 1, 2, 1.0.into(), 1.0.into()).into(); "PhaseShiftedControlledControlledPhase")]
-// Operations from 1.17 - PragmaSimulationRepetitions gate are unstable, uncomment when stable.
-// #[test_case(test_roqoqo_1_19::operations::PragmaSimulationRepetitions::new(0).into(); "PragmaSimulationRepetitions")]
+// Operations from 1.17
 // Operations from 1.18
 // Operations from 1.19
 // Operations from 1.20

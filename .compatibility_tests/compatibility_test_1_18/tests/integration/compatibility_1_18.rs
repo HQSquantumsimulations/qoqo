@@ -142,8 +142,6 @@ use test_roqoqo_1_18;
 #[test_case(test_roqoqo_1_18::operations::ControlledSWAP::new(0, 1, 2).into(); "ControlledSWAP")]
 #[test_case(test_roqoqo_1_18::operations::PhaseShiftedControlledControlledZ::new(0, 1, 2, 1.0.into()).into(); "PhaseShiftedControlledControlledZ")]
 #[test_case(test_roqoqo_1_18::operations::PhaseShiftedControlledControlledPhase::new(0, 1, 2, 1.0.into(), 1.0.into()).into(); "PhaseShiftedControlledControlledPhase")]
-// Operations from 1.17 - PragmaSimulationRepetitions gate are unstable, uncomment when stable.
-// #[test_case(test_roqoqo_1_18::operations::PragmaSimulationRepetitions::new(0).into(); "PragmaSimulationRepetitions")]
 // Operations from 1.18
 // Operations from 1.19
 fn test_bincode_compatibility_1_16(operation: test_roqoqo_1_18::operations::Operation) {

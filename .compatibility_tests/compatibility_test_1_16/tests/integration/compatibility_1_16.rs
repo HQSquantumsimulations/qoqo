@@ -143,7 +143,6 @@ use test_roqoqo_1_16;
 #[test_case(test_roqoqo_1_16::operations::PhaseShiftedControlledControlledZ::new(0, 1, 2, 1.0.into()).into(); "PhaseShiftedControlledControlledZ")]
 #[test_case(test_roqoqo_1_16::operations::PhaseShiftedControlledControlledPhase::new(0, 1, 2, 1.0.into(), 1.0.into()).into(); "PhaseShiftedControlledControlledPhase")]
 // Operations from 1.17
-// #[test_case(test_roqoqo_1_16::operations::PragmaSimulationRepetitions::new(0).into(); "PragmaSimulationRepetitions")]
 fn test_bincode_compatibility_1_16(operation: test_roqoqo_1_16::operations::Operation) {
     let mut test_circuit = test_roqoqo_1_16::Circuit::new();
     test_circuit += operation;
