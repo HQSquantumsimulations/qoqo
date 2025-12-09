@@ -166,19 +166,6 @@ fn test_conversion(input: Operation) {
     })
 }
 
-#[cfg(feature = "unstable_simulation_repetitions")]
-#[test_case(
-    Operation::from(PragmaSimulationRepetitions::new(100)); "PragmaSimulationRepetitions"
-)]
-fn test_conversion_unstable(input: Operation) {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
-        let operation = convert_operation_to_pyobject(input.clone(), py).unwrap();
-        let output = convert_pyany_to_operation(&operation).unwrap();
-        assert_eq!(input, output)
-    })
-}
-
 #[cfg(feature = "unstable_operation_definition")]
 #[test_case(Operation::from(GateDefinition::new(create_circuit(), "name".into(), vec![1, 2], vec!["test".into()])); "GateDefinition")]
 #[test_case(Operation::from(CallDefinedGate::new("name".into(), vec![1, 2], vec![CalculatorFloat::from(0.6)])); "CallDefinedGate")]

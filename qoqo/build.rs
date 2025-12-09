@@ -118,21 +118,6 @@ impl<'ast> Visit<'ast> for Visitor {
                 }
             }
 
-            // TEMP: REMOVE WHEN STABILISED
-            if matches!(att.style, AttrStyle::Outer)
-                && path == Some("cfg".to_string())
-                && !cfg!(feature = "unstable_simulation_repetitions")
-            {
-                let cfg_feature_name: CfgFeatureMacroArgument =
-                    att.parse_args().expect("parsing failed 1");
-                if cfg_feature_name
-                    .0
-                    .contains("unstable_simulation_repetitions")
-                {
-                    return;
-                }
-            }
-
             // only consider the wrap attribute, if no derive attribute is present don't add anything
             // to the internal storage of the visitor
             if matches!(att.style, AttrStyle::Outer) && path == Some("wrap".to_string()) {
@@ -155,16 +140,6 @@ impl<'ast> Visit<'ast> for Visitor {
             tok.to_string().contains("CallDefinedGate")
                 || tok.to_string().contains("DefinitionGate")
         }) && !cfg!(feature = "unstable_operation_definition")
-        {
-            return;
-        }
-
-        // TEMP: REMOVE WHEN STABILISED
-        if i.tokens
-            .clone()
-            .into_iter()
-            .any(|tok| tok.to_string().contains("PragmaSimulationRepetitions"))
-            && !cfg!(feature = "unstable_simulation_repetitions")
         {
             return;
         }

@@ -122,9 +122,7 @@ use test_roqoqo_1_16;
 #[test_case(test_roqoqo_1_16::operations::SingleExcitationLoad::new(0, 1).into(); "SingleExcitationLoad")]
 #[test_case(test_roqoqo_1_16::operations::SingleExcitationStore::new(0, 1).into(); "SingleExcitationStore")]
 #[test_case(test_roqoqo_1_16::operations::CZQubitResonator::new(0, 1).into(); "CZQubitResonator")]
-// Operations from 1.11 - ApplyConstantPauliHamiltonian and ApplyTimeDependentHamiltonian are unstable in 1.11
-// #[test_case(create_apply_constant_spin_hamiltonian(); "ApplyConstantPauliHamiltonian")]
-// #[test_case(create_apply_timedependent_spin_hamiltonian(); "ApplyTimeDependentHamiltonian")]
+// Operations from 1.11
 // Operations from 1.13 - GateDefinition and CallDefined gate are unstable, uncomment when stable.
 // #[test_case(test_roqoqo_1_16::operations::GateDefinition::new(test_roqoqo_1_16::Circuit::new(), "name".into(), vec![0, 1], vec!["param".into()]).into(); "GateDefinition")]
 // #[test_case(test_roqoqo_1_16::operations::CallDefinedGate::new("name".into(), vec![0, 1], vec![0.0]).into(); "CallDefinedGate")]
@@ -143,7 +141,6 @@ use test_roqoqo_1_16;
 #[test_case(test_roqoqo_1_16::operations::PhaseShiftedControlledControlledZ::new(0, 1, 2, 1.0.into()).into(); "PhaseShiftedControlledControlledZ")]
 #[test_case(test_roqoqo_1_16::operations::PhaseShiftedControlledControlledPhase::new(0, 1, 2, 1.0.into(), 1.0.into()).into(); "PhaseShiftedControlledControlledPhase")]
 // Operations from 1.17
-// #[test_case(test_roqoqo_1_16::operations::PragmaSimulationRepetitions::new(0).into(); "PragmaSimulationRepetitions")]
 fn test_bincode_compatibility_1_16(operation: test_roqoqo_1_16::operations::Operation) {
     let mut test_circuit = test_roqoqo_1_16::Circuit::new();
     test_circuit += operation;
@@ -191,35 +188,3 @@ fn test_device_compat() {
     );
     assert_eq!(test_deserialisation, comparsion_device);
 }
-
-// Operations from 1.11 - ApplyConstantPauliHamiltonian and ApplyTimeDependentHamiltonian are unstable in 1.11
-// use struqture;
-// use struqture::prelude::*;
-// fn create_apply_constant_spin_hamiltonian(
-// ) -> test_roqoqo_1_16::operations::ApplyConstantPauliHamiltonian {
-//     let pp = struqture::spins::PauliProduct::new().z(0);
-//     let mut hamiltonian = struqture::spins::PauliHamiltonian::new();
-//     hamiltonian
-//         .add_operator_product(pp.clone(), 1.0.into())
-//         .unwrap();
-//     return test_roqoqo_1_16::operations::ApplyConstantPauliHamiltonian::new(
-//         hamiltonian,
-//         1.0.into(),
-//     );
-// }
-
-// fn create_apply_timedependent_spin_hamiltonian(
-// ) -> test_roqoqo_1_16::operations::ApplyTimeDependentPauliHamiltonian {
-//     let pp = struqture::spins::PauliProduct::new().z(0);
-//     let mut hamiltonian = struqture::spins::PauliHamiltonian::new();
-//     hamiltonian
-//         .add_operator_product(pp.clone(), "omega".into())
-//         .unwrap();
-//     let mut values = HashMap::new();
-//     values.insert("omega".to_string(), vec![1.0]);
-//     return test_roqoqo_1_16::operations::ApplyTimeDependentPauliHamiltonian::new(
-//         hamiltonian,
-//         vec![1.0],
-//         values.clone(),
-//     );
-// }

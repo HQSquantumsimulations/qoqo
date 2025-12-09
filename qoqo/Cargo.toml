@@ -83,4 +83,3 @@ unstable_chain_with_environment = [
     "qoqo-macros/unstable_chain_with_environment",
 ]
 unstable_operation_definition = ["roqoqo/unstable_operation_definition"]
-unstable_simulation_repetitions = ["roqoqo/unstable_simulation_repetitions"]
