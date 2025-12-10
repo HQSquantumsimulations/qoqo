@@ -229,7 +229,7 @@ fn test_to_from_bincode() {
 
         let deserialised_error = new_br.call_method1(
             "from_bincode",
-            (bincode::serde::encode_to_vec(&vec![0], bincode::config::legacy()).unwrap(),),
+            (bincode::serde::encode_to_vec(vec![0], bincode::config::legacy()).unwrap(),),
         );
         assert!(deserialised_error.is_err());
 
@@ -266,7 +266,7 @@ fn test_to_from_bincode_description() {
 
         let deserialised_error = new_br.call_method1(
             "from_bincode",
-            (bincode::serde::encode_to_vec(&vec![0], bincode::config::legacy()).unwrap(),),
+            (bincode::serde::encode_to_vec(vec![0], bincode::config::legacy()).unwrap(),),
         );
         assert!(deserialised_error.is_err());
 
