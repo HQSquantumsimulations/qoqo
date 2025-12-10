@@ -11835,7 +11835,7 @@ ICU 1.8.1 to ICU 57.1 © 1995-2016 International Business Machines Corporation a
 
 
 ====================================================
-icu_properties 2.1.1
+icu_properties 2.1.2
 https://icu4x.unicode.org
 by The ICU4X Project Developers
 Definitions for Unicode properties
@@ -11892,7 +11892,7 @@ ICU 1.8.1 to ICU 57.1 © 1995-2016 International Business Machines Corporation a
 
 
 ====================================================
-icu_properties_data 2.1.1
+icu_properties_data 2.1.2
 https://icu4x.unicode.org
 by The ICU4X Project Developers
 Data for the icu_properties crate

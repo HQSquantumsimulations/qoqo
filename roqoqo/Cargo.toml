@@ -66,7 +66,6 @@ rustdoc-args = ["--document-private-items"]
 [features]
 default = ["serialize", "circuitdag"]
 dynamic = ["typetag", "dyn-clone"]
-unstable_qoqo_devices = []
 serialize = [
     "serde",
     "ndarray/serde",
