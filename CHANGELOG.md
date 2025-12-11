@@ -5,9 +5,10 @@ This changelog track changes to the qoqo project starting at version v0.5.0
 ## Unreleased
 
 * Updated minimum supported Python version to 3.10.
-* Removed the `unstable_analog_operations` trait.
-* Removed the `unstable_simulation_repetitions` trait.
-* Removed the `unstable_qoqo_devices` trait.
+* Removed the `unstable_analog_operations` feature.
+* Removed the `unstable_simulation_repetitions` feature.
+* Removed the `unstable_qoqo_devices` feature.
+* Removed the `unstable_parallel_run` feature.
 
 ## 1.21.0
 

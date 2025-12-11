@@ -39,7 +39,6 @@ rand = "0.9"
 thiserror = "2.0"
 async-trait = { version = "0.1", optional = true }
 bincode = { version = "2.0", optional = true, features = ["std", "serde"] }
-rayon = { version = "1.10", optional = true }
 dyn-clone = { version = "1.0", optional = true }
 jsonschema = { version = "0.32", optional = true }
 futures = { version = "0.3", optional = true }
@@ -84,4 +83,3 @@ json_schema = [
 circuitdag = ["petgraph"]
 unstable_chain_with_environment = []
 unstable_operation_definition = []
-unstable_parallel_run = ["rayon"]
