@@ -22,7 +22,7 @@ All implemented backends are provided in separate modules. Currently the followi
 | [qoqo_qasm](https://github.com/HQSquantumsimulations/qoqo_qasm) | Translating Backend to translate qoqo circuits to qasm. |
 | [qoqo_myqml](https://github.com/HQSquantumsimulations/qoqo_myqlm) | Simulation/QPU backend that gives access to the machines built as part of the QSolid project. |
 | [qoqo_qryd](https://github.com/HQSquantumsimulations/qoqo_qryd) | Simulation backend that gives access to QRyd's machines. |
-|[qoqo_strawberry_fields](https://github.com/HQSquantumsimulations/qoqo-strawberry-fields)| Backend to translate qoqo circuits to strawberry-fields toolkit for photonic quantum computing.
+| [qoqo_strawberry_fields](https://github.com/HQSquantumsimulations/qoqo-strawberry-fields) | Backend to translate qoqo circuits to strawberry-fields toolkit for photonic quantum computing.
 
 
 An `EvaluatingBackend` provides the functionality to run:
