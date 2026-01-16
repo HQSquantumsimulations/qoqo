@@ -15,7 +15,7 @@ What roqoqo is:
 * A toolkit to represent quantum programs including circuits and measurement information
 * A thin runtime to run quantum measurements
 * A way to serialize quantum circuits and measurement information
-* A set of optional interfaces to devices, simulators and toolkits (e.g. [qoqo_quest](https://github.com/HQSquantumsimulations/qoqo-quest), [qoqo_qiskit](https://github.com/HQSquantumsimulations/qoqo-qiskit), [qoqo_for_braket](https://github.com/HQSquantumsimulations/qoqo-for-braket), [qoqo_iqm](https://github.com/HQSquantumsimulations/qoqo_iqm))
+* A set of optional interfaces to devices, simulators and toolkits (e.g. [qoqo_quest](https://github.com/HQSquantumsimulations/qoqo-quest), [qoqo_qiskit](https://github.com/HQSquantumsimulations/qoqo-qiskit), [qoqo_for_braket](https://github.com/HQSquantumsimulations/qoqo-for-braket))
 
 What roqoqo is **not**:
 

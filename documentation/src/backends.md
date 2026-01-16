@@ -1,31 +1,31 @@
 # Backends
 
-Backends in qoqo/roqoqo are used for two things:
+Backends in qoqo are used for two things:
 
-* Running quantum programs and obtaining results from them
-* Translating qoqo/roqoqo objects to other frameworks
+* Running quantum programs and obtaining results from simulators or real quantum computing hardware,
+* Translating qoqo objects to other quantum computing frameworks.
 
 ## Running quantum programs
 
-To obtain results based on a quantum program (or quantum circuit) defined in qoqo/roqoqo, the program must run on a simulator or real quantum computing hardware.
+To obtain results based on a quantum program (or quantum circuit) defined in qoqo, the program must run on a simulator or real quantum computing hardware.
 
-For an individual simulator or hardware, a backend can be created that implements roqoqo's `EvaluatingBackend` trait and executes quantum circuits.
-The implementation of individual backends is provided not in qoqo itself, but in other packages.
+Any backend - whether simulator or hardware - implemented as a so called `EvaluatingBackend` allows users to directly evaluate the returned measurement results, for example to obtain expectation values instead of pure probabilities. Backends that purely translate qoqo `Circuits` to other frameworks or representations do _not_ implement the EvaluatingBackend, like e.g. qoqo_qasm.
 
-At the moment the following EvaluatingBackends are implemented for qoqo/roqoqo:
+All implemented backends are provided in separate modules. Currently the following packages provide the implemented backends for qoqo:
+
 
 | Backend | Description |
 | -------- | ------- |
-| [qoqo_quest](https://github.com/HQSquantumsimulations/qoqo-quest) | Simulation backend based on QuEST. |
-| [qoqo_aqt](https://github.com/HQSquantumsimulations/qoqo_aqt)  | Simulation/QPU backend that gives access to AQT's machines. |
-| [qoqo_mock](https://github.com/HQSquantumsimulations/qoqo_mock) | Mocking backend. |
-| [qoqo_qryd](https://github.com/HQSquantumsimulations/qoqo_qryd)    | Simulation backend that gives access to QRyd's machines. |
 | [qoqo_qiskit](https://github.com/HQSquantumsimulations/qoqo-qiskit) | Simulation/QPU backend that gives access to IBM's machines. |
-| [qoqo_qir](https://github.com/HQSquantumsimulations/qoqo-qir)| QIR Interface. |
 | [qoqo_for_braket](https://github.com/HQSquantumsimulations/qoqo-for-braket) | Simulation/QPU backend that gives access to Amazon Braket's machines. |
-| [qoqo_iqm](https://github.com/HQSquantumsimulations/qoqo_iqm) | Simulation/QPU backend that gives access to IQM's machines. |
+| [qoqo_quest](https://github.com/HQSquantumsimulations/qoqo-quest) | Simulation backend based on QuEST. |
+|[qoqo_qasm](https://github.com/HQSquantumsimulations/qoqo_qasm)|Translating Backend to translate qoqo circuits to qasm.|
+| [qoqo_myqml](https://github.com/HQSquantumsimulations/qoqo_myqlm)|Simulation/QPU backend that gives access to the machines built as part of the QSolid project.|
+| [qoqo_qryd](https://github.com/HQSquantumsimulations/qoqo_qryd)    | Simulation backend that gives access to QRyd's machines. |
+|[qoqo_strawberry_fields](https://github.com/HQSquantumsimulations/qoqo-strawberry-fields)| Backend to translate qoqo circuits to strawberry-fields toolkit for photonic quantum computing.
 
-An EvaluatingBackend provides the functionality to run:
+
+An `EvaluatingBackend` provides the functionality to run:
 
 * A _single_ circuit. The backend will execute just the circuit and return the measurement results of all registers in a tuple (bit-registers, float-registers, complex-registers). More details on registers can be found in section [readout](circuits/readout.md). All the postprocessing of the bare results needs to be done manually.
 * A measurement. _All_ circuits collected in the measurement are executed and the post-processed expectation values are returned.
@@ -35,11 +35,13 @@ All evaluating backends provide the same methods: `run_circuit()`, `run_measurem
 
 ### Example
 
-A [QuantumProgram](hight-level/program.md) is created to be executed on the [qoqo_quest](https://github.com/HQSquantumsimulations/qoqo-quest) simulator backend. Here, all three options supported by an `EvaluatingBackend` are presented:
+A [QuantumProgram](hight-level/program.md) is created to be executed on the [qoqo_quest](https://github.com/HQSquantumsimulations/qoqo-quest) simulator backend. In the below example, all three options supported by an `EvaluatingBackend` are presented for demonstrative purposes:
 
 * to run a single circuit,
 * to run a measurement, and
 * to run a quantum program.
+
+When building the final application, users can select the method that best fits their application's architecture.
 
 In python:
 
@@ -184,6 +186,11 @@ println!("{:?}", expectation_values);
 
 ## Translating to other quantum computing frameworks
 
-There are many open- and closed-source quantum frameworks. For some use cases, it may be advantageous to interface between qoqo and another quantum computing framework. Depending on the target framework, circuits containing an available subset of qoqo operations can be translated to other frameworks by backends. Backends that translate qoqo/roqoqo objects (for example Circuits) to other frameworks or representations do not implement the `EvaluatingBackend`.
+There are many open- and closed-source quantum frameworks. For some use cases, it may be advantageous to interface between qoqo and another quantum computing framework. Depending on the target framework, circuits containing an available subset of qoqo operations can be translated to other frameworks by backends. 
 
-At the moment, we have implemented one translating backend, from qoqo/roqoqo `Circuits` to qasm: [qoqo_qasm](https://github.com/HQSquantumsimulations/qoqo_qasm).
+Note: Backends that translate qoqo objects (for example Circuits) to other frameworks or representations do _not_ implement the `EvaluatingBackend`.
+
+Currently, there is one translating backend, from qoqo `Circuits` to qasm: 
+| Backend | Description |
+| -------- | ------- |
+|[qoqo_qasm](https://github.com/HQSquantumsimulations/qoqo_qasm)|Translating Backend to translate qoqo circuits to qasm.|
