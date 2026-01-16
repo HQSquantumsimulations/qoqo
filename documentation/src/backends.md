@@ -193,4 +193,4 @@ Note: Backends that translate qoqo objects (for example Circuits) to other frame
 Currently, there is one translating backend, from qoqo `Circuits` to qasm: 
 | Backend | Description |
 | -------- | ------- |
-|[qoqo_qasm](https://github.com/HQSquantumsimulations/qoqo_qasm)|Translating Backend to translate qoqo circuits to qasm.|
+| [qoqo_qasm](https://github.com/HQSquantumsimulations/qoqo_qasm) | Translating Backend to translate qoqo circuits to qasm. |
