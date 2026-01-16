@@ -35,7 +35,7 @@ All evaluating backends provide the same methods: `run_circuit()`, `run_measurem
 
 ### Example
 
-A [QuantumProgram](hight-level/program.md) is created to be executed on the [qoqo_quest](https://github.com/HQSquantumsimulations/qoqo-quest) simulator backend. In the below example, all three options supported by an `EvaluatingBackend` are presented for demonstrative purposes:
+A [QuantumProgram](hight-level/program.md) is created to be executed on the [qoqo_quest](https://github.com/HQSquantumsimulations/qoqo-quest) simulator backend. Below, all three options supported by an `EvaluatingBackend` are presented for demonstrative purposes:
 
 * to run a single circuit,
 * to run a measurement, and
