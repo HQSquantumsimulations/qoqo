@@ -51,7 +51,7 @@ use std::{
 /// let operation_vector: Vec<&Operation>= circuit.iter().collect();
 /// // iterating over circuit II
 /// for op in circuit{
-///    println!("{:?}", op);
+///    println!("{op:?}");
 /// }
 /// // collecting operations into circuit
 /// let vector = vec![Operation::from(RotateX::new(0,CalculatorFloat::from(0))), Operation::from(RotateX::new(0,CalculatorFloat::from(0)))];
@@ -97,6 +97,7 @@ pub struct Circuit {
 
 #[cfg(feature = "serialize")]
 #[derive(Clone, PartialEq, Debug, Default)]
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
 #[cfg_attr(feature = "serialize", serde(rename = "Circuit"))]
 struct CircuitSerializable {
@@ -480,6 +481,22 @@ impl Circuit {
         }
         Ok(return_circuit)
     }
+
+    /// Returns the number of qubits in the circuit.
+    ///
+    /// # Returns
+    /// * `usize` - The number of qubits in the Circuit.
+    pub fn number_of_qubits(&self) -> usize {
+        self.operations
+            .iter()
+            .map(|op| match op.involved_qubits() {
+                InvolvedQubits::All => 0,
+                InvolvedQubits::None => 0,
+                InvolvedQubits::Set(x) => x.into_iter().max().unwrap_or_default() + 1,
+            })
+            .max()
+            .unwrap_or_default()
+    }
 }
 
 /// Implements Index Access for Circuit.
@@ -823,9 +840,9 @@ impl Display for Circuit {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         let mut s: String = String::new();
         for op in self.iter() {
-            _ = writeln!(s, "{:?}", op)
+            _ = writeln!(s, "{op:?}")
         }
-        write!(f, "{}", s)
+        write!(f, "{s}")
     }
 }
 

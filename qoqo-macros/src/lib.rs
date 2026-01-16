@@ -299,13 +299,13 @@ pub fn wrap(
             ///
             pub fn mul(&self, other: &Bound<PyAny>) -> PyResult<SingleQubitGateWrapper> {
                 let other: Operation = crate::operations::convert_pyany_to_operation(other).map_err(|x| {
-                    pyo3::exceptions::PyTypeError::new_err(format!("Right hand side cannot be converted to Operation {:?}",x))
+                    pyo3::exceptions::PyTypeError::new_err(format!("Right hand side cannot be converted to Operation {x:?}"))
                 })?;
                 let other_converted: SingleQubitGateOperation = other.clone().try_into().map_err(|x| {
-                    pyo3::exceptions::PyRuntimeError::new_err(format!("Conversion to SingleQubitGateOperation failed {:?}",x))
+                    pyo3::exceptions::PyRuntimeError::new_err(format!("Conversion to SingleQubitGateOperation failed {x:?}"))
                 })?;
                 let multiplied = self.internal.mul(&other_converted).map_err(|x| {
-                    pyo3::exceptions::PyRuntimeError::new_err(format!("Multiplication failed {:?}",x))
+                    pyo3::exceptions::PyRuntimeError::new_err(format!("Multiplication failed {x:?}"))
                 })?;
                 Ok(SingleQubitGateWrapper{ internal: multiplied})
             }
@@ -414,7 +414,7 @@ pub fn wrap(
             ///     ValueError: Error symbolic operation cannot return float unitary matrix
             pub fn unitary_matrix(&self) -> PyResult<Py<PyArray2<Complex64>>>{
                 Python::with_gil(|py| -> PyResult<Py<PyArray2<Complex64>>> {
-                    Ok(self.internal.unitary_matrix().map_err(|x| PyValueError::new_err(format!("Error symbolic operation cannot return float unitary matrix {:?}",x)))?
+                    Ok(self.internal.unitary_matrix().map_err(|x| PyValueError::new_err(format!("Error symbolic operation cannot return float unitary matrix {x:?}")))?
                         .to_pyarray(py)
                         .into())
                 })
@@ -519,7 +519,7 @@ pub fn wrap(
         ///     PyValueError: Remapping could not be performed
         pub fn remap_modes(&self, mapping: HashMap<usize, usize>) -> PyResult<Self> {
             let new_internal = self.internal.remap_modes(&mapping).map_err(|x|
-                PyRuntimeError::new_err(format!("Mode remapping failed: {:?}",x))
+                PyRuntimeError::new_err(format!("Mode remapping failed: {x:?}"))
             )?;
             Ok(Self{internal: new_internal})
             }
@@ -542,21 +542,6 @@ pub fn wrap(
         ///     int
         pub fn mode(&self) -> usize {
                 self.internal.mode().clone()
-            }
-        }
-    } else {
-        TokenStream::new()
-    };
-    let operate_spins_analog_quote = if attribute_arguments.contains("OperateSpinsAnalog") {
-        quote! {
-            /// /// Returns a vector of all the spins present in the analog operation (Hamiltonian)..
-            ///
-            /// Returns:
-            ///     Vec<usize>
-            pub fn spin(&self) -> PyResult<Vec<usize>> {
-                Python::with_gil(|py| -> PyResult<Vec<usize>> {
-                    Ok(self.internal.spin().map_err(|x| PyValueError::new_err(format!("Error operation cannot return spins {:?}",x)))?.to_owned())
-                })
             }
         }
     } else {
@@ -629,7 +614,7 @@ pub fn wrap(
         TokenStream::new()
     };
 
-    let msg = format!("Internal storage of {} object", ident);
+    let msg = format!("Internal storage of {ident} object");
     let q = quote! {
         #[automatically_derived]
         #[pyclass(name=#str_ident)]
@@ -667,7 +652,6 @@ pub fn wrap(
             #operate_two_mode_quote
             #operate_single_mode_gate_quote
             #operate_two_mode_gate_quote
-            #operate_spins_analog_quote
             #json_schema_quote
             fn __format__(&self, _format_spec: &str) -> PyResult<String> {
                 Ok(format!("{:?}", self.internal))

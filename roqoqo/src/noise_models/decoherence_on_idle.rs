@@ -11,6 +11,7 @@
 // limitations under the License.
 
 use super::SupportedVersion;
+#[cfg(feature = "serialize")]
 use crate::RoqoqoError;
 use struqture::{
     spins::PlusMinusLindbladNoiseOperator, spins::PlusMinusProduct, OperateOnDensityMatrix,
@@ -52,12 +53,12 @@ pub struct DecoherenceOnIdleModel {
 
 #[cfg(feature = "json_schema")]
 impl schemars::JsonSchema for DecoherenceOnIdleModel {
-    fn schema_name() -> String {
-        "DecoherenceOnIdleModel".to_string()
+    fn schema_name() -> std::borrow::Cow<'static, str> {
+        "DecoherenceOnIdleModel".into()
     }
 
-    fn json_schema(gen: &mut schemars::gen::SchemaGenerator) -> schemars::schema::Schema {
-        <DecoherenceOnIdleModelSerialize>::json_schema(gen)
+    fn json_schema(generator: &mut schemars::SchemaGenerator) -> schemars::Schema {
+        <DecoherenceOnIdleModelSerialize>::json_schema(generator)
     }
 }
 
@@ -182,7 +183,7 @@ impl DecoherenceOnIdleModel {
                         PlusMinusProduct::new().z(*qubit),
                         PlusMinusProduct::new().z(*qubit),
                     ),
-                    rate.into(),
+                    (0.5 * rate).into(),
                 )
                 .expect("Internal struqture bug.");
         }
@@ -341,13 +342,13 @@ mod tests {
         lindblad_operator
             .add_operator_product(
                 (PlusMinusProduct::new().z(0), PlusMinusProduct::new().z(0)),
-                0.9.into(),
+                0.45.into(),
             )
             .unwrap();
         lindblad_operator
             .add_operator_product(
                 (PlusMinusProduct::new().z(1), PlusMinusProduct::new().z(1)),
-                0.9.into(),
+                0.45.into(),
             )
             .unwrap();
 

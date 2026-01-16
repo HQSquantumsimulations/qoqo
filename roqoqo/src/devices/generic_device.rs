@@ -43,12 +43,12 @@ pub struct GenericDevice {
 
 #[cfg(feature = "json_schema")]
 impl schemars::JsonSchema for GenericDevice {
-    fn schema_name() -> String {
-        "GenericDevice".to_string()
+    fn schema_name() -> std::borrow::Cow<'static, str> {
+        "GenericDevice".into()
     }
 
-    fn json_schema(gen: &mut schemars::gen::SchemaGenerator) -> schemars::schema::Schema {
-        <SchemaHelperGenericDeviceSerialize<Array2f64Def>>::json_schema(gen)
+    fn json_schema(generator: &mut schemars::SchemaGenerator) -> schemars::Schema {
+        <SchemaHelperGenericDeviceSerialize<Array2f64Def>>::json_schema(generator)
     }
 }
 
@@ -434,7 +434,12 @@ impl GenericDevice {
             .decoherence_rates
             .entry(qubit)
             .or_insert_with(|| Array2::zeros((3, 3)));
-        *aa = aa.clone() + array![[0.0, 0.0, 0.0], [0.0, 0.0, 0.0], [0.0, 0.0, dephasing]];
+        *aa = aa.clone()
+            + array![
+                [0.0, 0.0, 0.0],
+                [0.0, 0.0, 0.0],
+                [0.0, 0.0, 0.5 * dephasing]
+            ];
         Ok(())
     }
 

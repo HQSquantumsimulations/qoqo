@@ -118,21 +118,6 @@ impl<'ast> Visit<'ast> for Visitor {
                 }
             }
 
-            // TEMP: REMOVE WHEN STABILISED
-            if matches!(att.style, AttrStyle::Outer)
-                && path == Some("cfg".to_string())
-                && !cfg!(feature = "unstable_simulation_repetitions")
-            {
-                let cfg_feature_name: CfgFeatureMacroArgument =
-                    att.parse_args().expect("parsing failed 1");
-                if cfg_feature_name
-                    .0
-                    .contains("unstable_simulation_repetitions")
-                {
-                    return;
-                }
-            }
-
             // only consider the wrap attribute, if no derive attribute is present don't add anything
             // to the internal storage of the visitor
             if matches!(att.style, AttrStyle::Outer) && path == Some("wrap".to_string()) {
@@ -155,16 +140,6 @@ impl<'ast> Visit<'ast> for Visitor {
             tok.to_string().contains("CallDefinedGate")
                 || tok.to_string().contains("DefinitionGate")
         }) && !cfg!(feature = "unstable_operation_definition")
-        {
-            return;
-        }
-
-        // TEMP: REMOVE WHEN STABILISED
-        if i.tokens
-            .clone()
-            .into_iter()
-            .any(|tok| tok.to_string().contains("PragmaSimulationRepetitions"))
-            && !cfg!(feature = "unstable_simulation_repetitions")
         {
             return;
         }
@@ -192,8 +167,6 @@ const SOURCE_FILES: &[&str] = &[
     "src/operations/define_operations.rs",
     "src/operations/bosonic_operations.rs",
     "src/operations/spin_boson_operations.rs",
-    #[cfg(feature = "unstable_analog_operations")]
-    "src/operations/analog_operations.rs",
 ];
 
 #[cfg(feature = "doc_generator")]
@@ -246,7 +219,7 @@ fn collect_args_from_doc(doc: &str, class_name: &str) -> Vec<String> {
                 "{}{}",
                 line.trim().split_once([' ', ':']).unwrap_or(("", "")).0,
                 arg_type
-                    .map(|arg_type| format!(": {}", arg_type))
+                    .map(|arg_type| format!(": {arg_type}"))
                     .unwrap_or_default()
             )
         })
@@ -268,7 +241,7 @@ fn collect_return_from_doc(doc: &str, class_name: &str) -> String {
         args_vec[0].trim().split_once([':']).unwrap_or(("", "")).0,
         class_name,
     ) {
-        format!(" -> {}", ret)
+        format!(" -> {ret}")
     } else {
         "".to_owned()
     }
@@ -299,11 +272,8 @@ fn create_doc(module: &str) -> PyResult<String> {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| -> PyResult<String> {
         let python_module = PyModule::import(py, module)?;
-        let dict = python_module.as_ref().getattr("__dict__")?;
-        let module_doc = python_module
-            .as_ref()
-            .getattr("__doc__")?
-            .extract::<String>()?;
+        let dict = python_module.getattr("__dict__")?;
+        let module_doc = python_module.getattr("__doc__")?.extract::<String>()?;
         let r_dict = dict.downcast::<PyDict>()?;
         for (fn_name, func) in pyo3::types::PyDictMethods::iter(r_dict) {
             let name = fn_name.str()?.extract::<String>()?;
@@ -323,13 +293,13 @@ fn create_doc(module: &str) -> PyResult<String> {
                 let args = collect_args_from_doc(doc.as_str(), name.as_str()).join(", ");
                 main_doc.push_str(&format!(
                     "class {name}{}:\n    \"\"\"\n{doc}\n\"\"\"\n\n    def __init__(self{}):\n       return\n\n",
-                    module.eq("qoqo.operations").then_some("(Operation)").unwrap_or_default(),
-                    if args.is_empty() { "".to_owned() } else { format!(", {}", args) },
+                    if module.eq("qoqo.operations") { "(Operation)" } else { Default::default() },
+                    if args.is_empty() { "".to_owned() } else { format!(", {args}") },
                 ));
                 let class_dict = func.getattr("__dict__")?;
                 let items = class_dict.call_method0("items")?;
                 let dict_obj = py.import("builtins")?.call_method1("dict", (items,))?;
-                let class_r_dict = dict_obj.as_ref().downcast::<PyDict>()?;
+                let class_r_dict = dict_obj.downcast::<PyDict>()?;
                 for (class_fn_name, meth) in pyo3::types::PyDictMethods::iter(class_r_dict) {
                     let meth_name = class_fn_name.str()?.extract::<String>()?;
                     let meth_doc = match meth_name.as_str() {
@@ -380,7 +350,7 @@ Raises:
                         if meth_args.is_empty() {
                             "".to_owned()
                         } else {
-                            format!(", {}", meth_args)
+                            format!(", {meth_args}")
                         },
                         collect_return_from_doc(meth_doc.as_str(), name.as_str(),)
                     ));
@@ -566,7 +536,7 @@ fn main() {
             }
         }
     };
-    let final_str = format!("{}", final_quote);
+    let final_str = format!("{final_quote}");
     // Don't write to file when running on docs.rs
     let out_dir = PathBuf::from(
         std::env::var("OUT_DIR").expect("Cannot find a valid output directory for code generation"),
@@ -594,7 +564,7 @@ fn main() {
                 create_doc(&format!("qoqo.{module}"))
             }
             .expect("Could not generate documentation.");
-            let out_dir = PathBuf::from(format!("python/qoqo/{}.pyi", module));
+            let out_dir = PathBuf::from(format!("python/qoqo/{module}.pyi"));
             fs::write(&out_dir, qoqo_doc).expect("Could not write to file");
         }
     }

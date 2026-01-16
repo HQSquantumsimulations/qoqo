@@ -134,7 +134,7 @@ impl MeasureExpectationValues for CheatedPauliZProduct {
                     PauliProductsToExpVal::Symbolic(x) => {
                         let mut calculator = qoqo_calculator::Calculator::new();
                         for (ind, p) in pauli_products.iter().enumerate() {
-                            calculator.set_variable(format!("pauli_product_{}", ind).as_str(), *p);
+                            calculator.set_variable(format!("pauli_product_{ind}").as_str(), *p);
                         }
                         calculator.parse_get(x.clone())?
                     }

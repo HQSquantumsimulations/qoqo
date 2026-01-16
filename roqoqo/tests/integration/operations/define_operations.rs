@@ -45,7 +45,7 @@ fn definition_float_simple_traits() {
 
     // Test Debug trait
     assert_eq!(
-        format!("{:?}", def),
+        format!("{def:?}",),
         "DefinitionFloat { name: \"test\", length: 1, is_output: true }"
     );
 
@@ -189,7 +189,7 @@ fn definition_complex_simple_traits() {
 
     // Test Debug trait
     assert_eq!(
-        format!("{:?}", def),
+        format!("{def:?}",),
         "DefinitionComplex { name: \"test\", length: 1, is_output: true }"
     );
 
@@ -333,7 +333,7 @@ fn definition_usize_simple_traits() {
 
     // Test Debug trait
     assert_eq!(
-        format!("{:?}", def),
+        format!("{def:?}",),
         "DefinitionUsize { name: \"test\", length: 1, is_output: true }"
     );
 
@@ -477,7 +477,7 @@ fn definition_bit_simple_traits() {
 
     // Test Debug trait
     assert_eq!(
-        format!("{:?}", def),
+        format!("{def:?}",),
         "DefinitionBit { name: \"test\", length: 1, is_output: false }"
     );
 
@@ -620,7 +620,7 @@ fn input_symbolic_simple_traits() {
 
     // Test Debug trait
     assert_eq!(
-        format!("{:?}", def),
+        format!("{def:?}",),
         "InputSymbolic { name: \"test\", input: 1.0 }"
     );
 
@@ -760,7 +760,7 @@ fn input_bit_simple_traits() {
 
     // Test Debug trait
     assert_eq!(
-        format!("{:?}", def),
+        format!("{def:?}",),
         "InputBit { name: \"test\", index: 1, value: true }"
     );
 
@@ -917,7 +917,7 @@ fn gate_definition_simple_traits() {
 
     // Test Debug trait
     assert_eq!(
-        format!("{:?}", def),
+        format!("{def:?}",),
         "GateDefinition { circuit: Circuit { definitions: [], operations: [], _roqoqo_version: RoqoqoVersion }, name: \"test\", qubits: [0], free_parameters: [\"test\"] }"
     );
 

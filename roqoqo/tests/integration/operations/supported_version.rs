@@ -27,10 +27,6 @@ use roqoqo::prelude::*;
 #[cfg(feature = "circuitdag")]
 use roqoqo::QuantumProgram;
 use std::collections::HashMap;
-#[cfg(feature = "unstable_analog_operations")]
-use struqture::prelude::*;
-#[cfg(feature = "unstable_analog_operations")]
-use struqture::spins;
 use test_case::test_case;
 
 #[test_case(operations::TwoQubitGateOperation::from(operations::CNOT::new(1,0)); "CNOT")]
@@ -157,46 +153,6 @@ fn test_version_1_8_0_single_mode_gate(operation: operations::SingleModeGateOper
 #[test_case(operations::SingleModeGateOperation::from(operations::SingleExcitationStore::new(1, 0));"SingleExcitationStore")]
 #[test_case(operations::SingleModeGateOperation::from(operations::CZQubitResonator::new(1, 0));"CZQubitResonator")]
 fn test_version_1_11_0_single_mode_gate(operation: operations::SingleModeGateOperation) {
-    assert_eq!(operation.minimum_supported_roqoqo_version(), (1, 11, 0));
-    let op = operations::Operation::from(operation);
-    assert_eq!(op.minimum_supported_roqoqo_version(), (1, 11, 0));
-}
-
-#[cfg(feature = "unstable_analog_operations")]
-fn create_apply_constant_spin_hamiltonian<T>(p: T) -> operations::ApplyConstantPauliHamiltonian
-where
-    CalculatorFloat: From<T>,
-{
-    let pp = spins::PauliProduct::new().z(0);
-    let mut hamiltonian = spins::PauliHamiltonian::new();
-    hamiltonian
-        .add_operator_product(pp.clone(), CalculatorFloat::from(p))
-        .unwrap();
-    operations::ApplyConstantPauliHamiltonian::new(hamiltonian, 1.0.into())
-}
-#[cfg(feature = "unstable_analog_operations")]
-fn create_apply_timedependent_spin_hamiltonian<T>(
-    p: T,
-) -> operations::ApplyTimeDependentPauliHamiltonian
-where
-    CalculatorFloat: From<T>,
-{
-    let pp = spins::PauliProduct::new().z(0);
-    let mut hamiltonian = spins::PauliHamiltonian::new();
-    hamiltonian
-        .add_operator_product(pp.clone(), CalculatorFloat::from(p))
-        .unwrap();
-
-    let mut values = HashMap::new();
-    values.insert("omega".to_string(), vec![1.0]);
-
-    operations::ApplyTimeDependentPauliHamiltonian::new(hamiltonian, vec![1.0], values.clone())
-}
-
-#[cfg(feature = "unstable_analog_operations")]
-#[test_case(operations::SpinsAnalogOperation::from(create_apply_constant_spin_hamiltonian(1.0));"ApplyConstantPauliHamiltonian")]
-#[test_case(operations::SpinsAnalogOperation::from(create_apply_timedependent_spin_hamiltonian("omega"));"ApplyTimeDependentHamiltonian")]
-fn test_version_1_11_0_spin_analog_operations(operation: operations::SpinsAnalogOperation) {
     assert_eq!(operation.minimum_supported_roqoqo_version(), (1, 11, 0));
     let op = operations::Operation::from(operation);
     assert_eq!(op.minimum_supported_roqoqo_version(), (1, 11, 0));
@@ -392,8 +348,12 @@ fn test_version_1_16_0_four_qubit_gate(operation: operations::FourQubitGateOpera
     assert_eq!(operation.minimum_supported_roqoqo_version(), (1, 16, 0));
 }
 
-#[cfg(feature = "unstable_simulation_repetitions")]
-#[test_case(operations::Operation::from(operations::PragmaSimulationRepetitions::new(100)))]
-fn test_version_1_17_0_pragmas(operation: operations::Operation) {
-    assert_eq!(operation.minimum_supported_roqoqo_version(), (1, 17, 0));
+#[test_case(
+    operations::MultiQubitGateOperation::from(operations::MultiQubitCNOT::new(vec![0, 1, 2, 3])); "MultiQubitCNOT"
+)]
+#[test_case(
+    operations::MultiQubitGateOperation::from(operations::QFT::new(vec![0, 1, 2, 3], false, false)); "QFT"
+)]
+fn test_version_1_20_0_multi_qubit_gate(operation: operations::MultiQubitGateOperation) {
+    assert_eq!(operation.minimum_supported_roqoqo_version(), (1, 20, 0));
 }

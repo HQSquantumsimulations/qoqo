@@ -110,13 +110,13 @@ fn test_substitute_error_triple_controlled_x() {
 #[test]
 fn test_format_triple_controlled_x() {
     let gate = TripleControlledPauliX::new(0, 1, 2, 3);
-    let string = format!("{:?}", gate);
+    let string = format!("{gate:?}");
     assert!(string.contains("TripleControlledPauliX"));
     assert!(string.contains("control_0"));
     assert!(string.contains("control_1"));
     assert!(string.contains("control_2"));
     assert!(string.contains("target"));
-    println!("{:?}", string);
+    println!("{string:?}");
 }
 
 #[test]
@@ -215,13 +215,13 @@ fn test_substitute_error_triple_controlled_z() {
 #[test]
 fn test_format_triple_controlled_z() {
     let gate = TripleControlledPauliZ::new(0, 1, 2, 3);
-    let string = format!("{:?}", gate);
+    let string = format!("{gate:?}");
     assert!(string.contains("TripleControlledPauliZ"));
     assert!(string.contains("control_0"));
     assert!(string.contains("control_1"));
     assert!(string.contains("control_2"));
     assert!(string.contains("target"));
-    println!("{:?}", string);
+    println!("{string:?}");
 }
 
 #[test]
@@ -322,13 +322,13 @@ fn test_substitute_error_triple_controlled_phaseshift() {
 #[test]
 fn test_format_triple_controlled_phaseshift() {
     let gate = TripleControlledPhaseShift::new(0, 1, 2, 3, CalculatorFloat::from(1.0));
-    let string = format!("{:?}", gate);
+    let string = format!("{gate:?}");
     assert!(string.contains("TripleControlledPhaseShift"));
     assert!(string.contains("control_0"));
     assert!(string.contains("control_1"));
     assert!(string.contains("control_2"));
     assert!(string.contains("target"));
-    println!("{:?}", string);
+    println!("{string:?}");
 }
 
 #[test]

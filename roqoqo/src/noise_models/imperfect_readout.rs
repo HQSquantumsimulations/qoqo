@@ -147,11 +147,11 @@ impl SupportedVersion for ImperfectReadoutModel {
 fn check_is_probability(prob: &f64) -> Result<(), RoqoqoError> {
     if prob < &0.0 {
         Err(RoqoqoError::GenericError {
-            msg: format!("Probabilities need to be > 0, {} is not > 0", prob),
+            msg: format!("Probabilities need to be > 0, {prob} is not > 0"),
         })
     } else if prob > &1.0 {
         Err(RoqoqoError::GenericError {
-            msg: format!("Probabilities need to be < 1, {} is not < 1", prob),
+            msg: format!("Probabilities need to be < 1, {prob} is not < 1"),
         })
     } else {
         Ok(())

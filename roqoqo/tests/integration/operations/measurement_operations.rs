@@ -49,7 +49,7 @@ fn measure_qubit_simple_traits() {
 
     // Test Debug trait
     assert_eq!(
-        format!("{:?}", measure),
+        format!("{measure:?}"),
         "MeasureQubit { qubit: 0, readout: \"ro\", readout_index: 1 }"
     );
 
@@ -193,7 +193,7 @@ fn pragma_get_statevector_simple_traits() {
 
     // Test Debug trait
     assert_eq!(
-        format!("{:?}", pragma),
+        format!("{pragma:?}"),
         "PragmaGetStateVector { readout: \"ro\", circuit: None }"
     );
 
@@ -378,7 +378,7 @@ fn pragma_get_density_matrix_simple_traits() {
 
     // Test Debug trait
     assert_eq!(
-        format!("{:?}", pragma),
+        format!("{pragma:?}"),
         "PragmaGetDensityMatrix { readout: \"ro\", circuit: None }"
     );
 
@@ -564,7 +564,7 @@ fn pragma_get_occupation_probability_simple_traits() {
 
     // Test Debug trait
     assert_eq!(
-        format!("{:?}", pragma),
+        format!("{pragma:?}"),
         "PragmaGetOccupationProbability { readout: \"ro\", circuit: None }"
     );
 
@@ -762,7 +762,7 @@ fn pragma_get_pauli_product_simple_traits() {
 
     // Test Debug trait
     assert_eq!(
-        format!("{:?}", pragma),
+        format!("{pragma:?}"),
         "PragmaGetPauliProduct { qubit_paulis: {0: 1}, readout: \"ro\", circuit: Circuit { definitions: [], operations: [], _roqoqo_version: RoqoqoVersion } }"
     );
 
@@ -1001,7 +1001,7 @@ fn pragma_repeated_measurement_simple_traits() {
 
     // Test Debug trait
     assert_eq!(
-        format!("{:?}", pragma),
+        format!("{pragma:?}"),
         "PragmaRepeatedMeasurement { readout: \"ro\", number_measurements: 2, qubit_mapping: Some({0: 1}) }"
     );
 

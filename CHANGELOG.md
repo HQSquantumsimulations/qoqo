@@ -4,7 +4,31 @@ This changelog track changes to the qoqo project starting at version v0.5.0
 
 ## Unreleased
 
-* Updated to non deprecated pyo3 functions.
+* Updated minimum supported Python version to 3.10.
+* Removed the `unstable_analog_operations` feature.
+* Removed the `unstable_simulation_repetitions` feature.
+* Removed the `unstable_qoqo_devices` feature.
+* Removed the `unstable_parallel_run` feature.
+
+## 1.21.0
+
+* Updated qoqo and roqoqo to bincode 2.0, schemars 1.0 and pyo3 0.25.
+* Added the `run_parallel` method to QuantumProgram under the `unstable_parallel_run` feature.
+
+## 1.20.0
+
+* Added the `number_of_qubits` method to the `Circuit` class.
+* Fixed bug omitting a factor of 1/2 when adding dephasing.
+* Added MultiQubitCNOT operation.
+* Added QFT operation.
+* Added CFF file.
+
+## 1.19.6
+
+### Updated in 1.19.6
+
+* Updated to non-deprecated pyo3 functions.
+* Updated to pyo3 0.24.
 
 ## 1.19.5
 

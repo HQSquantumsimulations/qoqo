@@ -99,25 +99,6 @@ pub(crate) fn new_circuit(py: Python) -> Bound<CircuitWrapper> {
         .to_owned()
 }
 
-#[cfg(feature = "unstable_simulation_repetitions")]
-/// Test inputs of PragmaSimulationRepetitions
-#[test]
-fn test_pyo3_inputs_simulation_repetitions() {
-    let input_pragma = Operation::from(PragmaSimulationRepetitions::new(100));
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
-        let operation = convert_operation_to_pyobject(input_pragma, py).unwrap();
-
-        let repetitions: &usize = &operation
-            .call_method0("repetitions")
-            .unwrap()
-            .extract()
-            .unwrap();
-        let repetitions_param: &usize = &100_usize;
-        assert_eq!(repetitions, repetitions_param);
-    })
-}
-
 /// Test inputs of PragmaSetNumberOfMeasurements
 #[test]
 fn test_pyo3_inputs_setnumbermeasurements() {

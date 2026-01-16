@@ -11,7 +11,6 @@
 // limitations under the License.
 
 //! Represents a quantum program evaluating measurements based on a one or more free float parameters.
-
 use std::collections::HashMap;
 
 #[cfg(feature = "async")]
@@ -246,7 +245,7 @@ impl Display for QuantumProgram {
             }
         }
 
-        write!(f, "{}", s)
+        write!(f, "{s}")
     }
 }
 

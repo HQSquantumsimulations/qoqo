@@ -67,11 +67,6 @@ pub use bosonic_operations::*;
 /// Collection of roqoqo spin-boson operations.
 mod spin_boson_operations;
 pub use spin_boson_operations::*;
-/// Collection of roqoqo analog gate operations
-#[cfg(feature = "unstable_analog_operations")]
-mod analog_operations;
-#[cfg(feature = "unstable_analog_operations")]
-pub use analog_operations::*;
 
 include!(concat!(env!("OUT_DIR"), "/_auto_generated_operations.rs"));
 
@@ -528,12 +523,12 @@ pub trait Rotate:
     ///
     /// let gate = RotateZ::new(0, 1.0.into());
     /// let overrotated_gate = gate.overrotate(&1.0, &0.5);
-    /// println!("{:?}", gate);
-    /// println!("{:?}", overrotated_gate);
+    /// println!("{gate:?}");
+    /// println!("{overrotated_gate:?}");
     /// let gate_symbolic = RotateZ::new(0, "theta_var".into());
     /// let overrotated_symbolic = gate_symbolic.overrotate(&1.0, &0.5);
-    /// println!("{:?}", gate_symbolic);
-    /// println!("{:?}", overrotated_symbolic);
+    /// println!("{gate_symbolic:?}");
+    /// println!("{overrotated_symbolic:?}");
     /// ```
     fn overrotate(&self, amplitude: &f64, variance: &f64) -> Self;
 }
@@ -932,6 +927,12 @@ pub trait ImplementedIn1point18: Operate {}
 /// Marker trait to show that some operation has been implemented in roqoqo 1.19.0
 pub trait ImplementedIn1point19: Operate {}
 
+/// Marker trait to show that some operation has been implemented in roqoqo 1.20.0
+pub trait ImplementedIn1point20: Operate {}
+
+/// Marker trait to show that some operation has been implemented in roqoqo 1.21.0
+pub trait ImplementedIn1point21: Operate {}
+
 #[cfg(feature = "dynamic")]
 /// A wrapper for Operate trait objects.
 ///
@@ -1152,25 +1153,4 @@ pub trait OperateTwoModeGate:
     + PartialEq
     + SupportedVersion
 {
-}
-
-#[cfg(feature = "unstable_analog_operations")]
-/// Trait for all continuous time spin operations
-///
-/// # Example
-/// ```
-/// use roqoqo::operations::{OperateSpinsAnalog, ApplyConstantPauliHamiltonian};
-/// use struqture::prelude::*;
-/// use struqture::spins::{PauliProduct, PauliHamiltonian};
-/// use qoqo_calculator::CalculatorFloat;
-///
-/// let pp = PauliProduct::new().z(0);
-/// let mut hamiltonian = PauliHamiltonian::new();
-/// hamiltonian.add_operator_product(pp.clone(), CalculatorFloat::from(1.0)).unwrap();
-/// let _op = ApplyConstantPauliHamiltonian::new(hamiltonian, CalculatorFloat::from(1.0));
-/// ```
-///
-pub trait OperateSpinsAnalog: Operate + Clone + PartialEq + SupportedVersion {
-    /// Returns a vector of all the spins present in the analog operation (Hamiltonian).
-    fn spin(&self) -> Result<Vec<usize>, RoqoqoError>;
 }

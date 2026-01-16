@@ -9,7 +9,7 @@
 
 **qoqo** is a toolkit to represent quantum circuits by [HQS Quantum Simulations](https://quantumsimulations.de). The name “qoqo” stands for “Quantum Operation Quantum Operation,” making use of [reduplication](https://en.wikipedia.org/wiki/Reduplication). 
 
-For a detailed introduction see the [user documentation](https://hqsquantumsimulations.github.io/qoqo) and the [qoqo examples repository](https://github.com/HQSquantumsimulations/qoqo_examples).
+For a detailed introduction see the [user documentation](https://hqsquantumsimulations.github.io/qoqo) and the [qoqo examples repository](https://github.com/HQSquantumsimulations/qoqo_examples). Additionally, the [API documentation](https://hqsquantumsimulations.github.io/qoqo/python_api_docs/generated/qoqo.html) is available.
 
 What qoqo is:
 

@@ -22,7 +22,7 @@ use syn::punctuated::Punctuated;
 use syn::visit::{self, Visit};
 use syn::{AttrStyle, File, Ident, ItemImpl, ItemStruct, LitStr, Path, Token, Type, TypePath};
 
-const NUMBER_OF_MINOR_VERSIONS: usize = 20;
+const NUMBER_OF_MINOR_VERSIONS: usize = 21;
 
 static AVAILABLE_GATES: OnceLock<Mutex<Vec<String>>> = OnceLock::new();
 
@@ -84,8 +84,6 @@ struct Visitor {
     single_mode_gate_operations: Vec<Ident>,
     // Identifiers of structs belonging to TwoModeGateOperation enum
     two_mode_gate_operations: Vec<Ident>,
-    // Identifiers of structs belonging to SpinsAnalogOperation enum
-    spins_analog_operations: Vec<Ident>,
 }
 
 impl Visitor {
@@ -115,7 +113,6 @@ impl Visitor {
             two_mode_operations: Vec::new(),
             single_mode_gate_operations: Vec::new(),
             two_mode_gate_operations: Vec::new(),
-            spins_analog_operations: Vec::new(),
         }
     }
 
@@ -302,11 +299,6 @@ impl<'ast> Visit<'ast> for Visitor {
                 {
                     self.two_mode_gate_operations.push(i.ident.clone());
                 }
-                if parsed_arguments.contains("Operate")
-                    && parsed_arguments.contains("OperateSpinsAnalog")
-                {
-                    self.spins_analog_operations.push(i.ident.clone());
-                }
             }
         }
 
@@ -335,27 +327,6 @@ impl<'ast> Visit<'ast> for Visitor {
                         .ident
                         .clone(),
                 };
-
-                // TEMP remove this block when PragmaSimulationRepetitions is stable
-                for att in &i.attrs {
-                    // check outer attributes
-                    if matches!(att.style, AttrStyle::Outer)
-                        // if attribute is cfg
-                        && att.path().is_ident("cfg")
-                        // and if the feature is not active
-                        && !cfg!(feature = "unstable_simulation_repetitions")
-                    {
-                        let cfg_feature_name: CfgFeatureMacroArgument =
-                            att.parse_args().expect("parsing failed 1");
-
-                        if cfg_feature_name
-                            .0
-                            .contains("unstable_simulation_repetitions")
-                        {
-                            return;
-                        }
-                    }
-                }
 
                 if trait_name.as_str() == "Operate" {
                     self.operations.push(id.clone());
@@ -432,6 +403,9 @@ impl<'ast> Visit<'ast> for Visitor {
                 if trait_name.as_str() == "ImplementedIn1point19" {
                     self.roqoqo_version_register.insert(id.clone(), 19);
                 }
+                if trait_name.as_str() == "ImplementedIn1point20" {
+                    self.roqoqo_version_register.insert(id.clone(), 20);
+                }
                 if trait_name.as_str() == "OperateSingleQubitGate" {
                     self.single_qubit_gate_operations.push(id.clone());
                 }
@@ -472,9 +446,6 @@ impl<'ast> Visit<'ast> for Visitor {
                 if trait_name.as_str() == "OperateTwoModeGate" {
                     self.two_mode_gate_operations.push(id.clone());
                 }
-                if trait_name.as_str() == "OperateSpinsAnalog" {
-                    self.spins_analog_operations.push(id);
-                }
             }
         }
         visit::visit_item_impl(self, i);
@@ -492,8 +463,6 @@ const SOURCE_FILES: &[&str] = &[
     "src/operations/define_operations.rs",
     "src/operations/bosonic_operations.rs",
     "src/operations/spin_boson_operations.rs",
-    #[cfg(feature = "unstable_analog_operations")]
-    "src/operations/analog_operations.rs",
 ];
 
 fn main() {
@@ -692,14 +661,6 @@ fn main() {
         let res: Vec<proc_macro2::TokenStream> =
             build_quotes(&vis, i, vis.two_mode_gate_operations.clone());
         two_mode_gate_operations_quote.extend(res);
-    }
-
-    // Construct TokenStreams for variants of operation enum
-    let mut spins_analog_operations_quote: Vec<proc_macro2::TokenStream> = Vec::new();
-    for i in 0..NUMBER_OF_MINOR_VERSIONS {
-        let res: Vec<proc_macro2::TokenStream> =
-            build_quotes(&vis, i, vis.spins_analog_operations.clone());
-        spins_analog_operations_quote.extend(res);
     }
 
     let available_gates = AVAILABLE_GATES.get().unwrap().lock().unwrap().clone();
@@ -910,17 +871,8 @@ fn main() {
             #(#two_mode_gate_operations_quote),*
         }
 
-        /// Enum of all Operations implementing [OperateSpinsAnalog]
-        #[derive(Debug, Clone, PartialEq, InvolveQubits, Operate, OperateTryFromEnum, Substitute, SupportedVersion)]
-        #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
-        #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
-        #[non_exhaustive]
-        pub enum SpinsAnalogOperation {
-            #(#spins_analog_operations_quote),*
-        }
-
     };
-    let final_str = format!("{}", final_quote);
+    let final_str = format!("{final_quote}");
     let out_dir = PathBuf::from(
         std::env::var("OUT_DIR").expect("Cannot find a valid output directory for code generation"),
     )
@@ -937,7 +889,7 @@ fn build_quotes(vis: &Visitor, i: usize, idents: Vec<Ident>) -> Vec<proc_macro2:
         .into_iter()
         .filter(|v| vis.filter_for_version(v, i))
         .map(|v| {
-            let msg = format!("Variant for {}", v);
+            let msg = format!("Variant for {v}");
             quote! {
             #[allow(clippy::upper_case_acronyms)]
             #[doc = #msg]

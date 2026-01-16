@@ -65,7 +65,7 @@ fn test_new_paulix(input_operation: Operation, arguments: (u32,), method: &str) 
         assert!(helper_eq);
 
         assert_eq!(
-            format!("{:?}", def_wrapper_diff),
+            format!("{def_wrapper_diff:?}"),
             "PauliXWrapper { internal: PauliX { qubit: 2 } }"
         );
     })
@@ -96,7 +96,7 @@ fn test_new_pauliy(input_operation: Operation, arguments: (u32,), method: &str) 
         assert!(helper_eq);
 
         assert_eq!(
-            format!("{:?}", def_wrapper_diff),
+            format!("{def_wrapper_diff:?}"),
             "PauliYWrapper { internal: PauliY { qubit: 2 } }"
         );
     })
@@ -127,7 +127,7 @@ fn test_new_pauliz(input_operation: Operation, arguments: (u32,), method: &str) 
         assert!(helper_eq);
 
         assert_eq!(
-            format!("{:?}", def_wrapper_diff),
+            format!("{def_wrapper_diff:?}"),
             "PauliZWrapper { internal: PauliZ { qubit: 2 } }"
         );
     })
@@ -158,7 +158,7 @@ fn test_new_sqrtpaulix(input_operation: Operation, arguments: (u32,), method: &s
         assert!(helper_eq);
 
         assert_eq!(
-            format!("{:?}", def_wrapper_diff),
+            format!("{def_wrapper_diff:?}"),
             "SqrtPauliXWrapper { internal: SqrtPauliX { qubit: 2 } }"
         );
     })
@@ -189,7 +189,7 @@ fn test_new_invsqrtpaulix(input_operation: Operation, arguments: (u32,), method:
         assert!(helper_eq);
 
         assert_eq!(
-            format!("{:?}", def_wrapper_diff),
+            format!("{def_wrapper_diff:?}"),
             "InvSqrtPauliXWrapper { internal: InvSqrtPauliX { qubit: 2 } }"
         );
     })
@@ -220,7 +220,7 @@ fn test_new_sgate(input_operation: Operation, arguments: (u32,), method: &str) {
         assert!(helper_eq);
 
         assert_eq!(
-            format!("{:?}", def_wrapper_diff),
+            format!("{def_wrapper_diff:?}"),
             "SGateWrapper { internal: SGate { qubit: 2 } }"
         );
     })
@@ -251,7 +251,7 @@ fn test_new_invsgate(input_operation: Operation, arguments: (u32,), method: &str
         assert!(helper_eq);
 
         assert_eq!(
-            format!("{:?}", def_wrapper_diff),
+            format!("{def_wrapper_diff:?}"),
             "InvSGateWrapper { internal: InvSGate { qubit: 2 } }"
         );
     })
@@ -282,7 +282,7 @@ fn test_new_tgate(input_operation: Operation, arguments: (u32,), method: &str) {
         assert!(helper_eq);
 
         assert_eq!(
-            format!("{:?}", def_wrapper_diff),
+            format!("{def_wrapper_diff:?}"),
             "TGateWrapper { internal: TGate { qubit: 2 } }"
         );
     })
@@ -313,7 +313,7 @@ fn test_new_invtgate(input_operation: Operation, arguments: (u32,), method: &str
         assert!(helper_eq);
 
         assert_eq!(
-            format!("{:?}", def_wrapper_diff),
+            format!("{def_wrapper_diff:?}"),
             "InvTGateWrapper { internal: InvTGate { qubit: 2 } }"
         );
     })
@@ -344,7 +344,7 @@ fn test_new_hadamard(input_operation: Operation, arguments: (u32,), method: &str
         assert!(helper_eq);
 
         assert_eq!(
-            format!("{:?}", def_wrapper_diff),
+            format!("{def_wrapper_diff:?}"),
             "HadamardWrapper { internal: Hadamard { qubit: 2 } }"
         );
     })
@@ -380,7 +380,7 @@ fn test_new_rotatex(input_operation: Operation, arguments: (u32, f64), method: &
         assert!(helper_eq);
 
         assert_eq!(
-            format!("{:?}", def_wrapper_diff),
+            format!("{def_wrapper_diff:?}"),
             "RotateXWrapper { internal: RotateX { qubit: 2, theta: Float(0.0) } }"
         );
     })
@@ -416,7 +416,7 @@ fn test_new_rotatey(input_operation: Operation, arguments: (u32, f64), method: &
         assert!(helper_eq);
 
         assert_eq!(
-            format!("{:?}", def_wrapper_diff),
+            format!("{def_wrapper_diff:?}"),
             "RotateYWrapper { internal: RotateY { qubit: 2, theta: Float(0.0) } }"
         );
     })
@@ -453,7 +453,7 @@ fn test_new_rotatez(input_operation: Operation, arguments: (u32, f64), method: &
         assert!(helper_eq);
 
         assert_eq!(
-            format!("{:?}", def_wrapper_diff),
+            format!("{def_wrapper_diff:?}"),
             "RotateZWrapper { internal: RotateZ { qubit: 2, theta: Float(0.0) } }"
         );
     })
@@ -490,7 +490,7 @@ fn test_new_phaseshiftstate0(input_operation: Operation, arguments: (u32, f64), 
         assert!(helper_eq);
 
         assert_eq!(
-            format!("{:?}", def_wrapper_diff),
+            format!("{def_wrapper_diff:?}"),
             "PhaseShiftState0Wrapper { internal: PhaseShiftState0 { qubit: 2, theta: Float(0.0) } }"
         );
     })
@@ -527,7 +527,7 @@ fn test_new_phaseshiftstate1(input_operation: Operation, arguments: (u32, f64), 
         assert!(helper_eq);
 
         assert_eq!(
-            format!("{:?}", def_wrapper_diff),
+            format!("{def_wrapper_diff:?}"),
             "PhaseShiftState1Wrapper { internal: PhaseShiftState1 { qubit: 2, theta: Float(0.0) } }"
         );
     })
@@ -564,7 +564,7 @@ fn test_new_gpi(input_operation: Operation, arguments: (u32, f64), method: &str)
         assert!(helper_eq);
 
         assert_eq!(
-            format!("{:?}", def_wrapper_diff),
+            format!("{def_wrapper_diff:?}"),
             "GPiWrapper { internal: GPi { qubit: 2, theta: Float(0.0) } }"
         );
     })
@@ -601,7 +601,7 @@ fn test_new_gpi2(input_operation: Operation, arguments: (u32, f64), method: &str
         assert!(helper_eq);
 
         assert_eq!(
-            format!("{:?}", def_wrapper_diff),
+            format!("{def_wrapper_diff:?}"),
             "GPi2Wrapper { internal: GPi2 { qubit: 2, theta: Float(0.0) } }"
         );
     })
@@ -662,7 +662,7 @@ fn test_new_rotate(input_operation: Operation, arguments: (u32, f64, f64, f64), 
         assert!(helper_eq);
 
         assert_eq!(
-            format!("{:?}", def_wrapper_diff),
+            format!("{def_wrapper_diff:?}"),
             "RotateAroundSphericalAxisWrapper { internal: RotateAroundSphericalAxis { qubit: 2, theta: Float(0.0), spherical_theta: Float(0.0), spherical_phi: Float(0.0) } }"
         );
     })
@@ -711,7 +711,7 @@ fn test_new_rotatexy(input_operation: Operation, arguments: (u32, f64, f64), met
         assert!(helper_eq);
 
         assert_eq!(
-            format!("{:?}", def_wrapper_diff),
+            format!("{def_wrapper_diff:?}"),
             "RotateXYWrapper { internal: RotateXY { qubit: 2, theta: Float(0.0), phi: Float(0.0) } }"
         );
     })
@@ -786,7 +786,7 @@ fn test_new_singlequbitgate(
         assert!(helper_eq);
 
         assert_eq!(
-            format!("{:?}", def_wrapper_diff),
+            format!("{def_wrapper_diff:?}"),
             "SingleQubitGateWrapper { internal: SingleQubitGate { qubit: 2, alpha_r: Float(0.0), alpha_i: Float(0.0), beta_r: Float(0.0), beta_i: Float(0.0), global_phase: Float(0.0) } }"
         );
     })
@@ -817,7 +817,7 @@ fn test_new_identity(input_operation: Operation, arguments: (u32,), method: &str
         assert!(helper_eq);
 
         assert_eq!(
-            format!("{:?}", def_wrapper_diff),
+            format!("{def_wrapper_diff:?}"),
             "IdentityWrapper { internal: Identity { qubit: 2 } }"
         );
     })
@@ -848,7 +848,7 @@ fn test_new_sqrtpauliy(input_operation: Operation, arguments: (u32,), method: &s
         assert!(helper_eq);
 
         assert_eq!(
-            format!("{:?}", def_wrapper_diff),
+            format!("{def_wrapper_diff:?}"),
             "SqrtPauliYWrapper { internal: SqrtPauliY { qubit: 2 } }"
         );
     })
@@ -879,7 +879,7 @@ fn test_new_invsqrtpauliy(input_operation: Operation, arguments: (u32,), method:
         assert!(helper_eq);
 
         assert_eq!(
-            format!("{:?}", def_wrapper_diff),
+            format!("{def_wrapper_diff:?}"),
             "InvSqrtPauliYWrapper { internal: InvSqrtPauliY { qubit: 2 } }"
         );
     })
@@ -910,7 +910,7 @@ fn test_new_sxgate(input_operation: Operation, arguments: (u32,), method: &str) 
         assert!(helper_eq);
 
         assert_eq!(
-            format!("{:?}", def_wrapper_diff),
+            format!("{def_wrapper_diff:?}"),
             "SXGateWrapper { internal: SXGate { qubit: 2 } }"
         );
     })
@@ -941,7 +941,7 @@ fn test_new_invsxgate(input_operation: Operation, arguments: (u32,), method: &st
         assert!(helper_eq);
 
         assert_eq!(
-            format!("{:?}", def_wrapper_diff),
+            format!("{def_wrapper_diff:?}"),
             "InvSXGateWrapper { internal: InvSXGate { qubit: 2 } }"
         );
     })

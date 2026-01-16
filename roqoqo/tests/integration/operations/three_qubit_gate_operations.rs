@@ -398,7 +398,7 @@ pub fn test_tags(tags: Vec<&str>, gate: Operation) {
     "PhaseShiftedControlledControlledPhase(PhaseShiftedControlledControlledPhase { control_0: 1, control_1: 0, target: 2, theta: Float(3.141592653589793), phi: Float(1.5707963267948966) })",
     Operation::from(PhaseShiftedControlledControlledPhase::new(1, 0, 2, CalculatorFloat::PI, CalculatorFloat::FRAC_PI_2)); "PhaseShiftedControlledControlledPhase")]
 fn test_three_qubitgates_debug(message: &'static str, gate: Operation) {
-    assert_eq!(format!("{:?}", gate), message);
+    assert_eq!(format!("{gate:?}"), message);
 }
 
 #[test_case(

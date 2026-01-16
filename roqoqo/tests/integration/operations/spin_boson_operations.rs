@@ -89,7 +89,7 @@ fn clone(op: Operation) {
     "CZQubitResonator(CZQubitResonator { qubit: 4, mode: 0 })"
 )]
 fn debug(op: Operation, string: &str) {
-    assert_eq!(format!("{:?}", op), string);
+    assert_eq!(format!("{op:?}"), string);
 }
 
 #[test_case(

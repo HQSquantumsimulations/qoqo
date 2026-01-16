@@ -16,7 +16,6 @@
 use std::collections::HashSet;
 
 use crate::{QoqoError, QOQO_VERSION};
-use bincode::{deserialize, serialize};
 use pyo3::exceptions::{PyIndexError, PyTypeError, PyValueError};
 use pyo3::prelude::*;
 use pyo3::types::{PyByteArray, PyDict};
@@ -70,12 +69,11 @@ impl CircuitDagWrapper {
             let bytes = get_bytes.extract::<Vec<u8>>().map_err(|_| {
                 PyTypeError::new_err("Python object cannot be converted to qoqo CircuitDag: Cast to binary representation failed".to_string())
             })?;
-            deserialize(&bytes[..]).map_err(|err| {
+            bincode::serde::decode_from_slice(&bytes[..], bincode::config::legacy()).map_err(|err| {
                 PyTypeError::new_err(format!(
-                    "Python object cannot be converted to qoqo CircuitDag: Deserialization failed: {}",
-                    err
+                    "Python object cannot be converted to qoqo CircuitDag: Deserialization failed: {err}"
                 ))}
-            )
+            ).map(|(deserialized, _)| deserialized)
         }
     }
 }
@@ -132,7 +130,7 @@ impl CircuitDagWrapper {
     #[pyo3(text_signature = "($self, op)")]
     pub fn add_to_back(&mut self, op: &Bound<PyAny>) -> PyResult<Option<usize>> {
         let operation = convert_pyany_to_operation(op).map_err(|x| {
-            PyTypeError::new_err(format!("Cannot convert python object to Operation {:?}", x))
+            PyTypeError::new_err(format!("Cannot convert python object to Operation {x:?}"))
         })?;
         Ok(self.internal.add_to_back(operation))
     }
@@ -147,7 +145,7 @@ impl CircuitDagWrapper {
     #[pyo3(text_signature = "($self, op)")]
     pub fn add_to_front(&mut self, op: &Bound<PyAny>) -> PyResult<Option<usize>> {
         let operation = convert_pyany_to_operation(op).map_err(|x| {
-            PyTypeError::new_err(format!("Cannot convert python object to Operation {:?}", x))
+            PyTypeError::new_err(format!("Cannot convert python object to Operation {x:?}"))
         })?;
         Ok(self.internal.add_to_front(operation))
     }
@@ -252,7 +250,7 @@ impl CircuitDagWrapper {
         let operation = self
             .internal
             .get(index)
-            .ok_or_else(|| PyIndexError::new_err(format!("Index {} out of range", index)))?
+            .ok_or_else(|| PyIndexError::new_err(format!("Index {index} out of range")))?
             .clone();
         convert_operation_to_pyobject(operation, py)
     }
@@ -329,8 +327,9 @@ impl CircuitDagWrapper {
     ///     ValueError: Cannot serialize CircuitDag to bytes.
     #[pyo3(text_signature = "($self)")]
     pub fn to_bincode(&self) -> PyResult<Py<PyByteArray>> {
-        let serialized = serialize(&self.internal)
-            .map_err(|_| PyValueError::new_err("Cannot serialize CircuitDag to bytes"))?;
+        let serialized =
+            bincode::serde::encode_to_vec(&self.internal, bincode::config::legacy())
+                .map_err(|_| PyValueError::new_err("Cannot serialize CircuitDag to bytes"))?;
         let b: Py<PyByteArray> = Python::with_gil(|py| -> Py<PyByteArray> {
             PyByteArray::new(py, &serialized[..]).into()
         });
@@ -352,13 +351,13 @@ impl CircuitDagWrapper {
     #[pyo3(text_signature = "(input)")]
     pub fn from_bincode(input: &Bound<PyAny>) -> PyResult<Self> {
         let bytes = input
-            .as_ref()
             .extract::<Vec<u8>>()
             .map_err(|_| PyTypeError::new_err("Input cannot be converted to byte array"))?;
 
         Ok(Self {
-            internal: deserialize(&bytes[..])
-                .map_err(|_| PyValueError::new_err("Input cannot be deserialized to CircuitDag"))?,
+            internal: bincode::serde::decode_from_slice(&bytes[..], bincode::config::legacy())
+                .map_err(|_| PyValueError::new_err("Input cannot be deserialized to CircuitDag"))?
+                .0,
         })
     }
 
@@ -474,7 +473,7 @@ impl CircuitDagWrapper {
 ///
 /// Fallible conversion of generic python object to [roqoqo::CircuitDag].
 pub fn convert_into_circuitdag(input: &Bound<PyAny>) -> Result<CircuitDag, QoqoError> {
-    if let Ok(try_downcast) = input.as_ref().extract::<CircuitDagWrapper>() {
+    if let Ok(try_downcast) = input.extract::<CircuitDagWrapper>() {
         return Ok(try_downcast.internal);
     }
     // Everything that follows tries to extract the circuitdag when two separately
@@ -505,7 +504,9 @@ pub fn convert_into_circuitdag(input: &Bound<PyAny>) -> Result<CircuitDag, QoqoE
     let bytes = get_bytes
         .extract::<Vec<u8>>()
         .map_err(|_| QoqoError::CannotExtractObject)?;
-    deserialize(&bytes[..]).map_err(|_| QoqoError::CannotExtractObject)
+    bincode::serde::decode_from_slice(&bytes[..], bincode::config::legacy())
+        .map_err(|_| QoqoError::CannotExtractObject)
+        .map(|(deserialized, _)| deserialized)
     // } else {
     //     Err(QoqoError::VersionMismatch)
     // }

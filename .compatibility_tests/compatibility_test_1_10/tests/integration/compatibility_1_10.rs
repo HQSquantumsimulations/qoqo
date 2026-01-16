@@ -116,14 +116,12 @@ use test_roqoqo_1_10;
 // QuantumRabi, LongitudinalCoupling, JaynesCummings, SingleExcitationLoad, SingleExcitationStore and CZQubitResonator were all added
 // as unstable, but have been added as stable in 1.11
 // Operations from 1.11 - uncomment for next unittests
-// ApplyConstantPauliHamiltonian and ApplyTimeDependentHamiltonian are unstable in 1.11
 // #[test_case(test_roqoqo_1_10::operations::QuantumRabi::new(0, 1, 0.1.into()).into(); "QuantumRabi")]
 // #[test_case(test_roqoqo_1_10::operations::LongitudinalCoupling::new(0, 1, 0.1.into()).into(); "LongitudinalCoupling")]
 // #[test_case(test_roqoqo_1_10::operations::JaynesCummings::new(0, 1, 0.1.into()).into(); "JaynesCummings")]
 // #[test_case(test_roqoqo_1_10::operations::SingleExcitationLoad::new(0, 1).into(); "SingleExcitationLoad")]
 // #[test_case(test_roqoqo_1_10::operations::SingleExcitationStore::new(0, 1).into(); "SingleExcitationStore")]
 // #[test_case(test_roqoqo_1_10::operations::CZQubitResonator::new(0, 1).into(); "CZQubitResonator")]
-// #[test_case(create_apply_constant_spin_hamiltonian(); "ApplyConstantPauliHamiltonian")]
 // #[test_case(create_apply_timedependent_spin_hamiltonian(); "ApplyTimeDependentHamiltonian")]
 fn test_bincode_compatibility_1_10(operation: test_roqoqo_1_10::operations::Operation) {
     let mut test_circuit = test_roqoqo_1_10::Circuit::new();
@@ -139,10 +137,13 @@ fn test_bincode_compatibility_1_10(operation: test_roqoqo_1_10::operations::Oper
         measurement: test_measurement,
         input_parameter_names: vec!["test".to_string()],
     };
-    let test_serialisation: Vec<u8> = bincode::serialize(&test_program).unwrap();
+    let config = bincode::config::legacy();
+    let test_serialisation: Vec<u8> = bincode::serde::encode_to_vec(&test_program, config).unwrap();
 
     let _test_deserialisation: roqoqo::QuantumProgram =
-        bincode::deserialize(&test_serialisation).unwrap();
+        bincode::serde::decode_from_slice(&test_serialisation, config)
+            .unwrap()
+            .0;
 }
 
 #[test]
@@ -153,10 +154,13 @@ fn test_device_compat() {
         &["CNOT".to_string()],
         1.0,
     );
-    let test_serialisation: Vec<u8> = bincode::serialize(&test_device).unwrap();
+    let config = bincode::config::legacy();
+    let test_serialisation: Vec<u8> = bincode::serde::encode_to_vec(&test_device, config).unwrap();
 
     let test_deserialisation: roqoqo::devices::AllToAllDevice =
-        bincode::deserialize(&test_serialisation).unwrap();
+        bincode::serde::decode_from_slice(&test_serialisation, config)
+            .unwrap()
+            .0;
 
     let comparsion_device = roqoqo::devices::AllToAllDevice::new(
         3,

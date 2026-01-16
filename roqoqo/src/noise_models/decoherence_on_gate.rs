@@ -10,10 +10,10 @@
 // express or implied. See the License for the specific language governing permissions and
 // limitations under the License.
 
-use struqture::spins::PlusMinusLindbladNoiseOperator;
-
 use super::SupportedVersion;
 use std::collections::HashMap;
+#[cfg(feature = "serialize")]
+use struqture::spins::PlusMinusLindbladNoiseOperator;
 
 /// Error model for noise that is only present on gate executions.
 ///
@@ -62,12 +62,12 @@ pub struct DecoherenceOnGateModel {
 
 #[cfg(feature = "json_schema")]
 impl schemars::JsonSchema for DecoherenceOnGateModel {
-    fn schema_name() -> String {
-        "DecoherenceOnGateModel".to_string()
+    fn schema_name() -> std::borrow::Cow<'static, str> {
+        "DecoherenceOnGateModel".into()
     }
 
-    fn json_schema(gen: &mut schemars::gen::SchemaGenerator) -> schemars::schema::Schema {
-        <DecoherenceOnGateModelSerialize>::json_schema(gen)
+    fn json_schema(generator: &mut schemars::SchemaGenerator) -> schemars::Schema {
+        <DecoherenceOnGateModelSerialize>::json_schema(generator)
     }
 }
 

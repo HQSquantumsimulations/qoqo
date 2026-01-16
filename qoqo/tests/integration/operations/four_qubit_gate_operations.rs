@@ -311,7 +311,7 @@ fn test_new_triplecontrolledpaulix(
         assert!(helper_eq);
 
         assert_eq!(
-            format!("{:?}", def_wrapper_diff),
+            format!("{def_wrapper_diff:?}"),
             "TripleControlledPauliXWrapper { internal: TripleControlledPauliX { control_0: 1, control_1: 2, control_2: 3, target: 4 } }"
         );
     })
@@ -357,7 +357,7 @@ fn test_new_triplecontrolledpauliz(
         assert!(helper_eq);
 
         assert_eq!(
-            format!("{:?}", def_wrapper_diff),
+            format!("{def_wrapper_diff:?}"),
             "TripleControlledPauliZWrapper { internal: TripleControlledPauliZ { control_0: 1, control_1: 2, control_2: 3, target: 4 } }"
         );
     })
@@ -407,7 +407,7 @@ fn test_new_triplecontrolledphaseshift(
         assert!(helper_eq);
 
         assert_eq!(
-            format!("{:?}", def_wrapper_diff),
+            format!("{def_wrapper_diff:?}"),
             "TripleControlledPhaseShiftWrapper { internal: TripleControlledPhaseShift { control_0: 1, control_1: 2, control_2: 3, target: 4, theta: Float(1.0) } }"
         );
     })

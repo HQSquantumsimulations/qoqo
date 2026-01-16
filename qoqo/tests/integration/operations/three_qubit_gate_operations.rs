@@ -480,7 +480,7 @@ fn test_new_controlledcontrolledpauliz(
         assert!(helper_eq);
 
         assert_eq!(
-            format!("{:?}", def_wrapper_diff),
+            format!("{def_wrapper_diff:?}"),
             "ControlledControlledPauliZWrapper { internal: ControlledControlledPauliZ { control_0: 1, control_1: 2, target: 3 } }"
         );
     })
@@ -530,7 +530,7 @@ fn test_new_controlledcontrolledphaseshift(
         assert!(helper_eq);
 
         assert_eq!(
-            format!("{:?}", def_wrapper_diff),
+            format!("{def_wrapper_diff:?}"),
             "ControlledControlledPhaseShiftWrapper { internal: ControlledControlledPhaseShift { control_0: 1, control_1: 2, target: 3, theta: Float(0.0) } }"
         );
     })
@@ -568,7 +568,7 @@ fn test_new_toffoli(input_operation: Operation, arguments: (u32, u32, u32), meth
         assert!(helper_eq);
 
         assert_eq!(
-            format!("{:?}", def_wrapper_diff),
+            format!("{def_wrapper_diff:?}"),
             "ToffoliWrapper { internal: Toffoli { control_0: 1, control_1: 2, target: 3 } }"
         );
     })
@@ -606,7 +606,7 @@ fn test_new_controlledswap(input_operation: Operation, arguments: (u32, u32, u32
         assert!(helper_eq);
 
         assert_eq!(
-            format!("{:?}", def_wrapper_diff),
+            format!("{def_wrapper_diff:?}"),
             "ControlledSWAPWrapper { internal: ControlledSWAP { control: 1, target_0: 2, target_1: 3 } }"
         );
     })
@@ -656,7 +656,7 @@ fn test_new_phaseshiftedccz(
         assert!(helper_eq);
 
         assert_eq!(
-            format!("{:?}", def_wrapper_diff),
+            format!("{def_wrapper_diff:?}"),
             "PhaseShiftedControlledControlledZWrapper { internal: PhaseShiftedControlledControlledZ { control_0: 1, control_1: 2, target: 3, phi: Float(1.0) } }"
         );
     })
@@ -706,7 +706,7 @@ fn test_new_phaseshiftedccphase(
         assert!(helper_eq);
 
         assert_eq!(
-            format!("{:?}", def_wrapper_diff),
+            format!("{def_wrapper_diff:?}"),
             "PhaseShiftedControlledControlledPhaseWrapper { internal: PhaseShiftedControlledControlledPhase { control_0: 1, control_1: 2, target: 3, theta: Float(1.0), phi: Float(1.0) } }"
         );
     })

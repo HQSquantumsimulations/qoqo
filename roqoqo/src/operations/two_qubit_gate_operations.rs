@@ -224,7 +224,7 @@ impl OperateTwoQubitGate for SWAP {
     /// * struct `KakDecomposition { global_phase, k_vector, circuit_before, circuit_after }`
     fn kak_decomposition(&self) -> KakDecomposition {
         KakDecomposition {
-            global_phase: CalculatorFloat::from((-1.0) * PI / 4.0),
+            global_phase: CalculatorFloat::from(-PI / 4.0),
             k_vector: [
                 CalculatorFloat::FRAC_PI_4,
                 CalculatorFloat::FRAC_PI_4,
@@ -570,12 +570,12 @@ impl OperateGate for InvSqrtISwap {
             [
                 Complex64::new(0.0, 0.0),
                 Complex64::new(f, 0.0),
-                Complex64::new(0.0, (-1.0) * f),
+                Complex64::new(0.0, -f),
                 Complex64::new(0.0, 0.0)
             ],
             [
                 Complex64::new(0.0, 0.0),
-                Complex64::new(0.0, (-1.0) * f),
+                Complex64::new(0.0, -f),
                 Complex64::new(f, 0.0),
                 Complex64::new(0.0, 0.0)
             ],
@@ -600,8 +600,8 @@ impl OperateTwoQubitGate for InvSqrtISwap {
         KakDecomposition {
             global_phase: CalculatorFloat::ZERO,
             k_vector: [
-                CalculatorFloat::from((-1.0) * PI / 8.0),
-                CalculatorFloat::from((-1.0) * PI / 8.0),
+                CalculatorFloat::from(-PI / 8.0),
+                CalculatorFloat::from(-PI / 8.0),
                 CalculatorFloat::ZERO,
             ],
             circuit_before: None,
@@ -1052,22 +1052,22 @@ impl OperateGate for MolmerSorensenXX {
                 Complex64::new(f, 0.0),
                 Complex64::new(0.0, 0.0),
                 Complex64::new(0.0, 0.0),
-                Complex64::new(0.0, (-1.0) * f)
+                Complex64::new(0.0, -f)
             ],
             [
                 Complex64::new(0.0, 0.0),
                 Complex64::new(f, 0.0),
-                Complex64::new(0.0, (-1.0) * f),
+                Complex64::new(0.0, -f),
                 Complex64::new(0.0, 0.0)
             ],
             [
                 Complex64::new(0.0, 0.0),
-                Complex64::new(0.0, (-1.0) * f),
+                Complex64::new(0.0, -f),
                 Complex64::new(f, 0.0),
                 Complex64::new(0.0, 0.0)
             ],
             [
-                Complex64::new(0.0, (-1.0) * f),
+                Complex64::new(0.0, -f),
                 Complex64::new(0.0, 0.0),
                 Complex64::new(0.0, 0.0),
                 Complex64::new(f, 0.0)
@@ -1087,7 +1087,7 @@ impl OperateTwoQubitGate for MolmerSorensenXX {
         KakDecomposition {
             global_phase: CalculatorFloat::ZERO,
             k_vector: [
-                CalculatorFloat::from((-1.0) * PI / 4.0),
+                CalculatorFloat::from(-PI / 4.0),
                 CalculatorFloat::ZERO,
                 CalculatorFloat::ZERO,
             ],
@@ -1148,22 +1148,22 @@ impl OperateGate for VariableMSXX {
                 Complex64::new(c, 0.0),
                 Complex64::new(0.0, 0.0),
                 Complex64::new(0.0, 0.0),
-                Complex64::new(0.0, (-1.0) * s)
+                Complex64::new(0.0, -s)
             ],
             [
                 Complex64::new(0.0, 0.0),
                 Complex64::new(c, 0.0),
-                Complex64::new(0.0, (-1.0) * s),
+                Complex64::new(0.0, -s),
                 Complex64::new(0.0, 0.0)
             ],
             [
                 Complex64::new(0.0, 0.0),
-                Complex64::new(0.0, (-1.0) * s),
+                Complex64::new(0.0, -s),
                 Complex64::new(c, 0.0),
                 Complex64::new(0.0, 0.0)
             ],
             [
-                Complex64::new(0.0, (-1.0) * s),
+                Complex64::new(0.0, -s),
                 Complex64::new(0.0, 0.0),
                 Complex64::new(0.0, 0.0),
                 Complex64::new(c, 0.0)
@@ -1261,7 +1261,7 @@ impl OperateGate for GivensRotation {
             ],
             [
                 Complex64::new(0.0, 0.0),
-                Complex64::new((-1.0) * st * cp, (-1.0) * st * sp),
+                Complex64::new(-st * cp, -st * sp),
                 Complex64::new(ct, 0.0),
                 Complex64::new(0.0, 0.0)
             ],
@@ -1370,7 +1370,7 @@ impl OperateGate for GivensRotationLittleEndian {
             ],
             [
                 Complex64::new(0.0, 0.0),
-                Complex64::new((-1.0) * st * cp, (-1.0) * st * sp),
+                Complex64::new(-st * cp, -st * sp),
                 Complex64::new(ct * cp, ct * sp),
                 Complex64::new(0.0, 0.0)
             ],
@@ -1476,28 +1476,28 @@ impl OperateGate for Qsim {
 
         Ok(array![
             [
-                Complex64::new(cm * cz, (-1.0) * cm * sz),
+                Complex64::new(cm * cz, -cm * sz),
                 Complex64::new(0.0, 0.0),
                 Complex64::new(0.0, 0.0),
-                Complex64::new((-1.0) * sm * sz, (-1.0) * sm * cz)
+                Complex64::new(-sm * sz, -sm * cz)
             ],
             [
                 Complex64::new(0.0, 0.0),
-                Complex64::new(sp * sz, (-1.0) * sp * cz),
+                Complex64::new(sp * sz, -sp * cz),
                 Complex64::new(cp * cz, cp * sz),
                 Complex64::new(0.0, 0.0)
             ],
             [
                 Complex64::new(0.0, 0.0),
                 Complex64::new(cp * cz, cp * sz),
-                Complex64::new(sp * sz, (-1.0) * sp * cz),
+                Complex64::new(sp * sz, -sp * cz),
                 Complex64::new(0.0, 0.0)
             ],
             [
-                Complex64::new((-1.0) * sm * sz, (-1.0) * sm * cz),
+                Complex64::new(-sm * sz, -sm * cz),
                 Complex64::new(0.0, 0.0),
                 Complex64::new(0.0, 0.0),
-                Complex64::new(cm * cz, (-1.0) * cm * sz)
+                Complex64::new(cm * cz, -cm * sz)
             ],
         ])
     }
@@ -1512,7 +1512,7 @@ impl OperateTwoQubitGate for Qsim {
     /// * struct `KakDecomposition { global_phase, k_vector, circuit_before, circuit_after }`
     fn kak_decomposition(&self) -> KakDecomposition {
         KakDecomposition {
-            global_phase: CalculatorFloat::from(-1.0 * PI / 4.0),
+            global_phase: CalculatorFloat::from(-PI / 4.0),
             k_vector: [
                 self.x.clone() * (-1.0) + PI / 4.0,
                 self.y.clone() * (-1.0) + PI / 4.0,
@@ -1590,21 +1590,21 @@ impl OperateGate for Fsim {
             ],
             [
                 Complex64::new(0.0, 0.0),
-                Complex64::new(0.0, (-1.0) * t.sin()),
+                Complex64::new(0.0, -t.sin()),
                 Complex64::new(t.cos(), 0.0),
                 Complex64::new(0.0, 0.0)
             ],
             [
                 Complex64::new(0.0, 0.0),
                 Complex64::new(t.cos(), 0.0),
-                Complex64::new(0.0, (-1.0) * t.sin()),
+                Complex64::new(0.0, -t.sin()),
                 Complex64::new(0.0, 0.0)
             ],
             [
-                Complex64::new((-1.0) * d.sin() * u.sin(), (-1.0) * d.sin() * u.cos()),
+                Complex64::new(-d.sin() * u.sin(), -d.sin() * u.cos()),
                 Complex64::new(0.0, 0.0),
                 Complex64::new(0.0, 0.0),
-                Complex64::new((-1.0) * d.cos() * u.cos(), d.cos() * u.sin())
+                Complex64::new(-d.cos() * u.cos(), d.cos() * u.sin())
             ],
         ])
     }
@@ -1699,28 +1699,28 @@ impl OperateGate for SpinInteraction {
 
         Ok(array![
             [
-                Complex64::new(cm * cz, (-1.0) * cm * sz),
+                Complex64::new(cm * cz, -cm * sz),
                 Complex64::new(0.0, 0.0),
                 Complex64::new(0.0, 0.0),
-                Complex64::new((-1.0) * sm * sz, (-1.0) * sm * cz)
+                Complex64::new(-sm * sz, -sm * cz)
             ],
             [
                 Complex64::new(0.0, 0.0),
                 Complex64::new(cp * cz, cp * sz),
-                Complex64::new(sp * sz, (-1.0) * sp * cz),
+                Complex64::new(sp * sz, -sp * cz),
                 Complex64::new(0.0, 0.0)
             ],
             [
                 Complex64::new(0.0, 0.0),
-                Complex64::new(sp * sz, (-1.0) * sp * cz),
+                Complex64::new(sp * sz, -sp * cz),
                 Complex64::new(cp * cz, cp * sz),
                 Complex64::new(0.0, 0.0)
             ],
             [
-                Complex64::new((-1.0) * sm * sz, (-1.0) * sm * cz),
+                Complex64::new(-sm * sz, -sm * cz),
                 Complex64::new(0.0, 0.0),
                 Complex64::new(0.0, 0.0),
-                Complex64::new(cm * cz, (-1.0) * cm * sz)
+                Complex64::new(cm * cz, -cm * sz)
             ],
         ])
     }
@@ -1804,7 +1804,7 @@ impl OperateGate for Bogoliubov {
                 Complex64::new(da.cos(), 0.0),
                 Complex64::new(0.0, 0.0),
                 Complex64::new(0.0, 0.0),
-                Complex64::new((-1.0) * da.sin() * dp.sin(), da.sin() * dp.cos())
+                Complex64::new(-da.sin() * dp.sin(), da.sin() * dp.cos())
             ],
             [
                 Complex64::new(0.0, 0.0),
@@ -1916,12 +1916,12 @@ impl OperateGate for PMInteraction {
             [
                 Complex64::new(0.0, 0.0),
                 Complex64::new(c, 0.0),
-                Complex64::new(0.0, (-1.0) * s),
+                Complex64::new(0.0, -s),
                 Complex64::new(0.0, 0.0)
             ],
             [
                 Complex64::new(0.0, 0.0),
-                Complex64::new(0.0, (-1.0) * s),
+                Complex64::new(0.0, -s),
                 Complex64::new(c, 0.0),
                 Complex64::new(0.0, 0.0)
             ],
@@ -2018,12 +2018,12 @@ impl OperateGate for ComplexPMInteraction {
             [
                 Complex64::new(0.0, 0.0),
                 Complex64::new(tn.cos(), 0.0),
-                Complex64::new((-1.0) * tn.sin() * ta.sin(), (-1.0) * tn.sin() * ta.cos()),
+                Complex64::new(-tn.sin() * ta.sin(), -tn.sin() * ta.cos()),
                 Complex64::new(0.0, 0.0)
             ],
             [
                 Complex64::new(0.0, 0.0),
-                Complex64::new(tn.sin() * ta.sin(), (-1.0) * tn.sin() * ta.cos()),
+                Complex64::new(tn.sin() * ta.sin(), -tn.sin() * ta.cos()),
                 Complex64::new(tn.cos(), 0.0),
                 Complex64::new(0.0, 0.0)
             ],
@@ -2357,12 +2357,12 @@ impl OperateGate for ControlledRotateX {
                 Complex64::new(0.0, 0.0),
                 Complex64::new(0.0, 0.0),
                 Complex64::new(c, 0.0),
-                Complex64::new(0.0, -1.0 * s)
+                Complex64::new(0.0, -s)
             ],
             [
                 Complex64::new(0.0, 0.0),
                 Complex64::new(0.0, 0.0),
-                Complex64::new(0.0, -1.0 * s),
+                Complex64::new(0.0, -s),
                 Complex64::new(c, 0.0)
             ]
         ])
@@ -2468,12 +2468,12 @@ impl OperateGate for ControlledRotateXY {
                 Complex64::new(0.0, 0.0),
                 Complex64::new(0.0, 0.0),
                 Complex64::new(c, 0.0),
-                Complex64::new(-1.0 * s * vy, -1.0 * s * vx)
+                Complex64::new(-s * vy, -s * vx)
             ],
             [
                 Complex64::new(0.0, 0.0),
                 Complex64::new(0.0, 0.0),
-                Complex64::new(s * vy, -1.0 * s * vx),
+                Complex64::new(s * vy, -s * vx),
                 Complex64::new(c, 0.0)
             ]
         ])

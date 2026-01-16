@@ -16,7 +16,6 @@ use crate::measurements::{
     CheatedPauliZProductWrapper, CheatedWrapper, ClassicalRegisterWrapper, PauliZProductWrapper,
 };
 use crate::{QoqoError, QOQO_VERSION};
-use bincode::{deserialize, serialize};
 use pyo3::exceptions::{PyRuntimeError, PyTypeError, PyValueError};
 use pyo3::prelude::*;
 use pyo3::types::PyByteArray;
@@ -66,12 +65,11 @@ impl QuantumProgramWrapper {
             let bytes = get_bytes.extract::<Vec<u8>>().map_err(|_| {
                 PyTypeError::new_err("Python object cannot be converted to qoqo QuantumProgram: Cast to binary representation failed".to_string())
             })?;
-            deserialize(&bytes[..]).map_err(|err| {
+            bincode::serde::decode_from_slice(&bytes[..], bincode::config::legacy()).map_err(|err| {
                     PyTypeError::new_err(format!(
-                    "Python object cannot be converted to qoqo QuantumProgram: Deserialization failed: {}",
-                    err
+                    "Python object cannot be converted to qoqo QuantumProgram: Deserialization failed: {err}"
                 ))
-                })
+                }).map(|(deserialized, _)| deserialized)
         }
     }
 }
@@ -241,7 +239,7 @@ impl QuantumProgramWrapper {
                 let substituted_parameters: HashMap<String, f64> = input_parameter_names.iter().zip(parameters.iter()).map(|(key, value)| (key.clone(), *value)).collect();
                 let substituted_measurement = measurement.substitute_parameters(
                     substituted_parameters
-                ).map_err(|err| PyRuntimeError::new_err(format!("Applying parameters failed {:?}", err)))?;
+                ).map_err(|err| PyRuntimeError::new_err(format!("Applying parameters failed {err:?}")))?;
                     backend.call_method1("run_measurement", (PauliZProductWrapper{internal: substituted_measurement}, )).map(|bound| bound.into())
             }
             QuantumProgram::CheatedPauliZProduct{measurement, input_parameter_names } => {
@@ -249,7 +247,7 @@ impl QuantumProgramWrapper {
                 let substituted_parameters: HashMap<String, f64> = input_parameter_names.iter().zip(parameters.iter()).map(|(key, value)| (key.clone(), *value)).collect();
                 let substituted_measurement = measurement.substitute_parameters(
                     substituted_parameters
-                ).map_err(|err| PyRuntimeError::new_err(format!("Applying parameters failed {:?}", err)))?;
+                ).map_err(|err| PyRuntimeError::new_err(format!("Applying parameters failed {err:?}")))?;
                     backend.call_method1("run_measurement", (CheatedPauliZProductWrapper{internal: substituted_measurement}, )).map(|bound| bound.into())
             }
             QuantumProgram::Cheated{measurement, input_parameter_names } => {
@@ -257,7 +255,7 @@ impl QuantumProgramWrapper {
                 let substituted_parameters: HashMap<String, f64> = input_parameter_names.iter().zip(parameters.iter()).map(|(key, value)| (key.clone(), *value)).collect();
                 let substituted_measurement = measurement.substitute_parameters(
                     substituted_parameters
-                ).map_err(|err| PyRuntimeError::new_err(format!("Applying parameters failed {:?}", err)))?;
+                ).map_err(|err| PyRuntimeError::new_err(format!("Applying parameters failed {err:?}")))?;
                     backend.call_method1("run_measurement", (CheatedWrapper{internal: substituted_measurement}, )).map(|bound| bound.into())
               }
             _ => Err(PyTypeError::new_err("A quantum programm returning classical registeres cannot be executed by `run` use `run_registers` instead".to_string()))
@@ -288,7 +286,7 @@ impl QuantumProgramWrapper {
                 let substituted_parameters: HashMap<String, f64> = input_parameter_names.iter().zip(parameters.iter()).map(|(key, value)| (key.clone(), *value)).collect();
                 let substituted_measurement = measurement.substitute_parameters(
                     substituted_parameters
-                ).map_err(|err| PyRuntimeError::new_err(format!("Applying parameters failed {:?}", err)))?;
+                ).map_err(|err| PyRuntimeError::new_err(format!("Applying parameters failed {err:?}")))?;
                     backend.call_method1("run_measurement_registers", (ClassicalRegisterWrapper{internal: substituted_measurement}, )).map(|bound| bound.into())
              },
             _ => Err(PyTypeError::new_err("A quantum programm returning expectation values cannot be executed by `run_registers` use `run` instead".to_string()))
@@ -339,8 +337,9 @@ impl QuantumProgramWrapper {
     /// Raises:
     ///     ValueError: Cannot serialize QuantumProgram to bytes.
     pub fn to_bincode(&self) -> PyResult<Py<PyByteArray>> {
-        let serialized = serialize(&self.internal)
-            .map_err(|_| PyValueError::new_err("Cannot serialize QuantumProgram to bytes"))?;
+        let serialized =
+            bincode::serde::encode_to_vec(&self.internal, bincode::config::legacy())
+                .map_err(|_| PyValueError::new_err("Cannot serialize QuantumProgram to bytes"))?;
         let b: Py<PyByteArray> = Python::with_gil(|py| -> Py<PyByteArray> {
             PyByteArray::new(py, &serialized[..]).into()
         });
@@ -361,14 +360,15 @@ impl QuantumProgramWrapper {
     #[staticmethod]
     pub fn from_bincode(input: &Bound<PyAny>) -> PyResult<Self> {
         let bytes = input
-            .as_ref()
             .extract::<Vec<u8>>()
             .map_err(|_| PyTypeError::new_err("Input cannot be converted to byte array"))?;
 
         Ok(Self {
-            internal: deserialize(&bytes[..]).map_err(|_| {
-                PyValueError::new_err("Input cannot be deserialized to QuantumProgram")
-            })?,
+            internal: bincode::serde::decode_from_slice(&bytes[..], bincode::config::legacy())
+                .map_err(|_| {
+                    PyValueError::new_err("Input cannot be deserialized to QuantumProgram")
+                })?
+                .0,
         })
     }
 
@@ -473,7 +473,7 @@ impl QuantumProgramWrapper {
 ///
 /// Fallible conversion of generic python object to [roqoqo::QuantumProgram].
 pub fn convert_into_quantum_program(input: &Bound<PyAny>) -> Result<QuantumProgram, QoqoError> {
-    if let Ok(try_downcast) = input.as_ref().extract::<QuantumProgramWrapper>() {
+    if let Ok(try_downcast) = input.extract::<QuantumProgramWrapper>() {
         return Ok(try_downcast.internal);
     }
     // Everything that follows tries to extract the quantum program when two separately
@@ -504,7 +504,9 @@ pub fn convert_into_quantum_program(input: &Bound<PyAny>) -> Result<QuantumProgr
     let bytes = get_bytes
         .extract::<Vec<u8>>()
         .map_err(|_| QoqoError::CannotExtractObject)?;
-    deserialize(&bytes[..]).map_err(|_| QoqoError::CannotExtractObject)
+    bincode::serde::decode_from_slice(&bytes[..], bincode::config::legacy())
+        .map_err(|_| QoqoError::CannotExtractObject)
+        .map(|(deserialized, _)| deserialized)
     // } else {
     //     Err(QoqoError::VersionMismatch)
     // }

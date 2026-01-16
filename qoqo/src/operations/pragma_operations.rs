@@ -217,8 +217,7 @@ impl PragmaSetStateVectorWrapper {
                 .substitute_parameters(&calculator)
                 .map_err(|x| {
                     pyo3::exceptions::PyRuntimeError::new_err(format!(
-                        "Parameter Substitution failed: {:?}",
-                        x
+                        "Parameter Substitution failed: {x:?}"
                     ))
                 })?,
         })
@@ -502,8 +501,7 @@ impl PragmaSetDensityMatrixWrapper {
                 .substitute_parameters(&calculator)
                 .map_err(|x| {
                     pyo3::exceptions::PyRuntimeError::new_err(format!(
-                        "Parameter Substitution failed: {:?}",
-                        x
+                        "Parameter Substitution failed: {x:?}"
                     ))
                 })?,
         })
@@ -1138,7 +1136,7 @@ impl PragmaGeneralNoiseWrapper {
         Python::with_gil(|py| -> PyResult<Py<PyArray2<f64>>> {
             match self.internal.superoperator() {
                 Ok(x) => Ok(x.to_pyarray(py).unbind()),
-                Err(err) => Err(PyRuntimeError::new_err(format!("{:?}", err))),
+                Err(err) => Err(PyRuntimeError::new_err(format!("{err:?}"))),
             }
         })
     }
@@ -1203,8 +1201,7 @@ impl PragmaGeneralNoiseWrapper {
                 .substitute_parameters(&calculator)
                 .map_err(|x| {
                     pyo3::exceptions::PyRuntimeError::new_err(format!(
-                        "Parameter Substitution failed: {:?}",
-                        x
+                        "Parameter Substitution failed: {x:?}"
                     ))
                 })?,
         })
@@ -1496,8 +1493,7 @@ impl PragmaChangeDeviceWrapper {
                 .substitute_parameters(&calculator)
                 .map_err(|x| {
                     pyo3::exceptions::PyRuntimeError::new_err(format!(
-                        "Parameter Substitution failed: {:?}",
-                        x
+                        "Parameter Substitution failed: {x:?}"
                     ))
                 })?,
         })
@@ -1766,8 +1762,7 @@ impl PragmaAnnotatedOpWrapper {
                 .substitute_parameters(&calculator)
                 .map_err(|x| {
                     pyo3::exceptions::PyRuntimeError::new_err(format!(
-                        "Parameter Substitution failed: {:?}",
-                        x
+                        "Parameter Substitution failed: {x:?}"
                     ))
                 })?,
         })
@@ -1890,29 +1885,9 @@ impl PragmaAnnotatedOpWrapper {
     }
 }
 
-#[cfg(feature = "unstable_simulation_repetitions")]
-/// Wrap function automatically generates functions in these traits.
-#[wrap(Operate, OperatePragma, JsonSchema)]
-#[derive(Eq)]
-/// This PRAGMA sets the number of repetitions for stochastic simulations of the quantum circuit.
-///
-/// This is different from the number of measurements, which is set either with
-/// PragmaSetNumberOfMeasurements of with PragmaRepeatedMeasurement. PragmaSimulationRepetitions
-/// only applies to stochastic simulations, i.e. simulations of quantum circuits that involve either
-/// multiple subsequent measurements on the same qubits, or operations on qubits that have already
-/// been measured, and sets the number of times that the whole circuit is simulated in order to obtain
-/// sufficient statistics.
-///
-/// Args:
-///     repetitions (int): Number of simulation repetitions.
-struct PragmaSimulationRepetitions {
-    repetitions: usize,
-}
-
 #[cfg(test)]
 mod tests {
     use crate::operations::*;
-    use bincode::serialize;
     use roqoqo::operations::*;
     use std::collections::HashSet;
 
@@ -1939,7 +1914,7 @@ mod tests {
     fn test_pyo3_format_repr_change_device() {
         let wrapped: Operation = PragmaActiveReset::new(0).into();
         let input_measurement: Operation = PragmaChangeDevice::new(&wrapped).unwrap().into();
-        let format_repr = format!("PragmaChangeDevice {{ wrapped_tags: {:?}, wrapped_hqslang: {:?}, wrapped_operation: {:?} }}", wrapped.tags(), wrapped.hqslang(), serialize(&wrapped).unwrap());
+        let format_repr = format!("PragmaChangeDevice {{ wrapped_tags: {:?}, wrapped_hqslang: {:?}, wrapped_operation: {:?} }}", wrapped.tags(), wrapped.hqslang(), bincode::serde::encode_to_vec(&wrapped, bincode::config::legacy()).unwrap());
 
         pyo3::prepare_freethreaded_python();
         Python::with_gil(|py| {

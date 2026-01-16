@@ -213,8 +213,7 @@ impl ControlledSWAPWrapper {
                 .substitute_parameters(&calculator)
                 .map_err(|x| {
                     pyo3::exceptions::PyRuntimeError::new_err(format!(
-                        "Parameter Substitution failed: {:?}",
-                        x
+                        "Parameter Substitution failed: {x:?}"
                     ))
                 })?,
         })
@@ -233,7 +232,7 @@ impl ControlledSWAPWrapper {
         let new_internal = self
             .internal
             .remap_qubits(&mapping)
-            .map_err(|x| PyRuntimeError::new_err(format!("Qubit remapping failed: {:?}", x)))?;
+            .map_err(|x| PyRuntimeError::new_err(format!("Qubit remapping failed: {x:?}")))?;
         Ok(Self {
             internal: new_internal,
         })

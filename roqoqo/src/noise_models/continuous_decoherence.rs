@@ -11,6 +11,7 @@
 // limitations under the License.
 
 use super::SupportedVersion;
+#[cfg(feature = "serialize")]
 use crate::RoqoqoError;
 use struqture::{
     spins::PlusMinusLindbladNoiseOperator, spins::PlusMinusProduct, OperateOnDensityMatrix,
@@ -56,12 +57,12 @@ pub struct ContinuousDecoherenceModel {
 
 #[cfg(feature = "json_schema")]
 impl schemars::JsonSchema for ContinuousDecoherenceModel {
-    fn schema_name() -> String {
-        "ContinuousDecoherenceModel".to_string()
+    fn schema_name() -> std::borrow::Cow<'static, str> {
+        "ContinuousDecoherenceModel".into()
     }
 
-    fn json_schema(gen: &mut schemars::gen::SchemaGenerator) -> schemars::schema::Schema {
-        <ContinuousDecoherenceModelSerialize>::json_schema(gen)
+    fn json_schema(generator: &mut schemars::SchemaGenerator) -> schemars::Schema {
+        <ContinuousDecoherenceModelSerialize>::json_schema(generator)
     }
 }
 
@@ -186,7 +187,7 @@ impl ContinuousDecoherenceModel {
                         PlusMinusProduct::new().z(*qubit),
                         PlusMinusProduct::new().z(*qubit),
                     ),
-                    rate.into(),
+                    (0.5 * rate).into(),
                 )
                 .expect("Internal struqture bug.");
         }
@@ -345,13 +346,13 @@ mod tests {
         lindblad_operator
             .add_operator_product(
                 (PlusMinusProduct::new().z(0), PlusMinusProduct::new().z(0)),
-                0.9.into(),
+                0.45.into(),
             )
             .unwrap();
         lindblad_operator
             .add_operator_product(
                 (PlusMinusProduct::new().z(1), PlusMinusProduct::new().z(1)),
-                0.9.into(),
+                0.45.into(),
             )
             .unwrap();
 
@@ -409,7 +410,7 @@ mod tests {
         let schema_checker =
             Validator::new(&serde_json::to_value(&schema).unwrap()).expect("schema is valid");
         let value = serde_json::to_value(&model).unwrap();
-        println!("{:?}", value);
+        println!("{value:?}");
         let val = match value {
             serde_json::Value::Object(ob) => ob,
             _ => {
