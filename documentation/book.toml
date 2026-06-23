@@ -1,7 +1,6 @@
 [book]
 authors = ["HQS Quantum Simulations <info@quantumsimulations.de>"]
 language = "en"
-multilingual = false
 src = "src"
 title = "HQS qoqo User Documentation"
 
