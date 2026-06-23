@@ -4,6 +4,9 @@ This changelog track changes to the qoqo project starting at version v0.5.0
 
 ## Unreleased
 
+## 1.22.0
+
+* Updated pyo3 to 0.29, qoqo-calculator 1.9, struqture to 2.6, itertools 0.15, nalgebra 0.35, ndarray 0.17, rand 0.10, rand_distr 0.6, and jsonschema 0.46.
 * Updated minimum supported Python version to 3.10.
 * Removed the `unstable_analog_operations` feature.
 * Removed the `unstable_simulation_repetitions` feature.
