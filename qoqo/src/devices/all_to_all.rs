@@ -29,7 +29,7 @@ use roqoqo::{operations::SupportedVersion, ROQOQO_VERSION};
 ///     single_qubit_gates (List[str]): A list of 'hqslang' names of single-qubit-gates supported by the device.
 ///     two_qubit_gates (List[str]): A list of 'hqslang' names of basic two-qubit-gates supported by the device.
 ///     default_gate_time (float): The default startig gate time.
-#[pyclass(name = "AllToAllDevice", module = "devices")]
+#[pyclass(from_py_object, name = "AllToAllDevice", module = "devices")]
 #[derive(Clone, Debug, PartialEq)]
 pub struct AllToAllDeviceWrapper {
     /// Internal storage of [roqoqo::devices::AllToAllDevice]

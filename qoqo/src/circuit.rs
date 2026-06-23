@@ -44,7 +44,7 @@ fn circuit(_py: Python, module: &Bound<PyModule>) -> PyResult<()> {
 /// Circuit of Operations.
 ///
 /// A quantum program is represented as a linear sequence of Operations.
-#[pyclass(name = "Circuit", module = "qoqo")]
+#[pyclass(from_py_object, name = "Circuit", module = "qoqo")]
 #[derive(Clone, Debug, PartialEq)]
 pub struct CircuitWrapper {
     /// Internal storage of [roqoqo::Circuit]
@@ -251,7 +251,7 @@ impl CircuitWrapper {
     pub fn to_bincode(&self) -> PyResult<Py<PyByteArray>> {
         let serialized = bincode::serde::encode_to_vec(&self.internal, bincode::config::legacy())
             .map_err(|_| PyValueError::new_err("Cannot serialize Circuit to bytes"))?;
-        let b: Py<PyByteArray> = Python::with_gil(|py| -> Py<PyByteArray> {
+        let b: Py<PyByteArray> = Python::attach(|py| -> Py<PyByteArray> {
             PyByteArray::new(py, &serialized[..]).into()
         });
         Ok(b)

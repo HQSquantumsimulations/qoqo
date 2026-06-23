@@ -218,7 +218,7 @@ pub fn device_wrapper_def(
             ///
             #[pyo3(text_signature = "(qubit)")]
             fn qubit_decoherence_rates(&self, qubit: usize) -> Py<PyArray2<f64>> {
-                Python::with_gil(|py| -> Py<PyArray2<f64>> {
+                Python::attach(|py| -> Py<PyArray2<f64>> {
                     match self.internal.qubit_decoherence_rates(&qubit) {
                         Some(matrix) => matrix.to_pyarray(py).to_owned().into(),
                         None => {
@@ -356,7 +356,7 @@ pub fn device_wrapper_def(
             pub fn to_bincode(&self) -> PyResult<Py<PyByteArray>> {
                 let serialized = bincode::serde::encode_to_vec(&self.internal, bincode::config::legacy())
                     .map_err(|_| PyValueError::new_err("Cannot serialize Device to bytes"))?;
-                let b: Py<PyByteArray> = Python::with_gil(|py| -> Py<PyByteArray> {
+                let b: Py<PyByteArray> = Python::attach(|py| -> Py<PyByteArray> {
                     PyByteArray::new(py, &serialized[..]).into()
                 });
                 Ok(b)

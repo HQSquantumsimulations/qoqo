@@ -320,7 +320,7 @@ fn as_vec() {
     circuit.add_operation(pauliz0.clone());
     circuit.add_operation(paulix1.clone());
 
-    let vec_ops = vec![
+    let vec_ops = [
         Operation::from(definition),
         Operation::from(rotatez0),
         Operation::from(rotatex1),

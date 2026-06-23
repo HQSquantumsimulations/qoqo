@@ -24,7 +24,7 @@ fn new_circuitdag(py: Python) -> Bound<CircuitDagWrapper> {
     circuitdag_type
         .call0()
         .unwrap()
-        .downcast::<CircuitDagWrapper>()
+        .cast::<CircuitDagWrapper>()
         .unwrap()
         .to_owned()
 }
@@ -34,7 +34,7 @@ fn new_circuit(py: Python) -> Bound<CircuitWrapper> {
     circuit_type
         .call0()
         .unwrap()
-        .downcast::<CircuitWrapper>()
+        .cast::<CircuitWrapper>()
         .unwrap()
         .to_owned()
 }
@@ -42,8 +42,8 @@ fn new_circuit(py: Python) -> Bound<CircuitWrapper> {
 /// Test default
 #[test]
 fn test_default() {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(Operation::from(PauliX::new(0)), py).unwrap();
         let dag = new_circuitdag(py);
         dag.call_method1("add_to_back", (operation.clone(),))
@@ -60,8 +60,8 @@ fn test_default() {
 /// Test add_to_back and add_to_front
 #[test]
 fn test_add_to() {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let paulix_0 = convert_operation_to_pyobject(Operation::from(PauliY::new(0)), py).unwrap();
         let cnot_01 = convert_operation_to_pyobject(Operation::from(CNOT::new(0, 1)), py).unwrap();
         let dag = new_circuitdag(py);
@@ -76,8 +76,8 @@ fn test_add_to() {
 /// Test get
 #[test]
 fn test_get() {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let paulix_0 = convert_operation_to_pyobject(Operation::from(PauliX::new(0)), py).unwrap();
         let pauliy_0 = convert_operation_to_pyobject(Operation::from(PauliY::new(0)), py).unwrap();
         let dag = new_circuitdag(py);
@@ -89,15 +89,25 @@ fn test_get() {
         let comp_op = dag.call_method1("get", (0,)).unwrap();
         let operation = convert_operation_to_pyobject(Operation::from(PauliX::new(0)), py).unwrap();
 
-        let helper1 =
-            bool::extract_bound(&comp_op.call_method1("__eq__", (operation,)).unwrap()).unwrap();
+        let helper1 = bool::extract(
+            comp_op
+                .call_method1("__eq__", (operation,))
+                .unwrap()
+                .as_borrowed(),
+        )
+        .unwrap();
         assert!(helper1);
 
         let comp_op = dag.call_method1("get", (1,)).unwrap();
         let operation = convert_operation_to_pyobject(Operation::from(PauliY::new(0)), py).unwrap();
 
-        let helper2 =
-            bool::extract_bound(&comp_op.call_method1("__eq__", (operation,)).unwrap()).unwrap();
+        let helper2 = bool::extract(
+            comp_op
+                .call_method1("__eq__", (operation,))
+                .unwrap()
+                .as_borrowed(),
+        )
+        .unwrap();
         assert!(helper2);
     })
 }
@@ -105,8 +115,8 @@ fn test_get() {
 /// Test copy
 #[test]
 fn test_copy() {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let paulix_0 = convert_operation_to_pyobject(Operation::from(PauliX::new(0)), py).unwrap();
         let pauliy_0 = convert_operation_to_pyobject(Operation::from(PauliY::new(0)), py).unwrap();
         let dag = new_circuitdag(py);
@@ -119,13 +129,22 @@ fn test_copy() {
         let dag_copy = dag.call_method0("__copy__").unwrap();
         let empty_dag_copy = empty_dag.call_method0("__copy__").unwrap();
 
-        let full_dag_comparison =
-            bool::extract_bound(&dag_copy.call_method1("__eq__", (dag,)).unwrap()).unwrap();
+        let full_dag_comparison = bool::extract(
+            dag_copy
+                .call_method1("__eq__", (dag,))
+                .unwrap()
+                .as_borrowed(),
+        )
+        .unwrap();
         assert!(full_dag_comparison);
 
-        let empty_dag_comparison =
-            bool::extract_bound(&empty_dag_copy.call_method1("__eq__", (empty_dag,)).unwrap())
-                .unwrap();
+        let empty_dag_comparison = bool::extract(
+            empty_dag_copy
+                .call_method1("__eq__", (empty_dag,))
+                .unwrap()
+                .as_borrowed(),
+        )
+        .unwrap();
         assert!(empty_dag_comparison);
     })
 }
@@ -133,8 +152,8 @@ fn test_copy() {
 /// Test __richcmp__
 #[test]
 fn test_richcmp() {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let paulix_0 = convert_operation_to_pyobject(Operation::from(PauliX::new(0)), py).unwrap();
         let pauliy_0 = convert_operation_to_pyobject(Operation::from(PauliY::new(0)), py).unwrap();
         let cnot_01 = convert_operation_to_pyobject(Operation::from(CNOT::new(0, 1)), py).unwrap();
@@ -152,10 +171,10 @@ fn test_richcmp() {
             .unwrap();
 
         let comparison =
-            bool::extract_bound(&dag1.call_method1("__eq__", (&dag2,)).unwrap()).unwrap();
+            bool::extract(dag1.call_method1("__eq__", (&dag2,)).unwrap().as_borrowed()).unwrap();
         assert!(!comparison);
         let comparison =
-            bool::extract_bound(&dag1.call_method1("__ne__", (&dag2,)).unwrap()).unwrap();
+            bool::extract(dag1.call_method1("__ne__", (&dag2,)).unwrap().as_borrowed()).unwrap();
         assert!(comparison);
         let comparison = dag1.call_method1("__ge__", (dag2,));
         assert!(comparison.is_err());
@@ -165,8 +184,8 @@ fn test_richcmp() {
 /// Test qoqo_versions function of Circuit
 #[test]
 fn test_qoqo_versions() {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let paulix_0 = convert_operation_to_pyobject(Operation::from(PauliX::new(0)), py).unwrap();
         let dag = new_circuitdag(py);
         dag.call_method1("add_to_back", (paulix_0.clone(),))
@@ -185,7 +204,7 @@ fn test_qoqo_versions() {
         );
 
         let comparison_copy: Vec<String> =
-            Vec::extract_bound(&dag.call_method0("_qoqo_versions").unwrap()).unwrap();
+            Vec::extract(dag.call_method0("_qoqo_versions").unwrap().as_borrowed()).unwrap();
         assert_eq!(comparison_copy, vec![rver.as_str(), qver.as_str()]);
     })
 }
@@ -193,8 +212,8 @@ fn test_qoqo_versions() {
 /// Test to_ and from_bincode functions of CircuitDag
 #[test]
 fn test_to_from_bincode() {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let paulix_0 = convert_operation_to_pyobject(Operation::from(PauliX::new(0)), py).unwrap();
         let dag = new_circuitdag(py);
         dag.call_method1("add_to_back", (paulix_0.clone(),))
@@ -204,8 +223,13 @@ fn test_to_from_bincode() {
         let serialised = dag.call_method0("to_bincode").unwrap();
         let new = new_circuitdag(py);
         let deserialised = new.call_method1("from_bincode", (&serialised,)).unwrap();
-        let comparison =
-            bool::extract_bound(&deserialised.call_method1("__eq__", (&dag,)).unwrap()).unwrap();
+        let comparison = bool::extract(
+            deserialised
+                .call_method1("__eq__", (&dag,))
+                .unwrap()
+                .as_borrowed(),
+        )
+        .unwrap();
         assert!(comparison);
 
         let deserialised_error = new.call_method1(
@@ -232,8 +256,13 @@ fn test_to_from_bincode() {
             .call_method1("from_bincode", (&serialised,))
             .unwrap();
 
-        let comparison =
-            bool::extract_bound(&deserialised_py.call_method1("__eq__", (dag,)).unwrap()).unwrap();
+        let comparison = bool::extract(
+            deserialised_py
+                .call_method1("__eq__", (dag,))
+                .unwrap()
+                .as_borrowed(),
+        )
+        .unwrap();
         assert!(comparison);
     })
 }
@@ -241,8 +270,8 @@ fn test_to_from_bincode() {
 /// Test from_circuit
 #[test]
 fn test_from_circuit() {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let paulix_0 = convert_operation_to_pyobject(Operation::from(PauliX::new(0)), py).unwrap();
         let pauliy_0 = convert_operation_to_pyobject(Operation::from(PauliY::new(0)), py).unwrap();
         let cnot_01 = convert_operation_to_pyobject(Operation::from(CNOT::new(0, 1)), py).unwrap();
@@ -253,29 +282,44 @@ fn test_from_circuit() {
 
         let dag = new_circuitdag(py);
         let binding = dag.call_method1("from_circuit", (circuit,)).unwrap();
-        let dag = binding.downcast::<CircuitDagWrapper>().unwrap();
+        let dag = binding.cast::<CircuitDagWrapper>().unwrap();
 
         let comp_op = dag.call_method1("get", (0,)).unwrap();
-        let helper1 =
-            bool::extract_bound(&comp_op.call_method1("__eq__", (paulix_0,)).unwrap()).unwrap();
+        let helper1 = bool::extract(
+            comp_op
+                .call_method1("__eq__", (paulix_0,))
+                .unwrap()
+                .as_borrowed(),
+        )
+        .unwrap();
         assert!(helper1);
 
         let comp_op = dag.call_method1("get", (1,)).unwrap();
-        let helper2 =
-            bool::extract_bound(&comp_op.call_method1("__eq__", (pauliy_0,)).unwrap()).unwrap();
+        let helper2 = bool::extract(
+            comp_op
+                .call_method1("__eq__", (pauliy_0,))
+                .unwrap()
+                .as_borrowed(),
+        )
+        .unwrap();
         assert!(helper2);
 
         let comp_op = dag.call_method1("get", (2,)).unwrap();
-        let helper3 =
-            bool::extract_bound(&comp_op.call_method1("__eq__", (cnot_01,)).unwrap()).unwrap();
+        let helper3 = bool::extract(
+            comp_op
+                .call_method1("__eq__", (cnot_01,))
+                .unwrap()
+                .as_borrowed(),
+        )
+        .unwrap();
         assert!(helper3);
     })
 }
 
 #[test]
 fn test_to_circuit() {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let paulix_0 = convert_operation_to_pyobject(Operation::from(PauliX::new(0)), py).unwrap();
         let pauliy_0 = convert_operation_to_pyobject(Operation::from(PauliY::new(0)), py).unwrap();
         let cnot_01 = convert_operation_to_pyobject(Operation::from(CNOT::new(0, 1)), py).unwrap();
@@ -294,26 +338,41 @@ fn test_to_circuit() {
         let new_circuit = dag.call_method0("to_circuit").unwrap();
 
         let comp_op = new_circuit.call_method1("get", (0,)).unwrap();
-        let helper1 =
-            bool::extract_bound(&comp_op.call_method1("__eq__", (paulix_0,)).unwrap()).unwrap();
+        let helper1 = bool::extract(
+            comp_op
+                .call_method1("__eq__", (paulix_0,))
+                .unwrap()
+                .as_borrowed(),
+        )
+        .unwrap();
         assert!(helper1);
 
         let comp_op = new_circuit.call_method1("get", (1,)).unwrap();
-        let helper2 =
-            bool::extract_bound(&comp_op.call_method1("__eq__", (pauliy_0,)).unwrap()).unwrap();
+        let helper2 = bool::extract(
+            comp_op
+                .call_method1("__eq__", (pauliy_0,))
+                .unwrap()
+                .as_borrowed(),
+        )
+        .unwrap();
         assert!(helper2);
 
         let comp_op = new_circuit.call_method1("get", (2,)).unwrap();
-        let helper3 =
-            bool::extract_bound(&comp_op.call_method1("__eq__", (cnot_01,)).unwrap()).unwrap();
+        let helper3 = bool::extract(
+            comp_op
+                .call_method1("__eq__", (cnot_01,))
+                .unwrap()
+                .as_borrowed(),
+        )
+        .unwrap();
         assert!(helper3);
     })
 }
 
 #[test]
 fn test_execution_blocked() {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let paulix_0 = convert_operation_to_pyobject(Operation::from(PauliX::new(0)), py).unwrap();
         let pauliy_1 = convert_operation_to_pyobject(Operation::from(PauliY::new(1)), py).unwrap();
         let cnot_01 = convert_operation_to_pyobject(Operation::from(CNOT::new(0, 1)), py).unwrap();
@@ -345,8 +404,12 @@ fn test_execution_blocked() {
         let comp = dag
             .call_method1("execution_blocked", (vec![a, b, c], e))
             .unwrap();
-        let helper =
-            bool::extract_bound(&comp.call_method1("__eq__", (vec![d],)).unwrap()).unwrap();
+        let helper = bool::extract(
+            comp.call_method1("__eq__", (vec![d],))
+                .unwrap()
+                .as_borrowed(),
+        )
+        .unwrap();
         assert!(helper);
 
         let comp = dag
@@ -362,24 +425,31 @@ fn test_execution_blocked() {
         let comp = dag
             .call_method1("execution_blocked", (vec![d, e], b))
             .unwrap();
-        let helper =
-            bool::extract_bound(&comp.call_method1("__eq__", (vec![a],)).unwrap()).unwrap();
+        let helper = bool::extract(
+            comp.call_method1("__eq__", (vec![a],))
+                .unwrap()
+                .as_borrowed(),
+        )
+        .unwrap();
         assert!(helper);
 
         let comp = dag
             .call_method1("execution_blocked", (Vec::<usize>::new(), e))
             .unwrap();
-        let helper =
-            bool::extract_bound(&comp.call_method1("__eq__", (vec![a, b, c, d],)).unwrap())
-                .unwrap();
+        let helper = bool::extract(
+            comp.call_method1("__eq__", (vec![a, b, c, d],))
+                .unwrap()
+                .as_borrowed(),
+        )
+        .unwrap();
         assert!(helper);
     })
 }
 
 #[test]
 fn test_blocking_predecessors() {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let paulix_0 = convert_operation_to_pyobject(Operation::from(PauliX::new(0)), py).unwrap();
         let pauliy_1 = convert_operation_to_pyobject(Operation::from(PauliY::new(1)), py).unwrap();
         let cnot_01 = convert_operation_to_pyobject(Operation::from(CNOT::new(0, 1)), py).unwrap();
@@ -415,16 +485,20 @@ fn test_blocking_predecessors() {
         let comp = dag
             .call_method1("blocking_predecessors", (vec![a, b], d))
             .unwrap();
-        let helper =
-            bool::extract_bound(&comp.call_method1("__eq__", (vec![c],)).unwrap()).unwrap();
+        let helper = bool::extract(
+            comp.call_method1("__eq__", (vec![c],))
+                .unwrap()
+                .as_borrowed(),
+        )
+        .unwrap();
         assert!(helper);
     })
 }
 
 #[test]
 fn test_new_front_layer() {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let paulix_0 = convert_operation_to_pyobject(Operation::from(PauliX::new(0)), py).unwrap();
         let pauliy_1 = convert_operation_to_pyobject(Operation::from(PauliY::new(1)), py).unwrap();
         let cnot_01 = convert_operation_to_pyobject(Operation::from(CNOT::new(0, 1)), py).unwrap();
@@ -455,38 +529,53 @@ fn test_new_front_layer() {
         let comp = dag
             .call_method1("new_front_layer", (vec![a, c], vec![b.clone()], b))
             .unwrap();
-        let helper =
-            bool::extract_bound(&comp.call_method1("__eq__", (vec![d],)).unwrap()).unwrap();
+        let helper = bool::extract(
+            comp.call_method1("__eq__", (vec![d],))
+                .unwrap()
+                .as_borrowed(),
+        )
+        .unwrap();
         assert!(helper);
 
         let comp = dag
             .call_method1("new_front_layer", (vec![a], vec![b.clone()], b))
             .unwrap();
-        let helper =
-            bool::extract_bound(&comp.call_method1("__eq__", (vec![b],)).unwrap()).unwrap();
+        let helper = bool::extract(
+            comp.call_method1("__eq__", (vec![b],))
+                .unwrap()
+                .as_borrowed(),
+        )
+        .unwrap();
         assert!(helper);
 
         let comp = dag
             .call_method1("new_front_layer", (vec![a, b, c], vec![d.clone()], d))
             .unwrap();
-        let helper =
-            bool::extract_bound(&comp.call_method1("__eq__", (vec![e],)).unwrap()).unwrap();
+        let helper = bool::extract(
+            comp.call_method1("__eq__", (vec![e],))
+                .unwrap()
+                .as_borrowed(),
+        )
+        .unwrap();
         assert!(helper);
 
         let comp = dag
             .call_method1("new_front_layer", (vec![a, b, c, d], vec![e.clone()], e))
             .unwrap();
-        let helper =
-            bool::extract_bound(&comp.call_method1("__eq__", (Vec::<usize>::new(),)).unwrap())
-                .unwrap();
+        let helper = bool::extract(
+            comp.call_method1("__eq__", (Vec::<usize>::new(),))
+                .unwrap()
+                .as_borrowed(),
+        )
+        .unwrap();
         assert!(helper);
     })
 }
 
 #[test]
 fn test_parallel_blocks() {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let paulix_0 = convert_operation_to_pyobject(Operation::from(PauliX::new(0)), py).unwrap();
         let paulix_1 = convert_operation_to_pyobject(Operation::from(PauliX::new(1)), py).unwrap();
         let pauliy_1 = convert_operation_to_pyobject(Operation::from(PauliY::new(1)), py).unwrap();
@@ -508,18 +597,20 @@ fn test_parallel_blocks() {
 
         let vec0 = par_bl.get_item(0).unwrap();
         if let Ok(el) = vec0.call0() {
-            let helper1 = bool::extract_bound(
-                &el.get_item(0)
+            let helper1 = bool::extract(
+                el.get_item(0)
                     .unwrap()
                     .call_method1("__eq__", (0,))
-                    .unwrap(),
+                    .unwrap()
+                    .as_borrowed(),
             )
             .unwrap();
-            let helper2 = bool::extract_bound(
-                &el.get_item(0)
+            let helper2 = bool::extract(
+                el.get_item(0)
                     .unwrap()
                     .call_method1("__eq__", (2,))
-                    .unwrap(),
+                    .unwrap()
+                    .as_borrowed(),
             )
             .unwrap();
             assert!(helper1 || helper2);
@@ -527,18 +618,20 @@ fn test_parallel_blocks() {
 
         let vec1 = par_bl.get_item(1).unwrap();
         if let Ok(el) = vec1.call0() {
-            let helper1 = bool::extract_bound(
-                &el.get_item(0)
+            let helper1 = bool::extract(
+                el.get_item(0)
                     .unwrap()
                     .call_method1("__eq__", (1,))
-                    .unwrap(),
+                    .unwrap()
+                    .as_borrowed(),
             )
             .unwrap();
-            let helper2 = bool::extract_bound(
-                &el.get_item(0)
+            let helper2 = bool::extract(
+                el.get_item(0)
                     .unwrap()
                     .call_method1("__eq__", (3,))
-                    .unwrap(),
+                    .unwrap()
+                    .as_borrowed(),
             )
             .unwrap();
             assert!(helper1 || helper2);
@@ -546,11 +639,12 @@ fn test_parallel_blocks() {
 
         let vec2 = par_bl.get_item(2).unwrap();
         if let Ok(el) = vec2.call0() {
-            let helper1 = bool::extract_bound(
-                &el.get_item(0)
+            let helper1 = bool::extract(
+                el.get_item(0)
                     .unwrap()
                     .call_method1("__eq__", (4,))
-                    .unwrap(),
+                    .unwrap()
+                    .as_borrowed(),
             )
             .unwrap();
             assert!(helper1);
@@ -560,8 +654,8 @@ fn test_parallel_blocks() {
 
 #[test]
 fn test_successors() {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let cnot_01 = convert_operation_to_pyobject(Operation::from(CNOT::new(0, 1)), py).unwrap();
         let paulix_0 = convert_operation_to_pyobject(Operation::from(PauliX::new(0)), py).unwrap();
         let paulix_1 = convert_operation_to_pyobject(Operation::from(PauliX::new(1)), py).unwrap();
@@ -577,23 +671,24 @@ fn test_successors() {
 
         let vec = dag.call_method1("successors", (a,)).unwrap();
 
-        let len_op: usize = usize::extract_bound(&vec.call_method0("__len__").unwrap()).unwrap();
+        let len_op: usize =
+            usize::extract(vec.call_method0("__len__").unwrap().as_borrowed()).unwrap();
         assert_eq!(len_op, 2);
 
         let el = vec.call_method1("__getitem__", (0,)).unwrap();
-        let comp = bool::extract_bound(&el.call_method1("__eq__", (c,)).unwrap()).unwrap();
+        let comp = bool::extract(el.call_method1("__eq__", (c,)).unwrap().as_borrowed()).unwrap();
         assert!(comp);
 
         let el = vec.call_method1("__getitem__", (1,)).unwrap();
-        let comp = bool::extract_bound(&el.call_method1("__eq__", (b,)).unwrap()).unwrap();
+        let comp = bool::extract(el.call_method1("__eq__", (b,)).unwrap().as_borrowed()).unwrap();
         assert!(comp);
     })
 }
 
 #[test]
 fn test_getters_commuting_operations() {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let commut_op = convert_operation_to_pyobject(
             Operation::from(PragmaSetNumberOfMeasurements::new(3, "ro".to_string())),
             py,
@@ -614,8 +709,8 @@ fn test_getters_commuting_operations() {
 
 #[test]
 fn test_getters_parallel_blocks() {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let paulix_0 = convert_operation_to_pyobject(Operation::from(PauliX::new(0)), py).unwrap();
         let paulix_1 = convert_operation_to_pyobject(Operation::from(PauliX::new(1)), py).unwrap();
         let cnot_01 = convert_operation_to_pyobject(Operation::from(CNOT::new(0, 1)), py).unwrap();
@@ -646,8 +741,8 @@ fn test_getters_parallel_blocks() {
 
 #[test]
 fn test_getters_operation_involving_qubit() {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let paulix_0 = convert_operation_to_pyobject(Operation::from(PauliX::new(0)), py).unwrap();
         let dag = new_circuitdag(py);
 
@@ -668,8 +763,8 @@ fn test_getters_operation_involving_qubit() {
 
 #[test]
 fn test_getters_operations_involving_classical() {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let meas = convert_operation_to_pyobject(
             Operation::from(MeasureQubit::new(0, "ro".to_string(), 0)),
             py,
@@ -692,9 +787,9 @@ fn test_getters_operations_involving_classical() {
 
 #[test]
 fn test_convert_into_circuitdag() {
-    pyo3::prepare_freethreaded_python();
+    Python::initialize();
     let added_op = Operation::from(PauliX::new(0));
-    Python::with_gil(|py| {
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(added_op, py).unwrap();
 
         let added_dag = new_circuitdag(py);

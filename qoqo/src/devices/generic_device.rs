@@ -29,7 +29,7 @@ use roqoqo::{operations::SupportedVersion, ROQOQO_VERSION};
 /// Note:
 ///     GenericDevice uses nested HashMaps to represent the most general device connectivity.
 ///     The memory usage will be inefficient for devices with large qubit numbers.
-#[pyclass(name = "GenericDevice", module = "devices")]
+#[pyclass(from_py_object, name = "GenericDevice", module = "devices")]
 #[derive(Clone, Debug, PartialEq)]
 pub struct GenericDeviceWrapper {
     /// Internal storage of [roqoqo::devices::SquareLatticeDevice]

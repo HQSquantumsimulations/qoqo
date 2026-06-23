@@ -31,8 +31,8 @@ use test_case::test_case;
 #[test_case(Operation::from(TripleControlledPauliZ::new(0, 1, 2, 3)); "TripleControlledPauliZ")]
 #[test_case(Operation::from(TripleControlledPhaseShift::new(0, 1, 2, 3, CalculatorFloat::from(1.0))); "TripleControlledPhaseShift")]
 fn test_pyo3_is_not_parametrized(input_operation: Operation) {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
         assert!(!operation
             .call_method0("is_parametrized")
@@ -44,8 +44,8 @@ fn test_pyo3_is_not_parametrized(input_operation: Operation) {
 
 #[test_case(Operation::from(TripleControlledPhaseShift::new(0, 1, 2, 3, CalculatorFloat::from("theta"))); "TripleControlledPhaseShift")]
 fn test_pyo3_is_parametrized(input_operation: Operation) {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
         assert!(operation
             .call_method0("is_parametrized")
@@ -80,8 +80,8 @@ fn test_pyo3_is_parametrized(input_operation: Operation) {
         ],
     Operation::from(TripleControlledPhaseShift::new(0, 1, 2, 3, CalculatorFloat::from(1.0))); "TripleControlledPhaseShift")]
 fn test_pyo3_tags(tags: Vec<&str>, input_operation: Operation) {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
         let tags_op: Vec<String> = operation.call_method0("tags").unwrap().extract().unwrap();
         assert_eq!(tags_op.len(), tags.len());
@@ -95,8 +95,8 @@ fn test_pyo3_tags(tags: Vec<&str>, input_operation: Operation) {
 #[test_case("TripleControlledPauliZ", Operation::from(TripleControlledPauliZ::new(0, 1, 2, 3)); "TripleControlledPauliZ")]
 #[test_case("TripleControlledPhaseShift", Operation::from(TripleControlledPhaseShift::new(0, 1, 2, 3, CalculatorFloat::from(1.0))); "TripleControlledPhaseShift")]
 fn test_pyo3_hqslang(name: &'static str, input_operation: Operation) {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
         let name_op: String = operation
             .call_method0("hqslang")
@@ -111,8 +111,8 @@ fn test_pyo3_hqslang(name: &'static str, input_operation: Operation) {
 #[test_case(Operation::from(TripleControlledPauliZ::new(0, 1, 2, 3)); "TripleControlledPauliZ")]
 #[test_case(Operation::from(TripleControlledPhaseShift::new(0, 1, 2, 3, CalculatorFloat::from(1.0))); "TripleControlledPhaseShift")]
 fn test_pyo3_remapqubits(input_operation: Operation) {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
 
         // test initial qubits
@@ -170,8 +170,8 @@ fn test_pyo3_remapqubits(input_operation: Operation) {
 #[test_case(Operation::from(TripleControlledPhaseShift::new(0, 1, 2, 3, CalculatorFloat::from(1.0))); "TripleControlledPhaseShift")]
 fn test_pyo3_remapqubits_error(input_operation: Operation) {
     // preparation
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
         // remap qubits
         let mut qubit_mapping: HashMap<usize, usize> = HashMap::new();
@@ -185,8 +185,8 @@ fn test_pyo3_remapqubits_error(input_operation: Operation) {
 #[test_case(Operation::from(TripleControlledPauliZ::new(0, 1, 2, 3)); "TripleControlledPauliZ")]
 #[test_case(Operation::from(TripleControlledPhaseShift::new(0, 1, 2, 3, CalculatorFloat::from(1.0))); "TripleControlledPhaseShift")]
 fn test_pyo3_unitarymatrix(input_operation: Operation) {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(input_operation.clone(), py).unwrap();
         let py_result = operation.call_method0("unitary_matrix").unwrap();
         let result_matrix = py_result
@@ -208,8 +208,8 @@ fn test_pyo3_unitarymatrix(input_operation: Operation) {
 #[test_case("TripleControlledPauliZ { control_0: 0, control_1: 1, control_2: 2, target: 3 }", Operation::from(TripleControlledPauliZ::new(0, 1, 2, 3)); "TripleControlledPauliZ")]
 #[test_case("TripleControlledPhaseShift { control_0: 0, control_1: 1, control_2: 2, target: 3, theta: Float(1.0) }", Operation::from(TripleControlledPhaseShift::new(0, 1, 2, 3, CalculatorFloat::from(1.0))); "TripleControlledPhaseShift")]
 fn test_pyo3_format_repr(format_repr: &str, input_operation: Operation) {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
         let to_format = operation.call_method1("__format__", ("",)).unwrap();
         let format_op: String = to_format.extract().unwrap();
@@ -224,8 +224,8 @@ fn test_pyo3_format_repr(format_repr: &str, input_operation: Operation) {
 #[test_case(Operation::from(TripleControlledPauliZ::new(0, 1, 2, 3)); "TripleControlledPauliZ")]
 #[test_case(Operation::from(TripleControlledPhaseShift::new(0, 1, 2, 3, CalculatorFloat::from(1.0))); "TripleControlledPhaseShift")]
 fn test_pyo3_copy_deepcopy(input_operation: Operation) {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
         let copy_op = operation.call_method0("__copy__").unwrap();
         let deepcopy_op = operation.call_method1("__deepcopy__", ("",)).unwrap();
@@ -237,10 +237,11 @@ fn test_pyo3_copy_deepcopy(input_operation: Operation) {
             .extract::<bool>()
             .unwrap();
         assert!(comparison_copy);
-        let comparison_deepcopy = bool::extract_bound(
-            &deepcopy_op
+        let comparison_deepcopy = bool::extract(
+            deepcopy_op
                 .call_method1("__eq__", (copy_deepcopy_param,))
-                .unwrap(),
+                .unwrap()
+                .as_borrowed(),
         )
         .unwrap();
         assert!(comparison_deepcopy);
@@ -251,8 +252,8 @@ fn test_pyo3_copy_deepcopy(input_operation: Operation) {
 #[test_case(Operation::from(TripleControlledPauliZ::new(0, 1, 2, 3)), Operation::from(TripleControlledPauliZ::new(0, 1, 2, 3)); "TripleControlledPauliZ")]
 #[test_case(Operation::from(TripleControlledPhaseShift::new(0, 1, 2, 3, CalculatorFloat::from("test"))), Operation::from(TripleControlledPhaseShift::new(0, 1, 2, 3, CalculatorFloat::from(1.0))); "TripleControlledPhaseShift")]
 fn test_pyo3_substitute_parameters(first_op: Operation, second_op: Operation) {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(first_op, py).unwrap();
         let mut substitution_dict: HashMap<String, f64> = HashMap::new();
         substitution_dict.insert("test".to_owned(), 1.0);
@@ -261,10 +262,11 @@ fn test_pyo3_substitute_parameters(first_op: Operation, second_op: Operation) {
             .unwrap();
         let substitute_param = convert_operation_to_pyobject(second_op, py).unwrap();
 
-        let comparison = bool::extract_bound(
-            &substitute_op
+        let comparison = bool::extract(
+            substitute_op
                 .call_method1("__eq__", (substitute_param,))
-                .unwrap(),
+                .unwrap()
+                .as_borrowed(),
         )
         .unwrap();
         assert!(comparison);
@@ -278,15 +280,20 @@ fn test_new_triplecontrolledpaulix(
     arguments: (u32, u32, u32, u32),
     method: &str,
 ) {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
         // Basic initialisation, no errors
         let operation_type = py.get_type::<TripleControlledPauliXWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
-        let operation_py = binding.downcast::<TripleControlledPauliXWrapper>().unwrap();
-        let comparison =
-            bool::extract_bound(&operation.call_method1(method, (operation_py,)).unwrap()).unwrap();
+        let operation_py = binding.cast::<TripleControlledPauliXWrapper>().unwrap();
+        let comparison = bool::extract(
+            operation
+                .call_method1(method, (operation_py,))
+                .unwrap()
+                .as_borrowed(),
+        )
+        .unwrap();
         assert!(comparison);
 
         // Error initialisation
@@ -301,7 +308,7 @@ fn test_new_triplecontrolledpaulix(
             .extract::<TripleControlledPauliXWrapper>()
             .unwrap();
         let binding = operation_type.call1((1, 2, 3, 4)).unwrap();
-        let new_op_diff = binding.downcast::<TripleControlledPauliXWrapper>().unwrap();
+        let new_op_diff = binding.cast::<TripleControlledPauliXWrapper>().unwrap();
         let def_wrapper_diff = new_op_diff
             .extract::<TripleControlledPauliXWrapper>()
             .unwrap();
@@ -324,15 +331,20 @@ fn test_new_triplecontrolledpauliz(
     arguments: (u32, u32, u32, u32),
     method: &str,
 ) {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
         // Basic initialisation, no errors
         let operation_type = py.get_type::<TripleControlledPauliZWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
-        let operation_py = binding.downcast::<TripleControlledPauliZWrapper>().unwrap();
-        let comparison =
-            bool::extract_bound(&operation.call_method1(method, (operation_py,)).unwrap()).unwrap();
+        let operation_py = binding.cast::<TripleControlledPauliZWrapper>().unwrap();
+        let comparison = bool::extract(
+            operation
+                .call_method1(method, (operation_py,))
+                .unwrap()
+                .as_borrowed(),
+        )
+        .unwrap();
         assert!(comparison);
 
         // Error initialisation
@@ -347,7 +359,7 @@ fn test_new_triplecontrolledpauliz(
             .extract::<TripleControlledPauliZWrapper>()
             .unwrap();
         let binding = operation_type.call1((1, 2, 3, 4)).unwrap();
-        let new_op_diff = binding.downcast::<TripleControlledPauliZWrapper>().unwrap();
+        let new_op_diff = binding.cast::<TripleControlledPauliZWrapper>().unwrap();
         let def_wrapper_diff = new_op_diff
             .extract::<TripleControlledPauliZWrapper>()
             .unwrap();
@@ -370,17 +382,20 @@ fn test_new_triplecontrolledphaseshift(
     arguments: (u32, u32, u32, u32, f64),
     method: &str,
 ) {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
         // Basic initialisation, no errors
         let operation_type = py.get_type::<TripleControlledPhaseShiftWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
-        let operation_py = binding
-            .downcast::<TripleControlledPhaseShiftWrapper>()
-            .unwrap();
-        let comparison =
-            bool::extract_bound(&operation.call_method1(method, (operation_py,)).unwrap()).unwrap();
+        let operation_py = binding.cast::<TripleControlledPhaseShiftWrapper>().unwrap();
+        let comparison = bool::extract(
+            operation
+                .call_method1(method, (operation_py,))
+                .unwrap()
+                .as_borrowed(),
+        )
+        .unwrap();
         assert!(comparison);
 
         // Error initialisation
@@ -395,9 +410,7 @@ fn test_new_triplecontrolledphaseshift(
             .extract::<TripleControlledPhaseShiftWrapper>()
             .unwrap();
         let binding = operation_type.call1((1, 2, 3, 4, 1.0)).unwrap();
-        let new_op_diff = binding
-            .downcast::<TripleControlledPhaseShiftWrapper>()
-            .unwrap();
+        let new_op_diff = binding.cast::<TripleControlledPhaseShiftWrapper>().unwrap();
         let def_wrapper_diff = new_op_diff
             .extract::<TripleControlledPhaseShiftWrapper>()
             .unwrap();
@@ -415,8 +428,8 @@ fn test_new_triplecontrolledphaseshift(
 
 #[test]
 fn test_circuit_pyo3_triplecontrolledpaulix() {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let input_operation = Operation::from(TripleControlledPauliX::new(0, 1, 2, 3));
         let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
         let py_result = operation.call_method0("circuit").unwrap();
@@ -443,8 +456,8 @@ fn test_circuit_pyo3_triplecontrolledpaulix() {
 
 #[test]
 fn test_circuit_pyo3_triplecontrolledpauliz() {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let input_operation = Operation::from(TripleControlledPauliZ::new(0, 1, 2, 3));
         let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
         let py_result = operation.call_method0("circuit").unwrap();
@@ -471,8 +484,8 @@ fn test_circuit_pyo3_triplecontrolledpauliz() {
 
 #[test]
 fn test_circuit_pyo3_triplecontrolledphaseshift() {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let input_operation = Operation::from(TripleControlledPhaseShift::new(
             0,
             1,
@@ -522,22 +535,31 @@ fn test_pyo3_json_schema(operation: FourQubitGateOperation) {
         }
         _ => unreachable!(),
     };
-    pyo3::prepare_freethreaded_python();
-    pyo3::Python::with_gil(|py| {
+    Python::initialize();
+    pyo3::Python::attach(|py| {
         let converted_op = Operation::from(operation);
         let pyobject = convert_operation_to_pyobject(converted_op, py).unwrap();
         let operation = pyobject;
 
         let schema: String =
-            String::extract_bound(&operation.call_method0("json_schema").unwrap()).unwrap();
+            String::extract(operation.call_method0("json_schema").unwrap().as_borrowed()).unwrap();
 
         assert_eq!(schema, rust_schema);
 
-        let current_version_string =
-            String::extract_bound(&operation.call_method0("current_version").unwrap()).unwrap();
-        let minimum_supported_version_string =
-            String::extract_bound(&operation.call_method0("min_supported_version").unwrap())
-                .unwrap();
+        let current_version_string = String::extract(
+            operation
+                .call_method0("current_version")
+                .unwrap()
+                .as_borrowed(),
+        )
+        .unwrap();
+        let minimum_supported_version_string = String::extract(
+            operation
+                .call_method0("min_supported_version")
+                .unwrap()
+                .as_borrowed(),
+        )
+        .unwrap();
 
         assert_eq!(current_version_string, ROQOQO_VERSION);
         assert_eq!(minimum_supported_version_string, "1.16.0");
