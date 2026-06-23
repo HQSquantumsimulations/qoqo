@@ -25,7 +25,11 @@ use roqoqo::Circuit;
 use roqoqo::ROQOQO_VERSION;
 use std::collections::HashMap;
 
-#[pyclass(name = "CheatedPauliZProduct", module = "qoqo.measurements")]
+#[pyclass(
+    from_py_object,
+    name = "CheatedPauliZProduct",
+    module = "qoqo.measurements"
+)]
 #[derive(Clone, Debug)]
 /// Collected information for executing a cheated measurement of PauliZ product.
 ///
@@ -59,7 +63,7 @@ impl CheatedPauliZProductWrapper {
         circuits: Vec<Py<PyAny>>,
         input: Py<PyAny>,
     ) -> PyResult<Self> {
-        Python::with_gil(|py| -> PyResult<Self> {
+        Python::attach(|py| -> PyResult<Self> {
             let mut new_circuits: Vec<Circuit> = Vec::new();
             for c in circuits.into_iter() {
                 let tmp_c = CircuitWrapper::from_pyany(c.bind(py)).map_err(|err| {
@@ -215,7 +219,7 @@ impl CheatedPauliZProductWrapper {
             .map_err(|_| {
             PyValueError::new_err("Cannot serialize CheatedPauliZProductMeasurement to bytes")
         })?;
-        let b: Py<PyByteArray> = Python::with_gil(|py| -> Py<PyByteArray> {
+        let b: Py<PyByteArray> = Python::attach(|py| -> Py<PyByteArray> {
             PyByteArray::new(py, &serialized[..]).into()
         });
         Ok(("CheatedPauliZProduct", b))
@@ -233,7 +237,7 @@ impl CheatedPauliZProductWrapper {
             .map_err(|_| {
             PyValueError::new_err("Cannot serialize CheatedPauliZProduct to bytes")
         })?;
-        let b: Py<PyByteArray> = Python::with_gil(|py| -> Py<PyByteArray> {
+        let b: Py<PyByteArray> = Python::attach(|py| -> Py<PyByteArray> {
             PyByteArray::new(py, &serialized[..]).into()
         });
         Ok(b)

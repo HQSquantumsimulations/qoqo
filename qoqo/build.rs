@@ -269,12 +269,12 @@ const QOQO_POTENTIAL_IMPORTS: &[&str] = &["Circuit", "Operation"];
 #[cfg(feature = "doc_generator")]
 fn create_doc(module: &str) -> PyResult<String> {
     let mut main_doc = "".to_owned();
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| -> PyResult<String> {
+    Python::initialize();
+    Python::attach(|py| -> PyResult<String> {
         let python_module = PyModule::import(py, module)?;
         let dict = python_module.getattr("__dict__")?;
         let module_doc = python_module.getattr("__doc__")?.extract::<String>()?;
-        let r_dict = dict.downcast::<PyDict>()?;
+        let r_dict = dict.cast::<PyDict>()?;
         for (fn_name, func) in pyo3::types::PyDictMethods::iter(r_dict) {
             let name = fn_name.str()?.extract::<String>()?;
             if name.starts_with("__")
@@ -299,7 +299,7 @@ fn create_doc(module: &str) -> PyResult<String> {
                 let class_dict = func.getattr("__dict__")?;
                 let items = class_dict.call_method0("items")?;
                 let dict_obj = py.import("builtins")?.call_method1("dict", (items,))?;
-                let class_r_dict = dict_obj.downcast::<PyDict>()?;
+                let class_r_dict = dict_obj.cast::<PyDict>()?;
                 for (class_fn_name, meth) in pyo3::types::PyDictMethods::iter(class_r_dict) {
                     let meth_name = class_fn_name.str()?.extract::<String>()?;
                     let meth_doc = match meth_name.as_str() {
@@ -527,7 +527,7 @@ fn main() {
             let hqslang_pyobject = &op
                 .call_method0("hqslang")
                 .map_err(|_| QoqoError::ConversionError)?;
-            let hqslang: String = String::extract_bound(hqslang_pyobject)
+            let hqslang: String = String::extract(hqslang_pyobject.as_borrowed())
                 .map_err(|_| QoqoError::ConversionError)?;
             match hqslang.as_str() {
                 #(#pyany_to_operation_quotes),*

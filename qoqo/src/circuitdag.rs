@@ -35,7 +35,7 @@ fn circuitdag(_py: Python, module: &Bound<PyModule>) -> PyResult<()> {
 
 /// Represents the Direct Acyclic Graph (DAG) of a Circuit.
 ///
-#[pyclass(name = "CircuitDag", module = "qoqo")]
+#[pyclass(from_py_object, name = "CircuitDag", module = "qoqo")]
 #[derive(Clone, Debug, PartialEq)]
 
 pub struct CircuitDagWrapper {
@@ -330,7 +330,7 @@ impl CircuitDagWrapper {
         let serialized =
             bincode::serde::encode_to_vec(&self.internal, bincode::config::legacy())
                 .map_err(|_| PyValueError::new_err("Cannot serialize CircuitDag to bytes"))?;
-        let b: Py<PyByteArray> = Python::with_gil(|py| -> Py<PyByteArray> {
+        let b: Py<PyByteArray> = Python::attach(|py| -> Py<PyByteArray> {
             PyByteArray::new(py, &serialized[..]).into()
         });
         Ok(b)

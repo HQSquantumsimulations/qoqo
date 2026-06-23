@@ -43,7 +43,7 @@ use struqture_py;
 /// lindblad_noise
 /// )
 /// ```
-#[pyclass(frozen, name = "DecoherenceOnGateModel")]
+#[pyclass(from_py_object, frozen, name = "DecoherenceOnGateModel")]
 #[derive(Debug, Default, Clone, PartialEq)]
 pub struct DecoherenceOnGateModelWrapper {
     internal: DecoherenceOnGateModel,

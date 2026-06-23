@@ -23,7 +23,11 @@ use roqoqo::Circuit;
 use roqoqo::ROQOQO_VERSION;
 use std::collections::HashMap;
 
-#[pyclass(name = "ClassicalRegister", module = "qoqo.measurements")]
+#[pyclass(
+    from_py_object,
+    name = "ClassicalRegister",
+    module = "qoqo.measurements"
+)]
 #[derive(Clone, Debug)]
 /// Collected information for executing a classical register.
 ///
@@ -54,7 +58,7 @@ impl ClassicalRegisterWrapper {
         constant_circuit: Option<&Bound<PyAny>>,
         circuits: Vec<Py<PyAny>>,
     ) -> PyResult<Self> {
-        Python::with_gil(|py| -> PyResult<Self> {
+        Python::attach(|py| -> PyResult<Self> {
             let mut new_circuits: Vec<Circuit> = Vec::new();
             for c in circuits.into_iter() {
                 let tmp_c = CircuitWrapper::from_pyany(c.bind(py)).map_err(|err| {
@@ -149,7 +153,7 @@ impl ClassicalRegisterWrapper {
             .map_err(|_| {
             PyValueError::new_err("Cannot serialize ClassicalRegister to bytes")
         })?;
-        let b: Py<PyByteArray> = Python::with_gil(|py| -> Py<PyByteArray> {
+        let b: Py<PyByteArray> = Python::attach(|py| -> Py<PyByteArray> {
             PyByteArray::new(py, &serialized[..]).into()
         });
         Ok(("ClassicalRegister", b))
@@ -167,7 +171,7 @@ impl ClassicalRegisterWrapper {
             .map_err(|_| {
             PyValueError::new_err("Cannot serialize ClassicalRegister to bytes")
         })?;
-        let b: Py<PyByteArray> = Python::with_gil(|py| -> Py<PyByteArray> {
+        let b: Py<PyByteArray> = Python::attach(|py| -> Py<PyByteArray> {
             PyByteArray::new(py, &serialized[..]).into()
         });
         Ok(b)

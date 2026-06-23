@@ -152,7 +152,7 @@ pub fn wrap(
             ///     np.ndarray: superoperator of gate.
             ///
             pub fn superoperator(&self) -> PyResult<Py<PyArray2<f64>>>{
-                Python::with_gil(|py| -> PyResult<Py<PyArray2<f64>>> {
+                Python::attach(|py| -> PyResult<Py<PyArray2<f64>>> {
                     Ok(self.internal.superoperator().unwrap().to_pyarray(py).into())
                 })
             }
@@ -413,7 +413,7 @@ pub fn wrap(
             /// Raises:
             ///     ValueError: Error symbolic operation cannot return float unitary matrix
             pub fn unitary_matrix(&self) -> PyResult<Py<PyArray2<Complex64>>>{
-                Python::with_gil(|py| -> PyResult<Py<PyArray2<Complex64>>> {
+                Python::attach(|py| -> PyResult<Py<PyArray2<Complex64>>> {
                     Ok(self.internal.unitary_matrix().map_err(|x| PyValueError::new_err(format!("Error symbolic operation cannot return float unitary matrix {x:?}")))?
                         .to_pyarray(py)
                         .into())
@@ -617,7 +617,7 @@ pub fn wrap(
     let msg = format!("Internal storage of {ident} object");
     let q = quote! {
         #[automatically_derived]
-        #[pyclass(name=#str_ident)]
+        #[pyclass(from_py_object, name=#str_ident)]
         #(#struct_attributes)*
         #[derive(Debug, Clone, PartialEq)]
         pub struct #wrapper_ident{

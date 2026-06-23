@@ -36,7 +36,7 @@ use roqoqo::{operations::SupportedVersion, ROQOQO_VERSION};
 /// higher_prob = model.prob_detect_1_as_0(2)
 /// assert higher_prob == 0.7
 /// ```
-#[pyclass(frozen, name = "ImperfectReadoutModel")]
+#[pyclass(from_py_object, frozen, name = "ImperfectReadoutModel")]
 #[derive(Debug, Default, Clone, PartialEq)]
 pub struct ImperfectReadoutModelWrapper {
     /// Noise model representing readout errors

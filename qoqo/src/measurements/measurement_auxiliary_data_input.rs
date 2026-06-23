@@ -23,7 +23,11 @@ use roqoqo::measurements::{
 use roqoqo::{operations::SupportedVersion, ROQOQO_VERSION};
 use std::collections::HashMap;
 
-#[pyclass(name = "PauliZProductInput", module = "qoqo.measurements")]
+#[pyclass(
+    from_py_object,
+    name = "PauliZProductInput",
+    module = "qoqo.measurements"
+)]
 #[derive(Clone, Debug)]
 /// Provides Necessary Information to run a [roqoqo::measurements::PauliZProduct] measurement.
 ///
@@ -176,7 +180,7 @@ impl PauliZProductInputWrapper {
             .map_err(|_| {
             PyValueError::new_err("Cannot serialize PauliZProductInput to bytes")
         })?;
-        let b: Py<PyByteArray> = Python::with_gil(|py| -> Py<PyByteArray> {
+        let b: Py<PyByteArray> = Python::attach(|py| -> Py<PyByteArray> {
             PyByteArray::new(py, &serialized[..]).into()
         });
         Ok(b)
@@ -270,7 +274,11 @@ impl PauliZProductInputWrapper {
     }
 }
 
-#[pyclass(name = "CheatedPauliZProductInput", module = "qoqo.measurements")]
+#[pyclass(
+    from_py_object,
+    name = "CheatedPauliZProductInput",
+    module = "qoqo.measurements"
+)]
 #[derive(Clone, Debug)]
 /// Collected information for executing a cheated basis rotation measurement.
 ///
@@ -410,7 +418,7 @@ impl CheatedPauliZProductInputWrapper {
             .map_err(|_| {
             PyValueError::new_err("Cannot serialize CheatedPauliZProductInput to bytes")
         })?;
-        let b: Py<PyByteArray> = Python::with_gil(|py| -> Py<PyByteArray> {
+        let b: Py<PyByteArray> = Python::attach(|py| -> Py<PyByteArray> {
             PyByteArray::new(py, &serialized[..]).into()
         });
         Ok(b)
@@ -506,7 +514,7 @@ impl CheatedPauliZProductInputWrapper {
     }
 }
 
-#[pyclass(name = "CheatedInput", module = "qoqo.measurements")]
+#[pyclass(from_py_object, name = "CheatedInput", module = "qoqo.measurements")]
 #[derive(Clone, Debug)]
 /// Provides Necessary Information to run a cheated measurement.
 ///
@@ -614,7 +622,7 @@ impl CheatedInputWrapper {
         let serialized =
             bincode::serde::encode_to_vec(&self.internal, bincode::config::legacy())
                 .map_err(|_| PyValueError::new_err("Cannot serialize CheatedInput to bytes"))?;
-        let b: Py<PyByteArray> = Python::with_gil(|py| -> Py<PyByteArray> {
+        let b: Py<PyByteArray> = Python::attach(|py| -> Py<PyByteArray> {
             PyByteArray::new(py, &serialized[..]).into()
         });
         Ok(b)

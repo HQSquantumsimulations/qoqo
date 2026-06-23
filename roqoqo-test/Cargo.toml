@@ -1,6 +1,6 @@
 [package]
 name = "roqoqo-test"
-version = "1.21.0"
+version = "1.22.0"
 authors = ["HQS Quantum Simulations <info@quantumsimulations.de>"]
 license = "Apache-2.0"
 edition = "2021"
@@ -18,11 +18,11 @@ doctest = false
 crate-type = ["rlib"]
 
 [dependencies]
-roqoqo = { version = "1.21", path = "../roqoqo", features = ["serialize"] }
+roqoqo = { version = "1.22", path = "../roqoqo", features = ["serialize"] }
 
-nalgebra = "0.34"
-ndarray = "0.16"
-rand = "0.9"
+nalgebra = "0.35"
+ndarray = "0.17"
+rand = "0.10"
 
 [build-dependencies]
 syn = { version = "2.0", features = ["full", "visit"] }

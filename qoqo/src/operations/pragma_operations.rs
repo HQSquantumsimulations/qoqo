@@ -63,7 +63,11 @@ fn pragma_set_statevector(_py: Python, module: &Bound<PyModule>) -> PyResult<()>
     Ok(())
 }
 
-#[pyclass(name = "PragmaSetStateVector", module = "qoqo.operations")]
+#[pyclass(
+    from_py_object,
+    name = "PragmaSetStateVector",
+    module = "qoqo.operations"
+)]
 #[derive(Clone, Debug, PartialEq)]
 /// This PRAGMA operation sets the statevector of a quantum register.
 ///
@@ -138,7 +142,7 @@ impl PragmaSetStateVectorWrapper {
                 internal: PragmaSetStateVector::new(array),
             }),
             Err(_) => {
-                let statevec_casted: Vec<Complex64> = Vec::extract_bound(statevector)?;
+                let statevec_casted: Vec<Complex64> = Vec::extract(statevector.as_borrowed())?;
                 let statevec_array: Array1<Complex64> = Array1::from(statevec_casted);
                 Ok(Self {
                     internal: PragmaSetStateVector::new(statevec_array),
@@ -152,7 +156,7 @@ impl PragmaSetStateVectorWrapper {
     /// Returns:
     ///     np.ndarray: The statevector representing the qubit register.
     fn statevector(&self) -> Py<PyArray1<Complex64>> {
-        Python::with_gil(|py| -> Py<PyArray1<Complex64>> {
+        Python::attach(|py| -> Py<PyArray1<Complex64>> {
             self.internal.statevector().to_pyarray(py).unbind()
         })
     }
@@ -347,7 +351,11 @@ fn pragma_set_density_matrix(_py: Python, module: &Bound<PyModule>) -> PyResult<
     Ok(())
 }
 
-#[pyclass(name = "PragmaSetDensityMatrix", module = "qoqo.operations")]
+#[pyclass(
+    from_py_object,
+    name = "PragmaSetDensityMatrix",
+    module = "qoqo.operations"
+)]
 #[derive(Clone, Debug, PartialEq)]
 /// This PRAGMA operation sets the density matrix of a quantum register.
 ///
@@ -415,7 +423,7 @@ impl PragmaSetDensityMatrixWrapper {
             }),
             Err(_) => {
                 let density_matrix_casted: Vec<Vec<Complex64>> =
-                    Vec::extract_bound(density_matrix)?;
+                    Vec::extract(density_matrix.as_borrowed())?;
                 let ncol = density_matrix_casted.first().map_or(0, |row| row.len());
                 let mut density_matrix_array2: Array2<Complex64> = Array2::zeros((0, ncol));
                 for subvec in density_matrix_casted {
@@ -436,7 +444,7 @@ impl PragmaSetDensityMatrixWrapper {
     /// Returns:
     ///     np.ndarray: The density matrix (2d array) representing the qubit register.
     fn density_matrix(&self) -> Py<PyArray2<Complex64>> {
-        Python::with_gil(|py| -> Py<PyArray2<Complex64>> {
+        Python::attach(|py| -> Py<PyArray2<Complex64>> {
             self.internal.density_matrix().to_pyarray(py).unbind()
         })
     }
@@ -775,7 +783,7 @@ pub struct PragmaDamping {
 //     /// Returns:
 //     ///     np.ndarray: The superoperator representation of the PRAGMA operation.
 //     pub fn superoperator(&self) -> PyResult<Py<PyArray2<f64>>> {
-//         Ok(Python::with_gil(|py| -> Py<PyArray2<f64>> {
+//         Ok(Python::attach(|py| -> Py<PyArray2<f64>> {
 //             self.internal
 //                 .superoperator()
 //                 .unwrap()
@@ -835,7 +843,7 @@ pub struct PragmaDepolarising {
 //     /// Returns:
 //     ///     np.ndarray: The superoperator representation of the PRAGMA operation.
 //     pub fn superoperator(&self) -> PyResult<Py<PyArray2<f64>>> {
-//         Ok(Python::with_gil(|py| -> Py<PyArray2<f64>> {
+//         Ok(Python::attach(|py| -> Py<PyArray2<f64>> {
 //             self.internal
 //                 .superoperator()
 //                 .unwrap()
@@ -895,7 +903,7 @@ pub struct PragmaDephasing {
 //     /// Returns:
 //     ///     np.ndarray: The superoperator representation of the PRAGMA operation.
 //     pub fn superoperator(&self) -> PyResult<Py<PyArray2<f64>>> {
-//         Ok(Python::with_gil(|py| -> Py<PyArray2<f64>> {
+//         Ok(Python::attach(|py| -> Py<PyArray2<f64>> {
 //             self.internal
 //                 .superoperator()
 //                 .unwrap()
@@ -957,7 +965,7 @@ pub struct PragmaRandomNoise {
 //     /// Returns:
 //     ///     np.ndarray: The superoperator representation of the PRAGMA operation.
 //     pub fn superoperator(&self) -> PyResult<Py<PyArray2<f64>>> {
-//         Ok(Python::with_gil(|py| -> Py<PyArray2<f64>> {
+//         Ok(Python::attach(|py| -> Py<PyArray2<f64>> {
 //             self.internal
 //                 .superoperator()
 //                 .unwrap()
@@ -995,7 +1003,11 @@ fn pragma_general_noise(_py: Python, module: &Bound<PyModule>) -> PyResult<()> {
     Ok(())
 }
 
-#[pyclass(name = "PragmaGeneralNoise", module = "qoqo.operations")]
+#[pyclass(
+    from_py_object,
+    name = "PragmaGeneralNoise",
+    module = "qoqo.operations"
+)]
 #[derive(Clone, Debug, PartialEq)]
 /// The general noise PRAGMA operation.
 ///
@@ -1080,7 +1092,7 @@ impl PragmaGeneralNoiseWrapper {
             if let Ok(rates_pyarray) = rates.extract::<PyReadonlyArray2<f64>>() {
                 rates_pyarray.as_array().to_owned()
             } else {
-                let rates_casted: Vec<Vec<f64>> = Vec::extract_bound(rates)?;
+                let rates_casted: Vec<Vec<f64>> = Vec::extract(rates.as_borrowed())?;
                 let ncol = rates_casted.first().map_or(0, |row| row.len());
                 let mut rates_array2: Array2<f64> = Array2::zeros((0, ncol));
                 for subvec in rates_casted {
@@ -1123,9 +1135,7 @@ impl PragmaGeneralNoiseWrapper {
     /// Returns:
     ///     np.ndarray: The rates of the PRAGMA operation.
     fn rates(&self) -> Py<PyArray2<f64>> {
-        Python::with_gil(|py| -> Py<PyArray2<f64>> {
-            self.internal.rates().to_pyarray(py).unbind()
-        })
+        Python::attach(|py| -> Py<PyArray2<f64>> { self.internal.rates().to_pyarray(py).unbind() })
     }
 
     /// Return the superoperator of the PRAGMA operation.
@@ -1133,7 +1143,7 @@ impl PragmaGeneralNoiseWrapper {
     /// Returns:
     ///     np.ndarray: The matrix form of the superoperator of the PRAGMA operation.
     fn superoperator(&self) -> PyResult<Py<PyArray2<f64>>> {
-        Python::with_gil(|py| -> PyResult<Py<PyArray2<f64>>> {
+        Python::attach(|py| -> PyResult<Py<PyArray2<f64>>> {
             match self.internal.superoperator() {
                 Ok(x) => Ok(x.to_pyarray(py).unbind()),
                 Err(err) => Err(PyRuntimeError::new_err(format!("{err:?}"))),
@@ -1355,7 +1365,11 @@ pub struct PragmaControlledCircuit {
     circuit: Circuit,
 }
 
-#[pyclass(name = "PragmaChangeDevice", module = "qoqo.operations")]
+#[pyclass(
+    from_py_object,
+    name = "PragmaChangeDevice",
+    module = "qoqo.operations"
+)]
 #[derive(Clone, Debug, PartialEq, Eq)]
 /// A wrapper around backend specific PRAGMA operations capable of changing a device.
 ///
@@ -1427,7 +1441,7 @@ impl PragmaChangeDeviceWrapper {
     ///     ByteArray: The the binary representation of the wrapped operation.
     fn wrapped_operation(&self) -> PyResult<Py<PyByteArray>> {
         let serialized: Vec<u8> = self.internal.wrapped_operation.clone();
-        let b: Py<PyByteArray> = Python::with_gil(|py| -> Py<PyByteArray> {
+        let b: Py<PyByteArray> = Python::attach(|py| -> Py<PyByteArray> {
             PyByteArray::new(py, &serialized[..]).into()
         });
         Ok(b)
@@ -1623,7 +1637,7 @@ fn pragma_annotated_op(_py: Python, module: &Bound<PyModule>) -> PyResult<()> {
     Ok(())
 }
 
-#[pyclass(name = "PragmaAnnotatedOp", module = "qoqo.operations")]
+#[pyclass(from_py_object, name = "PragmaAnnotatedOp", module = "qoqo.operations")]
 #[derive(Clone, Debug, PartialEq)]
 /// An annotated Operation.
 ///
@@ -1897,11 +1911,11 @@ mod tests {
         let wrapped: Operation = PragmaActiveReset::new(0).into();
         let input_definition: Operation = PragmaChangeDevice::new(&wrapped).unwrap().into();
 
-        pyo3::prepare_freethreaded_python();
-        Python::with_gil(|py| {
+        Python::initialize();
+        Python::attach(|py| {
             let operation = convert_operation_to_pyobject(input_definition, py).unwrap();
             let to_involved = operation.call_method0("involved_qubits").unwrap();
-            let involved_op: HashSet<String> = HashSet::extract_bound(&to_involved).unwrap();
+            let involved_op: HashSet<String> = HashSet::extract(to_involved.as_borrowed()).unwrap();
             let mut involved_param: HashSet<String> = HashSet::new();
             involved_param.insert("All".to_owned());
             assert_eq!(involved_op, involved_param);
@@ -1916,13 +1930,13 @@ mod tests {
         let input_measurement: Operation = PragmaChangeDevice::new(&wrapped).unwrap().into();
         let format_repr = format!("PragmaChangeDevice {{ wrapped_tags: {:?}, wrapped_hqslang: {:?}, wrapped_operation: {:?} }}", wrapped.tags(), wrapped.hqslang(), bincode::serde::encode_to_vec(&wrapped, bincode::config::legacy()).unwrap());
 
-        pyo3::prepare_freethreaded_python();
-        Python::with_gil(|py| {
+        Python::initialize();
+        Python::attach(|py| {
             let operation = convert_operation_to_pyobject(input_measurement, py).unwrap();
             let to_format = operation.call_method1("__format__", ("",)).unwrap();
-            let format_op: String = String::extract_bound(&to_format).unwrap();
+            let format_op: String = String::extract(to_format.as_borrowed()).unwrap();
             let to_repr = operation.call_method0("__repr__").unwrap();
-            let repr_op: String = String::extract_bound(&to_repr).unwrap();
+            let repr_op: String = String::extract(to_repr.as_borrowed()).unwrap();
             assert_eq!(format_op, format_repr);
             assert_eq!(repr_op, format_repr);
         })
@@ -1933,24 +1947,26 @@ mod tests {
         let wrapped: Operation = PragmaActiveReset::new(0).into();
         let input_measurement: Operation = PragmaChangeDevice::new(&wrapped).unwrap().into();
 
-        pyo3::prepare_freethreaded_python();
-        Python::with_gil(|py| {
+        Python::initialize();
+        Python::attach(|py| {
             let operation = convert_operation_to_pyobject(input_measurement, py).unwrap();
             let copy_op = operation.call_method0("__copy__").unwrap();
             let deepcopy_op = operation.call_method1("__deepcopy__", ("",)).unwrap();
             let copy_deepcopy_param = operation;
 
-            let comparison_copy = bool::extract_bound(
-                &copy_op
+            let comparison_copy = bool::extract(
+                copy_op
                     .call_method1("__eq__", (copy_deepcopy_param.clone(),))
-                    .unwrap(),
+                    .unwrap()
+                    .as_borrowed(),
             )
             .unwrap();
             assert!(comparison_copy);
-            let comparison_deepcopy = bool::extract_bound(
-                &deepcopy_op
+            let comparison_deepcopy = bool::extract(
+                deepcopy_op
                     .call_method1("__eq__", (copy_deepcopy_param,))
-                    .unwrap(),
+                    .unwrap()
+                    .as_borrowed(),
             )
             .unwrap();
             assert!(comparison_deepcopy);
@@ -1962,11 +1978,11 @@ mod tests {
         let wrapped: Operation = PragmaActiveReset::new(0).into();
         let input_measurement: Operation = PragmaChangeDevice::new(&wrapped).unwrap().into();
 
-        pyo3::prepare_freethreaded_python();
-        Python::with_gil(|py| {
+        Python::initialize();
+        Python::attach(|py| {
             let operation = convert_operation_to_pyobject(input_measurement, py).unwrap();
             let to_tag = operation.call_method0("tags").unwrap();
-            let tags_op: &Vec<String> = &Vec::extract_bound(&to_tag).unwrap();
+            let tags_op: &Vec<String> = &Vec::extract(to_tag.as_borrowed()).unwrap();
             let tags_param: &[&str] = &["Operation", "PragmaOperation", "PragmaChangeDevice"];
             assert_eq!(tags_op, tags_param);
         })
@@ -1977,11 +1993,11 @@ mod tests {
         let wrapped: Operation = PragmaActiveReset::new(0).into();
         let input_measurement: Operation = PragmaChangeDevice::new(&wrapped).unwrap().into();
 
-        pyo3::prepare_freethreaded_python();
-        Python::with_gil(|py| {
+        Python::initialize();
+        Python::attach(|py| {
             let operation = convert_operation_to_pyobject(input_measurement, py).unwrap();
             let hqslang_op: String =
-                String::extract_bound(&operation.call_method0("hqslang").unwrap()).unwrap();
+                String::extract(operation.call_method0("hqslang").unwrap().as_borrowed()).unwrap();
             assert_eq!(hqslang_op, "PragmaChangeDevice".to_string());
         })
     }
@@ -1991,12 +2007,16 @@ mod tests {
         let wrapped: Operation = PragmaActiveReset::new(0).into();
         let input_measurement: Operation = PragmaChangeDevice::new(&wrapped).unwrap().into();
 
-        pyo3::prepare_freethreaded_python();
-        Python::with_gil(|py| {
+        Python::initialize();
+        Python::attach(|py| {
             let operation = convert_operation_to_pyobject(input_measurement, py).unwrap();
-            assert!(
-                !bool::extract_bound(&operation.call_method0("is_parametrized").unwrap()).unwrap()
-            );
+            assert!(!bool::extract(
+                operation
+                    .call_method0("is_parametrized")
+                    .unwrap()
+                    .as_borrowed()
+            )
+            .unwrap());
         })
     }
 
@@ -2006,8 +2026,8 @@ mod tests {
         let first_op: Operation = PragmaChangeDevice::new(&wrapped).unwrap().into();
         let second_op: Operation = PragmaChangeDevice::new(&wrapped).unwrap().into();
 
-        pyo3::prepare_freethreaded_python();
-        Python::with_gil(|py| {
+        Python::initialize();
+        Python::attach(|py| {
             let operation = convert_operation_to_pyobject(first_op, py).unwrap();
             let mut substitution_dict: HashMap<String, f64> = HashMap::new();
             substitution_dict.insert("test".to_owned(), 1.0);
@@ -2016,10 +2036,11 @@ mod tests {
                 .unwrap();
             let substitute_param = convert_operation_to_pyobject(second_op, py).unwrap();
 
-            let comparison = bool::extract_bound(
-                &substitute_op
+            let comparison = bool::extract(
+                substitute_op
                     .call_method1("__eq__", (substitute_param,))
-                    .unwrap(),
+                    .unwrap()
+                    .as_borrowed(),
             )
             .unwrap();
             assert!(comparison);
@@ -2032,8 +2053,8 @@ mod tests {
         let first_op: Operation = PragmaChangeDevice::new(&wrapped).unwrap().into();
         let second_op: Operation = PragmaChangeDevice::new(&wrapped).unwrap().into();
 
-        pyo3::prepare_freethreaded_python();
-        Python::with_gil(|py| {
+        Python::initialize();
+        Python::attach(|py| {
             let operation = convert_operation_to_pyobject(first_op, py).unwrap();
 
             let mut qubit_mapping: HashMap<usize, usize> = HashMap::new();
@@ -2043,10 +2064,11 @@ mod tests {
                 .unwrap();
             let comparison_op = convert_operation_to_pyobject(second_op, py).unwrap();
 
-            let comparison = bool::extract_bound(
-                &remapped_op
+            let comparison = bool::extract(
+                remapped_op
                     .call_method1("__eq__", (comparison_op,))
-                    .unwrap(),
+                    .unwrap()
+                    .as_borrowed(),
             )
             .unwrap();
             assert!(comparison);
@@ -2058,8 +2080,8 @@ mod tests {
         let wrapped: Operation = PragmaActiveReset::new(0).into();
         let first_op: Operation = PragmaChangeDevice::new(&wrapped).unwrap().into();
 
-        pyo3::prepare_freethreaded_python();
-        Python::with_gil(|py| {
+        Python::initialize();
+        Python::attach(|py| {
             let operation = convert_operation_to_pyobject(first_op, py).unwrap();
 
             let mut qubit_mapping: HashMap<usize, usize> = HashMap::new();
@@ -2076,23 +2098,25 @@ mod tests {
         let wrapped_2: Operation = PragmaActiveReset::new(1).into();
         let definition_2: Operation = PragmaChangeDevice::new(&wrapped_2).unwrap().into();
 
-        pyo3::prepare_freethreaded_python();
-        Python::with_gil(|py| {
+        Python::initialize();
+        Python::attach(|py| {
             let operation_one = convert_operation_to_pyobject(definition_1, py).unwrap();
             let operation_two = convert_operation_to_pyobject(definition_2, py).unwrap();
 
-            let comparison = bool::extract_bound(
-                &operation_one
+            let comparison = bool::extract(
+                operation_one
                     .call_method1("__eq__", (operation_two.clone(),))
-                    .unwrap(),
+                    .unwrap()
+                    .as_borrowed(),
             )
             .unwrap();
             assert!(!comparison);
 
-            let comparison = bool::extract_bound(
-                &operation_one
+            let comparison = bool::extract(
+                operation_one
                     .call_method1("__ne__", (operation_two.clone(),))
-                    .unwrap(),
+                    .unwrap()
+                    .as_borrowed(),
             )
             .unwrap();
             assert!(comparison);

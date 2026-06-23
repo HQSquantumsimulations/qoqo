@@ -20,8 +20,8 @@ use roqoqo::ROQOQO_VERSION;
 use test_case::test_case;
 
 fn new_alltoalldevice() -> Py<PyAny> {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| -> Py<PyAny> {
+    Python::initialize();
+    Python::attach(|py| -> Py<PyAny> {
         let number_qubits = 4;
         let single_qubit_gates = ["RotateX".to_string(), "RotateZ".to_string()];
         let two_qubit_gates = ["CNOT".to_string()];
@@ -33,8 +33,8 @@ fn new_alltoalldevice() -> Py<PyAny> {
 }
 
 fn new_genericdevice() -> Py<PyAny> {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| -> Py<PyAny> {
+    Python::initialize();
+    Python::attach(|py| -> Py<PyAny> {
         let number_qubits: u32 = 4;
         let arguments = (number_qubits,);
         let device_type = py.get_type::<GenericDeviceWrapper>();
@@ -43,9 +43,9 @@ fn new_genericdevice() -> Py<PyAny> {
 }
 
 fn new_genericlattice() -> Py<PyAny> {
-    pyo3::prepare_freethreaded_python();
+    Python::initialize();
 
-    Python::with_gil(|py| -> Py<PyAny> {
+    Python::attach(|py| -> Py<PyAny> {
         let number_rows: usize = 2;
         let number_columns: usize = 2;
         let single_qubit_gates = ["RotateX".to_string(), "RotateZ".to_string()];
@@ -66,8 +66,8 @@ fn test_number_rows() {
     // test parameters
     let number_rows: usize = 2;
     let number_columns: usize = 2;
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let device = new_genericlattice();
 
         let number_rows_get = device
@@ -88,8 +88,8 @@ fn test_number_rows() {
 
 #[test]
 fn test_gate_names() {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let device = new_genericlattice();
 
         let singe_qubit_gates = device
@@ -120,8 +120,8 @@ fn test_gate_names() {
 #[test_case(new_genericdevice(); "generic")]
 #[test_case(new_genericlattice(); "lattice")]
 fn test_number_qubits(device: Py<PyAny>) {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let number_qubits = device
             .call_method0(py, "number_qubits")
             .unwrap()
@@ -136,8 +136,8 @@ fn test_number_qubits(device: Py<PyAny>) {
 #[test_case(new_genericdevice(); "generic")]
 #[test_case(new_genericlattice(); "lattice")]
 fn test_to_from_json(device: Py<PyAny>) {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let serialised = device.call_method0(py, "to_json").unwrap();
         let new = device.clone_ref(py);
         let deserialised = new
@@ -166,8 +166,8 @@ fn test_to_from_json(device: Py<PyAny>) {
 #[test_case(new_genericdevice(); "generic")]
 #[test_case(new_genericlattice(); "lattice")]
 fn test_to_from_bincode(device: Py<PyAny>) {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let serialised = device.call_method0(py, "to_bincode").unwrap();
         let new = device.clone_ref(py);
         let deserialised = new
@@ -196,35 +196,28 @@ fn test_to_from_bincode(device: Py<PyAny>) {
 #[cfg(feature = "json_schema")]
 #[test]
 fn test_json_schema_all_to_all() {
-    pyo3::prepare_freethreaded_python();
-    pyo3::Python::with_gil(|py| {
-        let device = new_alltoalldevice();
-        let schema: String = String::extract_bound(
-            &device
-                .call_method0(py, "json_schema")
-                .unwrap()
-                .extract(py)
-                .unwrap(),
-        )
-        .unwrap();
+    Python::initialize();
+    pyo3::Python::attach(|py| {
+        let device_any = new_alltoalldevice();
+        let device = device_any.bind(py).cast::<AllToAllDeviceWrapper>().unwrap();
+        let schema: String =
+            String::extract(device.call_method0("json_schema").unwrap().as_borrowed()).unwrap();
         let rust_schema =
             serde_json::to_string_pretty(&schemars::schema_for!(AllToAllDevice)).unwrap();
         assert_eq!(schema, rust_schema);
 
-        let current_version_string = String::extract_bound(
-            &device
-                .call_method0(py, "current_version")
+        let current_version_string = String::extract(
+            device
+                .call_method0("current_version")
                 .unwrap()
-                .extract(py)
-                .unwrap(),
+                .as_borrowed(),
         )
         .unwrap();
-        let minimum_supported_version_string = String::extract_bound(
-            &device
-                .call_method0(py, "min_supported_version")
+        let minimum_supported_version_string = String::extract(
+            device
+                .call_method0("min_supported_version")
                 .unwrap()
-                .extract(py)
-                .unwrap(),
+                .as_borrowed(),
         )
         .unwrap();
 
@@ -237,35 +230,31 @@ fn test_json_schema_all_to_all() {
 #[cfg(feature = "json_schema")]
 #[test]
 fn test_json_schema_squared() {
-    pyo3::prepare_freethreaded_python();
-    pyo3::Python::with_gil(|py| {
-        let device = new_genericlattice();
-        let schema: String = String::extract_bound(
-            &device
-                .call_method0(py, "json_schema")
-                .unwrap()
-                .extract(py)
-                .unwrap(),
-        )
-        .unwrap();
+    Python::initialize();
+    pyo3::Python::attach(|py| {
+        let device_any = new_genericlattice();
+        let device = device_any
+            .bind(py)
+            .cast::<SquareLatticeDeviceWrapper>()
+            .unwrap();
+        let schema: String =
+            String::extract(device.call_method0("json_schema").unwrap().as_borrowed()).unwrap();
         let rust_schema =
             serde_json::to_string_pretty(&schemars::schema_for!(SquareLatticeDevice)).unwrap();
         assert_eq!(schema, rust_schema);
 
-        let current_version_string = String::extract_bound(
-            &device
-                .call_method0(py, "current_version")
+        let current_version_string = String::extract(
+            device
+                .call_method0("current_version")
                 .unwrap()
-                .extract(py)
-                .unwrap(),
+                .as_borrowed(),
         )
         .unwrap();
-        let minimum_supported_version_string = String::extract_bound(
-            &device
-                .call_method0(py, "min_supported_version")
+        let minimum_supported_version_string = String::extract(
+            device
+                .call_method0("min_supported_version")
                 .unwrap()
-                .extract(py)
-                .unwrap(),
+                .as_borrowed(),
         )
         .unwrap();
 
@@ -278,35 +267,28 @@ fn test_json_schema_squared() {
 #[cfg(feature = "json_schema")]
 #[test]
 fn test_json_schema_generic() {
-    pyo3::prepare_freethreaded_python();
-    pyo3::Python::with_gil(|py| {
-        let device = new_genericdevice();
-        let schema: String = String::extract_bound(
-            &device
-                .call_method0(py, "json_schema")
-                .unwrap()
-                .extract(py)
-                .unwrap(),
-        )
-        .unwrap();
+    Python::initialize();
+    pyo3::Python::attach(|py| {
+        let device_any = new_genericdevice();
+        let device = device_any.bind(py).cast::<GenericDeviceWrapper>().unwrap();
+        let schema: String =
+            String::extract(device.call_method0("json_schema").unwrap().as_borrowed()).unwrap();
         let rust_schema =
             serde_json::to_string_pretty(&schemars::schema_for!(GenericDevice)).unwrap();
         assert_eq!(schema, rust_schema);
 
-        let current_version_string = String::extract_bound(
-            &device
-                .call_method0(py, "current_version")
+        let current_version_string = String::extract(
+            device
+                .call_method0("current_version")
                 .unwrap()
-                .extract(py)
-                .unwrap(),
+                .as_borrowed(),
         )
         .unwrap();
-        let minimum_supported_version_string = String::extract_bound(
-            &device
-                .call_method0(py, "min_supported_version")
+        let minimum_supported_version_string = String::extract(
+            device
+                .call_method0("min_supported_version")
                 .unwrap()
-                .extract(py)
-                .unwrap(),
+                .as_borrowed(),
         )
         .unwrap();
 
@@ -319,8 +301,8 @@ fn test_json_schema_generic() {
 #[test_case(new_alltoalldevice(); "all_to_all")]
 #[test_case(new_genericlattice(); "lattice")]
 fn test_decoherence_rates_all(device: Py<PyAny>) {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         // reference matrix for an initialized deviced or a non-existing qubit
 
         // test that invalid matrix format is not accepted
@@ -378,8 +360,8 @@ fn test_decoherence_rates_all(device: Py<PyAny>) {
 #[test_case(new_genericdevice(); "generic")]
 #[test_case(new_genericlattice(); "lattice")]
 fn test_decoherence_rates(device: Py<PyAny>) {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         // reference matrix for an initialized deviced or a non-existing qubit
         let matrix_zeros_py = Array2::<f64>::zeros((3, 3));
         let matrix_py = device
@@ -466,8 +448,8 @@ fn test_decoherence_rates(device: Py<PyAny>) {
 #[test_case(new_genericdevice(); "generic")]
 #[test_case(new_genericlattice(); "lattice")]
 fn test_gatetimes(device: Py<PyAny>) {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let gate_time = 0.5_f64;
 
         // Test single qubit gate times
@@ -570,8 +552,8 @@ fn test_gatetimes(device: Py<PyAny>) {
 #[test_case(new_alltoalldevice(); "all_to_all")]
 #[test_case(new_genericlattice(); "lattice")]
 fn test_gatetimes_all(device: Py<PyAny>) {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let gate_time = 0.5_f64;
 
         // Test single qubit gate times
@@ -658,7 +640,7 @@ fn test_derive_square_lattice() {
 #[test_case(new_genericdevice(), vec![]; "generic")]
 #[test_case(new_genericlattice(), vec![(0,1), (2,3) ,(0,2), (1,3)]; "lattice")]
 fn test_edges(device: Py<PyAny>, test_edges: Vec<(usize, usize)>) {
-    Python::with_gil(|py| {
+    Python::attach(|py| {
         let edges = device
             .call_method0(py, "two_qubit_edges")
             .unwrap()
@@ -827,7 +809,7 @@ mod test_chain_with_environment {
         }
     }
 
-    #[pyclass(name = "TestDevice", module = "devices")]
+    #[pyclass(from_py_object, name = "TestDevice", module = "devices")]
     #[derive(Clone, Debug, PartialEq)]
     pub struct TestDeviceWrapper {
         internal: TestDevice,
@@ -859,12 +841,12 @@ mod test_chain_with_environment {
 
     #[test]
     fn test_chain_with_environment() {
-        pyo3::prepare_freethreaded_python();
-        let test_device = Python::with_gil(|py| -> Py<PyAny> {
+        Python::initialize();
+        let test_device = Python::attach(|py| -> Py<PyAny> {
             let device_type = py.get_type::<TestDeviceWrapper>();
             device_type.call0().unwrap().into()
         });
-        Python::with_gil(|py| {
+        Python::attach(|py| {
             let __implements_environment_with_chains =
                 test_device.call_method0(py, "__implements_environment_chains");
             assert!(__implements_environment_with_chains.is_ok());
@@ -887,8 +869,8 @@ mod test_chain_with_environment {
 
     #[test]
     fn test_chain_with_environment_capsule() {
-        pyo3::prepare_freethreaded_python();
-        Python::with_gil(|py| {
+        Python::initialize();
+        Python::attach(|py| {
             let device_type = py.get_type::<TestDeviceWrapper>();
             let test_device = device_type.call0().unwrap();
             let device_capsule = ChainWithEnvironmentCapsule::new(&test_device).unwrap();

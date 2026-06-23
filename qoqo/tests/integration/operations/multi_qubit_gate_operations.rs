@@ -42,15 +42,20 @@ use super::convert_cf_to_pyobject;
 #[test_case(Operation::from(MultiQubitMS::new(vec![0, 1], CalculatorFloat::ZERO)), (vec![0, 1], 0.0,), "__eq__"; "MultiQubitMS_eq")]
 #[test_case(Operation::from(MultiQubitMS::new(vec![2, 3], CalculatorFloat::ZERO)), (vec![0, 1], 0.0,), "__ne__"; "MultiQubitMS_ne")]
 fn test_new_multi_qubit_ms(input_operation: Operation, arguments: (Vec<u32>, f64), method: &str) {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
         // Basic initialisation, no errors
         let operation_type = py.get_type::<MultiQubitMSWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
-        let operation_py = binding.downcast::<MultiQubitMSWrapper>().unwrap();
-        let comparison =
-            bool::extract_bound(&operation.call_method1(method, (operation_py,)).unwrap()).unwrap();
+        let operation_py = binding.cast::<MultiQubitMSWrapper>().unwrap();
+        let comparison = bool::extract(
+            operation
+                .call_method1(method, (operation_py,))
+                .unwrap()
+                .as_borrowed(),
+        )
+        .unwrap();
         assert!(comparison);
 
         // Error initialisation
@@ -60,7 +65,7 @@ fn test_new_multi_qubit_ms(input_operation: Operation, arguments: (Vec<u32>, f64
         // Testing PartialEq, Clone and Debug
         let def_wrapper = operation_py.extract::<MultiQubitMSWrapper>().unwrap();
         let binding = operation_type.call1((vec![1, 2], 0.0)).unwrap();
-        let new_op_diff = binding.downcast::<MultiQubitMSWrapper>().unwrap();
+        let new_op_diff = binding.cast::<MultiQubitMSWrapper>().unwrap();
         let def_wrapper_diff = new_op_diff.extract::<MultiQubitMSWrapper>().unwrap();
         let helper_ne: bool = def_wrapper_diff != def_wrapper;
         assert!(helper_ne);
@@ -77,15 +82,20 @@ fn test_new_multi_qubit_ms(input_operation: Operation, arguments: (Vec<u32>, f64
 #[test_case(Operation::from(MultiQubitZZ::new(vec![0, 1], CalculatorFloat::ZERO)), (vec![0, 1], 0.0,), "__eq__"; "MultiQubitZZ_eq")]
 #[test_case(Operation::from(MultiQubitZZ::new(vec![2, 3], CalculatorFloat::ZERO)), (vec![0, 1], 0.0,), "__ne__"; "MultiQubitZZ_ne")]
 fn test_new_multi_qubit_zz(input_operation: Operation, arguments: (Vec<u32>, f64), method: &str) {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
         // Basic initialisation, no errors
         let operation_type = py.get_type::<MultiQubitZZWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
-        let operation_py = binding.downcast::<MultiQubitZZWrapper>().unwrap();
-        let comparison =
-            bool::extract_bound(&operation.call_method1(method, (operation_py,)).unwrap()).unwrap();
+        let operation_py = binding.cast::<MultiQubitZZWrapper>().unwrap();
+        let comparison = bool::extract(
+            operation
+                .call_method1(method, (operation_py,))
+                .unwrap()
+                .as_borrowed(),
+        )
+        .unwrap();
         assert!(comparison);
 
         // Error initialisation
@@ -95,7 +105,7 @@ fn test_new_multi_qubit_zz(input_operation: Operation, arguments: (Vec<u32>, f64
         // Testing PartialEq, Clone and Debug
         let def_wrapper = operation_py.extract::<MultiQubitZZWrapper>().unwrap();
         let binding = operation_type.call1((vec![1, 2], 0.0)).unwrap();
-        let new_op_diff = binding.downcast::<MultiQubitZZWrapper>().unwrap();
+        let new_op_diff = binding.cast::<MultiQubitZZWrapper>().unwrap();
         let def_wrapper_diff = new_op_diff.extract::<MultiQubitZZWrapper>().unwrap();
         let helper_ne: bool = def_wrapper_diff != def_wrapper;
         assert!(helper_ne);
@@ -117,15 +127,20 @@ fn test_new_call_defined_gate(
     arguments: (String, Vec<u32>, Vec<f64>),
     method: &str,
 ) {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
         // Basic initialisation, no errors
         let operation_type = py.get_type::<CallDefinedGateWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
-        let operation_py = binding.downcast::<CallDefinedGateWrapper>().unwrap();
-        let comparison =
-            bool::extract_bound(&operation.call_method1(method, (operation_py,)).unwrap()).unwrap();
+        let operation_py = binding.cast::<CallDefinedGateWrapper>().unwrap();
+        let comparison = bool::extract(
+            operation
+                .call_method1(method, (operation_py,))
+                .unwrap()
+                .as_borrowed(),
+        )
+        .unwrap();
         assert!(comparison);
 
         // Error initialisation
@@ -138,7 +153,7 @@ fn test_new_call_defined_gate(
             .call1(("name".to_owned(), vec![1, 2], vec![0.0]))
             .unwrap();
         let def_wrapper_diff = new_op_diff
-            .downcast::<CallDefinedGateWrapper>()
+            .cast::<CallDefinedGateWrapper>()
             .unwrap()
             .extract::<CallDefinedGateWrapper>()
             .unwrap();
@@ -157,15 +172,20 @@ fn test_new_call_defined_gate(
 #[test_case(Operation::from(MultiQubitCNOT::new(vec![0, 1])), vec![0, 1], "__eq__"; "MultiQubitCNOT_eq")]
 #[test_case(Operation::from(MultiQubitCNOT::new(vec![2, 3])), vec![0, 1], "__ne__"; "MultiQubitCNOT_ne")]
 fn test_new_multi_cnot(input_operation: Operation, arguments: Vec<u32>, method: &str) {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
         // Basic initialisation, no errors
         let operation_type = py.get_type::<MultiQubitCNOTWrapper>();
         let binding = operation_type.call1((arguments,)).unwrap();
-        let operation_py = binding.downcast::<MultiQubitCNOTWrapper>().unwrap();
-        let comparison =
-            bool::extract_bound(&operation.call_method1(method, (operation_py,)).unwrap()).unwrap();
+        let operation_py = binding.cast::<MultiQubitCNOTWrapper>().unwrap();
+        let comparison = bool::extract(
+            operation
+                .call_method1(method, (operation_py,))
+                .unwrap()
+                .as_borrowed(),
+        )
+        .unwrap();
         assert!(comparison);
 
         // Error initialisation
@@ -176,7 +196,7 @@ fn test_new_multi_cnot(input_operation: Operation, arguments: Vec<u32>, method: 
         // Testing PartialEq, Clone and Debug
         let def_wrapper = operation_py.extract::<MultiQubitCNOTWrapper>().unwrap();
         let binding = operation_type.call1((vec![1, 2],)).unwrap();
-        let new_op_diff = binding.downcast::<MultiQubitCNOTWrapper>().unwrap();
+        let new_op_diff = binding.cast::<MultiQubitCNOTWrapper>().unwrap();
         let def_wrapper_diff = new_op_diff.extract::<MultiQubitCNOTWrapper>().unwrap();
         let helper_ne: bool = def_wrapper_diff != def_wrapper;
         assert!(helper_ne);
@@ -193,15 +213,20 @@ fn test_new_multi_cnot(input_operation: Operation, arguments: Vec<u32>, method: 
 #[test_case(Operation::from(QFT::new(vec![0, 1], true, true)), (vec![0, 1], true, true), "__eq__"; "QFT_eq")]
 #[test_case(Operation::from(QFT::new(vec![2, 3], true, true)), (vec![0, 1], true, true), "__ne__"; "QFT_ne")]
 fn test_new_qft(input_operation: Operation, arguments: (Vec<u32>, bool, bool), method: &str) {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
         // Basic initialisation, no errors
         let operation_type = py.get_type::<QFTWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
-        let operation_py = binding.downcast::<QFTWrapper>().unwrap();
-        let comparison =
-            bool::extract_bound(&operation.call_method1(method, (operation_py,)).unwrap()).unwrap();
+        let operation_py = binding.cast::<QFTWrapper>().unwrap();
+        let comparison = bool::extract(
+            operation
+                .call_method1(method, (operation_py,))
+                .unwrap()
+                .as_borrowed(),
+        )
+        .unwrap();
         assert!(comparison);
 
         // Error initialisation
@@ -212,7 +237,7 @@ fn test_new_qft(input_operation: Operation, arguments: (Vec<u32>, bool, bool), m
         // Testing PartialEq, Clone and Debug
         let def_wrapper = operation_py.extract::<QFTWrapper>().unwrap();
         let binding = operation_type.call1((vec![1, 2], true, true)).unwrap();
-        let new_op_diff = binding.downcast::<QFTWrapper>().unwrap();
+        let new_op_diff = binding.cast::<QFTWrapper>().unwrap();
         let def_wrapper_diff = new_op_diff.extract::<QFTWrapper>().unwrap();
         let helper_ne: bool = def_wrapper_diff != def_wrapper;
         assert!(helper_ne);
@@ -225,10 +250,11 @@ fn test_new_qft(input_operation: Operation, arguments: (Vec<u32>, bool, bool), m
         );
 
         // Testing inputs
-        let swaps_input = bool::extract_bound(&operation.call_method0("swaps").unwrap()).unwrap();
+        let swaps_input =
+            bool::extract(operation.call_method0("swaps").unwrap().as_borrowed()).unwrap();
         assert!(swaps_input);
         let inverse_input =
-            bool::extract_bound(&operation.call_method0("inverse").unwrap()).unwrap();
+            bool::extract(operation.call_method0("inverse").unwrap().as_borrowed()).unwrap();
         assert!(inverse_input);
     })
 }
@@ -237,8 +263,8 @@ fn test_new_qft(input_operation: Operation, arguments: (Vec<u32>, bool, bool), m
 #[test_case(Operation::from(MultiQubitMS::new(vec![0, 1], CalculatorFloat::from("theta"))); "MultiQubitMS")]
 #[test_case(Operation::from(MultiQubitZZ::new(vec![0, 1], CalculatorFloat::from("theta"))); "MultiQubitZZ")]
 fn test_pyo3_is_parametrized(input_operation: Operation) {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
         assert!(operation
             .call_method0("is_parametrized")
@@ -254,8 +280,8 @@ fn test_pyo3_is_parametrized(input_operation: Operation) {
 #[test_case(Operation::from(MultiQubitCNOT::new(vec![0, 1])); "MultiQubitCNOT")]
 #[test_case(Operation::from(QFT::new(vec![0, 1], true, true)); "QFT")]
 fn test_pyo3_is_not_parametrized(input_operation: Operation) {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
         assert!(!operation
             .call_method0("is_parametrized")
@@ -271,13 +297,15 @@ fn test_pyo3_is_not_parametrized(input_operation: Operation) {
 #[test_case(CalculatorFloat::from(0), Operation::from(MultiQubitZZ::new(vec![0, 1], CalculatorFloat::from(0))); "MultiQubitZZ float")]
 #[test_case(CalculatorFloat::from("theta"), Operation::from(MultiQubitZZ::new(vec![0, 1], CalculatorFloat::from("theta"))); "MultiQubitZZ symb")]
 fn test_pyo3_theta(theta: CalculatorFloat, input_operation: Operation) {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
         let theta_op: CalculatorFloatWrapper =
             operation.call_method0("theta").unwrap().extract().unwrap();
-        let theta_param: CalculatorFloatWrapper =
-            CalculatorFloatWrapper::extract_bound(&convert_cf_to_pyobject(py, theta)).unwrap();
+        let theta_param: CalculatorFloatWrapper = CalculatorFloatWrapper::extract(
+            convert_cf_to_pyobject(py, theta).as_any().as_borrowed(),
+        )
+        .unwrap();
         assert_eq!(theta_op.internal, theta_param.internal);
     })
 }
@@ -294,8 +322,8 @@ fn test_pyo3_theta(theta: CalculatorFloat, input_operation: Operation) {
 #[test_case(vec![0, 1], Operation::from(QFT::new(vec![0, 1], true, true)); "QFT two")]
 #[test_case(vec![0, 1, 2], Operation::from(QFT::new(vec![0, 1, 2], true, true)); "QFT three")]
 fn test_pyo3_qubits(qubit: Vec<usize>, input_operation: Operation) {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
         let qubit_op: Vec<usize> = operation.call_method0("qubits").unwrap().extract().unwrap();
         assert_eq!(qubit_op, qubit);
@@ -308,8 +336,8 @@ fn test_pyo3_qubits(qubit: Vec<usize>, input_operation: Operation) {
 #[test_case("MultiQubitCNOT", Operation::from(MultiQubitCNOT::new(vec![0, 1])); "MultiQubitCNOT")]
 #[test_case("QFT", Operation::from(QFT::new(vec![0, 1], true, false)); "QFT")]
 fn test_pyo3_hqslang(name: &'static str, input_operation: Operation) {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
         let name_op: String = operation
             .call_method0("hqslang")
@@ -358,8 +386,8 @@ fn test_pyo3_hqslang(name: &'static str, input_operation: Operation) {
         ];
     "QFT")]
 fn test_pyo3_tags(input_operation: Operation, tags: Vec<&str>) {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
         let tags_op: Vec<String> = operation.call_method0("tags").unwrap().extract().unwrap();
         assert_eq!(tags_op.len(), tags.len());
@@ -373,8 +401,8 @@ fn test_pyo3_tags(input_operation: Operation, tags: Vec<&str>) {
 #[cfg(feature = "unstable_operation_definition")]
 #[test_case(Operation::from(CallDefinedGate::new("name".to_owned(), vec![0, 1], vec![CalculatorFloat::from(0.0)])); "CallDefinedGate")]
 fn test_pyo3_gate_definition(input_definition: Operation) {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(input_definition, py).unwrap();
 
         let to_tag = operation.call_method0("tags").unwrap();
@@ -401,8 +429,8 @@ fn test_pyo3_gate_definition(input_definition: Operation) {
 #[cfg(feature = "unstable_operation_definition")]
 #[test]
 fn test_pyo3_call_defined_gate_inputs() {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(
             Operation::from(CallDefinedGate::new(
                 "name".to_owned(),
@@ -445,8 +473,8 @@ fn test_pyo3_call_defined_gate_inputs() {
 #[test_case(Operation::from(MultiQubitCNOT::new(vec![0, 1, 2])); "MultiQubitCNOT")]
 #[test_case(Operation::from(QFT::new(vec![0, 1, 2], true, true)); "QFT")]
 fn test_pyo3_remapqubits(input_operation: Operation) {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
         // test initial qubit
         let qubits: Vec<usize> = operation.call_method0("qubits").unwrap().extract().unwrap();
@@ -471,8 +499,8 @@ fn test_pyo3_remapqubits(input_operation: Operation) {
 #[cfg(feature = "unstable_operation_definition")]
 #[test]
 fn test_pyo3_remapqubits_call_defined_gate() {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(
             Operation::from(CallDefinedGate::new(
                 "name".to_owned(),
@@ -508,8 +536,8 @@ fn test_pyo3_remapqubits_call_defined_gate() {
 #[test_case(Operation::from(QFT::new(vec![0, 1, 2], false, false)); "QFT")]
 fn test_pyo3_remapqubits_error(input_operation: Operation) {
     // preparation
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
         // remap qubits
         let mut qubit_mapping: HashMap<usize, usize> = HashMap::new();
@@ -524,8 +552,8 @@ fn test_pyo3_remapqubits_error(input_operation: Operation) {
 #[test]
 fn test_pyo3_remapqubits_error_call_defined_gate() {
     // preparation
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(
             Operation::from(CallDefinedGate::new(
                 "name".to_owned(),
@@ -549,8 +577,8 @@ fn test_pyo3_remapqubits_error_call_defined_gate() {
 #[test_case(Operation::from(MultiQubitCNOT::new(vec![0, 1, 2])); "MultiQubitCNOT")]
 #[test_case(Operation::from(QFT::new(vec![0, 1, 2], true, false)); "QFT")]
 fn test_pyo3_unitarymatrix(input_operation: Operation) {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(input_operation.clone(), py).unwrap();
         let py_result = operation.call_method0("unitary_matrix").unwrap();
         let result_matrix: Array2<Complex64> = py_result
@@ -572,8 +600,8 @@ fn test_pyo3_unitarymatrix(input_operation: Operation) {
 #[test_case(Operation::from(MultiQubitMS::new(vec![0, 1, 2], CalculatorFloat::from("PI"))); "MultiQubitMS")]
 #[test_case(Operation::from(MultiQubitZZ::new(vec![0, 1, 2], CalculatorFloat::from("PI"))); "MultiQubitZZ")]
 fn test_pyo3_unitarymatrix_error(input_operation: Operation) {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(input_operation.clone(), py).unwrap();
         let py_result = operation.call_method0("unitary_matrix");
         assert!(py_result.is_err());
@@ -583,8 +611,8 @@ fn test_pyo3_unitarymatrix_error(input_operation: Operation) {
 /// Test circuit() function for MultiQubitMS
 #[test]
 fn test_pyo3_circuit_ms() {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let input_operation =
             Operation::from(MultiQubitMS::new(vec![0, 1, 2], CalculatorFloat::from(1.0)));
         let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
@@ -611,8 +639,8 @@ fn test_pyo3_circuit_ms() {
 /// Test circuit() function for MultiQubitZZ
 #[test]
 fn test_pyo3_circuit_zz() {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let input_operation =
             Operation::from(MultiQubitZZ::new(vec![0, 1, 2], CalculatorFloat::from(1.0)));
         let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
@@ -633,8 +661,8 @@ fn test_pyo3_circuit_zz() {
 /// Test circuit() function for MultiQubitCNOT
 #[test]
 fn test_pyo3_circuit_multi_cnot() {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let input_operation = Operation::from(MultiQubitCNOT::new(vec![0, 1, 2]));
         let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
         let py_result = operation.call_method0("circuit").unwrap();
@@ -664,8 +692,8 @@ fn test_pyo3_circuit_multi_cnot() {
 /// Test circuit() function for QFT
 #[test]
 fn test_pyo3_circuit_qft() {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let input_operation = Operation::from(QFT::new(vec![0, 1, 2], false, false));
         let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
         let py_result = operation.call_method0("circuit").unwrap();
@@ -689,24 +717,26 @@ fn test_pyo3_circuit_qft() {
 #[test_case(Operation::from(MultiQubitCNOT::new(vec![0, 1, 2])); "MultiQubitCNOT")]
 #[test_case(Operation::from(QFT::new(vec![0, 1, 2], true, true)); "QFT")]
 fn test_pyo3_copy_deepcopy(input_operation: Operation) {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
         let copy_op = operation.call_method0("__copy__").unwrap();
         let deepcopy_op = operation.call_method1("__deepcopy__", ("",)).unwrap();
         let copy_deepcopy_param = operation;
 
-        let comparison_copy = bool::extract_bound(
-            &copy_op
+        let comparison_copy = bool::extract(
+            copy_op
                 .call_method1("__eq__", (copy_deepcopy_param.clone(),))
-                .unwrap(),
+                .unwrap()
+                .as_borrowed(),
         )
         .unwrap();
         assert!(comparison_copy);
-        let comparison_deepcopy = bool::extract_bound(
-            &deepcopy_op
+        let comparison_deepcopy = bool::extract(
+            deepcopy_op
                 .call_method1("__eq__", (copy_deepcopy_param,))
-                .unwrap(),
+                .unwrap()
+                .as_borrowed(),
         )
         .unwrap();
         assert!(comparison_deepcopy);
@@ -717,8 +747,8 @@ fn test_pyo3_copy_deepcopy(input_operation: Operation) {
 #[cfg(feature = "unstable_operation_definition")]
 #[test]
 fn test_pyo3_copy_deepcopy_call_defined_gate() {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(
             Operation::from(CallDefinedGate::new(
                 "name".to_owned(),
@@ -732,17 +762,19 @@ fn test_pyo3_copy_deepcopy_call_defined_gate() {
         let deepcopy_op = operation.call_method1("__deepcopy__", ("",)).unwrap();
         let copy_deepcopy_param = operation;
 
-        let comparison_copy = bool::extract_bound(
-            &copy_op
+        let comparison_copy = bool::extract(
+            copy_op
                 .call_method1("__eq__", (copy_deepcopy_param.clone(),))
-                .unwrap(),
+                .unwrap()
+                .as_borrowed(),
         )
         .unwrap();
         assert!(comparison_copy);
-        let comparison_deepcopy = bool::extract_bound(
-            &deepcopy_op
+        let comparison_deepcopy = bool::extract(
+            deepcopy_op
                 .call_method1("__eq__", (copy_deepcopy_param,))
-                .unwrap(),
+                .unwrap()
+                .as_borrowed(),
         )
         .unwrap();
         assert!(comparison_deepcopy);
@@ -767,8 +799,8 @@ fn test_pyo3_copy_deepcopy_call_defined_gate() {
     Operation::from(QFT::new(vec![0, 1, 2], false, false));
     "QFT")]
 fn test_pyo3_format_repr(format_repr: &str, input_operation: Operation) {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
         let to_format = operation.call_method1("__format__", ("",)).unwrap();
         let format_op: String = to_format.extract().unwrap();
@@ -783,8 +815,8 @@ fn test_pyo3_format_repr(format_repr: &str, input_operation: Operation) {
 #[cfg(feature = "unstable_operation_definition")]
 #[test]
 fn test_pyo3_format_repr_call_defined_gate() {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(
             Operation::from(CallDefinedGate::new(
                 "name".to_owned(),
@@ -813,8 +845,8 @@ fn test_pyo3_format_repr_call_defined_gate() {
 #[test_case(Operation::from(MultiQubitMS::new(vec![1, 2, 3], CalculatorFloat::from("theta"))); "MultiQubitMS")]
 #[test_case(Operation::from(MultiQubitZZ::new(vec![1, 2, 3], CalculatorFloat::from("theta"))); "MultiQubitZZ")]
 fn test_pyo3_substitute_params_rotate(input_operation: Operation) {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(input_operation.clone(), py).unwrap();
         let mut substitution_dict_py: HashMap<String, f64> = HashMap::new();
         substitution_dict_py.insert("theta".to_owned(), 1.0);
@@ -829,10 +861,11 @@ fn test_pyo3_substitute_params_rotate(input_operation: Operation) {
             .unwrap();
         let test_operation = convert_operation_to_pyobject(substitute_param, py).unwrap();
 
-        let comparison = bool::extract_bound(
-            &substitute_op
+        let comparison = bool::extract(
+            substitute_op
                 .call_method1("__eq__", (test_operation,))
-                .unwrap(),
+                .unwrap()
+                .as_borrowed(),
         )
         .unwrap();
         assert!(comparison);
@@ -842,8 +875,8 @@ fn test_pyo3_substitute_params_rotate(input_operation: Operation) {
 #[cfg(feature = "unstable_operation_definition")]
 #[test]
 fn test_pyo3_substitute_call_defined_gate() {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(
             Operation::from(CallDefinedGate::new(
                 "name".to_owned(),
@@ -870,10 +903,11 @@ fn test_pyo3_substitute_call_defined_gate() {
         .unwrap();
         let test_operation = convert_operation_to_pyobject(substitute_param, py).unwrap();
 
-        let comparison = bool::extract_bound(
-            &substitute_op
+        let comparison = bool::extract(
+            substitute_op
                 .call_method1("__eq__", (test_operation,))
-                .unwrap(),
+                .unwrap()
+                .as_borrowed(),
         )
         .unwrap();
         assert!(comparison);
@@ -884,8 +918,8 @@ fn test_pyo3_substitute_call_defined_gate() {
 #[test_case(Operation::from(MultiQubitMS::new(vec![1, 2], CalculatorFloat::from("test"))); "MultiQubitMS")]
 #[test_case(Operation::from(MultiQubitZZ::new(vec![1, 2], CalculatorFloat::from("test"))); "MultiQubitZZ")]
 fn test_pyo3_substitute_params_error(input_operation: Operation) {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
         let substitution_dict: HashMap<String, f64> = HashMap::new();
         let result = operation.call_method1("substitute_parameters", (substitution_dict,));
@@ -896,8 +930,8 @@ fn test_pyo3_substitute_params_error(input_operation: Operation) {
 #[cfg(feature = "unstable_operation_definition")]
 #[test]
 fn test_pyo3_substitute_params_error_call_defined_gate() {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(
             Operation::from(CallDefinedGate::new(
                 "name".to_owned(),
@@ -920,8 +954,8 @@ fn test_pyo3_substitute_params_error_call_defined_gate() {
     Operation::from(MultiQubitZZ::new(vec![0, 1, 2], CalculatorFloat::from(0.005))),
     Operation::from(MultiQubitZZ::new(vec![0, 1, 2], CalculatorFloat::from(0.005 * 1.5))); "MultiQubitZZ")]
 fn test_pyo3_rotate_powercf(first_op: Operation, second_op: Operation) {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(first_op, py).unwrap();
 
         let power = convert_cf_to_pyobject(py, CalculatorFloat::from(1.5));
@@ -951,23 +985,25 @@ fn test_pyo3_rotate_powercf(first_op: Operation, second_op: Operation) {
     Operation::from(QFT::new(vec![0, 1, 2], false, false)),
     Operation::from(QFT::new(vec![0, 1, 2], true, false)); "QFT")]
 fn test_pyo3_richcmp(definition_1: Operation, definition_2: Operation) {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation_one = convert_operation_to_pyobject(definition_1, py).unwrap();
         let operation_two = convert_operation_to_pyobject(definition_2, py).unwrap();
 
-        let comparison = bool::extract_bound(
-            &operation_one
+        let comparison = bool::extract(
+            operation_one
                 .call_method1("__eq__", (operation_two.clone(),))
-                .unwrap(),
+                .unwrap()
+                .as_borrowed(),
         )
         .unwrap();
         assert!(!comparison);
 
-        let comparison = bool::extract_bound(
-            &operation_one
+        let comparison = bool::extract(
+            operation_one
                 .call_method1("__ne__", (operation_two.clone(),))
-                .unwrap(),
+                .unwrap()
+                .as_borrowed(),
         )
         .unwrap();
         assert!(comparison);
@@ -984,8 +1020,8 @@ fn test_pyo3_richcmp(definition_1: Operation, definition_2: Operation) {
 #[cfg(feature = "unstable_operation_definition")]
 #[test]
 fn test_pyo3_richcmp_call_defined_gate() {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation_one = convert_operation_to_pyobject(
             Operation::from(CallDefinedGate::new(
                 "name".to_owned(),
@@ -1005,18 +1041,20 @@ fn test_pyo3_richcmp_call_defined_gate() {
         )
         .unwrap();
 
-        let comparison = bool::extract_bound(
-            &operation_one
+        let comparison = bool::extract(
+            operation_one
                 .call_method1("__eq__", (operation_two.clone(),))
-                .unwrap(),
+                .unwrap()
+                .as_borrowed(),
         )
         .unwrap();
         assert!(!comparison);
 
-        let comparison = bool::extract_bound(
-            &operation_one
+        let comparison = bool::extract(
+            operation_one
                 .call_method1("__ne__", (operation_two.clone(),))
-                .unwrap(),
+                .unwrap()
+                .as_borrowed(),
         )
         .unwrap();
         assert!(comparison);
@@ -1048,21 +1086,30 @@ fn test_pyo3_json_schema(operation: Operation, version_string: &str) {
         Operation::QFT(_) => serde_json::to_string_pretty(&schemars::schema_for!(QFT)).unwrap(),
         _ => unreachable!(),
     };
-    pyo3::prepare_freethreaded_python();
-    pyo3::Python::with_gil(|py| {
+    Python::initialize();
+    pyo3::Python::attach(|py| {
         let pyobject = convert_operation_to_pyobject(operation, py).unwrap();
         let operation = pyobject;
 
         let schema: String =
-            String::extract_bound(&operation.call_method0("json_schema").unwrap()).unwrap();
+            String::extract(operation.call_method0("json_schema").unwrap().as_borrowed()).unwrap();
 
         assert_eq!(schema, rust_schema);
 
-        let current_version_string =
-            String::extract_bound(&operation.call_method0("current_version").unwrap()).unwrap();
-        let minimum_supported_version_string =
-            String::extract_bound(&operation.call_method0("min_supported_version").unwrap())
-                .unwrap();
+        let current_version_string = String::extract(
+            operation
+                .call_method0("current_version")
+                .unwrap()
+                .as_borrowed(),
+        )
+        .unwrap();
+        let minimum_supported_version_string = String::extract(
+            operation
+                .call_method0("min_supported_version")
+                .unwrap()
+                .as_borrowed(),
+        )
+        .unwrap();
 
         assert_eq!(current_version_string, ROQOQO_VERSION);
         assert_eq!(minimum_supported_version_string, version_string);
@@ -1081,21 +1128,30 @@ fn test_pyo3_json_schema_call_defined_gate() {
     ));
     let rust_schema =
         serde_json::to_string_pretty(&schemars::schema_for!(CallDefinedGate)).unwrap();
-    pyo3::prepare_freethreaded_python();
-    pyo3::Python::with_gil(|py| {
+    Python::initialize();
+    pyo3::Python::attach(|py| {
         let pyobject = convert_operation_to_pyobject(operation, py).unwrap();
         let operation = pyobject;
 
         let schema: String =
-            String::extract_bound(&operation.call_method0("json_schema").unwrap()).unwrap();
+            String::extract(operation.call_method0("json_schema").unwrap().as_borrowed()).unwrap();
 
         assert_eq!(schema, rust_schema);
 
-        let current_version_string =
-            String::extract_bound(&operation.call_method0("current_version").unwrap()).unwrap();
-        let minimum_supported_version_string =
-            String::extract_bound(&operation.call_method0("min_supported_version").unwrap())
-                .unwrap();
+        let current_version_string = String::extract(
+            operation
+                .call_method0("current_version")
+                .unwrap()
+                .as_borrowed(),
+        )
+        .unwrap();
+        let minimum_supported_version_string = String::extract(
+            operation
+                .call_method0("min_supported_version")
+                .unwrap()
+                .as_borrowed(),
+        )
+        .unwrap();
 
         assert_eq!(current_version_string, ROQOQO_VERSION);
         assert_eq!(minimum_supported_version_string, "1.13.0");

@@ -28,7 +28,7 @@ use roqoqo::operations::Operation;
 use roqoqo::operations::*;
 use roqoqo::{Circuit, QuantumProgram, ROQOQO_VERSION};
 
-#[pyclass(name = "TestBackend", module = "qoqo")]
+#[pyclass(from_py_object, name = "TestBackend", module = "qoqo")]
 #[derive(Debug, Clone, Copy)]
 struct TestBackend;
 
@@ -46,9 +46,7 @@ impl TestBackend {
 fn create_measurement(py: Python) -> Bound<CheatedPauliZProductWrapper> {
     let input_type = py.get_type::<CheatedPauliZProductInputWrapper>();
     let binding = input_type.call0().unwrap();
-    let input = binding
-        .downcast::<CheatedPauliZProductInputWrapper>()
-        .unwrap();
+    let input = binding.cast::<CheatedPauliZProductInputWrapper>().unwrap();
     let _ = input.call_method1("add_pauliz_product", ("ro",)).unwrap();
 
     let mut circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
@@ -59,7 +57,7 @@ fn create_measurement(py: Python) -> Bound<CheatedPauliZProductWrapper> {
     br_type
         .call1((Some(CircuitWrapper::new()), circs.clone(), input))
         .unwrap()
-        .downcast::<CheatedPauliZProductWrapper>()
+        .cast::<CheatedPauliZProductWrapper>()
         .unwrap()
         .to_owned()
 }
@@ -67,14 +65,14 @@ fn create_measurement(py: Python) -> Bound<CheatedPauliZProductWrapper> {
 /// Test basic traits of QuantumProgramWrapper
 #[test]
 fn test_basic_traits() {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let input = create_measurement(py);
         let program_type = py.get_type::<QuantumProgramWrapper>();
         let binding = program_type
             .call1((&input, vec!["test".to_string()]))
             .unwrap();
-        let program = binding.downcast::<QuantumProgramWrapper>().unwrap();
+        let program = binding.cast::<QuantumProgramWrapper>().unwrap();
         let program_wrapper = program.extract::<QuantumProgramWrapper>().unwrap();
 
         let helper_ne: bool =
@@ -97,11 +95,11 @@ fn test_basic_traits() {
 /// Test new and run functions of QuantumProgram with all PauliZProduct measurement input
 #[test]
 fn test_new_run_br() {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let input_type = py.get_type::<PauliZProductInputWrapper>();
         let binding = input_type.call1((3, false)).unwrap();
-        let input_instance = binding.downcast::<PauliZProductInputWrapper>().unwrap();
+        let input_instance = binding.cast::<PauliZProductInputWrapper>().unwrap();
         let _ = input_instance
             .call_method1("add_pauliz_product", ("ro", vec![0]))
             .unwrap();
@@ -114,13 +112,13 @@ fn test_new_run_br() {
         let binding = br_type
             .call1((Some(CircuitWrapper::new()), circs.clone(), input_instance))
             .unwrap();
-        let input = binding.downcast::<PauliZProductWrapper>().unwrap();
+        let input = binding.cast::<PauliZProductWrapper>().unwrap();
 
         let program_type = py.get_type::<QuantumProgramWrapper>();
         let binding = program_type
             .call1((input, vec!["test".to_string()]))
             .unwrap();
-        let program = binding.downcast::<QuantumProgramWrapper>().unwrap();
+        let program = binding.cast::<QuantumProgramWrapper>().unwrap();
         let program_wrapper = program.extract::<QuantumProgramWrapper>().unwrap();
 
         let mut bri = PauliZProductInput::new(3, false);
@@ -141,10 +139,11 @@ fn test_new_run_br() {
             }
         );
 
-        let measurement = PauliZProductWrapper::extract_bound(
-            &program
+        let measurement = PauliZProductWrapper::extract(
+            program
                 .call_method1("run", (TestBackend, Some(vec![0.0])))
-                .unwrap(),
+                .unwrap()
+                .as_borrowed(),
         )
         .unwrap();
         assert_eq!(measurement.internal, br);
@@ -154,13 +153,11 @@ fn test_new_run_br() {
 /// Test new and run functions of QuantumProgram with all CheatedPauliZProduct measurement input
 #[test]
 fn test_new_run_cheated_br() {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let input_type = py.get_type::<CheatedPauliZProductInputWrapper>();
         let binding = input_type.call0().unwrap();
-        let input_instance = binding
-            .downcast::<CheatedPauliZProductInputWrapper>()
-            .unwrap();
+        let input_instance = binding.cast::<CheatedPauliZProductInputWrapper>().unwrap();
         let _ = input_instance
             .call_method1("add_pauliz_product", ("ro",))
             .unwrap();
@@ -173,13 +170,13 @@ fn test_new_run_cheated_br() {
         let binding = br_type
             .call1((Some(CircuitWrapper::new()), circs.clone(), input_instance))
             .unwrap();
-        let input = binding.downcast::<CheatedPauliZProductWrapper>().unwrap();
+        let input = binding.cast::<CheatedPauliZProductWrapper>().unwrap();
 
         let program_type = py.get_type::<QuantumProgramWrapper>();
         let binding = program_type
             .call1((input, vec!["test".to_string()]))
             .unwrap();
-        let program = binding.downcast::<QuantumProgramWrapper>().unwrap();
+        let program = binding.cast::<QuantumProgramWrapper>().unwrap();
         let program_wrapper = program.extract::<QuantumProgramWrapper>().unwrap();
 
         let mut cbri = CheatedPauliZProductInput::new();
@@ -200,10 +197,11 @@ fn test_new_run_cheated_br() {
             }
         );
 
-        let measurement = CheatedPauliZProductWrapper::extract_bound(
-            &program
+        let measurement = CheatedPauliZProductWrapper::extract(
+            program
                 .call_method1("run", (TestBackend, Some(vec![0.0])))
-                .unwrap(),
+                .unwrap()
+                .as_borrowed(),
         )
         .unwrap();
         assert_eq!(measurement.internal, cbr);
@@ -215,11 +213,11 @@ fn test_new_run_cheated_br() {
 /// Test new and run functions of QuantumProgram with all Cheated measurement input
 #[test]
 fn test_new_run_cheated() {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let input_type = py.get_type::<CheatedInputWrapper>();
         let binding = input_type.call1((2,)).unwrap();
-        let input_instance = binding.downcast::<CheatedInputWrapper>().unwrap();
+        let input_instance = binding.cast::<CheatedInputWrapper>().unwrap();
 
         let mut circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
         let mut circ1 = CircuitWrapper::new();
@@ -229,13 +227,13 @@ fn test_new_run_cheated() {
         let binding = br_type
             .call1((Some(CircuitWrapper::new()), circs.clone(), input_instance))
             .unwrap();
-        let input = binding.downcast::<CheatedWrapper>().unwrap();
+        let input = binding.cast::<CheatedWrapper>().unwrap();
 
         let program_type = py.get_type::<QuantumProgramWrapper>();
         let binding = program_type
             .call1((input, vec!["test".to_string()]))
             .unwrap();
-        let program = binding.downcast::<QuantumProgramWrapper>().unwrap();
+        let program = binding.cast::<QuantumProgramWrapper>().unwrap();
         let program_wrapper = program.extract::<QuantumProgramWrapper>().unwrap();
 
         let ci = CheatedInput::new(2);
@@ -255,10 +253,11 @@ fn test_new_run_cheated() {
             }
         );
 
-        let measurement = CheatedWrapper::extract_bound(
-            &program
+        let measurement = CheatedWrapper::extract(
+            program
                 .call_method1("run", (TestBackend, Some(vec![0.0])))
-                .unwrap(),
+                .unwrap()
+                .as_borrowed(),
         )
         .unwrap();
         assert_eq!(measurement.internal, cheated);
@@ -268,8 +267,8 @@ fn test_new_run_cheated() {
 /// Test new and run_register functions of QuantumProgram with all ClassicalRegister measurement input
 #[test]
 fn test_new_run_classical_register() {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let mut circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
         let mut circ1 = CircuitWrapper::new();
         circ1.internal += RotateX::new(0, 0.0.into());
@@ -278,13 +277,13 @@ fn test_new_run_classical_register() {
         let binding = br_type
             .call1((Some(CircuitWrapper::new()), circs.clone()))
             .unwrap();
-        let input = binding.downcast::<ClassicalRegisterWrapper>().unwrap();
+        let input = binding.cast::<ClassicalRegisterWrapper>().unwrap();
 
         let program_type = py.get_type::<QuantumProgramWrapper>();
         let binding = program_type
             .call1((input, vec!["test".to_string()]))
             .unwrap();
-        let program = binding.downcast::<QuantumProgramWrapper>().unwrap();
+        let program = binding.cast::<QuantumProgramWrapper>().unwrap();
         let program_wrapper = program.extract::<QuantumProgramWrapper>().unwrap();
 
         let cr = ClassicalRegister {
@@ -302,10 +301,11 @@ fn test_new_run_classical_register() {
             }
         );
 
-        let measurement = ClassicalRegisterWrapper::extract_bound(
-            &program
+        let measurement = ClassicalRegisterWrapper::extract(
+            program
                 .call_method1("run_registers", (TestBackend, Some(vec![0.0])))
-                .unwrap(),
+                .unwrap()
+                .as_borrowed(),
         )
         .unwrap();
         assert_eq!(measurement.internal, cr);
@@ -317,8 +317,8 @@ fn test_new_run_classical_register() {
 /// Test new function of QuantumProgram first error
 #[test]
 fn test_new_error_1() {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let circs: Vec<CircuitWrapper> = Vec::new();
         let program_type = py.get_type::<QuantumProgramWrapper>();
         let program = program_type.call1((circs, vec!["test".to_string()]));
@@ -329,30 +329,32 @@ fn test_new_error_1() {
 /// Test copy and deepcopy functions of QuantumProgram
 #[test]
 fn test_copy_deepcopy() {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let input = create_measurement(py);
         let program_type = py.get_type::<QuantumProgramWrapper>();
         let binding = program_type
             .call1((&input, vec!["test".to_string()]))
             .unwrap();
-        let program = binding.downcast::<QuantumProgramWrapper>().unwrap();
+        let program = binding.cast::<QuantumProgramWrapper>().unwrap();
 
         let copy_circ = program.call_method0("__copy__").unwrap();
         let deepcopy_circ = program.call_method1("__deepcopy__", ("",)).unwrap();
         let copy_deepcopy_param = program;
 
-        let comparison_copy = bool::extract_bound(
-            &copy_circ
+        let comparison_copy = bool::extract(
+            copy_circ
                 .call_method1("__eq__", (copy_deepcopy_param,))
-                .unwrap(),
+                .unwrap()
+                .as_borrowed(),
         )
         .unwrap();
         assert!(comparison_copy);
-        let comparison_deepcopy = bool::extract_bound(
-            &deepcopy_circ
+        let comparison_deepcopy = bool::extract(
+            deepcopy_circ
                 .call_method1("__eq__", (copy_deepcopy_param,))
-                .unwrap(),
+                .unwrap()
+                .as_borrowed(),
         )
         .unwrap();
         assert!(comparison_deepcopy);
@@ -362,14 +364,14 @@ fn test_copy_deepcopy() {
 /// Test qoqo_versions function of QuantumProgram
 #[test]
 fn test_qoqo_versions() {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let input = create_measurement(py);
         let program_type = py.get_type::<QuantumProgramWrapper>();
         let binding = program_type
             .call1((&input, vec!["test".to_string()]))
             .unwrap();
-        let program = binding.downcast::<QuantumProgramWrapper>().unwrap();
+        let program = binding.cast::<QuantumProgramWrapper>().unwrap();
 
         let mut rsplit = ROQOQO_VERSION.split('.').take(2);
         let mut qsplit = QOQO_VERSION.split('.').take(2);
@@ -384,8 +386,13 @@ fn test_qoqo_versions() {
             qsplit.next().expect("QOQO_VERSION badly formatted")
         );
 
-        let comparison_copy: Vec<String> =
-            Vec::extract_bound(&program.call_method0("_qoqo_versions").unwrap()).unwrap();
+        let comparison_copy: Vec<String> = Vec::extract(
+            program
+                .call_method0("_qoqo_versions")
+                .unwrap()
+                .as_borrowed(),
+        )
+        .unwrap();
         assert_eq!(comparison_copy, vec![rver.as_str(), qver.as_str()]);
     })
 }
@@ -393,26 +400,27 @@ fn test_qoqo_versions() {
 /// Test to_ and from_bincode functions of QuantumProgram
 #[test]
 fn test_to_from_bincode() {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let input = create_measurement(py);
         let program_type = py.get_type::<QuantumProgramWrapper>();
         let binding = program_type
             .call1((&input, vec!["test".to_string()]))
             .unwrap();
-        let program = binding.downcast::<QuantumProgramWrapper>().unwrap();
+        let program = binding.cast::<QuantumProgramWrapper>().unwrap();
 
         // testing 'to_bincode' and 'from_bincode' functions
         let serialised = program.call_method0("to_bincode").unwrap();
         let binding = program_type
             .call1((&input, vec!["new".to_string()]))
             .unwrap();
-        let new = binding.downcast::<QuantumProgramWrapper>().unwrap();
+        let new = binding.cast::<QuantumProgramWrapper>().unwrap();
         let deserialised = new.call_method1("from_bincode", (&serialised,)).unwrap();
-        let comparison = bool::extract_bound(
-            &deserialised
+        let comparison = bool::extract(
+            deserialised
                 .call_method1("__eq__", (program.clone(),))
-                .unwrap(),
+                .unwrap()
+                .as_borrowed(),
         )
         .unwrap();
         assert!(comparison);
@@ -440,35 +448,39 @@ fn test_to_from_bincode() {
             .call_method1("from_bincode", (&serialised,))
             .unwrap();
 
-        let comparison =
-            bool::extract_bound(&deserialised_py.call_method1("__eq__", (program,)).unwrap())
-                .unwrap();
+        let comparison = bool::extract(
+            deserialised_py
+                .call_method1("__eq__", (program,))
+                .unwrap()
+                .as_borrowed(),
+        )
+        .unwrap();
         assert!(comparison);
     })
 }
 
 #[test]
 fn test_value_error_bincode() {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let input = create_measurement(py);
         let program_type = py.get_type::<QuantumProgramWrapper>();
         let binding = program_type
             .call1((&input, vec!["test".to_string()]))
             .unwrap();
-        let program = binding.downcast::<QuantumProgramWrapper>().unwrap();
+        let program = binding.cast::<QuantumProgramWrapper>().unwrap();
 
         let program_clone = program;
         let serialised = program.call_method0("to_bincode").unwrap();
         let binding = program_clone
             .call_method1("from_bincode", (&serialised,))
             .unwrap();
-        let deserialised = binding.downcast::<QuantumProgramWrapper>().unwrap();
+        let deserialised = binding.cast::<QuantumProgramWrapper>().unwrap();
 
         let binding = program_type
             .call1((&input, vec!["new".to_string()]))
             .unwrap();
-        let new = binding.downcast::<QuantumProgramWrapper>().unwrap();
+        let new = binding.cast::<QuantumProgramWrapper>().unwrap();
         let deserialised_error = new.call_method1("from_bincode", (deserialised,));
         assert!(deserialised_error.is_err());
     })
@@ -477,24 +489,29 @@ fn test_value_error_bincode() {
 /// Test to_ and from_json functions of QuantumProgram
 #[test]
 fn test_to_from_json() {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let input = create_measurement(py);
         let program_type = py.get_type::<QuantumProgramWrapper>();
         let binding = program_type
             .call1((&input, vec!["test".to_string()]))
             .unwrap();
-        let program = binding.downcast::<QuantumProgramWrapper>().unwrap();
+        let program = binding.cast::<QuantumProgramWrapper>().unwrap();
 
         // testing 'from_json' and 'to_json' functions
         let serialised = program.call_method0("to_json").unwrap();
         let binding = program_type
             .call1((&input, vec!["new".to_string()]))
             .unwrap();
-        let new = binding.downcast::<QuantumProgramWrapper>().unwrap();
+        let new = binding.cast::<QuantumProgramWrapper>().unwrap();
         let deserialised = new.call_method1("from_json", (&serialised,)).unwrap();
-        let comparison =
-            bool::extract_bound(&deserialised.call_method1("__eq__", (program,)).unwrap()).unwrap();
+        let comparison = bool::extract(
+            deserialised
+                .call_method1("__eq__", (program,))
+                .unwrap()
+                .as_borrowed(),
+        )
+        .unwrap();
         assert!(comparison);
 
         let deserialised_error =
@@ -516,9 +533,13 @@ fn test_to_from_json() {
             .call_method1("from_json", (&serialised,))
             .unwrap();
 
-        let comparison =
-            bool::extract_bound(&deserialised_py.call_method1("__eq__", (program,)).unwrap())
-                .unwrap();
+        let comparison = bool::extract(
+            deserialised_py
+                .call_method1("__eq__", (program,))
+                .unwrap()
+                .as_borrowed(),
+        )
+        .unwrap();
         assert!(comparison);
     })
 }
@@ -527,17 +548,17 @@ fn test_to_from_json() {
 #[cfg(feature = "json_schema")]
 #[test]
 fn test_json_schema() {
-    pyo3::prepare_freethreaded_python();
-    pyo3::Python::with_gil(|py| {
+    Python::initialize();
+    pyo3::Python::attach(|py| {
         let input = create_measurement(py);
         let program_type = py.get_type::<QuantumProgramWrapper>();
         let binding = program_type
             .call1((input, vec!["test".to_string()]))
             .unwrap();
-        let program = binding.downcast::<QuantumProgramWrapper>().unwrap();
+        let program = binding.cast::<QuantumProgramWrapper>().unwrap();
 
         let schema: String =
-            String::extract_bound(&program.call_method0("json_schema").unwrap()).unwrap();
+            String::extract(program.call_method0("json_schema").unwrap().as_borrowed()).unwrap();
         let rust_schema =
             serde_json::to_string_pretty(&schemars::schema_for!(QuantumProgram)).unwrap();
         assert_eq!(schema, rust_schema);
@@ -547,45 +568,52 @@ fn test_json_schema() {
 /// Test the __richcmp__ function
 #[test]
 fn test_richcmp() {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let input = create_measurement(py);
         let program_type = py.get_type::<QuantumProgramWrapper>();
         let binding = program_type
             .call1((&input, vec!["one".to_string()]))
             .unwrap();
-        let program_one = binding.downcast::<QuantumProgramWrapper>().unwrap();
+        let program_one = binding.cast::<QuantumProgramWrapper>().unwrap();
         let binding = program_type
             .call1((&input, vec!["two".to_string()]))
             .unwrap();
-        let program_two = binding.downcast::<QuantumProgramWrapper>().unwrap();
+        let program_two = binding.cast::<QuantumProgramWrapper>().unwrap();
 
         let operation1 =
             convert_operation_to_pyobject(Operation::from(PauliX::new(0)), py).unwrap();
 
-        let comparison = bool::extract_bound(
-            &program_one
+        let comparison = bool::extract(
+            program_one
                 .call_method1("__eq__", (program_two.clone(),))
-                .unwrap(),
+                .unwrap()
+                .as_borrowed(),
         )
         .unwrap();
         assert!(!comparison);
-        let comparison = bool::extract_bound(
-            &program_one
+        let comparison = bool::extract(
+            program_one
                 .call_method1("__eq__", (operation1.clone(),))
-                .unwrap(),
+                .unwrap()
+                .as_borrowed(),
         )
         .unwrap();
         assert!(!comparison);
 
-        let comparison =
-            bool::extract_bound(&program_one.call_method1("__ne__", (program_two,)).unwrap())
-                .unwrap();
+        let comparison = bool::extract(
+            program_one
+                .call_method1("__ne__", (program_two,))
+                .unwrap()
+                .as_borrowed(),
+        )
+        .unwrap();
         assert!(comparison);
-        let comparison = bool::extract_bound(
-            &program_one
+        let comparison = bool::extract(
+            program_one
                 .call_method1("__ne__", (operation1.clone(),))
-                .unwrap(),
+                .unwrap()
+                .as_borrowed(),
         )
         .unwrap();
         assert!(comparison);
@@ -597,8 +625,8 @@ fn test_richcmp() {
 
 #[test]
 fn test_convert_into_program() {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let added_op = Operation::from(PauliX::new(0));
         let operation = convert_operation_to_pyobject(added_op, py).unwrap();
         let input = create_measurement(py);
@@ -606,7 +634,7 @@ fn test_convert_into_program() {
         let binding = program_type
             .call1((&input, vec!["one".to_string()]))
             .unwrap();
-        let program = binding.downcast::<QuantumProgramWrapper>().unwrap();
+        let program = binding.cast::<QuantumProgramWrapper>().unwrap();
         let comparison = program.call_method1("convert_into_quantum_program", (operation.clone(),));
         assert!(comparison.is_err());
         assert_eq!(
@@ -620,14 +648,12 @@ fn test_convert_into_program() {
 /// Test measurement() for CheatedPauliZProduct
 #[test]
 fn test_return_measurement_cheatedpaulizproduct() {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         // Create measurement
         let input_type = py.get_type::<CheatedPauliZProductInputWrapper>();
         let binding = input_type.call0().unwrap();
-        let input = binding
-            .downcast::<CheatedPauliZProductInputWrapper>()
-            .unwrap();
+        let input = binding.cast::<CheatedPauliZProductInputWrapper>().unwrap();
         let _ = input.call_method1("add_pauliz_product", ("ro",)).unwrap();
 
         let mut circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
@@ -638,16 +664,16 @@ fn test_return_measurement_cheatedpaulizproduct() {
         let binding = br_type
             .call1((Some(CircuitWrapper::new()), circs.clone(), input))
             .unwrap();
-        let measurement_input = binding.downcast::<CheatedPauliZProductWrapper>().unwrap();
+        let measurement_input = binding.cast::<CheatedPauliZProductWrapper>().unwrap();
 
         let program_type = py.get_type::<QuantumProgramWrapper>();
         let binding = program_type
             .call1((measurement_input, vec!["test".to_string()]))
             .unwrap();
-        let program = binding.downcast::<QuantumProgramWrapper>().unwrap();
+        let program = binding.cast::<QuantumProgramWrapper>().unwrap();
 
         let binding = program.call_method0("measurement").unwrap();
-        let measurement_returned = &binding.downcast::<CheatedPauliZProductWrapper>().unwrap();
+        let measurement_returned = &binding.cast::<CheatedPauliZProductWrapper>().unwrap();
 
         assert_eq!(
             format!("{:?}", measurement_returned),
@@ -659,12 +685,12 @@ fn test_return_measurement_cheatedpaulizproduct() {
 /// Test measurement() for PauliZProduct
 #[test]
 fn test_return_measurement_paulizproduct() {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         // Create measurement
         let input_type = py.get_type::<PauliZProductInputWrapper>();
         let binding = input_type.call1((3, false)).unwrap();
-        let input = binding.downcast::<PauliZProductInputWrapper>().unwrap();
+        let input = binding.cast::<PauliZProductInputWrapper>().unwrap();
         let tmp_vec: Vec<usize> = Vec::new();
         let _ = input
             .call_method1("add_pauliz_product", ("ro", tmp_vec))
@@ -676,16 +702,16 @@ fn test_return_measurement_paulizproduct() {
         let binding = br_type
             .call1((Some(CircuitWrapper::new()), circs, input))
             .unwrap();
-        let measurement_input = binding.downcast::<PauliZProductWrapper>().unwrap();
+        let measurement_input = binding.cast::<PauliZProductWrapper>().unwrap();
 
         let program_type = py.get_type::<QuantumProgramWrapper>();
         let binding = program_type
             .call1((measurement_input, vec!["test".to_string()]))
             .unwrap();
-        let program = binding.downcast::<QuantumProgramWrapper>().unwrap();
+        let program = binding.cast::<QuantumProgramWrapper>().unwrap();
 
         let binding = program.call_method0("measurement").unwrap();
-        let measurement_returned = binding.downcast::<PauliZProductWrapper>().unwrap();
+        let measurement_returned = binding.cast::<PauliZProductWrapper>().unwrap();
 
         assert_eq!(
             format!("{:?}", measurement_returned),
@@ -697,12 +723,12 @@ fn test_return_measurement_paulizproduct() {
 /// Test measurement() for Cheated
 #[test]
 fn test_return_measurement_cheated() {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         // Create measurement
         let input_type = py.get_type::<CheatedInputWrapper>();
         let binding = input_type.call1((3,)).unwrap();
-        let input = binding.downcast::<CheatedInputWrapper>().unwrap();
+        let input = binding.cast::<CheatedInputWrapper>().unwrap();
         let test_matrix = vec![
             (0, 0, Complex64::new(1.0, 0.0)),
             (0, 1, Complex64::new(0.0, 0.0)),
@@ -721,16 +747,16 @@ fn test_return_measurement_cheated() {
         let binding = br_type
             .call1((Some(CircuitWrapper::new()), circs.clone(), input))
             .unwrap();
-        let measurement_input = binding.downcast::<CheatedWrapper>().unwrap();
+        let measurement_input = binding.cast::<CheatedWrapper>().unwrap();
 
         let program_type = py.get_type::<QuantumProgramWrapper>();
         let binding = program_type
             .call1((measurement_input, vec!["test".to_string()]))
             .unwrap();
-        let program = binding.downcast::<QuantumProgramWrapper>().unwrap();
+        let program = binding.cast::<QuantumProgramWrapper>().unwrap();
 
         let binding = program.call_method0("measurement").unwrap();
-        let measurement_returned = binding.downcast::<CheatedWrapper>().unwrap();
+        let measurement_returned = binding.cast::<CheatedWrapper>().unwrap();
 
         assert_eq!(
             format!("{:?}", measurement_returned),
@@ -742,8 +768,8 @@ fn test_return_measurement_cheated() {
 /// Test measurement() for ClassicalRegister
 #[test]
 fn test_return_measurement_classicalreg() {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         // Create measurement
         let mut circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
         let mut circ1 = CircuitWrapper::new();
@@ -753,16 +779,16 @@ fn test_return_measurement_classicalreg() {
         let binding = br_type
             .call1((Some(CircuitWrapper::new()), circs.clone()))
             .unwrap();
-        let measurement_input = binding.downcast::<ClassicalRegisterWrapper>().unwrap();
+        let measurement_input = binding.cast::<ClassicalRegisterWrapper>().unwrap();
 
         let program_type = py.get_type::<QuantumProgramWrapper>();
         let binding = program_type
             .call1((measurement_input, vec!["test".to_string()]))
             .unwrap();
-        let program = binding.downcast::<QuantumProgramWrapper>().unwrap();
+        let program = binding.cast::<QuantumProgramWrapper>().unwrap();
 
         let binding = program.call_method0("measurement").unwrap();
-        let measurement_returned = binding.downcast::<ClassicalRegisterWrapper>().unwrap();
+        let measurement_returned = binding.cast::<ClassicalRegisterWrapper>().unwrap();
 
         assert_eq!(
             format!("{:?}", measurement_returned),
@@ -774,14 +800,12 @@ fn test_return_measurement_classicalreg() {
 /// Test input_parameter_names()
 #[test]
 fn test_input_parameter_names() {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         // Create measurement
         let input_type = py.get_type::<CheatedPauliZProductInputWrapper>();
         let binding = input_type.call0().unwrap();
-        let input = binding
-            .downcast::<CheatedPauliZProductInputWrapper>()
-            .unwrap();
+        let input = binding.cast::<CheatedPauliZProductInputWrapper>().unwrap();
         let _ = input.call_method1("add_pauliz_product", ("ro",)).unwrap();
 
         let mut circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
@@ -792,13 +816,13 @@ fn test_input_parameter_names() {
         let binding = br_type
             .call1((Some(CircuitWrapper::new()), circs.clone(), input))
             .unwrap();
-        let measurement_input = binding.downcast::<CheatedPauliZProductWrapper>().unwrap();
+        let measurement_input = binding.cast::<CheatedPauliZProductWrapper>().unwrap();
 
         let program_type = py.get_type::<QuantumProgramWrapper>();
         let binding = program_type
             .call1((measurement_input, vec!["test".to_string()]))
             .unwrap();
-        let program = binding.downcast::<QuantumProgramWrapper>().unwrap();
+        let program = binding.cast::<QuantumProgramWrapper>().unwrap();
 
         let params_returned = program.call_method0("input_parameter_names").unwrap();
 

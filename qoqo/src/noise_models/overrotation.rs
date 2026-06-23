@@ -32,7 +32,7 @@ use roqoqo::{operations::SupportedVersion, ROQOQO_VERSION};
 /// theta_std = 1.0;
 /// noise_desc = SingleQubitOverrotationDescription(gate, theta_mean, theta_std);
 /// ```
-#[pyclass(frozen, name = "SingleQubitOverrotationDescription")]
+#[pyclass(from_py_object, frozen, name = "SingleQubitOverrotationDescription")]
 #[derive(Debug, Default, Clone, PartialEq)]
 pub struct SingleQubitOverrotationDescriptionWrapper {
     /// Single qubit overrotation description
@@ -105,7 +105,7 @@ impl SingleQubitOverrotationDescriptionWrapper {
                 )
             })?;
         let b: Py<pyo3::types::PyByteArray> =
-            Python::with_gil(|py| -> Py<pyo3::types::PyByteArray> {
+            Python::attach(|py| -> Py<pyo3::types::PyByteArray> {
                 pyo3::types::PyByteArray::new(py, &serialized[..]).into()
             });
         Ok(b)
@@ -299,7 +299,7 @@ impl SingleQubitOverrotationDescriptionWrapper {
 /// qubit = 0;
 /// noise.set_single_qubit_overrotation(circuit_gate_with_noise, qubit, noise_desc);
 /// ```
-#[pyclass(frozen, name = "SingleQubitOverrotationOnGate")]
+#[pyclass(from_py_object, frozen, name = "SingleQubitOverrotationOnGate")]
 #[derive(Debug, Default, Clone, PartialEq)]
 pub struct SingleQubitOverrotationOnGateWrapper {
     internal: SingleQubitOverrotationOnGate,
@@ -384,7 +384,7 @@ impl SingleQubitOverrotationOnGateWrapper {
         target: usize,
         noise_operator: (Py<PyAny>, Py<PyAny>),
     ) -> PyResult<Self> {
-        Python::with_gil(|py| -> PyResult<Self> {
+        Python::attach(|py| -> PyResult<Self> {
             let noise1 =
                 SingleQubitOverrotationDescriptionWrapper::from_pyany(noise_operator.0.bind(py))?;
             let noise2 =

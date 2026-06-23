@@ -48,13 +48,13 @@ pub fn convert_cf_to_pyobject(
         CalculatorFloat::Float(x) => parameter_type
             .call1((x,))
             .unwrap()
-            .downcast::<CalculatorFloatWrapper>()
+            .cast::<CalculatorFloatWrapper>()
             .unwrap()
             .to_owned(),
         CalculatorFloat::Str(x) => parameter_type
             .call1((x,))
             .unwrap()
-            .downcast::<CalculatorFloatWrapper>()
+            .cast::<CalculatorFloatWrapper>()
             .unwrap()
             .to_owned(),
     }

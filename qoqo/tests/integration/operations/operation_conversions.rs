@@ -158,8 +158,8 @@ use test_case::test_case;
     Operation::from(QFT::new(vec![0, 1, 2, 3], false, false)); "QFT"
 )]
 fn test_conversion(input: Operation) {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(input.clone(), py).unwrap();
         let output = convert_pyany_to_operation(&operation).unwrap();
         assert_eq!(input, output)
@@ -170,8 +170,8 @@ fn test_conversion(input: Operation) {
 #[test_case(Operation::from(GateDefinition::new(create_circuit(), "name".into(), vec![1, 2], vec!["test".into()])); "GateDefinition")]
 #[test_case(Operation::from(CallDefinedGate::new("name".into(), vec![1, 2], vec![CalculatorFloat::from(0.6)])); "CallDefinedGate")]
 fn test_conversion_operation_definition(input: Operation) {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(input.clone(), py).unwrap();
         let output = convert_pyany_to_operation(&operation).unwrap();
         assert_eq!(input, output)

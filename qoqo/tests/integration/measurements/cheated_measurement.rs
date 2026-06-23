@@ -29,11 +29,11 @@ use test_case::test_case;
 
 #[test]
 fn test_returning_circuits() {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let input_type = py.get_type::<CheatedInputWrapper>();
         let binding = input_type.call1((2,)).unwrap();
-        let input = binding.downcast::<CheatedInputWrapper>().unwrap();
+        let input = binding.cast::<CheatedInputWrapper>().unwrap();
 
         let mut circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
         let mut circ1 = CircuitWrapper::new();
@@ -43,7 +43,7 @@ fn test_returning_circuits() {
         let binding = br_type
             .call1((Some(CircuitWrapper::new()), circs.clone(), input))
             .unwrap();
-        let br = binding.downcast::<CheatedWrapper>().unwrap();
+        let br = binding.cast::<CheatedWrapper>().unwrap();
 
         let circuits: Vec<CircuitWrapper> = br.call_method0("circuits").unwrap().extract().unwrap();
         for (index, b) in circuits.iter().enumerate() {
@@ -70,11 +70,11 @@ fn test_py03_evaluate_bool(
     value_diagonal: f64,
     value_off_diagonal: f64,
 ) {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let input_type = py.get_type::<CheatedInputWrapper>();
         let binding = input_type.call1((1,)).unwrap();
-        let input = binding.downcast::<CheatedInputWrapper>().unwrap();
+        let input = binding.cast::<CheatedInputWrapper>().unwrap();
         let test_matrix = vec![
             (0, 0, Complex64::new(1.0, 0.0)),
             (0, 1, Complex64::new(0.0, 0.0)),
@@ -103,7 +103,7 @@ fn test_py03_evaluate_bool(
         let binding = br_type
             .call1((Some(CircuitWrapper::new()), circs, input))
             .unwrap();
-        let br = binding.downcast::<CheatedWrapper>().unwrap();
+        let br = binding.cast::<CheatedWrapper>().unwrap();
 
         let mut measured_registers: HashMap<String, ComplexOutputRegister> = HashMap::new();
         let _ = measured_registers.insert("ro".to_string(), register);
@@ -118,9 +118,9 @@ fn test_py03_evaluate_bool(
             .unwrap();
 
         let test_diagonal_py =
-            f64::extract_bound(&result.get_item("test_diagonal").unwrap()).unwrap();
+            f64::extract(result.get_item("test_diagonal").unwrap().as_borrowed()).unwrap();
         let test_off_diagonal_py =
-            f64::extract_bound(&result.get_item("test_off_diagonal").unwrap()).unwrap();
+            f64::extract(result.get_item("test_off_diagonal").unwrap().as_borrowed()).unwrap();
 
         assert!((test_diagonal_py - value_diagonal).abs() < 1e-10);
         assert!((test_off_diagonal_py - value_off_diagonal).abs() < 1e-10);
@@ -130,8 +130,8 @@ fn test_py03_evaluate_bool(
 /// Test evaluate failure
 #[test]
 fn test_py03_evaluate_error0() {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let register = vec![vec![
             Complex64::new(1.0, 0.0),
             Complex64::new(0.0, 0.0),
@@ -140,7 +140,7 @@ fn test_py03_evaluate_error0() {
 
         let input_type = py.get_type::<CheatedInputWrapper>();
         let binding = input_type.call1((3,)).unwrap();
-        let input = binding.downcast::<CheatedInputWrapper>().unwrap();
+        let input = binding.cast::<CheatedInputWrapper>().unwrap();
         let test_matrix = vec![
             (0, 0, Complex64::new(1.0, 0.0)),
             (0, 1, Complex64::new(0.0, 0.0)),
@@ -169,7 +169,7 @@ fn test_py03_evaluate_error0() {
         let binding = br_type
             .call1((Some(CircuitWrapper::new()), circs, input))
             .unwrap();
-        let br = binding.downcast::<CheatedWrapper>().unwrap();
+        let br = binding.cast::<CheatedWrapper>().unwrap();
 
         let mut measured_registers: HashMap<String, ComplexOutputRegister> = HashMap::new();
         let _ = measured_registers.insert("ro".to_string(), register);
@@ -195,11 +195,11 @@ fn test_py03_evaluate_error0() {
 /// Test copy
 #[test]
 fn test_pyo3_copy() {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let input_type = py.get_type::<CheatedInputWrapper>();
         let binding = input_type.call1((3,)).unwrap();
-        let input = binding.downcast::<CheatedInputWrapper>().unwrap();
+        let input = binding.cast::<CheatedInputWrapper>().unwrap();
         let test_matrix = vec![
             (0, 0, Complex64::new(1.0, 0.0)),
             (0, 1, Complex64::new(0.0, 0.0)),
@@ -218,7 +218,7 @@ fn test_pyo3_copy() {
         let binding = br_type
             .call1((Some(CircuitWrapper::new()), circs.clone(), input))
             .unwrap();
-        let br = binding.downcast::<CheatedWrapper>().unwrap();
+        let br = binding.cast::<CheatedWrapper>().unwrap();
         let br_clone = br;
 
         let circuits: Vec<CircuitWrapper> = br.call_method0("circuits").unwrap().extract().unwrap();
@@ -246,11 +246,11 @@ fn test_pyo3_copy() {
 /// Test debug and clone
 #[test]
 fn test_pyo3_debug() {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let input_type = py.get_type::<CheatedInputWrapper>();
         let binding = input_type.call1((3,)).unwrap();
-        let input = binding.downcast::<CheatedInputWrapper>().unwrap();
+        let input = binding.cast::<CheatedInputWrapper>().unwrap();
         let test_matrix = vec![
             (0, 0, Complex64::new(1.0, 0.0)),
             (0, 1, Complex64::new(0.0, 0.0)),
@@ -267,7 +267,7 @@ fn test_pyo3_debug() {
         let binding = br_type
             .call1((Some(CircuitWrapper::new()), circs, input))
             .unwrap();
-        let br = binding.downcast::<CheatedWrapper>().unwrap();
+        let br = binding.cast::<CheatedWrapper>().unwrap();
         let br_wrapper = br.extract::<CheatedWrapper>().unwrap();
 
         #[allow(clippy::redundant_clone)]
@@ -296,11 +296,11 @@ fn test_pyo3_debug() {
 /// Test _internal_to_bincode function
 #[test]
 fn test_internal_to_bincode() {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let input_type = py.get_type::<CheatedInputWrapper>();
         let binding = input_type.call1((3,)).unwrap();
-        let input = binding.downcast::<CheatedInputWrapper>().unwrap();
+        let input = binding.cast::<CheatedInputWrapper>().unwrap();
         let test_matrix = vec![
             (0, 0, Complex64::new(1.0, 0.0)),
             (0, 1, Complex64::new(0.0, 0.0)),
@@ -320,7 +320,7 @@ fn test_internal_to_bincode() {
         let binding = br_type
             .call1((Some(CircuitWrapper::new()), circs, input))
             .unwrap();
-        let br = binding.downcast::<CheatedWrapper>().unwrap();
+        let br = binding.cast::<CheatedWrapper>().unwrap();
 
         let mut roqoqo_bri = CheatedInput::new(3);
         roqoqo_bri
@@ -348,11 +348,11 @@ fn test_internal_to_bincode() {
 /// Test to_bincode and from_bincode functions
 #[test]
 fn test_to_from_bincode() {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let input_type = py.get_type::<CheatedInputWrapper>();
         let binding = input_type.call1((3,)).unwrap();
-        let input = binding.downcast::<CheatedInputWrapper>().unwrap();
+        let input = binding.cast::<CheatedInputWrapper>().unwrap();
         let test_matrix = vec![
             (0, 0, Complex64::new(1.0, 0.0)),
             (0, 1, Complex64::new(0.0, 0.0)),
@@ -368,7 +368,7 @@ fn test_to_from_bincode() {
         let binding = new_input
             .call_method1("from_bincode", (&serialised,))
             .unwrap();
-        let deserialised = binding.downcast::<CheatedInputWrapper>().unwrap();
+        let deserialised = binding.cast::<CheatedInputWrapper>().unwrap();
         assert_eq!(format!("{:?}", input), format!("{:?}", deserialised));
 
         let circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
@@ -377,13 +377,13 @@ fn test_to_from_bincode() {
         let binding = br_type
             .call1((Some(CircuitWrapper::new()), circs, input))
             .unwrap();
-        let br = binding.downcast::<CheatedWrapper>().unwrap();
+        let br = binding.cast::<CheatedWrapper>().unwrap();
 
         let new_br = br;
 
         let serialised = br.call_method0("to_bincode").unwrap();
         let binding = new_br.call_method1("from_bincode", (&serialised,)).unwrap();
-        let deserialised = binding.downcast::<CheatedWrapper>().unwrap();
+        let deserialised = binding.cast::<CheatedWrapper>().unwrap();
         assert_eq!(format!("{:?}", br), format!("{:?}", deserialised));
 
         let deserialised_error = new_br.call_method1(
@@ -406,11 +406,11 @@ fn test_to_from_bincode() {
 /// Test to_json and from_json functions
 #[test]
 fn test_to_from_json() {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let input_type = py.get_type::<CheatedInputWrapper>();
         let binding = input_type.call1((3,)).unwrap();
-        let input = binding.downcast::<CheatedInputWrapper>().unwrap();
+        let input = binding.cast::<CheatedInputWrapper>().unwrap();
         let test_matrix = vec![
             (0, 0, Complex64::new(1.0, 0.0)),
             (0, 1, Complex64::new(0.0, 0.0)),
@@ -424,7 +424,7 @@ fn test_to_from_json() {
         let serialised = input.call_method0("to_json").unwrap();
         let new_input = input;
         let binding = new_input.call_method1("from_json", (&serialised,)).unwrap();
-        let deserialised = binding.downcast::<CheatedInputWrapper>().unwrap();
+        let deserialised = binding.cast::<CheatedInputWrapper>().unwrap();
         assert_eq!(format!("{:?}", input), format!("{:?}", deserialised));
 
         let circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
@@ -433,12 +433,12 @@ fn test_to_from_json() {
         let binding = br_type
             .call1((Some(CircuitWrapper::new()), circs, input))
             .unwrap();
-        let br = binding.downcast::<CheatedWrapper>().unwrap();
+        let br = binding.cast::<CheatedWrapper>().unwrap();
 
         let new_br = br;
         let serialised = br.call_method0("to_json").unwrap();
         let binding = new_br.call_method1("from_json", (&serialised,)).unwrap();
-        let deserialised = binding.downcast::<CheatedWrapper>().unwrap();
+        let deserialised = binding.cast::<CheatedWrapper>().unwrap();
         assert_eq!(format!("{:?}", br), format!("{:?}", deserialised));
 
         let deserialised_error =
@@ -457,11 +457,11 @@ fn test_to_from_json() {
 /// Test substitute_parameters
 #[test]
 fn test_substitute_parameters() {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let input_type = py.get_type::<CheatedInputWrapper>();
         let binding = input_type.call1((3,)).unwrap();
-        let input = binding.downcast::<CheatedInputWrapper>().unwrap();
+        let input = binding.cast::<CheatedInputWrapper>().unwrap();
         let test_matrix = vec![
             (0, 0, Complex64::new(1.0, 0.0)),
             (0, 1, Complex64::new(0.0, 0.0)),
@@ -480,12 +480,12 @@ fn test_substitute_parameters() {
         let binding = br_type
             .call1((Some(CircuitWrapper::new()), circs.clone(), input))
             .unwrap();
-        let br = binding.downcast::<CheatedWrapper>().unwrap();
+        let br = binding.cast::<CheatedWrapper>().unwrap();
 
         let mut map: HashMap<String, f64> = HashMap::<String, f64>::new();
         map.insert("theta".to_string(), 0.0);
         let binding = br.call_method1("substitute_parameters", (map,)).unwrap();
-        let br_sub = binding.downcast::<CheatedWrapper>().unwrap();
+        let br_sub = binding.cast::<CheatedWrapper>().unwrap();
 
         let br_wrapper = br.extract::<CheatedWrapper>().unwrap();
         let br_sub_wrapper = br_sub.extract::<CheatedWrapper>().unwrap();
@@ -496,11 +496,11 @@ fn test_substitute_parameters() {
 /// Test substitute_parameters returning an error
 #[test]
 fn test_substitute_parameters_error() {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let input_type = py.get_type::<CheatedInputWrapper>();
         let binding = input_type.call1((3,)).unwrap();
-        let input = binding.downcast::<CheatedInputWrapper>().unwrap();
+        let input = binding.cast::<CheatedInputWrapper>().unwrap();
         let test_matrix = vec![
             (0, 0, Complex64::new(1.0, 0.0)),
             (0, 1, Complex64::new(0.0, 0.0)),
@@ -519,7 +519,7 @@ fn test_substitute_parameters_error() {
         let binding = br_type
             .call1((Some(CircuitWrapper::new()), circs.clone(), input))
             .unwrap();
-        let br = binding.downcast::<CheatedWrapper>().unwrap();
+        let br = binding.cast::<CheatedWrapper>().unwrap();
 
         let map: HashMap<String, f64> = HashMap::<String, f64>::new();
         let br_sub = br.call_method1("substitute_parameters", (map,));
@@ -530,10 +530,10 @@ fn test_substitute_parameters_error() {
 /// Test measurement_type()
 #[test]
 fn test_measurement_type() {
-    Python::with_gil(|py| {
+    Python::attach(|py| {
         let input_type = py.get_type::<CheatedInputWrapper>();
         let binding = input_type.call1((3,)).unwrap();
-        let input = binding.downcast::<CheatedInputWrapper>().unwrap();
+        let input = binding.cast::<CheatedInputWrapper>().unwrap();
         let test_matrix = vec![
             (0, 0, Complex64::new(1.0, 0.0)),
             (0, 1, Complex64::new(0.0, 0.0)),
@@ -552,7 +552,7 @@ fn test_measurement_type() {
         let binding = br_type
             .call1((Some(CircuitWrapper::new()), circs.clone(), input))
             .unwrap();
-        let br = binding.downcast::<CheatedWrapper>().unwrap();
+        let br = binding.cast::<CheatedWrapper>().unwrap();
 
         let measurement_type = br.call_method0("measurement_type").unwrap();
         assert_eq!(measurement_type.to_string(), "Cheated");
@@ -562,10 +562,10 @@ fn test_measurement_type() {
 /// Test input()
 #[test]
 fn test_return_input() {
-    Python::with_gil(|py| {
+    Python::attach(|py| {
         let input_type = py.get_type::<CheatedInputWrapper>();
         let binding = input_type.call1((3,)).unwrap();
-        let input = binding.downcast::<CheatedInputWrapper>().unwrap();
+        let input = binding.cast::<CheatedInputWrapper>().unwrap();
         let test_matrix = vec![
             (0, 0, Complex64::new(1.0, 0.0)),
             (0, 1, Complex64::new(0.0, 0.0)),
@@ -584,10 +584,10 @@ fn test_return_input() {
         let binding = br_type
             .call1((Some(CircuitWrapper::new()), circs.clone(), input))
             .unwrap();
-        let br = binding.downcast::<CheatedWrapper>().unwrap();
+        let br = binding.cast::<CheatedWrapper>().unwrap();
 
         let binding = br.call_method0("input").unwrap();
-        let input_returned = binding.downcast::<CheatedInputWrapper>().unwrap();
+        let input_returned = binding.cast::<CheatedInputWrapper>().unwrap();
 
         assert_eq!(format!("{:?}", input_returned), format!("{:?}", input));
     })
@@ -595,12 +595,12 @@ fn test_return_input() {
 
 #[test]
 fn test_pyo3_format_repr() {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let format_repr = "Cheated { constant_circuit: Some(Circuit { definitions: [], operations: [], _roqoqo_version: RoqoqoVersion }), circuits: [Circuit { definitions: [], operations: [], _roqoqo_version: RoqoqoVersion }], input: CheatedInput { measured_operators: {\"test_diagonal\": ([(0, 0, Complex { re: 1.0, im: 0.0 }), (0, 1, Complex { re: 0.0, im: 0.0 }), (1, 0, Complex { re: 0.0, im: 0.0 }), (1, 1, Complex { re: -1.0, im: 0.0 })], \"ro\")}, number_qubits: 3 } }";
         let input_type = py.get_type::<CheatedInputWrapper>();
         let binding = input_type.call1((3,)).unwrap();
-        let input = binding.downcast::<CheatedInputWrapper>().unwrap();
+        let input = binding.cast::<CheatedInputWrapper>().unwrap();
         let test_matrix = vec![
             (0, 0, Complex64::new(1.0, 0.0)),
             (0, 1, Complex64::new(0.0, 0.0)),
@@ -617,11 +617,11 @@ fn test_pyo3_format_repr() {
         let binding = br_type
             .call1((Some(CircuitWrapper::new()), circs, input))
             .unwrap();
-        let br = binding.downcast::<CheatedWrapper>().unwrap();
+        let br = binding.cast::<CheatedWrapper>().unwrap();
         let to_format = br.call_method1("__format__", ("",)).unwrap();
-        let format_op: String = String::extract_bound(&to_format).unwrap();
+        let format_op: String = String::extract(to_format.as_borrowed()).unwrap();
         let to_repr = br.call_method0("__repr__").unwrap();
-        let repr_op: String = String::extract_bound(&to_repr).unwrap();
+        let repr_op: String = String::extract(to_repr.as_borrowed()).unwrap();
         assert_eq!(format_op, format_repr);
         assert_eq!(repr_op, format_repr);
     })
@@ -629,11 +629,11 @@ fn test_pyo3_format_repr() {
 
 #[test]
 fn test_pyo3_copy_deepcopy() {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let input_type = py.get_type::<CheatedInputWrapper>();
         let binding = input_type.call1((3,)).unwrap();
-        let input = binding.downcast::<CheatedInputWrapper>().unwrap();
+        let input = binding.cast::<CheatedInputWrapper>().unwrap();
         let test_matrix = vec![
             (0, 0, Complex64::new(1.0, 0.0)),
             (0, 1, Complex64::new(0.0, 0.0)),
@@ -650,22 +650,24 @@ fn test_pyo3_copy_deepcopy() {
         let binding = br_type
             .call1((Some(CircuitWrapper::new()), circs, input))
             .unwrap();
-        let br = binding.downcast::<CheatedWrapper>().unwrap();
+        let br = binding.cast::<CheatedWrapper>().unwrap();
         let copy_op = br.call_method0("__copy__").unwrap();
         let deepcopy_op = br.call_method1("__deepcopy__", ("",)).unwrap();
         let copy_deepcopy_param = br;
 
-        let comparison_copy = bool::extract_bound(
-            &copy_op
+        let comparison_copy = bool::extract(
+            copy_op
                 .call_method1("__eq__", (copy_deepcopy_param,))
-                .unwrap(),
+                .unwrap()
+                .as_borrowed(),
         )
         .unwrap();
         assert!(comparison_copy);
-        let comparison_deepcopy = bool::extract_bound(
-            &deepcopy_op
+        let comparison_deepcopy = bool::extract(
+            deepcopy_op
                 .call_method1("__eq__", (copy_deepcopy_param,))
-                .unwrap(),
+                .unwrap()
+                .as_borrowed(),
         )
         .unwrap();
         assert!(comparison_deepcopy);
@@ -674,11 +676,11 @@ fn test_pyo3_copy_deepcopy() {
 
 #[test]
 fn test_pyo3_richcmp() {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let input_type = py.get_type::<CheatedInputWrapper>();
         let binding = input_type.call1((3,)).unwrap();
-        let input = binding.downcast::<CheatedInputWrapper>().unwrap();
+        let input = binding.cast::<CheatedInputWrapper>().unwrap();
         let test_matrix = vec![
             (0, 0, Complex64::new(1.0, 0.0)),
             (0, 1, Complex64::new(0.0, 0.0)),
@@ -695,16 +697,26 @@ fn test_pyo3_richcmp() {
         let binding = br_type
             .call1((Some(CircuitWrapper::new()), circs.clone(), input))
             .unwrap();
-        let br_one = binding.downcast::<CheatedWrapper>().unwrap();
+        let br_one = binding.cast::<CheatedWrapper>().unwrap();
         let arg: Option<CircuitWrapper> = None;
         let binding = br_type.call1((arg, circs, input)).unwrap();
-        let br_two = binding.downcast::<CheatedWrapper>().unwrap();
-        let comparison =
-            bool::extract_bound(&br_one.call_method1("__eq__", (br_two,)).unwrap()).unwrap();
+        let br_two = binding.cast::<CheatedWrapper>().unwrap();
+        let comparison = bool::extract(
+            br_one
+                .call_method1("__eq__", (br_two,))
+                .unwrap()
+                .as_borrowed(),
+        )
+        .unwrap();
         assert!(!comparison);
 
-        let comparison =
-            bool::extract_bound(&br_one.call_method1("__ne__", (br_two,)).unwrap()).unwrap();
+        let comparison = bool::extract(
+            br_one
+                .call_method1("__ne__", (br_two,))
+                .unwrap()
+                .as_borrowed(),
+        )
+        .unwrap();
         assert!(comparison);
 
         let comparison = br_one.call_method1("__ge__", (br_two,));
@@ -719,11 +731,11 @@ fn test_pyo3_json_schema() {
     let rust_schema_input =
         serde_json::to_string_pretty(&schemars::schema_for!(CheatedInput)).unwrap();
     let rust_schema = serde_json::to_string_pretty(&schemars::schema_for!(Cheated)).unwrap();
-    pyo3::prepare_freethreaded_python();
-    pyo3::Python::with_gil(|py| {
+    Python::initialize();
+    pyo3::Python::attach(|py| {
         let input_type = py.get_type::<CheatedInputWrapper>();
         let binding = input_type.call1((3,)).unwrap();
-        let input = binding.downcast::<CheatedInputWrapper>().unwrap();
+        let input = binding.cast::<CheatedInputWrapper>().unwrap();
         let test_matrix = vec![
             (0, 0, Complex64::new(1.0, 0.0)),
             (0, 1, Complex64::new(0.0, 0.0)),
@@ -741,24 +753,39 @@ fn test_pyo3_json_schema() {
         let binding = br_type
             .call1((Some(CircuitWrapper::new()), circs.clone(), input))
             .unwrap();
-        let br_one = binding.downcast::<CheatedWrapper>().unwrap();
+        let br_one = binding.cast::<CheatedWrapper>().unwrap();
 
         let schema_input: String =
-            String::extract_bound(&input.call_method0("json_schema").unwrap()).unwrap();
+            String::extract(input.call_method0("json_schema").unwrap().as_borrowed()).unwrap();
         let schema: String =
-            String::extract_bound(&br_one.call_method0("json_schema").unwrap()).unwrap();
+            String::extract(br_one.call_method0("json_schema").unwrap().as_borrowed()).unwrap();
 
         assert_eq!(schema_input, rust_schema_input);
         assert_eq!(schema, rust_schema);
 
         let current_version_string_input =
-            String::extract_bound(&input.call_method0("current_version").unwrap()).unwrap();
-        let current_version_string =
-            String::extract_bound(&br_one.call_method0("current_version").unwrap()).unwrap();
-        let minimum_supported_version_string_input =
-            String::extract_bound(&input.call_method0("min_supported_version").unwrap()).unwrap();
-        let minimum_supported_version_string =
-            String::extract_bound(&br_one.call_method0("min_supported_version").unwrap()).unwrap();
+            String::extract(input.call_method0("current_version").unwrap().as_borrowed()).unwrap();
+        let current_version_string = String::extract(
+            br_one
+                .call_method0("current_version")
+                .unwrap()
+                .as_borrowed(),
+        )
+        .unwrap();
+        let minimum_supported_version_string_input = String::extract(
+            input
+                .call_method0("min_supported_version")
+                .unwrap()
+                .as_borrowed(),
+        )
+        .unwrap();
+        let minimum_supported_version_string = String::extract(
+            br_one
+                .call_method0("min_supported_version")
+                .unwrap()
+                .as_borrowed(),
+        )
+        .unwrap();
 
         assert_eq!(current_version_string, ROQOQO_VERSION);
         assert_eq!(current_version_string_input, ROQOQO_VERSION);

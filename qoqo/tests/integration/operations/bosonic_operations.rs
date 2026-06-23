@@ -32,20 +32,25 @@ use super::convert_cf_to_pyobject;
 #[test_case(Operation::from(Squeezing::new(1, 0.1.into(), 0.1.into())), (1, 0.1, 0.1,), "__eq__"; "Squeezing_eq")]
 #[test_case(Operation::from(Squeezing::new(1, 0.1.into(), 0.1.into())), (0, 0.1, 0.1,), "__ne__"; "Squeezing_ne")]
 fn test_new_squeezing(input_operation: Operation, arguments: (u32, f64, f64), method: &str) {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
         let operation_type = py.get_type::<SqueezingWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
-        let operation_py = binding.downcast::<SqueezingWrapper>().unwrap();
+        let operation_py = binding.cast::<SqueezingWrapper>().unwrap();
 
-        let comparison =
-            bool::extract_bound(&operation.call_method1(method, (operation_py,)).unwrap()).unwrap();
+        let comparison = bool::extract(
+            operation
+                .call_method1(method, (operation_py,))
+                .unwrap()
+                .as_borrowed(),
+        )
+        .unwrap();
         assert!(comparison);
 
         let def_wrapper = operation_py.extract::<SqueezingWrapper>().unwrap();
         let binding = operation_type.call1((2, 0.1, 0.0)).unwrap();
-        let new_op_diff = binding.downcast::<SqueezingWrapper>().unwrap();
+        let new_op_diff = binding.cast::<SqueezingWrapper>().unwrap();
         let def_wrapper_diff = new_op_diff.extract::<SqueezingWrapper>().unwrap();
         let helper_ne: bool = def_wrapper_diff != def_wrapper;
         assert!(helper_ne);
@@ -57,28 +62,30 @@ fn test_new_squeezing(input_operation: Operation, arguments: (u32, f64, f64), me
             "SqueezingWrapper { internal: Squeezing { mode: 2, squeezing: Float(0.1), phase: Float(0.0) } }"
         );
 
-        let comparison_copy = bool::extract_bound(
-            &operation
+        let comparison_copy = bool::extract(
+            operation
                 .call_method0("squeezing")
                 .unwrap()
                 .call_method1(
                     "__eq__",
                     (convert_cf_to_pyobject(py, CalculatorFloat::Float(0.1)),),
                 )
-                .unwrap(),
+                .unwrap()
+                .as_borrowed(),
         )
         .unwrap();
         assert!(comparison_copy);
 
-        let comparison_copy = bool::extract_bound(
-            &operation
+        let comparison_copy = bool::extract(
+            operation
                 .call_method0("phase")
                 .unwrap()
                 .call_method1(
                     "__eq__",
                     (convert_cf_to_pyobject(py, CalculatorFloat::Float(0.1)),),
                 )
-                .unwrap(),
+                .unwrap()
+                .as_borrowed(),
         )
         .unwrap();
         assert!(comparison_copy);
@@ -93,20 +100,25 @@ fn test_new_phasedisplacement(
     arguments: (u32, f64, f64),
     method: &str,
 ) {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
         let operation_type = py.get_type::<PhaseDisplacementWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
-        let operation_py = binding.downcast::<PhaseDisplacementWrapper>().unwrap();
+        let operation_py = binding.cast::<PhaseDisplacementWrapper>().unwrap();
 
-        let comparison =
-            bool::extract_bound(&operation.call_method1(method, (operation_py,)).unwrap()).unwrap();
+        let comparison = bool::extract(
+            operation
+                .call_method1(method, (operation_py,))
+                .unwrap()
+                .as_borrowed(),
+        )
+        .unwrap();
         assert!(comparison);
 
         let def_wrapper = operation_py.extract::<PhaseDisplacementWrapper>().unwrap();
         let binding = operation_type.call1((2, 0.1, 0.1)).unwrap();
-        let new_op_diff = binding.downcast::<PhaseDisplacementWrapper>().unwrap();
+        let new_op_diff = binding.cast::<PhaseDisplacementWrapper>().unwrap();
         let def_wrapper_diff = new_op_diff.extract::<PhaseDisplacementWrapper>().unwrap();
         let helper_ne: bool = def_wrapper_diff != def_wrapper;
         assert!(helper_ne);
@@ -118,27 +130,29 @@ fn test_new_phasedisplacement(
             "PhaseDisplacementWrapper { internal: PhaseDisplacement { mode: 2, displacement: Float(0.1), phase: Float(0.1) } }"
         );
 
-        let comparison_copy = bool::extract_bound(
-            &operation
+        let comparison_copy = bool::extract(
+            operation
                 .call_method0("displacement")
                 .unwrap()
                 .call_method1(
                     "__eq__",
                     (convert_cf_to_pyobject(py, CalculatorFloat::Float(0.1)),),
                 )
-                .unwrap(),
+                .unwrap()
+                .as_borrowed(),
         )
         .unwrap();
         assert!(comparison_copy);
-        let comparison_copy = bool::extract_bound(
-            &operation
+        let comparison_copy = bool::extract(
+            operation
                 .call_method0("phase")
                 .unwrap()
                 .call_method1(
                     "__eq__",
                     (convert_cf_to_pyobject(py, CalculatorFloat::Float(0.1)),),
                 )
-                .unwrap(),
+                .unwrap()
+                .as_borrowed(),
         )
         .unwrap();
         assert!(comparison_copy);
@@ -149,20 +163,25 @@ fn test_new_phasedisplacement(
 #[test_case(Operation::from(PhaseShift::new(1, 0.1.into())), (1, 0.1,), "__eq__"; "PhaseShift_eq")]
 #[test_case(Operation::from(PhaseShift::new(1, 0.1.into())), (0, 0.1,), "__ne__"; "PhaseShift_ne")]
 fn test_new_phaseshift(input_operation: Operation, arguments: (u32, f64), method: &str) {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
         let operation_type = py.get_type::<PhaseShiftWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
-        let operation_py = binding.downcast::<PhaseShiftWrapper>().unwrap();
+        let operation_py = binding.cast::<PhaseShiftWrapper>().unwrap();
 
-        let comparison =
-            bool::extract_bound(&operation.call_method1(method, (operation_py,)).unwrap()).unwrap();
+        let comparison = bool::extract(
+            operation
+                .call_method1(method, (operation_py,))
+                .unwrap()
+                .as_borrowed(),
+        )
+        .unwrap();
         assert!(comparison);
 
         let def_wrapper = operation_py.extract::<PhaseShiftWrapper>().unwrap();
         let binding = operation_type.call1((2, 0.1)).unwrap();
-        let new_op_diff = binding.downcast::<PhaseShiftWrapper>().unwrap();
+        let new_op_diff = binding.cast::<PhaseShiftWrapper>().unwrap();
         let def_wrapper_diff = new_op_diff.extract::<PhaseShiftWrapper>().unwrap();
         let helper_ne: bool = def_wrapper_diff != def_wrapper;
         assert!(helper_ne);
@@ -174,15 +193,16 @@ fn test_new_phaseshift(input_operation: Operation, arguments: (u32, f64), method
             "PhaseShiftWrapper { internal: PhaseShift { mode: 2, phase: Float(0.1) } }"
         );
 
-        let comparison_copy = bool::extract_bound(
-            &operation
+        let comparison_copy = bool::extract(
+            operation
                 .call_method0("phase")
                 .unwrap()
                 .call_method1(
                     "__eq__",
                     (convert_cf_to_pyobject(py, CalculatorFloat::Float(0.1)),),
                 )
-                .unwrap(),
+                .unwrap()
+                .as_borrowed(),
         )
         .unwrap();
         assert!(comparison_copy);
@@ -197,20 +217,25 @@ fn test_new_beamsplitter(
     arguments: (u32, u32, f64, f64),
     method: &str,
 ) {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
         let operation_type = py.get_type::<BeamSplitterWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
-        let operation_py = binding.downcast::<BeamSplitterWrapper>().unwrap();
+        let operation_py = binding.cast::<BeamSplitterWrapper>().unwrap();
 
-        let comparison =
-            bool::extract_bound(&operation.call_method1(method, (operation_py,)).unwrap()).unwrap();
+        let comparison = bool::extract(
+            operation
+                .call_method1(method, (operation_py,))
+                .unwrap()
+                .as_borrowed(),
+        )
+        .unwrap();
         assert!(comparison);
 
         let def_wrapper = operation_py.extract::<BeamSplitterWrapper>().unwrap();
         let binding = operation_type.call1((2, 1, 0.1, 0.1)).unwrap();
-        let new_op_diff = binding.downcast::<BeamSplitterWrapper>().unwrap();
+        let new_op_diff = binding.cast::<BeamSplitterWrapper>().unwrap();
         let def_wrapper_diff = new_op_diff.extract::<BeamSplitterWrapper>().unwrap();
         let helper_ne: bool = def_wrapper_diff != def_wrapper;
         assert!(helper_ne);
@@ -222,27 +247,29 @@ fn test_new_beamsplitter(
             "BeamSplitterWrapper { internal: BeamSplitter { mode_0: 2, mode_1: 1, theta: Float(0.1), phi: Float(0.1) } }"
         );
 
-        let comparison_copy: bool = bool::extract_bound(
-            &operation
+        let comparison_copy: bool = bool::extract(
+            operation
                 .call_method0("theta")
                 .unwrap()
                 .call_method1(
                     "__eq__",
                     (convert_cf_to_pyobject(py, CalculatorFloat::Float(0.1)),),
                 )
-                .unwrap(),
+                .unwrap()
+                .as_borrowed(),
         )
         .unwrap();
         assert!(comparison_copy);
-        let comparison_copy: bool = bool::extract_bound(
-            &operation
+        let comparison_copy: bool = bool::extract(
+            operation
                 .call_method0("phi")
                 .unwrap()
                 .call_method1(
                     "__eq__",
                     (convert_cf_to_pyobject(py, CalculatorFloat::Float(0.5)),),
                 )
-                .unwrap(),
+                .unwrap()
+                .as_borrowed(),
         )
         .unwrap();
         assert!(comparison_copy);
@@ -257,20 +284,25 @@ fn test_new_photondetection(
     arguments: (u32, String, u32),
     method: &str,
 ) {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
         let operation_type = py.get_type::<PhotonDetectionWrapper>();
         let binding = operation_type.call1(arguments).unwrap();
-        let operation_py = binding.downcast::<PhotonDetectionWrapper>().unwrap();
+        let operation_py = binding.cast::<PhotonDetectionWrapper>().unwrap();
 
-        let comparison =
-            bool::extract_bound(&operation.call_method1(method, (operation_py,)).unwrap()).unwrap();
+        let comparison = bool::extract(
+            operation
+                .call_method1(method, (operation_py,))
+                .unwrap()
+                .as_borrowed(),
+        )
+        .unwrap();
         assert!(comparison);
 
         let def_wrapper = operation_py.extract::<PhotonDetectionWrapper>().unwrap();
         let binding = operation_type.call1((2, "ro", 0)).unwrap();
-        let new_op_diff = binding.downcast::<PhotonDetectionWrapper>().unwrap();
+        let new_op_diff = binding.cast::<PhotonDetectionWrapper>().unwrap();
         let def_wrapper_diff = new_op_diff.extract::<PhotonDetectionWrapper>().unwrap();
         let helper_ne: bool = def_wrapper_diff != def_wrapper;
         assert!(helper_ne);
@@ -282,22 +314,24 @@ fn test_new_photondetection(
             "PhotonDetectionWrapper { internal: PhotonDetection { mode: 2, readout: \"ro\", readout_index: 0 } }"
         );
 
-        let comparison_copy = bool::extract_bound(
-            &operation
+        let comparison_copy = bool::extract(
+            operation
                 .call_method0("readout")
                 .unwrap()
                 .call_method1("__eq__", ("ro",))
-                .unwrap(),
+                .unwrap()
+                .as_borrowed(),
         )
         .unwrap();
         assert!(comparison_copy);
 
-        let comparison_copy = bool::extract_bound(
-            &operation
+        let comparison_copy = bool::extract(
+            operation
                 .call_method0("readout_index")
                 .unwrap()
                 .call_method1("__eq__", (0_u32,))
-                .unwrap(),
+                .unwrap()
+                .as_borrowed(),
         )
         .unwrap();
         assert!(comparison_copy);
@@ -315,8 +349,8 @@ fn test_new_photondetection(
 #[test_case(Operation::from(BeamSplitter::new(0, 1, CalculatorFloat::from(0.1), CalculatorFloat::from("phi"))); "BeamSplitter_phi")]
 #[test_case(Operation::from(BeamSplitter::new(0, 1, CalculatorFloat::from("theta"), CalculatorFloat::from("phi"))); "BeamSplitter_theta_phi")]
 fn test_pyo3_is_parametrized(input_operation: Operation) {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
         assert!(operation
             .call_method0("is_parametrized")
@@ -333,8 +367,8 @@ fn test_pyo3_is_parametrized(input_operation: Operation) {
 #[test_case(Operation::from(BeamSplitter::new(0, 1, CalculatorFloat::from(0.1), CalculatorFloat::from(0.1))); "BeamSplitter")]
 #[test_case(Operation::from(PhotonDetection::new(0, "ro".into(), 0)); "PhotonDetection")]
 fn test_pyo3_is_not_parametrized(input_operation: Operation) {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
         assert!(!operation
             .call_method0("is_parametrized")
@@ -350,8 +384,8 @@ fn test_pyo3_is_not_parametrized(input_operation: Operation) {
 #[test_case(0, Operation::from(PhaseShift::new(0, CalculatorFloat::from(0))); "PhaseShift")]
 #[test_case(0, Operation::from(PhotonDetection::new(0, "ro".into(), 0)); "PhotonDetection")]
 fn test_pyo3_mode(mode: usize, input_operation: Operation) {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
         let mode_op: usize = operation.call_method0("mode").unwrap().extract().unwrap();
         assert_eq!(mode_op, mode);
@@ -361,8 +395,8 @@ fn test_pyo3_mode(mode: usize, input_operation: Operation) {
 /// Test mode_0() and mode_1 function for TwoMode Operations
 #[test_case(0, 1, Operation::from(BeamSplitter::new(0, 1, CalculatorFloat::from(0.1), CalculatorFloat::from(0.1))); "BeamSplitter")]
 fn test_pyo3_mode0_mode_1(mode_0: usize, mode_1: usize, input_operation: Operation) {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
         let mode_op_0: usize = operation.call_method0("mode_0").unwrap().extract().unwrap();
         assert_eq!(mode_op_0, mode_0);
@@ -378,8 +412,8 @@ fn test_pyo3_mode0_mode_1(mode_0: usize, mode_1: usize, input_operation: Operati
 #[test_case("BeamSplitter", Operation::from(BeamSplitter::new(0, 1, CalculatorFloat::from(0), CalculatorFloat::from(0))); "BeamSplitter")]
 #[test_case("PhotonDetection", Operation::from(PhotonDetection::new(0, "ro".into(), 0)); "PhotonDetection")]
 fn test_pyo3_hqslang(name: &'static str, input_operation: Operation) {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
         let name_op: String = operation
             .call_method0("hqslang")
@@ -436,8 +470,8 @@ fn test_pyo3_hqslang(name: &'static str, input_operation: Operation) {
         ];
     "PhotonDetection")]
 fn test_pyo3_tags(input_operation: Operation, tags: Vec<&str>) {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
         let tags_op: Vec<String> = operation.call_method0("tags").unwrap().extract().unwrap();
         assert_eq!(tags_op.len(), tags.len());
@@ -454,8 +488,8 @@ fn test_pyo3_tags(input_operation: Operation, tags: Vec<&str>) {
 #[test_case(Operation::from(BeamSplitter::new(0, 1, CalculatorFloat::from(0.1), CalculatorFloat::from(1.3))), HashSet::<usize>::from([0, 1]); "BeamSplitter")]
 #[test_case(Operation::from(PhotonDetection::new(0, "ro".into(), 0)), HashSet::<usize>::from([0]); "PhotonDetection")]
 fn test_pyo3_involved_modes(input_operation: Operation, modes: HashSet<usize>) {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
         // test initial mode
         let involved_modes: HashSet<usize> = operation
@@ -474,8 +508,8 @@ fn test_pyo3_involved_modes(input_operation: Operation, modes: HashSet<usize>) {
 #[test_case(Operation::from(BeamSplitter::new(0, 1, CalculatorFloat::from(0.1), CalculatorFloat::from(1.3))); "BeamSplitter")]
 #[test_case(Operation::from(PhotonDetection::new(0, "ro".into(), 0)); "PhotonDetection")]
 fn test_pyo3_remapqubits(input_operation: Operation) {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
         // test initial qubit
         let involved_qubits: HashSet<usize> = operation
@@ -504,8 +538,8 @@ fn test_pyo3_remapqubits(input_operation: Operation) {
 #[test_case(Operation::from(PhaseShift::new(0, CalculatorFloat::from(1.3))); "PhaseShift")]
 #[test_case(Operation::from(PhotonDetection::new(0, "ro".into(), 0)); "PhotonDetection")]
 fn test_pyo3_remapmodes_single(input_operation: Operation) {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
         // test initial mode
         let mode: usize = operation.call_method0("mode").unwrap().extract().unwrap();
@@ -528,8 +562,8 @@ fn test_pyo3_remapmodes_single(input_operation: Operation) {
 /// Test remap_modes() function for TwoModeGate Operations
 #[test_case(Operation::from(BeamSplitter::new(0, 1, CalculatorFloat::from(0.1), CalculatorFloat::from(1.3))); "BeamSplitter")]
 fn test_pyo3_remapmodes_two(input_operation: Operation) {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
         // test initial mode
         let mode_0: usize = operation.call_method0("mode_0").unwrap().extract().unwrap();
@@ -562,8 +596,8 @@ fn test_pyo3_remapmodes_two(input_operation: Operation) {
 #[test_case(Operation::from(PhotonDetection::new(0, "ro".into(), 0)); "PhotonDetection")]
 fn test_pyo3_remapmodes_error(input_operation: Operation) {
     // preparation
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
         // remap modes
         let mut mode_mapping: HashMap<usize, usize> = HashMap::new();
@@ -580,24 +614,26 @@ fn test_pyo3_remapmodes_error(input_operation: Operation) {
 #[test_case(Operation::from(BeamSplitter::new(0, 1, CalculatorFloat::from(0.1), CalculatorFloat::from(1.3))); "BeamSplitter")]
 #[test_case(Operation::from(PhotonDetection::new(0, "ro".into(), 0)); "PhotonDetection")]
 fn test_pyo3_copy_deepcopy(input_operation: Operation) {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
         let copy_op = operation.call_method0("__copy__").unwrap();
         let deepcopy_op = operation.call_method1("__deepcopy__", ("",)).unwrap();
         let copy_deepcopy_param = operation;
 
-        let comparison_copy = bool::extract_bound(
-            &copy_op
+        let comparison_copy = bool::extract(
+            copy_op
                 .call_method1("__eq__", (copy_deepcopy_param.clone(),))
-                .unwrap(),
+                .unwrap()
+                .as_borrowed(),
         )
         .unwrap();
         assert!(comparison_copy);
-        let comparison_deepcopy = bool::extract_bound(
-            &deepcopy_op
+        let comparison_deepcopy = bool::extract(
+            deepcopy_op
                 .call_method1("__eq__", (copy_deepcopy_param,))
-                .unwrap(),
+                .unwrap()
+                .as_borrowed(),
         )
         .unwrap();
         assert!(comparison_deepcopy);
@@ -626,8 +662,8 @@ fn test_pyo3_copy_deepcopy(input_operation: Operation) {
     Operation::from(PhotonDetection::new(0, "ro".into(), 0));
     "PhotonDetection")]
 fn test_pyo3_format_repr(format_repr: &str, input_operation: Operation) {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
         let to_format = operation.call_method1("__format__", ("",)).unwrap();
         let format_op: String = to_format.extract().unwrap();
@@ -673,8 +709,8 @@ fn test_pyo3_format_repr(format_repr: &str, input_operation: Operation) {
         )
     ); "BeamSplitter_theta_phi")]
 fn test_pyo3_substitute_parameters(input_operation: Operation) {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(input_operation.clone(), py).unwrap();
         let mut substitution_dict_py: HashMap<String, f64> = HashMap::new();
         substitution_dict_py.insert("theta".to_owned(), 1.0);
@@ -691,10 +727,11 @@ fn test_pyo3_substitute_parameters(input_operation: Operation) {
             .unwrap();
         let test_operation = convert_operation_to_pyobject(substitute_param, py).unwrap();
 
-        let comparison = bool::extract_bound(
-            &substitute_op
+        let comparison = bool::extract(
+            substitute_op
                 .call_method1("__eq__", (test_operation,))
-                .unwrap(),
+                .unwrap()
+                .as_borrowed(),
         )
         .unwrap();
         assert!(comparison);
@@ -704,8 +741,8 @@ fn test_pyo3_substitute_parameters(input_operation: Operation) {
 /// Test substitute_parameters() function for one parameter
 #[test_case(Operation::from(PhaseShift::new(1, CalculatorFloat::from("theta"))); "PhaseShift")]
 fn test_pyo3_substitute_params_single(input_operation: Operation) {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(input_operation.clone(), py).unwrap();
         let mut substitution_dict_py: HashMap<String, f64> = HashMap::new();
         substitution_dict_py.insert("theta".to_owned(), 1.0);
@@ -720,10 +757,11 @@ fn test_pyo3_substitute_params_single(input_operation: Operation) {
             .unwrap();
         let test_operation = convert_operation_to_pyobject(substitute_param, py).unwrap();
 
-        let comparison = bool::extract_bound(
-            &substitute_op
+        let comparison = bool::extract(
+            substitute_op
                 .call_method1("__eq__", (test_operation,))
-                .unwrap(),
+                .unwrap()
+                .as_borrowed(),
         )
         .unwrap();
         assert!(comparison);
@@ -736,8 +774,8 @@ fn test_pyo3_substitute_params_single(input_operation: Operation) {
 #[test_case(Operation::from(PhaseShift::new(1, CalculatorFloat::from("test"))); "PhaseShift")]
 #[test_case(Operation::from(BeamSplitter::new(0, 1, CalculatorFloat::from("test"), CalculatorFloat::from(0.1))); "BeamSplitter")]
 fn test_pyo3_substitute_params_error(input_operation: Operation) {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
         let substitution_dict: HashMap<String, f64> = HashMap::new();
         let result = operation.call_method1("substitute_parameters", (substitution_dict,));
@@ -752,8 +790,8 @@ fn test_pyo3_substitute_params_error(input_operation: Operation) {
 #[test_case(Operation::from(BeamSplitter::new(0, 1, CalculatorFloat::from(0.1), CalculatorFloat::from(0.1))); "BeamSplitter")]
 #[test_case(Operation::from(PhotonDetection::new(0, "ro".into(), 0)); "PhotonDetection")]
 fn test_ineffective_substitute_parameters(input_operation: Operation) {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(input_operation.clone(), py).unwrap();
         let mut substitution_dict_py: HashMap<String, f64> = HashMap::new();
         substitution_dict_py.insert("theta".to_owned(), 0.0);
@@ -761,9 +799,13 @@ fn test_ineffective_substitute_parameters(input_operation: Operation) {
             .call_method1("substitute_parameters", (substitution_dict_py,))
             .unwrap();
 
-        let comparison =
-            bool::extract_bound(&substitute_op.call_method1("__eq__", (operation,)).unwrap())
-                .unwrap();
+        let comparison = bool::extract(
+            substitute_op
+                .call_method1("__eq__", (operation,))
+                .unwrap()
+                .as_borrowed(),
+        )
+        .unwrap();
         assert!(comparison);
     })
 }
@@ -785,23 +827,25 @@ fn test_ineffective_substitute_parameters(input_operation: Operation) {
     Operation::from(PhotonDetection::new(0, "ro".into(), 0)),
     Operation::from(PhotonDetection::new(1, "ro".into(), 0)); "PhotonDetection")]
 fn test_pyo3_richcmp(definition_1: Operation, definition_2: Operation) {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation_one = convert_operation_to_pyobject(definition_1, py).unwrap();
         let operation_two = convert_operation_to_pyobject(definition_2, py).unwrap();
 
-        let comparison = bool::extract_bound(
-            &operation_one
+        let comparison = bool::extract(
+            operation_one
                 .call_method1("__eq__", (operation_two.clone(),))
-                .unwrap(),
+                .unwrap()
+                .as_borrowed(),
         )
         .unwrap();
         assert!(!comparison);
 
-        let comparison = bool::extract_bound(
-            &operation_one
+        let comparison = bool::extract(
+            operation_one
                 .call_method1("__ne__", (operation_two.clone(),))
-                .unwrap(),
+                .unwrap()
+                .as_borrowed(),
         )
         .unwrap();
         assert!(comparison);
@@ -840,8 +884,8 @@ fn test_pyo3_json_schema(operation: Operation) {
         }
         _ => unreachable!(),
     };
-    pyo3::prepare_freethreaded_python();
-    pyo3::Python::with_gil(|py| {
+    Python::initialize();
+    pyo3::Python::attach(|py| {
         let minimum_version: String = match operation {
             Operation::PhaseDisplacement(_) => "1.8.0".to_string(),
             _ => "1.6.0".to_string(),
@@ -850,15 +894,24 @@ fn test_pyo3_json_schema(operation: Operation) {
         let operation = pyobject;
 
         let schema: String =
-            String::extract_bound(&operation.call_method0("json_schema").unwrap()).unwrap();
+            String::extract(operation.call_method0("json_schema").unwrap().as_borrowed()).unwrap();
 
         assert_eq!(schema, rust_schema);
 
-        let current_version_string =
-            String::extract_bound(&operation.call_method0("current_version").unwrap()).unwrap();
-        let minimum_supported_version_string =
-            String::extract_bound(&operation.call_method0("min_supported_version").unwrap())
-                .unwrap();
+        let current_version_string = String::extract(
+            operation
+                .call_method0("current_version")
+                .unwrap()
+                .as_borrowed(),
+        )
+        .unwrap();
+        let minimum_supported_version_string = String::extract(
+            operation
+                .call_method0("min_supported_version")
+                .unwrap()
+                .as_borrowed(),
+        )
+        .unwrap();
 
         assert_eq!(current_version_string, ROQOQO_VERSION);
         assert_eq!(minimum_supported_version_string, minimum_version);

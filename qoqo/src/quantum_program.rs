@@ -38,7 +38,7 @@ use roqoqo::ROQOQO_VERSION;
 /// in classical computing that can be called with a set of parameters and returns a result.
 /// It is the intended way to interface between normal program code and roqoqo based quantum programs.
 ///
-#[pyclass(name = "QuantumProgram", module = "qoqo")]
+#[pyclass(from_py_object, name = "QuantumProgram", module = "qoqo")]
 #[derive(Clone, Debug, PartialEq, serde::Serialize, serde::Deserialize)]
 pub struct QuantumProgramWrapper {
     /// Internal storage of [roqoqo::QuantumProgram]
@@ -340,7 +340,7 @@ impl QuantumProgramWrapper {
         let serialized =
             bincode::serde::encode_to_vec(&self.internal, bincode::config::legacy())
                 .map_err(|_| PyValueError::new_err("Cannot serialize QuantumProgram to bytes"))?;
-        let b: Py<PyByteArray> = Python::with_gil(|py| -> Py<PyByteArray> {
+        let b: Py<PyByteArray> = Python::attach(|py| -> Py<PyByteArray> {
             PyByteArray::new(py, &serialized[..]).into()
         });
         Ok(b)

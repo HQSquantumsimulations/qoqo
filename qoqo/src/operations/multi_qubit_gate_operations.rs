@@ -90,7 +90,7 @@ pub struct MultiQubitZZ {
 ///     free_parameters (List[CalculatorFloat]) : List of float values that replace the free parameters in the internal definition of the called gate
 ///                                             (get replaced in order of apppearance in gate defintion).
 #[cfg(feature = "unstable_operation_definition")]
-#[pyclass(name = "CallDefinedGate", module = "qoqo")]
+#[pyclass(from_py_object, name = "CallDefinedGate", module = "qoqo")]
 #[derive(Debug, Clone, PartialEq)]
 pub struct CallDefinedGateWrapper {
     /// Internal storage of [roqoqo::CallDefinedGate]
@@ -147,7 +147,7 @@ impl CallDefinedGateWrapper {
         free_parameters: Vec<Py<PyAny>>,
     ) -> PyResult<Self> {
         let free_parameters_cf: Vec<CalculatorFloat> =
-            Python::with_gil(|py| -> PyResult<Vec<CalculatorFloat>> {
+            Python::attach(|py| -> PyResult<Vec<CalculatorFloat>> {
                 let mut a = vec![];
                 for param in free_parameters {
                     a.push(convert_into_calculator_float(param.bind(py)).map_err(|_| {

@@ -94,7 +94,7 @@ pub(crate) fn new_circuit(py: Python) -> Bound<CircuitWrapper> {
     circuit_type
         .call0()
         .unwrap()
-        .downcast::<CircuitWrapper>()
+        .cast::<CircuitWrapper>()
         .unwrap()
         .to_owned()
 }
@@ -103,8 +103,8 @@ pub(crate) fn new_circuit(py: Python) -> Bound<CircuitWrapper> {
 #[test]
 fn test_pyo3_inputs_setnumbermeasurements() {
     let input_pragma = Operation::from(PragmaSetNumberOfMeasurements::new(1, String::from("ro")));
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(input_pragma, py).unwrap();
 
         let nbr_meas_op: &usize = &operation
@@ -132,8 +132,8 @@ fn test_pyo3_inputs_loop() {
         CalculatorFloat::from("number_t"),
         Circuit::new(),
     ));
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(input_pragma, py).unwrap();
 
         let nbr_meas_op: &CalculatorFloatWrapper = &operation
@@ -162,8 +162,8 @@ fn test_pyo3_inputs_loop() {
 #[test]
 fn test_pyo3_inputs_setstatevector() {
     let input_pragma = Operation::from(PragmaSetStateVector::new(statevector()));
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(input_pragma, py).unwrap();
 
         let to_op: Bound<PyAny> = operation.call_method0("statevector").unwrap();
@@ -178,8 +178,8 @@ fn test_pyo3_inputs_setstatevector() {
 #[test]
 fn test_pyo3_inputs_setdensitymatrix() {
     let input_pragma = Operation::from(PragmaSetDensityMatrix::new(densitymatrix()));
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(input_pragma, py).unwrap();
         let to_operators_py = operation.call_method0("density_matrix").unwrap();
         let to_operators_op = to_operators_py
@@ -195,8 +195,8 @@ fn test_pyo3_inputs_setdensitymatrix() {
 #[test]
 fn test_pyo3_inputs_repeatgate() {
     let input_pragma = Operation::from(PragmaRepeatGate::new(3));
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(input_pragma, py).unwrap();
 
         let repeat_op: &usize = &operation
@@ -217,8 +217,8 @@ fn test_pyo3_inputs_overrotation() {
         0.03,
         0.001,
     ));
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(input_pragma, py).unwrap();
 
         let string_op: &String = &operation
@@ -248,8 +248,8 @@ fn test_pyo3_inputs_overrotation() {
 #[test]
 fn test_pyo3_inputs_boostnoise() {
     let input_pragma = Operation::from(PragmaBoostNoise::new(CalculatorFloat::from(0.003)));
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(input_pragma, py).unwrap();
 
         let boost_op: &f64 = &operation
@@ -271,8 +271,8 @@ fn test_pyo3_inputs_stop() {
         vec![0, 1],
         CalculatorFloat::from(0.0000001),
     ));
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(input_pragma, py).unwrap();
 
         let qubits_op: &Vec<usize> = &operation.call_method0("qubits").unwrap().extract().unwrap();
@@ -295,8 +295,8 @@ fn test_pyo3_inputs_stop() {
 #[test]
 fn test_pyo3_inputs_globalphase() {
     let input_pragma = Operation::from(PragmaGlobalPhase::new(CalculatorFloat::from(0.05)));
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(input_pragma, py).unwrap();
 
         let boost_op: &f64 = &operation.call_method0("phase").unwrap().extract().unwrap();
@@ -311,8 +311,8 @@ fn test_pyo3_inputs_sleep() {
         vec![0, 1],
         CalculatorFloat::from(0.0000001),
     ));
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(input_pragma, py).unwrap();
 
         let qubits_op: &Vec<usize> = &operation.call_method0("qubits").unwrap().extract().unwrap();
@@ -335,8 +335,8 @@ fn test_pyo3_inputs_sleep() {
 #[test]
 fn test_pyo3_inputs_activereset() {
     let input_pragma = Operation::from(PragmaActiveReset::new(0));
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(input_pragma, py).unwrap();
 
         let qubit_op: &usize = &operation.call_method0("qubit").unwrap().extract().unwrap();
@@ -350,8 +350,8 @@ fn test_pyo3_inputs_activereset() {
 fn test_pyo3_inputs_startdecompblock() {
     let input_pragma =
         Operation::from(PragmaStartDecompositionBlock::new(vec![0, 1], reordering()));
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(input_pragma, py).unwrap();
 
         let qubits_op: &Vec<usize> = &operation.call_method0("qubits").unwrap().extract().unwrap();
@@ -371,8 +371,8 @@ fn test_pyo3_inputs_startdecompblock() {
 #[test]
 fn test_pyo3_inputs_stopdecompblock() {
     let input_pragma = Operation::from(PragmaStopDecompositionBlock::new(vec![0, 1]));
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(input_pragma, py).unwrap();
 
         let qubits_op: &Vec<usize> = &operation.call_method0("qubits").unwrap().extract().unwrap();
@@ -386,8 +386,8 @@ fn test_pyo3_inputs_stopdecompblock() {
 #[test_case(Operation::from(PragmaDepolarising::new(0, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02))); "PragmaDepolarising")]
 #[test_case(Operation::from(PragmaDephasing::new(0, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02))); "PragmaDephasing")]
 fn test_pyo3_inputs_noise(input_pragma: Operation) {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(input_pragma, py).unwrap();
 
         let qubit_op: &usize = &operation.call_method0("qubit").unwrap().extract().unwrap();
@@ -418,8 +418,8 @@ fn test_pyo3_inputs_randomnoise() {
         CalculatorFloat::from(0.02),
         CalculatorFloat::from(0.01),
     ));
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(input_pragma, py).unwrap();
 
         let qubit_op: &usize = &operation.call_method0("qubit").unwrap().extract().unwrap();
@@ -466,8 +466,8 @@ fn test_pyo3_inputs_generalnoise() {
         CalculatorFloat::from(0.005),
         operators(),
     ));
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(input_pragma, py).unwrap();
 
         let qubit_op: &usize = &operation.call_method0("qubit").unwrap().extract().unwrap();
@@ -499,8 +499,8 @@ fn test_pyo3_inputs_conditional() {
         1,
         create_circuit(),
     ));
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(input_pragma, py).unwrap();
 
         let condition_register_op: &String = &operation
@@ -523,8 +523,13 @@ fn test_pyo3_inputs_conditional() {
         let circuit = new_circuit(py);
         let paulix = convert_operation_to_pyobject(Operation::from(PauliX::new(0)), py).unwrap();
         circuit.call_method1("add", (paulix,)).unwrap();
-        let comparison_circuit =
-            bool::extract_bound(&circuit_op.call_method1("__eq__", (circuit,)).unwrap()).unwrap();
+        let comparison_circuit = bool::extract(
+            circuit_op
+                .call_method1("__eq__", (circuit,))
+                .unwrap()
+                .as_borrowed(),
+        )
+        .unwrap();
         assert!(comparison_circuit);
     })
 }
@@ -533,8 +538,8 @@ fn test_pyo3_inputs_conditional() {
 #[test]
 fn test_pyo3_inputs_controlled_circuit() {
     let input_pragma = Operation::from(PragmaControlledCircuit::new(1, create_circuit()));
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(input_pragma, py).unwrap();
 
         let condition_index_op: &usize = &operation
@@ -549,8 +554,13 @@ fn test_pyo3_inputs_controlled_circuit() {
         let circuit = new_circuit(py);
         let paulix = convert_operation_to_pyobject(Operation::from(PauliX::new(0)), py).unwrap();
         circuit.call_method1("add", (paulix,)).unwrap();
-        let comparison_circuit =
-            bool::extract_bound(&circuit_op.call_method1("__eq__", (circuit,)).unwrap()).unwrap();
+        let comparison_circuit = bool::extract(
+            circuit_op
+                .call_method1("__eq__", (circuit,))
+                .unwrap()
+                .as_borrowed(),
+        )
+        .unwrap();
         assert!(comparison_circuit);
     })
 }
@@ -561,19 +571,20 @@ fn test_pyo3_inputs_annotated_op() {
     let input_op = Operation::from(PauliX::new(0));
     let input_pragma =
         Operation::from(PragmaAnnotatedOp::new(input_op.clone(), "test".to_string()));
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(input_pragma, py).unwrap();
 
         let op = operation.call_method0("operation").unwrap();
         let op_ref = op;
-        let comparison_op = bool::extract_bound(
-            &op_ref
+        let comparison_op = bool::extract(
+            op_ref
                 .call_method1(
                     "__eq__",
                     (convert_operation_to_pyobject(input_op.clone(), py).unwrap(),),
                 )
-                .unwrap(),
+                .unwrap()
+                .as_borrowed(),
         )
         .unwrap();
         assert!(comparison_op);
@@ -594,8 +605,8 @@ fn test_pyo3_inputs_annotated_op() {
 #[test_case(Operation::from(PragmaLoop::new(CalculatorFloat::from("number_t"), Circuit::new())); "PragmaLoop")]
 #[test_case(Operation::from(PragmaAnnotatedOp::new(Operation::from(PragmaGlobalPhase::new(CalculatorFloat::from(0.005))), "test".to_string())); "PragmaAnnotatedOp")]
 fn test_pyo3_involved_qubits_none(input_definition: Operation) {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(input_definition, py).unwrap();
         let to_involved = operation.call_method0("involved_qubits").unwrap();
         let involved_op: HashSet<usize> = to_involved.extract().unwrap();
@@ -610,8 +621,8 @@ fn test_pyo3_involved_qubits_none(input_definition: Operation) {
 #[test_case(Operation::from(PragmaRepeatGate::new(3)); "PragmaRepeatGate")]
 #[test_case(Operation::from(PragmaAnnotatedOp::new(Operation::from(PragmaSetStateVector::new(statevector())), "test".to_string())); "PragmaAnnotatedOp")]
 fn test_pyo3_involved_qubits_all(input_definition: Operation) {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(input_definition, py).unwrap();
         let to_involved = operation.call_method0("involved_qubits").unwrap();
         let involved_op: HashSet<String> = to_involved.extract().unwrap();
@@ -636,8 +647,8 @@ fn test_pyo3_involved_qubits_all(input_definition: Operation) {
 #[test_case(Operation::from(PragmaControlledCircuit::new(0, create_circuit())); "PragmaControlledCircuit")]
 #[test_case(Operation::from(PragmaAnnotatedOp::new(Operation::from(PauliX::new(0)), "test".to_string())); "PragmaAnnotatedOp")]
 fn test_pyo3_involved_qubits_qubit(input_definition: Operation) {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(input_definition, py).unwrap();
         let to_involved = operation.call_method0("involved_qubits").unwrap();
         let involved_op: HashSet<usize> = to_involved.extract().unwrap();
@@ -649,8 +660,8 @@ fn test_pyo3_involved_qubits_qubit(input_definition: Operation) {
 
 #[test_case(Operation::from(PragmaOverrotation::new("RotateX".to_string(), vec![0], 0.03, 0.001)); "PragmaOverrotation")]
 fn test_pyo3_involved_qubits_qubit_overrotation(input_definition: Operation) {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(input_definition, py).unwrap();
         let to_involved = operation.call_method0("involved_qubits").unwrap();
         let involved_op: HashSet<usize> = to_involved.extract().unwrap();
@@ -702,8 +713,8 @@ fn test_pyo3_involved_qubits_qubit_overrotation(input_definition: Operation) {
 #[test_case(Operation::from(PragmaAnnotatedOp::new(Operation::from(PauliX::new(0)), "test".to_string())),
             "PragmaAnnotatedOp { operation: PauliX(PauliX { qubit: 0 }), annotation: \"test\" }"; "PragmaAnnotatedOp")]
 fn test_pyo3_format_repr(input_measurement: Operation, format_repr: &str) {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(input_measurement, py).unwrap();
         let to_format = operation.call_method1("__format__", ("",)).unwrap();
         let format_op: String = to_format.extract().unwrap();
@@ -717,8 +728,8 @@ fn test_pyo3_format_repr(input_measurement: Operation, format_repr: &str) {
 #[test_case(Operation::from(PragmaOverrotation::new("RotateX".to_string(), vec![0], 0.03, 0.001)),
             "PragmaOverrotation { gate_hqslang: \"RotateX\", qubits: [0], amplitude: 0.03, variance: 0.001 }"; "PragmaOverrotation")]
 fn test_pyo3_format_repr_overrotation(input_measurement: Operation, format_repr: &str) {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(input_measurement, py).unwrap();
         let to_format = operation.call_method1("__format__", ("",)).unwrap();
         let format_op: String = to_format.extract().unwrap();
@@ -751,24 +762,26 @@ fn test_pyo3_format_repr_overrotation(input_measurement: Operation, format_repr:
 #[test_case(Operation::from(PragmaLoop::new(CalculatorFloat::from("number_t"), Circuit::default())); "PragmaLoop")]
 #[test_case(Operation::from(PragmaAnnotatedOp::new(Operation::from(PauliX::new(0)), "test".to_string())); "PragmaAnnotatedOp")]
 fn test_pyo3_copy_deepcopy(input_measurement: Operation) {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(input_measurement, py).unwrap();
         let copy_op = operation.call_method0("__copy__").unwrap();
         let deepcopy_op = operation.call_method1("__deepcopy__", ("",)).unwrap();
         let copy_deepcopy_param = operation;
 
-        let comparison_copy = bool::extract_bound(
-            &copy_op
+        let comparison_copy = bool::extract(
+            copy_op
                 .call_method1("__eq__", (copy_deepcopy_param.clone(),))
-                .unwrap(),
+                .unwrap()
+                .as_borrowed(),
         )
         .unwrap();
         assert!(comparison_copy);
-        let comparison_deepcopy = bool::extract_bound(
-            &deepcopy_op
+        let comparison_deepcopy = bool::extract(
+            deepcopy_op
                 .call_method1("__eq__", (copy_deepcopy_param,))
-                .unwrap(),
+                .unwrap()
+                .as_borrowed(),
         )
         .unwrap();
         assert!(comparison_deepcopy);
@@ -777,8 +790,8 @@ fn test_pyo3_copy_deepcopy(input_measurement: Operation) {
 
 #[test]
 fn test_pyo3_copy_deepcopy_overrotation() {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(
             Operation::from(PragmaOverrotation::new(
                 "RotateX".to_string(),
@@ -797,10 +810,11 @@ fn test_pyo3_copy_deepcopy_overrotation() {
             extracted_copy.internal,
             PragmaOverrotation::new("RotateX".to_string(), vec![0], 0.03, 0.001)
         );
-        let comparison_copy = bool::extract_bound(
-            &copy_op
+        let comparison_copy = bool::extract(
+            copy_op
                 .call_method1("__eq__", (operation.clone(),))
-                .unwrap(),
+                .unwrap()
+                .as_borrowed(),
         )
         .unwrap();
         assert!(comparison_copy);
@@ -810,9 +824,13 @@ fn test_pyo3_copy_deepcopy_overrotation() {
             extracted_copy.internal,
             PragmaOverrotation::new("RotateX".to_string(), vec![0], 0.03, 0.001)
         );
-        let comparison_deepcopy =
-            bool::extract_bound(&deepcopy_op.call_method1("__eq__", (operation,)).unwrap())
-                .unwrap();
+        let comparison_deepcopy = bool::extract(
+            deepcopy_op
+                .call_method1("__eq__", (operation,))
+                .unwrap()
+                .as_borrowed(),
+        )
+        .unwrap();
         assert!(comparison_deepcopy);
     })
 }
@@ -827,8 +845,8 @@ fn test_pyo3_copy_deepcopy_overrotation() {
 #[test_case(Operation::from(PragmaLoop::new(CalculatorFloat::from("number_t"), Circuit::default())), "PragmaLoop"; "PragmaLoop")]
 #[test_case(Operation::from(PragmaAnnotatedOp::new(Operation::from(PauliX::new(0)), "test".to_string())), "PragmaAnnotatedOp"; "PragmaAnnotatedOp")]
 fn test_pyo3_tags_simple(input_measurement: Operation, tag_name: &str) {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(input_measurement, py).unwrap();
         let to_tag = operation.call_method0("tags").unwrap();
         let tags_op: &Vec<String> = &to_tag.extract().unwrap();
@@ -843,8 +861,8 @@ fn test_pyo3_tags_simple(input_measurement: Operation, tag_name: &str) {
 #[test_case(Operation::from(PragmaStartDecompositionBlock::new(vec![0, 1], reordering())), "PragmaStartDecompositionBlock"; "PragmaStartDecompositionBlock")]
 #[test_case(Operation::from(PragmaStopDecompositionBlock::new(vec![0, 1])), "PragmaStopDecompositionBlock"; "PragmaStopDecompositionBlock")]
 fn test_pyo3_tags_multi(input_measurement: Operation, tag_name: &str) {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(input_measurement, py).unwrap();
         let to_tag = operation.call_method0("tags").unwrap();
         let tags_op: &Vec<String> = &to_tag.extract().unwrap();
@@ -860,8 +878,8 @@ fn test_pyo3_tags_multi(input_measurement: Operation, tag_name: &str) {
 
 #[test_case(Operation::from(PragmaOverrotation::new("RotateX".to_string(), vec![0], 0.03, 0.001)), "PragmaOverrotation"; "PragmaOverrotation")]
 fn test_pyo3_tags_multi_overrotation(input_measurement: Operation, tag_name: &str) {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(input_measurement, py).unwrap();
         let to_tag = operation.call_method0("tags").unwrap();
         let tags_op: &Vec<String> = &to_tag.extract().unwrap();
@@ -878,8 +896,8 @@ fn test_pyo3_tags_multi_overrotation(input_measurement: Operation, tag_name: &st
 /// Test tags function for Pragmas that are also SingleQubitGates
 #[test_case(Operation::from(PragmaActiveReset::new(0)), "PragmaActiveReset"; "PragmaActiveReset")]
 fn test_pyo3_tags_single(input_measurement: Operation, tag_name: &str) {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(input_measurement, py).unwrap();
         let to_tag = operation.call_method0("tags").unwrap();
         let tags_op: &Vec<String> = &to_tag.extract().unwrap();
@@ -897,8 +915,8 @@ fn test_pyo3_tags_single(input_measurement: Operation, tag_name: &str) {
 #[test_case(Operation::from(PragmaConditional::new(String::from("ro"), 1, create_circuit())), "PragmaConditional"; "PragmaConditional")]
 #[test_case(Operation::from(PragmaControlledCircuit::new( 1, create_circuit())), "PragmaControlledCircuit"; "PragmaControlledCircuit")]
 fn test_pyo3_tags_conditional(input_measurement: Operation, tag_name: &str) {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(input_measurement, py).unwrap();
         let to_tag = operation.call_method0("tags").unwrap();
         let tags_op: &Vec<String> = &to_tag.extract().unwrap();
@@ -910,8 +928,8 @@ fn test_pyo3_tags_conditional(input_measurement: Operation, tag_name: &str) {
 /// Test tags function for PragmaGeneralNoise
 #[test_case(Operation::from(PragmaGeneralNoise::new(0, CalculatorFloat::from(0.005), operators())), "PragmaGeneralNoise"; "PragmaGeneralNoise")]
 fn test_pyo3_tags_general_noise(input_measurement: Operation, tag_name: &str) {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(input_measurement, py).unwrap();
         let to_tag = operation.call_method0("tags").unwrap();
         let tags_op: &Vec<String> = &to_tag.extract().unwrap();
@@ -932,8 +950,8 @@ fn test_pyo3_tags_general_noise(input_measurement: Operation, tag_name: &str) {
 #[test_case(Operation::from(PragmaDephasing::new(0, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02))), "PragmaDephasing"; "PragmaDephasing")]
 #[test_case(Operation::from(PragmaRandomNoise::new(0, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02), CalculatorFloat::from(0.01))), "PragmaRandomNoise"; "PragmaRandomNoise")]
 fn test_pyo3_tags_noise(input_measurement: Operation, tag_name: &str) {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(input_measurement, py).unwrap();
         let to_tag = operation.call_method0("tags").unwrap();
         let tags_op: &Vec<String> = &to_tag.extract().unwrap();
@@ -971,8 +989,8 @@ fn test_pyo3_tags_noise(input_measurement: Operation, tag_name: &str) {
 #[test_case(Operation::from(PragmaLoop::new(CalculatorFloat::from("number_t"), Circuit::default())), "PragmaLoop"; "PragmaLoop")]
 #[test_case(Operation::from(PragmaAnnotatedOp::new(Operation::from(PauliX::new(0)), "test".to_string())), "PragmaAnnotatedOp"; "PragmaAnnotatedOp")]
 fn test_pyo3_hqslang(input_measurement: Operation, hqslang_param: &str) {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(input_measurement, py).unwrap();
         let hqslang_op: String = operation
             .call_method0("hqslang")
@@ -985,8 +1003,8 @@ fn test_pyo3_hqslang(input_measurement: Operation, hqslang_param: &str) {
 
 #[test_case(Operation::from(PragmaOverrotation::new("RotateX".to_string(), vec![0], 0.03, 0.001)), "PragmaOverrotation"; "PragmaOverrotation")]
 fn test_pyo3_hqslang_overrotation(input_measurement: Operation, hqslang_param: &str) {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(input_measurement, py).unwrap();
         let hqslang_op: String = operation
             .call_method0("hqslang")
@@ -1019,8 +1037,8 @@ fn test_pyo3_hqslang_overrotation(input_measurement: Operation, hqslang_param: &
 #[test_case(Operation::from(PragmaLoop::new(CalculatorFloat::from(1.0), Circuit::default())); "PragmaLoop")]
 #[test_case(Operation::from(PragmaAnnotatedOp::new(Operation::from(PauliX::new(0)), "test".to_string())); "PragmaAnnotatedOp")]
 fn test_pyo3_is_parametrized_false(input_pragma: Operation) {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(input_pragma, py).unwrap();
         assert!(!operation
             .call_method0("is_parametrized")
@@ -1033,8 +1051,8 @@ fn test_pyo3_is_parametrized_false(input_pragma: Operation) {
 /// Test is_parametrized function (true)
 #[test_case(Operation::from(PragmaAnnotatedOp::new(Operation::from(RotateX::new(0, CalculatorFloat::Str("theta".to_string()))), "test".to_string())); "PragmaAnnotatedOp")]
 fn test_pyo3_is_parametrized_true(input_pragma: Operation) {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(input_pragma, py).unwrap();
         assert!(operation
             .call_method0("is_parametrized")
@@ -1046,8 +1064,8 @@ fn test_pyo3_is_parametrized_true(input_pragma: Operation) {
 
 #[test_case(Operation::from(PragmaOverrotation::new("RotateX".to_string(), vec![0], 0.03, 0.001)); "PragmaOverrotation")]
 fn test_pyo3_is_parametrized_overrotation(input_measurement: Operation) {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(input_measurement, py).unwrap();
         assert!(!operation
             .call_method0("is_parametrized")
@@ -1119,8 +1137,8 @@ fn test_pyo3_is_parametrized_overrotation(input_measurement: Operation) {
             Operation::from(PragmaAnnotatedOp::new(Operation::from(RotateX::new(0, CalculatorFloat::from(1.0))), "test".to_string()));
             "PragmaAnnotatedOp")]
 fn test_pyo3_substitute_parameters(first_op: Operation, second_op: Operation) {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(first_op, py).unwrap();
         let mut substitution_dict: HashMap<String, f64> = HashMap::new();
         substitution_dict.insert("test".to_owned(), 1.0);
@@ -1129,10 +1147,11 @@ fn test_pyo3_substitute_parameters(first_op: Operation, second_op: Operation) {
             .unwrap();
         let substitute_param = convert_operation_to_pyobject(second_op, py).unwrap();
 
-        let comparison = bool::extract_bound(
-            &substitute_op
+        let comparison = bool::extract(
+            substitute_op
                 .call_method1("__eq__", (substitute_param,))
-                .unwrap(),
+                .unwrap()
+                .as_borrowed(),
         )
         .unwrap();
         assert!(comparison);
@@ -1141,8 +1160,8 @@ fn test_pyo3_substitute_parameters(first_op: Operation, second_op: Operation) {
 
 #[test]
 fn test_pyo3_substitute_parameters_overrotation() {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(
             Operation::from(PragmaOverrotation::new(
                 "RotateX".to_string(),
@@ -1202,8 +1221,8 @@ fn test_pyo3_substitute_parameters_overrotation() {
     "PragmaAnnotatedOp"
 )]
 fn test_pyo3_substitute_params_error(input_operation: Operation) {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
         let substitution_dict: HashMap<String, f64> = HashMap::new();
         let result = operation.call_method1("substitute_parameters", (substitution_dict,));
@@ -1223,8 +1242,8 @@ fn test_pyo3_substitute_params_error(input_operation: Operation) {
     "PragmaAnnotatedOp"
 )]
 fn test_pyo3_substituteparameters_error(input_operation: Operation) {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
         let mut substitution_dict: HashMap<&str, &str> = HashMap::new();
         substitution_dict.insert("ro", "test");
@@ -1295,8 +1314,8 @@ fn test_pyo3_substituteparameters_error(input_operation: Operation) {
             Operation::from(PragmaAnnotatedOp::new(Operation::from(RotateX::new(2, CalculatorFloat::from("test"))), "test".to_string()));
             "PragmaAnnotatedOp")]
 fn test_pyo3_remap_qubits(first_op: Operation, second_op: Operation) {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(first_op, py).unwrap();
 
         let remapped_op = operation
@@ -1315,8 +1334,8 @@ fn test_pyo3_remap_qubits(first_op: Operation, second_op: Operation) {
 
 #[test]
 fn test_pyo3_remap_qubits_overrotation() {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(
             Operation::from(PragmaOverrotation::new(
                 "RotateX".to_string(),
@@ -1367,8 +1386,8 @@ fn test_pyo3_noise_superoperator_damping() {
     let pragma_op =
         PragmaDamping::new(0, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02));
     let noise_pragma = Operation::from(pragma_op.clone());
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(noise_pragma, py).unwrap();
 
         let superop_prob: f64 = f64::try_from(pragma_op.probability()).unwrap();
@@ -1398,11 +1417,11 @@ fn test_pyo3_noise_superoperator_depolarising() {
         CalculatorFloat::from(0.005),
         CalculatorFloat::from(0.02),
     ));
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(noise_pragma, py).unwrap();
 
-        let superop_pre_exp: f64 = -1.0 * 0.005 * 0.02;
+        let superop_pre_exp: f64 = -0.005 * 0.02;
         let superop_prob: f64 = 0.75 * (1.0 - superop_pre_exp.exp());
         let superop_proba1: f64 = 1.0 - (2.0 / 3.0) * superop_prob;
         let superop_proba2: f64 = 1.0 - (4.0 / 3.0) * superop_prob;
@@ -1433,8 +1452,8 @@ fn test_pyo3_noise_superoperator_dephasing() {
         CalculatorFloat::from(0.005),
         CalculatorFloat::from(0.02),
     ));
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(noise_pragma, py).unwrap();
 
         let superop_pre_exp: f64 = -2.0 * 0.005 * 0.02;
@@ -1467,8 +1486,8 @@ fn test_pyo3_noise_superoperator_randomnoise() {
         CalculatorFloat::from(0.02),
         CalculatorFloat::from(0.01),
     ));
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(noise_pragma, py).unwrap();
 
         let superop_pre_exp: f64 = -2.0 * 0.005 * 0.01;
@@ -1497,8 +1516,8 @@ fn test_pyo3_noise_superoperator_randomnoise() {
 #[test_case(Operation::from(PragmaDephasing::new(0, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02))), 0.00009999000066662767; "PragmaDephasing")]
 #[test_case(Operation::from(PragmaRandomNoise::new(0, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02), CalculatorFloat::from(0.01))), 0.000125; "PragmaRandomNoise")]
 fn test_pyo3_noise_proba(noise_pragma: Operation, proba: f64) {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(noise_pragma, py).unwrap();
 
         let gate_time_op: &f64 = &operation
@@ -1527,8 +1546,8 @@ fn test_pyo3_noise_proba(noise_pragma: Operation, proba: f64) {
             Operation::from(PragmaRandomNoise::new(0, CalculatorFloat::from(0.005 * 1.5), CalculatorFloat::from(0.02), CalculatorFloat::from(0.01)));
             "PragmaRandomNoise")]
 fn test_pyo3_noise_powercf(first_op: Operation, second_op: Operation) {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(first_op, py).unwrap();
 
         let power = convert_cf_to_pyobject(py, CalculatorFloat::from(1.5));
@@ -1606,23 +1625,25 @@ fn test_pyo3_noise_powercf(first_op: Operation, second_op: Operation) {
             Operation::from(PragmaAnnotatedOp::new(Operation::from(RotateX::new(2, CalculatorFloat::from("test"))), "test".to_string()));
             "PragmaAnnotatedOp")]
 fn test_pyo3_richcmp(definition_1: Operation, definition_2: Operation) {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation_one = convert_operation_to_pyobject(definition_1, py).unwrap();
         let operation_two = convert_operation_to_pyobject(definition_2, py).unwrap();
 
-        let comparison = bool::extract_bound(
-            &operation_one
+        let comparison = bool::extract(
+            operation_one
                 .call_method1("__eq__", (operation_two.clone(),))
-                .unwrap(),
+                .unwrap()
+                .as_borrowed(),
         )
         .unwrap();
         assert!(!comparison);
 
-        let comparison = bool::extract_bound(
-            &operation_one
+        let comparison = bool::extract(
+            operation_one
                 .call_method1("__ne__", (operation_two.clone(),))
-                .unwrap(),
+                .unwrap()
+                .as_borrowed(),
         )
         .unwrap();
         assert!(comparison);
@@ -1637,8 +1658,8 @@ fn test_pyo3_richcmp(definition_1: Operation, definition_2: Operation) {
 
 #[test]
 fn test_pyo3_richcmp_overrotation() {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation_one = convert_operation_to_pyobject(
             Operation::from(PragmaOverrotation::new(
                 "RotateX".to_string(),
@@ -1666,10 +1687,11 @@ fn test_pyo3_richcmp_overrotation() {
             PragmaOverrotation::new("RotateX".to_string(), vec![0], 0.03, 0.001)
         );
 
-        let comparison = bool::extract_bound(
-            &operation_one
+        let comparison = bool::extract(
+            operation_one
                 .call_method1("__ne__", (operation_two.clone(),))
-                .unwrap(),
+                .unwrap()
+                .as_borrowed(),
         )
         .unwrap();
         assert!(comparison);
@@ -1685,19 +1707,24 @@ fn test_pyo3_richcmp_overrotation() {
 /// Test PragmaSetNumberOfMeasurements new() function
 #[test]
 fn test_pyo3_new_set_number_of_measurements() {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = py.get_type::<PragmaSetNumberOfMeasurementsWrapper>();
         let binding = operation.call1((1, "ro".to_string())).unwrap();
         let new_op = binding
-            .downcast::<PragmaSetNumberOfMeasurementsWrapper>()
+            .cast::<PragmaSetNumberOfMeasurementsWrapper>()
             .unwrap();
 
         let input_definition =
             Operation::from(PragmaSetNumberOfMeasurements::new(1, String::from("ro")));
         let copy_param = convert_operation_to_pyobject(input_definition, py).unwrap();
-        let comparison_copy =
-            bool::extract_bound(&new_op.call_method1("__eq__", (copy_param,)).unwrap()).unwrap();
+        let comparison_copy = bool::extract(
+            new_op
+                .call_method1("__eq__", (copy_param,))
+                .unwrap()
+                .as_borrowed(),
+        )
+        .unwrap();
         assert!(comparison_copy);
 
         let pragma_wrapper = new_op
@@ -1705,7 +1732,7 @@ fn test_pyo3_new_set_number_of_measurements() {
             .unwrap();
         let binding = operation.call1((2, "ro".to_string())).unwrap();
         let new_op_diff = binding
-            .downcast::<PragmaSetNumberOfMeasurementsWrapper>()
+            .cast::<PragmaSetNumberOfMeasurementsWrapper>()
             .unwrap();
         let pragma_wrapper_diff = new_op_diff
             .extract::<PragmaSetNumberOfMeasurementsWrapper>()
@@ -1725,8 +1752,8 @@ fn test_pyo3_new_set_number_of_measurements() {
 /// Test PragmaSetStateVector new() function
 #[test]
 fn test_pyo3_new_set_statevector() {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = py.get_type::<PragmaSetStateVectorWrapper>();
 
         let pylist = PyList::new(py, vec![1.0, 0.0]).unwrap();
@@ -1740,12 +1767,13 @@ fn test_pyo3_new_set_statevector() {
             .call_method0("statevector")
             .unwrap();
         let binding = operation.call1((statevector_op_0,)).unwrap();
-        let new_op = binding.downcast::<PragmaSetStateVectorWrapper>().unwrap();
+        let new_op = binding.cast::<PragmaSetStateVectorWrapper>().unwrap();
 
-        let comparison_copy = bool::extract_bound(
-            &new_op
+        let comparison_copy = bool::extract(
+            new_op
                 .call_method1("__eq__", (convert_to_get_statevec_0,))
-                .unwrap(),
+                .unwrap()
+                .as_borrowed(),
         )
         .unwrap();
         assert!(comparison_copy);
@@ -1759,7 +1787,7 @@ fn test_pyo3_new_set_statevector() {
 
         let pragma_wrapper = new_op.extract::<PragmaSetStateVectorWrapper>().unwrap();
         let binding = operation.call1((statevector_op_1,)).unwrap();
-        let new_op_diff = binding.downcast::<PragmaSetStateVectorWrapper>().unwrap();
+        let new_op_diff = binding.cast::<PragmaSetStateVectorWrapper>().unwrap();
         let pragma_wrapper_diff = new_op_diff
             .extract::<PragmaSetStateVectorWrapper>()
             .unwrap();
@@ -1778,8 +1806,8 @@ fn test_pyo3_new_set_statevector() {
 /// Test PragmaSetDensityMatrix new() function
 #[test]
 fn test_pyo3_new_set_densitymatrix() {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = py.get_type::<PragmaSetDensityMatrixWrapper>();
 
         let pylist = PyList::new(py, vec![vec![1.0, 0.0], vec![0.0, 0.0]]).unwrap();
@@ -1792,12 +1820,13 @@ fn test_pyo3_new_set_densitymatrix() {
             .call_method0("density_matrix")
             .unwrap();
         let binding = operation.call1((densmat_op_0,)).unwrap();
-        let new_op = binding.downcast::<PragmaSetDensityMatrixWrapper>().unwrap();
+        let new_op = binding.cast::<PragmaSetDensityMatrixWrapper>().unwrap();
 
-        let comparison_copy = bool::extract_bound(
-            &new_op
+        let comparison_copy = bool::extract(
+            new_op
                 .call_method1("__eq__", (convert_to_get_densmat_0,))
-                .unwrap(),
+                .unwrap()
+                .as_borrowed(),
         )
         .unwrap();
         assert!(comparison_copy);
@@ -1810,7 +1839,7 @@ fn test_pyo3_new_set_densitymatrix() {
 
         let pragma_wrapper = new_op.extract::<PragmaSetDensityMatrixWrapper>().unwrap();
         let binding = operation.call1((densmat_op_1,)).unwrap();
-        let new_op_diff = binding.downcast::<PragmaSetDensityMatrixWrapper>().unwrap();
+        let new_op_diff = binding.cast::<PragmaSetDensityMatrixWrapper>().unwrap();
         let pragma_wrapper_diff = new_op_diff
             .extract::<PragmaSetDensityMatrixWrapper>()
             .unwrap();
@@ -1829,21 +1858,26 @@ fn test_pyo3_new_set_densitymatrix() {
 /// Test PragmaRepeatGate new() function
 #[test]
 fn test_pyo3_new_repeated_gate() {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = py.get_type::<PragmaRepeatGateWrapper>();
         let binding = operation.call1((2,)).unwrap();
-        let new_op = binding.downcast::<PragmaRepeatGateWrapper>().unwrap();
+        let new_op = binding.cast::<PragmaRepeatGateWrapper>().unwrap();
 
         let input_definition = Operation::from(PragmaRepeatGate::new(2));
         let copy_param = convert_operation_to_pyobject(input_definition, py).unwrap();
-        let comparison_copy =
-            bool::extract_bound(&new_op.call_method1("__eq__", (copy_param,)).unwrap()).unwrap();
+        let comparison_copy = bool::extract(
+            new_op
+                .call_method1("__eq__", (copy_param,))
+                .unwrap()
+                .as_borrowed(),
+        )
+        .unwrap();
         assert!(comparison_copy);
 
         let pragma_wrapper = new_op.extract::<PragmaRepeatGateWrapper>().unwrap();
         let binding = operation.call1((3,)).unwrap();
-        let new_op_diff = binding.downcast::<PragmaRepeatGateWrapper>().unwrap();
+        let new_op_diff = binding.cast::<PragmaRepeatGateWrapper>().unwrap();
         let pragma_wrapper_diff = new_op_diff.extract::<PragmaRepeatGateWrapper>().unwrap();
         let helper_ne: bool = pragma_wrapper_diff != pragma_wrapper;
         assert!(helper_ne);
@@ -1860,12 +1894,12 @@ fn test_pyo3_new_repeated_gate() {
 /// Test PragmaOverrotation new() function
 #[test]
 fn test_pyo3_new_overrotation() {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         // Basic initialisation, no errors
         let operation = py.get_type::<PragmaOverrotationWrapper>();
         let binding = operation.call1(("RotateX", vec![0], 0.03, 0.001)).unwrap();
-        let new_op = binding.downcast::<PragmaOverrotationWrapper>().unwrap();
+        let new_op = binding.cast::<PragmaOverrotationWrapper>().unwrap();
         let input_definition = Operation::from(PragmaOverrotation::new(
             "RotateX".to_string(),
             vec![0],
@@ -1874,19 +1908,24 @@ fn test_pyo3_new_overrotation() {
         ));
         let copy_param = convert_operation_to_pyobject(input_definition, py).unwrap();
         let extracted: PragmaOverrotationWrapper =
-            PragmaOverrotationWrapper::extract_bound(new_op).unwrap();
+            PragmaOverrotationWrapper::extract(new_op.as_any().as_borrowed()).unwrap();
         assert_eq!(
             extracted.internal,
             PragmaOverrotation::new("RotateX".to_string(), vec![0], 0.03, 0.001)
         );
-        let comparison =
-            bool::extract_bound(&new_op.call_method1("__eq__", (copy_param,)).unwrap()).unwrap();
+        let comparison = bool::extract(
+            new_op
+                .call_method1("__eq__", (copy_param,))
+                .unwrap()
+                .as_borrowed(),
+        )
+        .unwrap();
         assert!(comparison);
 
         // Testing PartialEq, Clone and Debug
         let pragma_wrapper = new_op.extract::<PragmaOverrotationWrapper>().unwrap();
         let binding = operation.call1(("RotateX", vec![1], 0.03, 0.001)).unwrap();
-        let new_op_diff = binding.downcast::<PragmaOverrotationWrapper>().unwrap();
+        let new_op_diff = binding.cast::<PragmaOverrotationWrapper>().unwrap();
         let pragma_wrapper_diff = new_op_diff.extract::<PragmaOverrotationWrapper>().unwrap();
         let helper_ne: bool = pragma_wrapper_diff != pragma_wrapper;
         assert!(helper_ne);
@@ -1903,16 +1942,21 @@ fn test_pyo3_new_overrotation() {
 /// Test PragmaBoostNoise new() function
 #[test]
 fn test_pyo3_new_boost_noise() {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         // Basic initialisation, no errors
         let operation = py.get_type::<PragmaBoostNoiseWrapper>();
         let binding = operation.call1((0.003,)).unwrap();
-        let new_op = binding.downcast::<PragmaBoostNoiseWrapper>().unwrap();
+        let new_op = binding.cast::<PragmaBoostNoiseWrapper>().unwrap();
         let input_definition = Operation::from(PragmaBoostNoise::new(CalculatorFloat::from(0.003)));
         let copy_param = convert_operation_to_pyobject(input_definition, py).unwrap();
-        let comparison_copy =
-            bool::extract_bound(&new_op.call_method1("__eq__", (copy_param,)).unwrap()).unwrap();
+        let comparison_copy = bool::extract(
+            new_op
+                .call_method1("__eq__", (copy_param,))
+                .unwrap()
+                .as_borrowed(),
+        )
+        .unwrap();
         assert!(comparison_copy);
 
         // Error initialisation
@@ -1922,7 +1966,7 @@ fn test_pyo3_new_boost_noise() {
         // Testing PartialEq, Clone and Debug
         let pragma_wrapper = new_op.extract::<PragmaBoostNoiseWrapper>().unwrap();
         let binding = operation.call1((0.001,)).unwrap();
-        let new_op_diff = binding.downcast::<PragmaBoostNoiseWrapper>().unwrap();
+        let new_op_diff = binding.cast::<PragmaBoostNoiseWrapper>().unwrap();
         let pragma_wrapper_diff = new_op_diff.extract::<PragmaBoostNoiseWrapper>().unwrap();
         let helper_ne: bool = pragma_wrapper_diff != pragma_wrapper;
         assert!(helper_ne);
@@ -1939,21 +1983,24 @@ fn test_pyo3_new_boost_noise() {
 /// Test PragmaStopParallelBlock new() function
 #[test]
 fn test_pyo3_new_stop() {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         // Basic initialisation, no errors
         let operation = py.get_type::<PragmaStopParallelBlockWrapper>();
         let binding = operation.call1((vec![0], 0.0000001)).unwrap();
-        let new_op = binding
-            .downcast::<PragmaStopParallelBlockWrapper>()
-            .unwrap();
+        let new_op = binding.cast::<PragmaStopParallelBlockWrapper>().unwrap();
         let input_definition = Operation::from(PragmaStopParallelBlock::new(
             vec![0],
             CalculatorFloat::from(0.0000001),
         ));
         let copy_param = convert_operation_to_pyobject(input_definition, py).unwrap();
-        let comparison_copy =
-            bool::extract_bound(&new_op.call_method1("__eq__", (copy_param,)).unwrap()).unwrap();
+        let comparison_copy = bool::extract(
+            new_op
+                .call_method1("__eq__", (copy_param,))
+                .unwrap()
+                .as_borrowed(),
+        )
+        .unwrap();
         assert!(comparison_copy);
 
         // Error initialisation
@@ -1963,9 +2010,7 @@ fn test_pyo3_new_stop() {
         // Testing PartialEq, Clone and Debug
         let pragma_wrapper = new_op.extract::<PragmaStopParallelBlockWrapper>().unwrap();
         let binding = operation.call1((vec![1], 0.0000001)).unwrap();
-        let new_op_diff = binding
-            .downcast::<PragmaStopParallelBlockWrapper>()
-            .unwrap();
+        let new_op_diff = binding.cast::<PragmaStopParallelBlockWrapper>().unwrap();
         let pragma_wrapper_diff = new_op_diff
             .extract::<PragmaStopParallelBlockWrapper>()
             .unwrap();
@@ -1989,17 +2034,22 @@ fn test_pyo3_new_stop() {
 /// Test PragmaGlobalPhase new() function
 #[test]
 fn test_pyo3_new_global_phase() {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         // Basic initialisation, no errors
         let operation = py.get_type::<PragmaGlobalPhaseWrapper>();
         let binding = operation.call1((0.003,)).unwrap();
-        let new_op = binding.downcast::<PragmaGlobalPhaseWrapper>().unwrap();
+        let new_op = binding.cast::<PragmaGlobalPhaseWrapper>().unwrap();
         let input_definition =
             Operation::from(PragmaGlobalPhase::new(CalculatorFloat::from(0.003)));
         let copy_param = convert_operation_to_pyobject(input_definition, py).unwrap();
-        let comparison_copy =
-            bool::extract_bound(&new_op.call_method1("__eq__", (copy_param,)).unwrap()).unwrap();
+        let comparison_copy = bool::extract(
+            new_op
+                .call_method1("__eq__", (copy_param,))
+                .unwrap()
+                .as_borrowed(),
+        )
+        .unwrap();
         assert!(comparison_copy);
 
         // Error initialisation
@@ -2009,7 +2059,7 @@ fn test_pyo3_new_global_phase() {
         // Testing PartialEq, Clone and Debug
         let pragma_wrapper = new_op.extract::<PragmaGlobalPhaseWrapper>().unwrap();
         let binding = operation.call1((0.001,)).unwrap();
-        let new_op_diff = binding.downcast::<PragmaGlobalPhaseWrapper>().unwrap();
+        let new_op_diff = binding.cast::<PragmaGlobalPhaseWrapper>().unwrap();
         let pragma_wrapper_diff = new_op_diff.extract::<PragmaGlobalPhaseWrapper>().unwrap();
         let helper_ne: bool = pragma_wrapper_diff != pragma_wrapper;
         assert!(helper_ne);
@@ -2026,18 +2076,23 @@ fn test_pyo3_new_global_phase() {
 /// Test PragmaSleep new() function
 #[test]
 fn test_pyo3_new_sleep() {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         // Basic initialisation, no errors
         let operation = py.get_type::<PragmaSleepWrapper>();
         let binding = operation.call1((vec![0], 0.0000001)).unwrap();
-        let new_op = binding.downcast::<PragmaSleepWrapper>().unwrap();
+        let new_op = binding.cast::<PragmaSleepWrapper>().unwrap();
 
         let input_definition =
             Operation::from(PragmaSleep::new(vec![0], CalculatorFloat::from(0.0000001)));
         let copy_param = convert_operation_to_pyobject(input_definition, py).unwrap();
-        let comparison_copy =
-            bool::extract_bound(&new_op.call_method1("__eq__", (copy_param,)).unwrap()).unwrap();
+        let comparison_copy = bool::extract(
+            new_op
+                .call_method1("__eq__", (copy_param,))
+                .unwrap()
+                .as_borrowed(),
+        )
+        .unwrap();
         assert!(comparison_copy);
 
         // Error initialisation
@@ -2047,7 +2102,7 @@ fn test_pyo3_new_sleep() {
         // Testing PartialEq, Clone and Debug
         let pragma_wrapper = new_op.extract::<PragmaSleepWrapper>().unwrap();
         let binding = operation.call1((vec![1], 0.0000001)).unwrap();
-        let new_op_diff = binding.downcast::<PragmaSleepWrapper>().unwrap();
+        let new_op_diff = binding.cast::<PragmaSleepWrapper>().unwrap();
         let pragma_wrapper_diff = new_op_diff.extract::<PragmaSleepWrapper>().unwrap();
         let helper_ne: bool = pragma_wrapper_diff != pragma_wrapper;
         assert!(helper_ne);
@@ -2069,21 +2124,26 @@ fn test_pyo3_new_sleep() {
 /// Test PragmaActiveReset new() function
 #[test]
 fn test_pyo3_new_active_reset() {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = py.get_type::<PragmaActiveResetWrapper>();
         let binding = operation.call1((0,)).unwrap();
-        let new_op = binding.downcast::<PragmaActiveResetWrapper>().unwrap();
+        let new_op = binding.cast::<PragmaActiveResetWrapper>().unwrap();
 
         let input_definition = Operation::from(PragmaActiveReset::new(0));
         let copy_param = convert_operation_to_pyobject(input_definition, py).unwrap();
-        let comparison_copy =
-            bool::extract_bound(&new_op.call_method1("__eq__", (copy_param,)).unwrap()).unwrap();
+        let comparison_copy = bool::extract(
+            new_op
+                .call_method1("__eq__", (copy_param,))
+                .unwrap()
+                .as_borrowed(),
+        )
+        .unwrap();
         assert!(comparison_copy);
 
         let pragma_wrapper = new_op.extract::<PragmaActiveResetWrapper>().unwrap();
         let binding = operation.call1((1,)).unwrap();
-        let new_op_diff = binding.downcast::<PragmaActiveResetWrapper>().unwrap();
+        let new_op_diff = binding.cast::<PragmaActiveResetWrapper>().unwrap();
         let pragma_wrapper_diff = new_op_diff.extract::<PragmaActiveResetWrapper>().unwrap();
         let helper_ne: bool = pragma_wrapper_diff != pragma_wrapper;
         assert!(helper_ne);
@@ -2100,19 +2160,24 @@ fn test_pyo3_new_active_reset() {
 /// Test PragmaStartDecompositionBlock new() function
 #[test]
 fn test_pyo3_new_start_decomposition_block() {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = py.get_type::<PragmaStartDecompositionBlockWrapper>();
         let binding = operation.call1((vec![0], reordering())).unwrap();
         let new_op = binding
-            .downcast::<PragmaStartDecompositionBlockWrapper>()
+            .cast::<PragmaStartDecompositionBlockWrapper>()
             .unwrap();
 
         let input_definition =
             Operation::from(PragmaStartDecompositionBlock::new(vec![0], reordering()));
         let copy_param = convert_operation_to_pyobject(input_definition, py).unwrap();
-        let comparison_copy =
-            bool::extract_bound(&new_op.call_method1("__eq__", (copy_param,)).unwrap()).unwrap();
+        let comparison_copy = bool::extract(
+            new_op
+                .call_method1("__eq__", (copy_param,))
+                .unwrap()
+                .as_borrowed(),
+        )
+        .unwrap();
         assert!(comparison_copy);
 
         let pragma_wrapper = new_op
@@ -2120,7 +2185,7 @@ fn test_pyo3_new_start_decomposition_block() {
             .unwrap();
         let binding = operation.call1((vec![1], reordering())).unwrap();
         let new_op_diff = binding
-            .downcast::<PragmaStartDecompositionBlockWrapper>()
+            .cast::<PragmaStartDecompositionBlockWrapper>()
             .unwrap();
         let pragma_wrapper_diff = new_op_diff
             .extract::<PragmaStartDecompositionBlockWrapper>()
@@ -2140,18 +2205,23 @@ fn test_pyo3_new_start_decomposition_block() {
 /// Test PragmaStopDecompositionBlock new() function
 #[test]
 fn test_pyo3_new_stop_decomposition_block() {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = py.get_type::<PragmaStopDecompositionBlockWrapper>();
         let binding = operation.call1((vec![0],)).unwrap();
         let new_op = binding
-            .downcast::<PragmaStopDecompositionBlockWrapper>()
+            .cast::<PragmaStopDecompositionBlockWrapper>()
             .unwrap();
 
         let input_definition = Operation::from(PragmaStopDecompositionBlock::new(vec![0]));
         let copy_param = convert_operation_to_pyobject(input_definition, py).unwrap();
-        let comparison_copy =
-            bool::extract_bound(&new_op.call_method1("__eq__", (copy_param,)).unwrap()).unwrap();
+        let comparison_copy = bool::extract(
+            new_op
+                .call_method1("__eq__", (copy_param,))
+                .unwrap()
+                .as_borrowed(),
+        )
+        .unwrap();
         assert!(comparison_copy);
 
         let pragma_wrapper = new_op
@@ -2159,7 +2229,7 @@ fn test_pyo3_new_stop_decomposition_block() {
             .unwrap();
         let binding = operation.call1((vec![1],)).unwrap();
         let new_op_diff = binding
-            .downcast::<PragmaStopDecompositionBlockWrapper>()
+            .cast::<PragmaStopDecompositionBlockWrapper>()
             .unwrap();
         let pragma_wrapper_diff = new_op_diff
             .extract::<PragmaStopDecompositionBlockWrapper>()
@@ -2179,20 +2249,25 @@ fn test_pyo3_new_stop_decomposition_block() {
 /// Test PragmaDamping new() function
 #[test]
 fn test_pyo3_new_damping() {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         // Basic initialisation, no errors
         let operation = py.get_type::<PragmaDampingWrapper>();
         let binding = operation.call1((0, 0.005, 0.02)).unwrap();
-        let new_op = binding.downcast::<PragmaDampingWrapper>().unwrap();
+        let new_op = binding.cast::<PragmaDampingWrapper>().unwrap();
         let input_definition = Operation::from(PragmaDamping::new(
             0,
             CalculatorFloat::from(0.005),
             CalculatorFloat::from(0.02),
         ));
         let copy_param = convert_operation_to_pyobject(input_definition, py).unwrap();
-        let comparison_copy =
-            bool::extract_bound(&new_op.call_method1("__eq__", (copy_param,)).unwrap()).unwrap();
+        let comparison_copy = bool::extract(
+            new_op
+                .call_method1("__eq__", (copy_param,))
+                .unwrap()
+                .as_borrowed(),
+        )
+        .unwrap();
         assert!(comparison_copy);
 
         // Error initialisation
@@ -2204,7 +2279,7 @@ fn test_pyo3_new_damping() {
         // Testing PartialEq, Clone and Debug
         let pragma_wrapper = new_op.extract::<PragmaDampingWrapper>().unwrap();
         let binding = operation.call1((1, 0.005, 0.02)).unwrap();
-        let new_op_diff = binding.downcast::<PragmaDampingWrapper>().unwrap();
+        let new_op_diff = binding.cast::<PragmaDampingWrapper>().unwrap();
         let pragma_wrapper_diff = new_op_diff.extract::<PragmaDampingWrapper>().unwrap();
         let helper_ne: bool = pragma_wrapper_diff != pragma_wrapper;
         assert!(helper_ne);
@@ -2221,20 +2296,25 @@ fn test_pyo3_new_damping() {
 /// Test PragmaDepolarising new() function
 #[test]
 fn test_pyo3_new_depolarising() {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         // Basic initialisation, no errors
         let operation = py.get_type::<PragmaDepolarisingWrapper>();
         let binding = operation.call1((0, 0.005, 0.02)).unwrap();
-        let new_op = binding.downcast::<PragmaDepolarisingWrapper>().unwrap();
+        let new_op = binding.cast::<PragmaDepolarisingWrapper>().unwrap();
         let input_definition = Operation::from(PragmaDepolarising::new(
             0,
             CalculatorFloat::from(0.005),
             CalculatorFloat::from(0.02),
         ));
         let copy_param = convert_operation_to_pyobject(input_definition, py).unwrap();
-        let comparison_copy =
-            bool::extract_bound(&new_op.call_method1("__eq__", (copy_param,)).unwrap()).unwrap();
+        let comparison_copy = bool::extract(
+            new_op
+                .call_method1("__eq__", (copy_param,))
+                .unwrap()
+                .as_borrowed(),
+        )
+        .unwrap();
         assert!(comparison_copy);
 
         // Error initialisation
@@ -2246,7 +2326,7 @@ fn test_pyo3_new_depolarising() {
         // Testing PartialEq, Clone and Debug
         let pragma_wrapper = new_op.extract::<PragmaDepolarisingWrapper>().unwrap();
         let binding = operation.call1((1, 0.005, 0.02)).unwrap();
-        let new_op_diff = binding.downcast::<PragmaDepolarisingWrapper>().unwrap();
+        let new_op_diff = binding.cast::<PragmaDepolarisingWrapper>().unwrap();
         let pragma_wrapper_diff = new_op_diff.extract::<PragmaDepolarisingWrapper>().unwrap();
         let helper_ne: bool = pragma_wrapper_diff != pragma_wrapper;
         assert!(helper_ne);
@@ -2263,20 +2343,25 @@ fn test_pyo3_new_depolarising() {
 /// Test PragmaDephasing new() function
 #[test]
 fn test_pyo3_new_dephasing() {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         // Basic initialisation, no errors
         let operation = py.get_type::<PragmaDephasingWrapper>();
         let binding = operation.call1((0, 0.005, 0.02)).unwrap();
-        let new_op = binding.downcast::<PragmaDephasingWrapper>().unwrap();
+        let new_op = binding.cast::<PragmaDephasingWrapper>().unwrap();
         let input_definition = Operation::from(PragmaDephasing::new(
             0,
             CalculatorFloat::from(0.005),
             CalculatorFloat::from(0.02),
         ));
         let copy_param = convert_operation_to_pyobject(input_definition, py).unwrap();
-        let comparison_copy =
-            bool::extract_bound(&new_op.call_method1("__eq__", (copy_param,)).unwrap()).unwrap();
+        let comparison_copy = bool::extract(
+            new_op
+                .call_method1("__eq__", (copy_param,))
+                .unwrap()
+                .as_borrowed(),
+        )
+        .unwrap();
         assert!(comparison_copy);
 
         // Error initialisation
@@ -2288,7 +2373,7 @@ fn test_pyo3_new_dephasing() {
         // Testing PartialEq, Clone and Debug
         let pragma_wrapper = new_op.extract::<PragmaDephasingWrapper>().unwrap();
         let binding = operation.call1((1, 0.005, 0.02)).unwrap();
-        let new_op_diff = binding.downcast::<PragmaDephasingWrapper>().unwrap();
+        let new_op_diff = binding.cast::<PragmaDephasingWrapper>().unwrap();
         let pragma_wrapper_diff = new_op_diff.extract::<PragmaDephasingWrapper>().unwrap();
         let helper_ne: bool = pragma_wrapper_diff != pragma_wrapper;
         assert!(helper_ne);
@@ -2305,12 +2390,12 @@ fn test_pyo3_new_dephasing() {
 /// Test PragmaRandomNoise new() function
 #[test]
 fn test_pyo3_new_randomnoise() {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         // Basic initialisation, no errors
         let operation = py.get_type::<PragmaRandomNoiseWrapper>();
         let binding = operation.call1((0, 0.005, 0.02, 0.01)).unwrap();
-        let new_op = binding.downcast::<PragmaRandomNoiseWrapper>().unwrap();
+        let new_op = binding.cast::<PragmaRandomNoiseWrapper>().unwrap();
         let input_definition = Operation::from(PragmaRandomNoise::new(
             0,
             CalculatorFloat::from(0.005),
@@ -2318,8 +2403,13 @@ fn test_pyo3_new_randomnoise() {
             CalculatorFloat::from(0.01),
         ));
         let copy_param = convert_operation_to_pyobject(input_definition, py).unwrap();
-        let comparison_copy =
-            bool::extract_bound(&new_op.call_method1("__eq__", (copy_param,)).unwrap()).unwrap();
+        let comparison_copy = bool::extract(
+            new_op
+                .call_method1("__eq__", (copy_param,))
+                .unwrap()
+                .as_borrowed(),
+        )
+        .unwrap();
         assert!(comparison_copy);
 
         // Error initialisation
@@ -2333,7 +2423,7 @@ fn test_pyo3_new_randomnoise() {
         // Testing PartialEq, Clone and Debug
         let pragma_wrapper = new_op.extract::<PragmaRandomNoiseWrapper>().unwrap();
         let binding = operation.call1((1, 0.005, 0.02, 0.01)).unwrap();
-        let new_op_diff = binding.downcast::<PragmaRandomNoiseWrapper>().unwrap();
+        let new_op_diff = binding.cast::<PragmaRandomNoiseWrapper>().unwrap();
         let pragma_wrapper_diff = new_op_diff.extract::<PragmaRandomNoiseWrapper>().unwrap();
         let helper_ne: bool = pragma_wrapper_diff != pragma_wrapper;
         assert!(helper_ne);
@@ -2350,8 +2440,8 @@ fn test_pyo3_new_randomnoise() {
 /// Test PragmaGeneralNoise new() function
 #[test]
 fn test_pyo3_new_general_noise() {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         // Basic initialisation, no errors
         let operation = py.get_type::<PragmaGeneralNoiseWrapper>();
 
@@ -2376,12 +2466,13 @@ fn test_pyo3_new_general_noise() {
         let operators_op = convert_to_get_operators.call_method0("rates").unwrap();
 
         let binding = operation.call1((0, 0.005, operators_op.clone())).unwrap();
-        let new_op = binding.downcast::<PragmaGeneralNoiseWrapper>().unwrap();
+        let new_op = binding.cast::<PragmaGeneralNoiseWrapper>().unwrap();
 
-        let comparison_copy = bool::extract_bound(
-            &new_op
+        let comparison_copy = bool::extract(
+            new_op
                 .call_method1("__eq__", (convert_to_get_operators,))
-                .unwrap(),
+                .unwrap()
+                .as_borrowed(),
         )
         .unwrap();
         assert!(comparison_copy);
@@ -2396,7 +2487,7 @@ fn test_pyo3_new_general_noise() {
         // Testing PartialEq, Clone and Debug
         let pragma_wrapper = new_op.extract::<PragmaGeneralNoiseWrapper>().unwrap();
         let binding = operation.call1((1, 0.005, operators_op)).unwrap();
-        let new_op_diff = binding.downcast::<PragmaGeneralNoiseWrapper>().unwrap();
+        let new_op_diff = binding.cast::<PragmaGeneralNoiseWrapper>().unwrap();
         let pragma_wrapper_diff = new_op_diff.extract::<PragmaGeneralNoiseWrapper>().unwrap();
         let helper_ne: bool = pragma_wrapper_diff != pragma_wrapper;
         assert!(helper_ne);
@@ -2413,26 +2504,31 @@ fn test_pyo3_new_general_noise() {
 /// Test PragmaConditional new() function
 #[test]
 fn test_pyo3_new_conditional() {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = py.get_type::<PragmaConditionalWrapper>();
         let binding = operation
             .call1(("ro".to_string(), 0, new_circuit(py)))
             .unwrap();
-        let new_op = binding.downcast::<PragmaConditionalWrapper>().unwrap();
+        let new_op = binding.cast::<PragmaConditionalWrapper>().unwrap();
 
         let input_definition =
             Operation::from(PragmaConditional::new("ro".to_string(), 0, Circuit::new()));
         let copy_param = convert_operation_to_pyobject(input_definition, py).unwrap();
-        let comparison_copy =
-            bool::extract_bound(&new_op.call_method1("__eq__", (copy_param,)).unwrap()).unwrap();
+        let comparison_copy = bool::extract(
+            new_op
+                .call_method1("__eq__", (copy_param,))
+                .unwrap()
+                .as_borrowed(),
+        )
+        .unwrap();
         assert!(comparison_copy);
 
         let pragma_wrapper = new_op.extract::<PragmaConditionalWrapper>().unwrap();
         let binding = operation
             .call1(("ro".to_string(), 2, new_circuit(py)))
             .unwrap();
-        let new_op_diff = binding.downcast::<PragmaConditionalWrapper>().unwrap();
+        let new_op_diff = binding.cast::<PragmaConditionalWrapper>().unwrap();
         let pragma_wrapper_diff = new_op_diff.extract::<PragmaConditionalWrapper>().unwrap();
         let helper_ne: bool = pragma_wrapper_diff != pragma_wrapper;
         assert!(helper_ne);
@@ -2449,25 +2545,26 @@ fn test_pyo3_new_conditional() {
 /// Test PragmaControlledCircuit new() function
 #[test]
 fn test_pyo3_new_controlled_circuit() {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = py.get_type::<PragmaControlledCircuitWrapper>();
         let binding = operation.call1((0, new_circuit(py))).unwrap();
-        let new_op = binding
-            .downcast::<PragmaControlledCircuitWrapper>()
-            .unwrap();
+        let new_op = binding.cast::<PragmaControlledCircuitWrapper>().unwrap();
 
         let input_definition = Operation::from(PragmaControlledCircuit::new(0, Circuit::new()));
         let copy_param = convert_operation_to_pyobject(input_definition, py).unwrap();
-        let comparison_copy =
-            bool::extract_bound(&new_op.call_method1("__eq__", (copy_param,)).unwrap()).unwrap();
+        let comparison_copy = bool::extract(
+            new_op
+                .call_method1("__eq__", (copy_param,))
+                .unwrap()
+                .as_borrowed(),
+        )
+        .unwrap();
         assert!(comparison_copy);
 
         let pragma_wrapper = new_op.extract::<PragmaControlledCircuitWrapper>().unwrap();
         let binding = operation.call1((2, new_circuit(py))).unwrap();
-        let new_op_diff = binding
-            .downcast::<PragmaControlledCircuitWrapper>()
-            .unwrap();
+        let new_op_diff = binding.cast::<PragmaControlledCircuitWrapper>().unwrap();
         let pragma_wrapper_diff = new_op_diff
             .extract::<PragmaControlledCircuitWrapper>()
             .unwrap();
@@ -2486,25 +2583,30 @@ fn test_pyo3_new_controlled_circuit() {
 /// Test PragmaLoop new() function
 #[test]
 fn test_pyo3_new_loop() {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = py.get_type::<PragmaLoopWrapper>();
         let binding = operation
             .call1(("number_t".to_string(), new_circuit(py)))
             .unwrap();
-        let new_op = binding.downcast::<PragmaLoopWrapper>().unwrap();
+        let new_op = binding.cast::<PragmaLoopWrapper>().unwrap();
 
         let input_definition = Operation::from(PragmaLoop::new("number_t".into(), Circuit::new()));
         let copy_param = convert_operation_to_pyobject(input_definition, py).unwrap();
-        let comparison_copy =
-            bool::extract_bound(&new_op.call_method1("__eq__", (copy_param,)).unwrap()).unwrap();
+        let comparison_copy = bool::extract(
+            new_op
+                .call_method1("__eq__", (copy_param,))
+                .unwrap()
+                .as_borrowed(),
+        )
+        .unwrap();
         assert!(comparison_copy);
 
         let pragma_wrapper = new_op.extract::<PragmaLoopWrapper>().unwrap();
         let binding = operation
             .call1(("ro".to_string(), new_circuit(py)))
             .unwrap();
-        let new_op_diff = binding.downcast::<PragmaLoopWrapper>().unwrap();
+        let new_op_diff = binding.cast::<PragmaLoopWrapper>().unwrap();
         let pragma_wrapper_diff = new_op_diff.extract::<PragmaLoopWrapper>().unwrap();
         let helper_ne: bool = pragma_wrapper_diff != pragma_wrapper;
         assert!(helper_ne);
@@ -2523,8 +2625,8 @@ fn test_pyo3_new_loop() {
 fn test_pyo3_new_annotated_op() {
     let internal_op_0 = Operation::from(PauliX::new(0));
     let internal_op_1 = Operation::from(PauliX::new(1));
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = py.get_type::<PragmaAnnotatedOpWrapper>();
         let binding = operation
             .call1((
@@ -2532,15 +2634,20 @@ fn test_pyo3_new_annotated_op() {
                 "test",
             ))
             .unwrap();
-        let new_op = binding.downcast::<PragmaAnnotatedOpWrapper>().unwrap();
+        let new_op = binding.cast::<PragmaAnnotatedOpWrapper>().unwrap();
 
         let input_definition = Operation::from(PragmaAnnotatedOp::new(
             Operation::from(PauliX::new(0)),
             "test".to_string(),
         ));
         let copy_param = convert_operation_to_pyobject(input_definition, py).unwrap();
-        let comparison_copy =
-            bool::extract_bound(&new_op.call_method1("__eq__", (copy_param,)).unwrap()).unwrap();
+        let comparison_copy = bool::extract(
+            new_op
+                .call_method1("__eq__", (copy_param,))
+                .unwrap()
+                .as_borrowed(),
+        )
+        .unwrap();
         assert!(comparison_copy);
 
         let pragma_wrapper = new_op.extract::<PragmaAnnotatedOpWrapper>().unwrap();
@@ -2550,7 +2657,7 @@ fn test_pyo3_new_annotated_op() {
                 "test",
             ))
             .unwrap();
-        let new_op_diff = binding.downcast::<PragmaAnnotatedOpWrapper>().unwrap();
+        let new_op_diff = binding.cast::<PragmaAnnotatedOpWrapper>().unwrap();
         let pragma_wrapper_diff = new_op_diff.extract::<PragmaAnnotatedOpWrapper>().unwrap();
         let helper_ne: bool = pragma_wrapper_diff != pragma_wrapper;
         assert!(helper_ne);
@@ -2579,8 +2686,8 @@ fn test_pyo3_new_annotated_op() {
 #[test_case(Operation::from(PragmaAnnotatedOp::new(Operation::from(PauliX::new(0)), "test".to_string())); "PragmaAnnotatedOp")]
 fn test_pyo3_remapqubits_error(input_operation: Operation) {
     // preparation
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
+    Python::initialize();
+    Python::attach(|py| {
         let operation = convert_operation_to_pyobject(input_operation, py).unwrap();
         // remap qubits
         let mut qubit_mapping: HashMap<usize, usize> = HashMap::new();
@@ -2679,8 +2786,8 @@ fn test_pyo3_json_schema(operation: PragmaOperation) {
         }
         _ => unreachable!(),
     };
-    pyo3::prepare_freethreaded_python();
-    pyo3::Python::with_gil(|py| {
+    Python::initialize();
+    pyo3::Python::attach(|py| {
         let minimum_version: String = match operation {
             PragmaOperation::PragmaLoop(_) => "1.1.0".to_string(),
             PragmaOperation::PragmaControlledCircuit(_) => "1.5.0".to_string(),
@@ -2691,15 +2798,24 @@ fn test_pyo3_json_schema(operation: PragmaOperation) {
         let operation = pyobject;
 
         let schema: String =
-            String::extract_bound(&operation.call_method0("json_schema").unwrap()).unwrap();
+            String::extract(operation.call_method0("json_schema").unwrap().as_borrowed()).unwrap();
 
         assert_eq!(schema, rust_schema);
 
-        let current_version_string =
-            String::extract_bound(&operation.call_method0("current_version").unwrap()).unwrap();
-        let minimum_supported_version_string =
-            String::extract_bound(&operation.call_method0("min_supported_version").unwrap())
-                .unwrap();
+        let current_version_string = String::extract(
+            operation
+                .call_method0("current_version")
+                .unwrap()
+                .as_borrowed(),
+        )
+        .unwrap();
+        let minimum_supported_version_string = String::extract(
+            operation
+                .call_method0("min_supported_version")
+                .unwrap()
+                .as_borrowed(),
+        )
+        .unwrap();
 
         assert_eq!(current_version_string, ROQOQO_VERSION);
         assert_eq!(minimum_supported_version_string, minimum_version);

@@ -260,11 +260,10 @@ impl CircuitDag {
         // Update the first layer in case the qubit has never been seen before
         if qubit_presence.is_none() {
             // Update first_operation_involving_qubit depending on last_all
-            if self.last_all.is_none() {
-                self.first_operation_involving_qubit.insert(qubit, node);
+            if let Some(last_all) = self.last_all {
+                self.first_operation_involving_qubit.insert(qubit, last_all);
             } else {
-                self.first_operation_involving_qubit
-                    .insert(qubit, self.last_all.unwrap());
+                self.first_operation_involving_qubit.insert(qubit, node);
             }
         }
     }
@@ -402,11 +401,10 @@ impl CircuitDag {
         // Update the last layer in case the qubit has never been seen before
         if qubit_presence.is_none() {
             // Update last_operation_involving_qubit depending on first_all
-            if self.first_all.is_none() {
-                self.last_operation_involving_qubit.insert(qubit, node);
+            if let Some(first_all) = self.first_all {
+                self.last_operation_involving_qubit.insert(qubit, first_all);
             } else {
-                self.last_operation_involving_qubit
-                    .insert(qubit, self.first_all.unwrap());
+                self.last_operation_involving_qubit.insert(qubit, node);
             }
         }
     }
