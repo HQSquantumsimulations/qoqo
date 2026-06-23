@@ -233,7 +233,7 @@ fn test_json_schema_squared() {
     Python::initialize();
     pyo3::Python::attach(|py| {
         let device_any = new_genericlattice();
-        let device = device_any.bind(py).cast::<GenericDeviceWrapper>().unwrap();
+        let device = device_any.bind(py).cast::<SquareLatticeDeviceWrapper>().unwrap();
         let schema: String =
             String::extract(device.call_method0("json_schema").unwrap().as_borrowed()).unwrap();
         let rust_schema =
