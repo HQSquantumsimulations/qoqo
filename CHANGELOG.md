@@ -335,7 +335,7 @@ This changelog track changes to the qoqo project starting at version v0.5.0
 
 ## 1.2.2
 
-* Removed references to `Python::initialize();` outside of tests
+* Removed references to `pyo3::prepare_freethreaded_python();` outside of tests
 
 ## 1.2.0
 

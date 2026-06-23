@@ -261,8 +261,7 @@ impl CircuitDag {
         if qubit_presence.is_none() {
             // Update first_operation_involving_qubit depending on last_all
             if let Some(last_all) = self.last_all {
-                self.first_operation_involving_qubit
-                    .insert(qubit, last_all);
+                self.first_operation_involving_qubit.insert(qubit, last_all);
             } else {
                 self.first_operation_involving_qubit.insert(qubit, node);
             }
@@ -403,8 +402,7 @@ impl CircuitDag {
         if qubit_presence.is_none() {
             // Update last_operation_involving_qubit depending on first_all
             if let Some(first_all) = self.first_all {
-                self.last_operation_involving_qubit
-                    .insert(qubit, first_all);
+                self.last_operation_involving_qubit.insert(qubit, first_all);
             } else {
                 self.last_operation_involving_qubit.insert(qubit, node);
             }
