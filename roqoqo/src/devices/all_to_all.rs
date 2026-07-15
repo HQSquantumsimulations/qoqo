@@ -81,7 +81,7 @@ impl AllToAllDevice {
     ///
     pub fn set_all_single_qubit_gate_times(mut self, gate: &str, gate_time: f64) -> Self {
         if let Some(gate_times) = self.generic_device.single_qubit_gates.get_mut(gate) {
-            for (_, gatetime) in gate_times.iter_mut() {
+            for gatetime in gate_times.values_mut() {
                 *gatetime = gate_time
             }
         } else {
@@ -108,7 +108,7 @@ impl AllToAllDevice {
     /// `Self` - An AllToAllDevice with updated gate times.
     pub fn set_all_two_qubit_gate_times(mut self, gate: &str, gate_time: f64) -> Self {
         if let Some(gate_times) = self.generic_device.two_qubit_gates.get_mut(gate) {
-            for (_, gatetime) in gate_times.iter_mut() {
+            for gatetime in gate_times.values_mut() {
                 *gatetime = gate_time
             }
         } else {

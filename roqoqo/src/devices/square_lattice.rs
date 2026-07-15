@@ -100,7 +100,7 @@ impl SquareLatticeDevice {
     pub fn set_all_single_qubit_gate_times(mut self, gate: &str, gate_time: f64) -> Self {
         let number_qubits = <Self as Device>::number_qubits(&self);
         if let Some(gate_times) = self.generic_device.single_qubit_gates.get_mut(gate) {
-            for (_, gatetime) in gate_times.iter_mut() {
+            for gatetime in gate_times.values_mut() {
                 *gatetime = gate_time
             }
         } else {
@@ -129,7 +129,7 @@ impl SquareLatticeDevice {
     pub fn set_all_two_qubit_gate_times(mut self, gate: &str, gate_time: f64) -> Self {
         let number_qubits = <Self as Device>::number_qubits(&self);
         if let Some(gate_times) = self.generic_device.two_qubit_gates.get_mut(gate) {
-            for (_, gatetime) in gate_times.iter_mut() {
+            for gatetime in gate_times.values_mut() {
                 *gatetime = gate_time
             }
         } else {
