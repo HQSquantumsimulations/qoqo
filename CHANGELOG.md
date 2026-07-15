@@ -4,6 +4,10 @@ This changelog track changes to the qoqo project starting at version v0.5.0
 
 ## Unreleased
 
+## 1.22.2
+
+* Switched jsonschema to use "resolve-http", "resolve-file", "tls-ring" features.
+
 ## 1.22.1
 
 * Fixed book.toml.
