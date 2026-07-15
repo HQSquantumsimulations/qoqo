@@ -189,7 +189,7 @@ impl MeasureExpectationValues for PauliZProduct {
         }
 
         let mut pauli_products: Array1<f64> = Array1::zeros(self.input.number_pauli_products);
-        for (register_name, _) in self.input.pauli_product_qubit_masks.iter() {
+        for register_name in self.input.pauli_product_qubit_masks.keys() {
             if !register_name.ends_with("flipped") {
                 // Create temporary averaged vector of pauli_products
                 // Averaging between normal and flipped readout when flipped measurement is used
